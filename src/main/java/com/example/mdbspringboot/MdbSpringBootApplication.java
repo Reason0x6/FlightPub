@@ -73,7 +73,7 @@ public class MdbSpringBootApplication implements CommandLineRunner{
 		
 		System.out.println("\n----------DELETE A GROCERY ITEM----------------------------------\n");
 		
-		deleteGroceryItem("Kodo Millet");
+		//deleteGroceryItem("Kodo Millet");
 		
 		System.out.println("\n------------FINAL COUNT OF GROCERY ITEMS-------------------------\n");
 		
