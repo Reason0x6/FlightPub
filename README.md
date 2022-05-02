@@ -1,2 +1,2 @@
-# mdb-spring-boot
+# Spring Boot + Mongo DB Basic Test
  
