@@ -13,9 +13,14 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import com.example.mdbspringboot.model.GroceryItem;
 import com.example.mdbspringboot.repository.CustomItemRepository;
 import com.example.mdbspringboot.repository.ItemRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @SpringBootApplication
 @EnableMongoRepositories
+@Controller
 public class MdbSpringBootApplication implements CommandLineRunner{
 	
 	@Autowired
@@ -29,6 +34,13 @@ public class MdbSpringBootApplication implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(MdbSpringBootApplication.class, args);
 	}
+
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	@ResponseBody
+	public String TestFunc() {
+		return showAllGroceryItemsOut();
+	}
+
 	
 	public void run(String... args) {
 		
@@ -94,6 +106,15 @@ public class MdbSpringBootApplication implements CommandLineRunner{
 		 
 		 itemList.forEach(item -> System.out.println(getItemDetails(item)));
 	 }
+
+	public String showAllGroceryItemsOut() {
+		String output = "";
+		itemList = groceryItemRepo.findAll();
+		for(GroceryItem x: itemList){
+			output += x.getName() + ", ";
+		}
+		return output;
+	}
 	 
 	 // 2. Get item by name
 	 public void getGroceryItemByName(String name) {
