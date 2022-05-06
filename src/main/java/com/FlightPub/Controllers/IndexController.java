@@ -17,7 +17,7 @@ public class IndexController {
         this.usrServices = usrService;
     }
 
-    @RequestMapping("/hi")
+    @RequestMapping("/")
     public String loadIndex(Model model){
         model.addAttribute("usr", "");
         return "index";
