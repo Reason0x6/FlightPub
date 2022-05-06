@@ -1,5 +1,6 @@
-package com.example.mdbspringboot.repository;
+package com.FlightPub.repository;
 
+import com.FlightPub.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -7,21 +8,20 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import com.example.mdbspringboot.model.GroceryItem;
 import com.mongodb.client.result.UpdateResult;
 
 @Component
-public class CustomItemRepositoryImpl implements CustomItemRepository {
+public class UserAccountRepository {
 
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
-	public void updateItemQuantity(String name, float newQuantity) {
-		Query query = new Query(Criteria.where("name").is(name));
+	public void updateEmail(String username, String email) {
+		Query query = new Query(Criteria.where("userName").is(username));
 		Update update = new Update();
-		update.set("quantity", newQuantity);
+		update.set("email", email);
 		
-		UpdateResult result = mongoTemplate.updateFirst(query, update, GroceryItem.class);
+		UpdateResult result = mongoTemplate.updateFirst(query, update, UserAccount.class);
 		
 		if(result == null)
 			System.out.println("No documents updated");
