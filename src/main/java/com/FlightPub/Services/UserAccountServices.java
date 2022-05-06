@@ -11,7 +11,6 @@ import java.util.*;
 public class UserAccountServices implements UserAccountServicesINT{
     private UserAccountRepo userRepo;
 
-
     @Autowired
     public UserAccountServices(UserAccountRepo userAccountRepository) {
         this.userRepo = userAccountRepository;

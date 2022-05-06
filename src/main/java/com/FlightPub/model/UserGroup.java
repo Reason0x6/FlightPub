@@ -21,9 +21,24 @@ public class UserGroup{
         this.adminID = adminID;
     }
 
+    public LinkedList<String> getUsers(){
+        return userIDs;
+    }
+
+
+    public String getAdminID(){
+        return adminID;
+    }
+
     public void addUser(String id){
         if (! userIDs.contains(id)){
             userIDs.add(id);
+        }
+    }
+
+    public void removeUser(String id){
+        if (userIDs.contains(id)){
+            userIDs.remove(id);
         }
     }
 
