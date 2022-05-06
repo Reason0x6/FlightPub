@@ -21,11 +21,11 @@ public class IndexController {
     }
 
     @RequestMapping("/usr/add")
-    @ResponseBody  //Used when we what the return statment to be displayed
-    public String addUSR(@RequestParam String id, @RequestParam String username){
-        usrServices.saveOrUpdate(new UserAccount(id,username,"__"));
-
-        return "index";
+    public String addUSR(@RequestParam String id, @RequestParam String username, Model mod){
+        UserAccount newUser = new UserAccount(id,username,"__");
+        usrServices.saveOrUpdate(newUser);
+        mod.addAttribute("usr", newUser);
+        return "basic";
     }
 
 
