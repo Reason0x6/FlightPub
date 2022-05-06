@@ -20,8 +20,8 @@ public class IndexController {
     }
 
     @RequestMapping("/usr/add")
-    public String addUSR(@RequestParam String id, @RequestParam String username, Model mod){
-        UserAccount newUser = new UserAccount(id,username,"__");
+    public String addUSR(@RequestParam String id, @RequestParam String username, @RequestParam String email, Model mod){
+        UserAccount newUser = new UserAccount(id,username,email);
         usrServices.saveOrUpdate(newUser);
         mod.addAttribute("usr", newUser);
         return "basic";
