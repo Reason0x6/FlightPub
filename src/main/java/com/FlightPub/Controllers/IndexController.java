@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class TestController {
+public class IndexController {
     private UserAccountServices usrServices;
 
     @Autowired
@@ -18,11 +17,9 @@ public class TestController {
         this.usrServices = usrService;
     }
 
-
-
     @RequestMapping("/hi")
     public String loadIndex(Model model){
-        model.addAttribute("hi", "");
+        model.addAttribute("usr", "");
         return "index";
     }
 }
