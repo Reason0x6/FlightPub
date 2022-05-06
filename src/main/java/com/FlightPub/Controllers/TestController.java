@@ -21,9 +21,8 @@ public class TestController {
 
 
     @RequestMapping("/hi")
-    public String listUsers(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model){
-
-        model.addAttribute("hi", name);
-        return "list";
+    public String loadIndex(Model model){
+        model.addAttribute("hi", "");
+        return "index";
     }
 }
