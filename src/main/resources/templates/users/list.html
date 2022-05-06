@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Spring Core Online Tutorial - List Products</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+</head>
+<body>
+<div class="container">
+    <div th:if="${not #lists.isEmpty(usrs)}">
+        <h2>User List</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>UserName</th>
+            </tr>
+            <tr th:each="UserAccount usr: ${usrs}">
+                <td th:text="${usr.getUsername()}"></td>
+
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

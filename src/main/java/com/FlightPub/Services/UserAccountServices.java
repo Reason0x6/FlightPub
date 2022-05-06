@@ -2,11 +2,12 @@ package com.FlightPub.Services;
 
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.repository.UserAccountRepo;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service("UserAccountServices")
 public class UserAccountServices implements UserAccountServicesINT{
     private UserAccountRepo userRepo;
 
