@@ -25,7 +25,7 @@ public class IndexController {
     public String addUSR(@RequestParam String id, @RequestParam String username){
         usrServices.saveOrUpdate(new UserAccount(id,username,"__"));
 
-        return "User " + username + " added.";
+        return "index";
     }
 
 
