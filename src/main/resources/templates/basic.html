@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Head.html"> </head>
+<header th:replace="Header.html"> </header>
+<div class="container">
+    <main id="main" style="margin-top: 300px">
+        <!-- ======= Services Section ======= -->
+        <p th:text="'Username: ' + ${usr.getUserName()}"></p>
+        <p th:text="'Email: ' + ${usr.getUserEmail()}"></p>
+    </main>
+</div>
+
+
+
