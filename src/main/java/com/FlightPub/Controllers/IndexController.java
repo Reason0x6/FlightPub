@@ -1,11 +1,14 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController {
@@ -16,6 +19,15 @@ public class IndexController {
     public void setUserService(UserAccountServices usrService) {
         this.usrServices = usrService;
     }
+
+    @RequestMapping("/usr/add")
+    @ResponseBody  //Used when we what the return statment to be displayed
+    public String addUSR(@RequestParam String id, @RequestParam String username){
+        usrServices.saveOrUpdate(new UserAccount(id,username,"__"));
+
+        return "User " + username + " added.";
+    }
+
 
     @RequestMapping("/")
     public String loadIndex(Model model){

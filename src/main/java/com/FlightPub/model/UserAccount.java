@@ -34,6 +34,7 @@ public class UserAccount {
 		public void setUserName(String name) {
 			this.username = name;
 		}
+
 		public String getUserEmail() {
 		return this.email;
 	}
