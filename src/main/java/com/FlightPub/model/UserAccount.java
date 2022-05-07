@@ -1,14 +1,26 @@
 package com.FlightPub.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("UserAccount")
 public class UserAccount {
 		@Id
+		@Getter
+		@Setter
 		private String id;
+		@Getter
+		@Setter
 		private String username;
+
+		@Getter
+		@Setter
 		private String email;
+
+		@Getter
+		@Setter
 		private String pwdHash;
 		
 		public UserAccount(String id, String username, String email) {
@@ -18,32 +30,6 @@ public class UserAccount {
 			this.email = email;
 		}
 
-		public String getId() {
-			return id;
-		}
 
-		public void setId(String id) {
-			this.id = id;
-		}
-
-		public String getUserName() {
-			return username;
-		}
-
-		public void setUserName(String name) {
-			this.username = name;
-		}
-
-		public String getUserEmail() {
-		return this.email;
-	}
-
-		public void setUserEmail(String email) {
-			this.email = email;
-		}
-
-		public void setPassword(String hash){ this.pwdHash = hash; }
-
-		public boolean checkPassword(String hash){ return pwdHash.equals(hash); }
 
 }
