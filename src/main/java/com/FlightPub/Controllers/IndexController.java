@@ -1,6 +1,7 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.model.BasicSearch;
 import com.FlightPub.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,6 +47,6 @@ public class IndexController {
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model){
         model.addAttribute("search", search);
-        return "login";
+        return "search";
     }
 }
