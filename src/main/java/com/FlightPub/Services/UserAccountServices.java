@@ -16,7 +16,6 @@ public class UserAccountServices implements UserAccountServicesINT{
         this.userRepo = userAccountRepository;
     }
 
-
     @Override
     public List<UserAccount> listAll() {
         List<UserAccount> users = new ArrayList<>();
@@ -39,6 +38,5 @@ public class UserAccountServices implements UserAccountServicesINT{
     public void delete(String id) {
         userRepo.deleteById(id);
     }
-
 
 }
