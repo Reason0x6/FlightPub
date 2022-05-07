@@ -26,7 +26,7 @@ public class UserGroupServices {
 
         LinkedList<UserAccount> listAllUsers() {
                 LinkedList<UserAccount> accounts = new LinkedList<UserAccount>();
-                LinkedList<String> usrs = usrGroup.getUsers();
+                LinkedList<String> usrs = usrGroup.getUserIDs();
                 for(String usr : usrs){
                         accounts.add(accData.getById(usr));
                 }
