@@ -60,23 +60,9 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="icon-box" data-aos="zoom-in-left">
-              <p class="description" style="margin-top: 10px" ><form>  <input type="text" id="fname" placeholder="Desitination">  
-			  <select name="class" id="class">
-				  <option value="first">First Class</option>
-				  <option value="Business">Business</option>
-				  <option value="eco">Economy</option>
-				</select>
-				 <select name="cars" id="cars">
-				  <option value="2">1 Adult</option>
-				  <option value="1">Business</option>
-				  <option value="3">Economy</option>
-				</select>
-				<select name="cars" id="cars">
-				  <option value="2">2 Children</option>
-				  <option value="1">Business</option>
-				  <option value="3">Economy</option>
-				</select>
-</form></p>
+              <p class="description" style="margin-top: 10px" >
+              <form th:replace="Fragments/Forms :: #search"> </form>
+              </p>
             </div>
           </div>
           
