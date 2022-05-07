@@ -1,7 +1,9 @@
-package com.FlightPub.Controllers;
+package com.FlightPub.model;
+
 
 import lombok.Getter;
 import lombok.Setter;
+
 
 public class BasicSearch {
     @Getter
@@ -9,7 +11,7 @@ public class BasicSearch {
     private String destination;
     @Getter
     @Setter
-    private String depature;
+    private String departure;
 
     @Getter
     @Setter
@@ -23,13 +25,16 @@ public class BasicSearch {
     @Setter
     private String kids;
 
-    BasicSearch(String destination, String depature, String seatType, String adults, String kids){
-        this.depature = depature;
+    BasicSearch(String destination, String departure, String seatType, String adults, String kids){
+        this.departure = departure;
         this.destination = destination;
         this.seatType = seatType;
         this.adults = adults;
         this.kids = kids;
     }
+
+
+    BasicSearch(){}
 
 
 

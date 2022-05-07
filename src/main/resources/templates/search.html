@@ -6,8 +6,11 @@
 <div class="container">
   <main id="main" style="margin-top: 300px">
     <!-- ======= Services Section ======= -->
-    <p th:text="'Username: ' + ${usr.getUserName()}"></p>
-    <p th:text="'Email: ' + ${usr.getUserEmail()}"></p>
+    <p th:text="'Destination: ' + ${search.getDestination()}"></p>
+    <p th:text="'Derpature: ' + ${search.getDeparture()}"></p>
+    <p th:text="'Seat Type: ' + ${search.getSeatType()}"></p>
+    <p th:text="'Children: ' + ${search.getKids()}"></p>
+    <p th:text="'Adults: ' + ${search.getAdults()}"></p>
   </main>
 </div>
 
