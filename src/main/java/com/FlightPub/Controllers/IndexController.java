@@ -19,7 +19,7 @@ public class IndexController {
         this.usrServices = usrService;
     }
 
-    @RequestMapping("/usr/add")
+    @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com
     public String addUSR(@RequestParam String id, @RequestParam String username, @RequestParam String email, Model mod){
         UserAccount newUser = new UserAccount(id,username,email);
         usrServices.saveOrUpdate(newUser);
@@ -32,5 +32,11 @@ public class IndexController {
     public String loadIndex(Model model){
         model.addAttribute("usr", "");
         return "index";
+    }
+
+    @RequestMapping("/login")
+    public String loadLogin(Model model){
+        model.addAttribute("usr", "");
+        return "login";
     }
 }
