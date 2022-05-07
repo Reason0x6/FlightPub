@@ -9,7 +9,6 @@ public class UserAccount {
 		private String id;
 		private String username;
 		private String email;
-
 		private String pwdHash;
 		
 		public UserAccount(String id, String username, String email) {
