@@ -15,14 +15,9 @@
 </form>
 
 <form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
-    <input type="text" id="destination" name="destination" placeholder="Desitination">
-    <input type="text" id="depature" name="depature" placeholder="Depature"><br>
-    <p>Seat Type</p><br>
-    <select name="seatType" id="class">
-        <option value="First">First Class</option>
-        <option value="Business">Business</option>
-        <option value="Economy">Economy</option>
-    </select><br><br>
+    <input type="text" id="destination" name="destination" placeholder="Destination">
+    <input type="text" id="departure" name="departure" placeholder="Departure">
+
     <select name="adults" id="adults">
         <option value="1">1 Adult</option>
         <option value="2">2 Adults</option>
@@ -30,12 +25,13 @@
         <option value="4+">4+ Adults</option>
     </select>
     <select name="kids" id="children">
+        <option value="0">0 Children</option>
         <option value="1">1 Child</option>
         <option value="2">2 Children</option>
         <option value="3">3 Children</option>
         <option value="4+">4+ Children</option>
     </select>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary btn-search">Find Flights!</button>
 </form>
 </html>
