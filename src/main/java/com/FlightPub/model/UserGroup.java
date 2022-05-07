@@ -1,5 +1,7 @@
 package com.FlightPub.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,8 +12,13 @@ public class UserGroup{
     @Id
     private String id;
 
+    @Getter
+    @Setter
     private LinkedList<String> userIDs;
 
+
+    @Getter
+    @Setter
     private String adminID;
 
     public UserGroup(String adminID) {
@@ -19,10 +26,6 @@ public class UserGroup{
         userIDs = new LinkedList<>();
         userIDs.add(adminID);
         this.adminID = adminID;
-    }
-
-    public LinkedList<String> getUsers(){
-        return userIDs;
     }
 
 
