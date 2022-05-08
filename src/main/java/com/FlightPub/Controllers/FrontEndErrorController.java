@@ -19,5 +19,7 @@ public class FrontEndErrorController implements ErrorController {
         return "404";
     }
 
-
+    public void test(){}
 }
+
+
