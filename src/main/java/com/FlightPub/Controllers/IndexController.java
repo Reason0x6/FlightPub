@@ -24,9 +24,9 @@ public class IndexController {
         this.usrServices = usrService;
     }
 
-    @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com
-    public String addUSR(@RequestParam String id, @RequestParam String username, @RequestParam String email, Model mod){
-        UserAccount newUser = new UserAccount(id,username,email);
+    @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&password=123
+    public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String password, Model mod){
+        UserAccount newUser = new UserAccount(username,email, password, 1);
         usrServices.saveOrUpdate(newUser);
         mod.addAttribute("usr", newUser);
         return "basic";
@@ -47,9 +47,37 @@ public class IndexController {
 
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model){
-        model.addAttribute("user", req);
-        model.addAttribute("method", "post");
-        System.out.println(req.getPassword());
+        try {
+
+            UserAccount newUser = usrServices.getById(req.getEmail());
+
+            if(req.getPassword().equals(newUser.getPassword())) {
+                System.out.println(true);
+            }else{
+                System.out.println(false);
+                System.out.println(req.getPassword());
+                System.out.println(newUser.getPassword());
+            }
+
+            model.addAttribute("user", req);
+            model.addAttribute("method", "post");
+
+
+
+
+
+
+        }catch(Exception e){
+            System.out.println(req.getPassword());
+
+
+            e.printStackTrace();
+
+        }
+
+
+
+
         return "login";
     }
 
