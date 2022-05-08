@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public class Flight {
     @Getter
     @Setter
-    private int flightID;
+    private String flightID;
 
     @Getter
     @Setter
