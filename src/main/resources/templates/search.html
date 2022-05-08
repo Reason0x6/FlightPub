@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"> </head>
+<header th:replace="Fragments/Header"> </header>
+<div class="container">
+  <main id="main" style="margin-top: 100px">
+    <!-- ======= Services Section ======= -->
+    <p th:text="'Destination: ' + ${search.getDestination()}"></p>
+    <p th:text="'Derpature: ' + ${search.getDeparture()}"></p>
+    <p th:text="'Children: ' + ${search.getKids()}"></p>
+    <p th:text="'Adults: ' + ${search.getAdults()}"></p>
+  </main>
+</div>
+
+
+

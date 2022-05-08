@@ -1,50 +1,56 @@
 package com.FlightPub.model;
 
+import com.FlightPub.Services.SecurityService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("UserAccount")
 public class UserAccount {
-		@Id
-		private String id;
+
+
+		@Getter
+		@Setter
 		private String username;
+
+		@Id
+		@Getter
+		@Setter
 		private String email;
 
-		private String pwdHash;
+		@Getter
+		@Setter
+		private String password;
 		
-		public UserAccount(String id, String username, String email) {
-			super();
-			this.id = id;
-			this.username = username;
-			this.email = email;
+		public UserAccount(String username, String email, String password, int api) {
+
+			try {
+				SecurityService sec = new SecurityService();
+
+				if(api == 1){this.password = sec.hash(password);}
+				else{ this.password = password;}
+			}catch(Exception r){
+
+			}
+
+				this.username = username;
+				this.email = email;
+
 		}
 
-		public String getId() {
-			return id;
-		}
+	public UserAccount(String username, String email, String password) {
+		super();
+		this.password = password;
+		this.username = username;
+		this.email = email;
 
-		public void setId(String id) {
-			this.id = id;
-		}
-
-		public String getUserName() {
-			return username;
-		}
-
-		public void setUserName(String name) {
-			this.username = name;
-		}
-
-		public String getUserEmail() {
-		return this.email;
 	}
 
-		public void setUserEmail(String email) {
-			this.email = email;
-		}
 
-		public void setPassword(String hash){ this.pwdHash = hash; }
 
-		public boolean checkPassword(String hash){ return pwdHash.equals(hash); }
+	UserAccount(){}
+
+
 
 }
