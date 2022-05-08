@@ -2,6 +2,7 @@ package com.FlightPub.Controllers;
 
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.BasicSearch;
+import com.FlightPub.model.LoginRequest;
 import com.FlightPub.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
     private UserAccountServices usrServices;
+    private UserAccount SessionUser;
 
     @Autowired
     @Qualifier(value = "UserAccountServices")
@@ -33,13 +35,21 @@ public class IndexController {
 
     @RequestMapping("/")
     public String loadIndex(Model model){
-        model.addAttribute("usr", "");
+        model.addAttribute("usr", ""); // Temp/placeholder
         return "index";
     }
 
     @RequestMapping("/login")
     public String loadLogin(Model model){
-        model.addAttribute("usr", "");
+        model.addAttribute("usr", ""); // Temp/placeholder
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String runLogin(@ModelAttribute LoginRequest req, Model model){
+        model.addAttribute("user", req);
+        model.addAttribute("method", "post");
+        System.out.println(req.getPassword());
         return "login";
     }
 
