@@ -30,8 +30,6 @@ public class ObjectCreationController {
         this.flightServices = flightService;
     }
 
-
-
     @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&password=123
     public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String password, Model mod){
         UserAccount newUser = new UserAccount(username,email, password, 1);
@@ -40,7 +38,7 @@ public class ObjectCreationController {
         return "basic";
     }
 
-    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&desinationID=Tam&airline=QANTAS
+    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS
     public String addFlight( @RequestParam int flightID, @RequestParam String originID,
                              @RequestParam String destinationID, @RequestParam String airline, Model mod){
 
@@ -48,7 +46,7 @@ public class ObjectCreationController {
 
         newFlight.setFlightID(flightID);
         newFlight.setOriginID(originID);
-        newFlight.setDestinationID(destinationID);;
+        newFlight.setDestinationID(destinationID);
         newFlight.setAirline(airline);
 
         flightServices.saveOrUpdate(newFlight);

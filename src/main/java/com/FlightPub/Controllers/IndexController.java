@@ -33,7 +33,6 @@ public class IndexController {
         this.usrServices = usrService;
     }
 
-
     @RequestMapping("/")
     public String loadIndex(Model model){
         model.addAttribute("usr", ""); // Temp/placeholder
