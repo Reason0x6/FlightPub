@@ -44,9 +44,16 @@ public class FlightServices implements FlightServicesINT{
        return flightRepo.findByDesitination(dest);
     }
 
-    public List<Flight> getByDeparture(String dep) {
+    public List<Flight> getByOrigin(String dep) {
 
         // Query defined in flightRepo
-        return flightRepo.findByDeparture(dep);
+        return flightRepo.findByOrigin(dep);
     }
+
+    public List<Flight> getByOriginAndDestination(String origin, String dep) {
+
+        // Query defined in flightRepo
+        return flightRepo.findByOriginAndDesitination(origin, dep);
+    }
+
 }

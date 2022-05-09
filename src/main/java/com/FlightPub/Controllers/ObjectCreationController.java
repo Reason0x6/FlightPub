@@ -52,6 +52,7 @@ public class ObjectCreationController {
         newFlight.setAirline(airline);
 
         flightServices.saveOrUpdate(newFlight);
+        mod.addAttribute("flight", newFlight);
         return "basic";
     }
 

@@ -1,7 +1,6 @@
 package com.FlightPub.Services;
 
 import com.FlightPub.model.Flight;
-import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
@@ -15,6 +14,8 @@ public interface FlightServicesINT {
    void delete(String id);
 
     List<Flight> getByDesination(String dest);
-    List<Flight> getByDeparture(String dep);
+    List<Flight> getByOrigin(String dep);
+
+    List<Flight> getByOriginAndDestination(String origin, String dept);
 
 }

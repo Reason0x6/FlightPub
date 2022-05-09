@@ -1,5 +1,6 @@
 package com.FlightPub.Controllers;
 
+import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.BasicSearch;
 import com.FlightPub.model.LoginRequest;
@@ -17,6 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
     private UserAccountServices usrServices;
     private UserAccount SessionUser;
+    private FlightServices flightServices;
+
+    @Autowired
+    @Qualifier(value = "FlightServices")
+    public void setFlightServices(FlightServices flightService) {
+        this.flightServices = flightService;
+    }
+
 
     @Autowired
     @Qualifier(value = "UserAccountServices")
@@ -55,20 +64,12 @@ public class IndexController {
             model.addAttribute("method", "post");
 
 
-
-
-
-
         }catch(Exception e){
             System.out.println(req.getPassword());
-
 
             e.printStackTrace();
 
         }
-
-
-
 
         return "login";
     }
@@ -76,6 +77,7 @@ public class IndexController {
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model){
+        search.setFlightServices(flightServices);
         model.addAttribute("search", search);
         return "search";
     }
