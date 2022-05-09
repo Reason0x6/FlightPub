@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 @Controller
 public class IndexController {
     private UserAccountServices usrServices;
@@ -34,7 +40,16 @@ public class IndexController {
 
     @RequestMapping("/")
     public String loadIndex(Model model){
-        model.addAttribute("usr", ""); // Temp/placeholder
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String today = dateFormat.format(date);
+
+        model.addAttribute("today", today); // Temp/placeholder
+        cal.add(Calendar.YEAR, 1);
+        date = cal.getTime();
+        String max = dateFormat.format(date);
+        model.addAttribute("max", max); // Temp/placeholder
         return "index";
     }
 
