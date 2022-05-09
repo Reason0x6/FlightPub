@@ -21,18 +21,17 @@ public class BasicSearch {
 
     @Getter
     @Setter
-    private String adults;
+    private String start;
 
     @Getter
     @Setter
-    private String kids;
+    private String end;
     private FlightServices flightServices;
 
-    BasicSearch(String destination, String departure, String adults, String kids){
+    BasicSearch(String destination, String departure){
         this.departure = departure;
         this.destination = destination;
-        this.adults = adults;
-        this.kids = kids;
+
     }
 
     @Autowired

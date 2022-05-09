@@ -10,6 +10,7 @@
         <label for="exampleInputPassword1" class="form-label">Password</label>
         <input type="password" name ="password" class="form-control" id="exampleInputPassword1">
     </div>
+    <p style="color: red" th:if="${valid} != null">Username & Password did not match a valid account. Please try again.</p>
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -17,20 +18,14 @@
 <form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
     <input type="text" id="destination" name="destination" placeholder="Fly To">
     <input type="text" id="departure" name="departure" placeholder="Fly From">
-
-    <select name="adults" id="adults">
-        <option value="1">1 Adult</option>
-        <option value="2">2 Adults</option>
-        <option value="3">3 Adults</option>
-        <option value="4+">4+ Adults</option>
-    </select>
-    <select name="kids" id="children">
-        <option value="0">0 Children</option>
-        <option value="1">1 Child</option>
-        <option value="2">2 Children</option>
-        <option value="3">3 Children</option>
-        <option value="4+">4+ Children</option>
-    </select>
+    <label for="start" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
+    <input type="date" id="start" name="start"
+           th:value="${today}"
+           th:min="${today}" th:max="${max}">
+    <label for="start" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
+    <input type="date" id="end" name="end"
+           th:value="${today}"
+           th:min="${today}" th:max="${max}">
 
     <button type="submit" class="btn btn-primary btn-search">Find Flights!</button>
 </form>
