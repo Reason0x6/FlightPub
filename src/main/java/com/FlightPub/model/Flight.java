@@ -2,10 +2,15 @@ package com.FlightPub.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
 
+@Document("Flight")
 public class Flight {
+
+    @Id
     @Getter
     @Setter
     private int flightID;
@@ -45,4 +50,6 @@ public class Flight {
     @Getter
     @Setter
     private LinkedList<String> bookings;
+
+    public Flight(){}
 }

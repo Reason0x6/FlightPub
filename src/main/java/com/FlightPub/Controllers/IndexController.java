@@ -24,14 +24,6 @@ public class IndexController {
         this.usrServices = usrService;
     }
 
-    @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&password=123
-    public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String password, Model mod){
-        UserAccount newUser = new UserAccount(username,email, password, 1);
-        usrServices.saveOrUpdate(newUser);
-        mod.addAttribute("usr", newUser);
-        return "basic";
-    }
-
 
     @RequestMapping("/")
     public String loadIndex(Model model){
