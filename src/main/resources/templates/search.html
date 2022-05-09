@@ -4,12 +4,12 @@
 <head th:replace="Fragments/Head"> </head>
 <header th:replace="Fragments/Header"> </header>
 <div class="container">
-  <main id="main" style="margin-top: 100px">
+  <main id="main" style="margin-top: 100px" th:each="flight : ${search.runBasicSearch()}">
     <!-- ======= Services Section ======= -->
-    <p th:text="'Destination: ' + ${search.getDestination()}"></p>
-    <p th:text="'Derpature: ' + ${search.getDeparture()}"></p>
-    <p th:text="'Children: ' + ${search.getKids()}"></p>
-    <p th:text="'Adults: ' + ${search.getAdults()}"></p>
+    <div class="card l-1">
+      <p th:text="  ${flight.getOriginID()} + ' -> ' +  ${flight.getDestinationID()}"}></p>
+    </div>
+
   </main>
 </div>
 

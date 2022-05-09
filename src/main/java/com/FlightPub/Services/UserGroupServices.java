@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserGroupServices {
+public class UserGroupServices implements UserGroupServicesINT{
         private UserGroupRepo userGroupRepo;
 
         @Autowired
@@ -24,7 +24,7 @@ public class UserGroupServices {
         }
 
 
-        LinkedList<UserAccount> listAllUsers() {
+        public LinkedList<UserAccount> listAllUsers() {
                 LinkedList<UserAccount> accounts = new LinkedList<UserAccount>();
                 LinkedList<String> usrs = usrGroup.getUserIDs();
                 for(String usr : usrs){
@@ -33,26 +33,26 @@ public class UserGroupServices {
                 return accounts;
         }
 
-        UserAccount getAdmin(String id) {
+        public UserAccount getAdmin(String id) {
                String adminID = usrGroup.getAdminID();
                return accData.getById(adminID);
         }
 
-        void saveUsers(UserGroup usrGroupObj) {
+        public void saveUsers(UserGroup usrGroupObj) {
                 userGroupRepo.save(usrGroupObj);
         }
 
-        void addUser(String id) {
+        public void addUser(String id) {
                 usrGroup.addUser(id);
                 saveUsers(usrGroup);
         }
 
-        void removeUser(String id) {
+        public void removeUser(String id) {
                 usrGroup.removeUser(id);
                 saveUsers(usrGroup);
         }
 
-        void loadUserGroup(String id){
+        public void loadUserGroup(String id){
 
              usrGroup =  userGroupRepo.findById(id).orElse(null);
 
