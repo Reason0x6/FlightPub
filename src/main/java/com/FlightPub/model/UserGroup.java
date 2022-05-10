@@ -16,7 +16,6 @@ public class UserGroup{
     @Setter
     private LinkedList<String> userIDs;
 
-
     @Getter
     @Setter
     private String adminID;
@@ -27,7 +26,6 @@ public class UserGroup{
         userIDs.add(adminID);
         this.adminID = adminID;
     }
-
 
     public String getAdminID(){
         return adminID;
