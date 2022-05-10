@@ -1,7 +1,14 @@
 package com.FlightPub.model;
 
 import lombok.Getter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.annotation.SessionScope;
 
+@Component
+@SessionScope
 public class UserSession {
     @Getter
     UserAccount usr;
