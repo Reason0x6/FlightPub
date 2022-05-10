@@ -27,7 +27,9 @@ public class UserGroup{
         this.adminID = adminID;
     }
 
-    public String getAdminID(){return adminID;}
+    public String getAdminID(){
+        return adminID;
+    }
 
     public void addUser(String id){
         if (! userIDs.contains(id)){
@@ -36,8 +38,9 @@ public class UserGroup{
     }
 
     public void removeUser(String id){
-        if (userIDs.contains(id)){userIDs.remove(id);}
-        //userIDs.remove(id);
+        if (userIDs.contains(id)){
+            userIDs.remove(id);
+        }
     }
 
 

@@ -8,7 +8,7 @@
     <div class="col-md-12" >
       <h1 th:text="${search.getDeparture()} + ' -> ' + ${search.getDestination()}"></h1>
 
-      <div class="card l-1" th:each="flight : ${search.runBasicSearch()}" style="padding: 10px 0 0 20px;">
+      <div class="card l-1" th:each="flight : ${flights}" style="padding: 10px 0 0 20px;">
         <div class="row" style="padding-top: 10px;">
           <div class="col-sm-4">
             <p><b><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></p>
@@ -23,8 +23,9 @@
             <button type="submit" class="btn btn-link">Bookmark</button>
           </div>
         </div>
-
-
+      </div>
+      <div th:if="${flights.size()} == 0">
+        <p>There are currently no flights that match this search</p>
       </div>
     </div>
   </div>
