@@ -4,13 +4,31 @@
 <head th:replace="Fragments/Head"> </head>
 <header th:replace="Fragments/Header"> </header>
 <div class="container">
-  <main id="main" style="margin-top: 100px">
-    <!-- ======= Services Section ======= -->
-    <p th:text="'Destination: ' + ${search.getDestination()}"></p>
-    <p th:text="'Derpature: ' + ${search.getDeparture()}"></p>
-    <p th:text="'Children: ' + ${search.getKids()}"></p>
-    <p th:text="'Adults: ' + ${search.getAdults()}"></p>
-  </main>
+  <div id="main" style="margin-top: 100px"  class="row">
+    <div class="col-md-12" >
+      <h1 th:text="${search.getDeparture()} + ' -> ' + ${search.getDestination()}"></h1>
+
+      <div class="card l-1" th:each="flight : ${flights}" style="padding: 10px 0 0 20px;">
+        <div class="row" style="padding-top: 10px;">
+          <div class="col-sm-4">
+            <p><b><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span></b><span th:text="${flight.getArrivalTime()}"></span></p>
+          </div>
+          <div class="col-sm-4">
+            <p><b>Airline: </b><span th:text="${flight.getAirline()}"></span></p>
+            <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getTicketPrice()}"></span></p>
+          </div>
+          <div class="col-sm-4"  style="padding-top: 10px;">
+                <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
+            <button type="submit" class="btn btn-link">Bookmark</button>
+          </div>
+        </div>
+      </div>
+      <div th:if="${flights} ?: 'UNKNOWN'">
+        <p>There are currently no flights that match this search</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 

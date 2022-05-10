@@ -16,4 +16,6 @@ public class Airline {
     @Getter
     @Setter
     private String airlineName;
+
+    Airline(){}
 }

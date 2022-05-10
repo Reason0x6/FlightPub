@@ -1,7 +1,9 @@
 package com.FlightPub.Controllers;
 
+import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.BasicSearch;
+import com.FlightPub.model.Flight;
 import com.FlightPub.model.LoginRequest;
 import com.FlightPub.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 @Controller
 public class IndexController {
     private UserAccountServices usrServices;
     private UserAccount SessionUser;
+    private FlightServices flightServices;
+
+    @Autowired
+    @Qualifier(value = "FlightServices")
+    public void setFlightServices(FlightServices flightService) {
+        this.flightServices = flightService;
+    }
 
     @Autowired
     @Qualifier(value = "UserAccountServices")
@@ -24,18 +40,18 @@ public class IndexController {
         this.usrServices = usrService;
     }
 
-    @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&password=123
-    public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String password, Model mod){
-        UserAccount newUser = new UserAccount(username,email, password, 1);
-        usrServices.saveOrUpdate(newUser);
-        mod.addAttribute("usr", newUser);
-        return "basic";
-    }
-
-
     @RequestMapping("/")
     public String loadIndex(Model model){
-        model.addAttribute("usr", ""); // Temp/placeholder
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String today = dateFormat.format(date);
+
+        model.addAttribute("today", today); // Temp/placeholder
+        cal.add(Calendar.YEAR, 1);
+        date = cal.getTime();
+        String max = dateFormat.format(date);
+        model.addAttribute("max", max); // Temp/placeholder
         return "index";
     }
 
@@ -53,38 +69,33 @@ public class IndexController {
 
             if(req.getPassword().equals(newUser.getPassword())) {
                 System.out.println(true);
+                model.addAttribute("method", "post");
             }else{
                 System.out.println(false);
                 System.out.println(req.getPassword());
                 System.out.println(newUser.getPassword());
+
+                model.addAttribute("valid", false);
             }
 
             model.addAttribute("user", req);
-            model.addAttribute("method", "post");
-
-
-
-
-
 
         }catch(Exception e){
             System.out.println(req.getPassword());
-
-
             e.printStackTrace();
+            model.addAttribute("valid", false);
 
         }
-
-
-
 
         return "login";
     }
 
-
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model){
+        search.setFlightServices(flightServices);
+        List<Flight> flights = search.runBasicSearch();
         model.addAttribute("search", search);
+        model.addAttribute("flights", flights);
         return "search";
     }
 }
