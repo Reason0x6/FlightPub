@@ -3,6 +3,7 @@ package com.FlightPub.Controllers;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.BasicSearch;
+import com.FlightPub.model.Flight;
 import com.FlightPub.model.LoginRequest;
 import com.FlightPub.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -91,7 +93,9 @@ public class IndexController {
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model){
         search.setFlightServices(flightServices);
+        List<Flight> flights = search.runBasicSearch();
         model.addAttribute("search", search);
+        model.addAttribute("flights", flights);
         return "search";
     }
 }
