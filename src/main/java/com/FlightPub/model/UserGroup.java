@@ -6,18 +6,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
-import java.util.List;
 
 @Document("UserAccount")
 public class UserGroup{
     @Id
-    @Getter
-    @Setter
     private String id;
-
-    @Getter
-    @Setter
-    private String adminID;
 
     @Getter
     @Setter
@@ -25,11 +18,7 @@ public class UserGroup{
 
     @Getter
     @Setter
-    private List<String> notifications;
-
-    @Getter
-    @Setter
-    private List<String> savedFlights;
+    private String adminID;
 
     public UserGroup(String adminID) {
         super();
@@ -37,7 +26,6 @@ public class UserGroup{
         userIDs.add(adminID);
         this.adminID = adminID;
     }
-
 
     public String getAdminID(){
         return adminID;

@@ -21,4 +21,6 @@ public class Country {
     @Getter
     @Setter
     private LinkedList<String> tags;
+
+    Country(){}
 }
