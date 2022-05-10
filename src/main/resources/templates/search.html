@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <div th:if="${flights} ?: 'UNKNOWN'">
+      <div th:if="${flights.size()} == 0">
         <p>There are currently no flights that match this search</p>
       </div>
     </div>

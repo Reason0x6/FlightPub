@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("Airline")
 public class Airline {
     @Id
-
     @Getter
     @Setter
     private String airlineID;

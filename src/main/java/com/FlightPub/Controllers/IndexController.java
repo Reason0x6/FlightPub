@@ -6,6 +6,7 @@ import com.FlightPub.model.BasicSearch;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.LoginRequest;
 import com.FlightPub.model.UserAccount;
+import com.FlightPub.repository.FlightRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -92,6 +93,7 @@ public class IndexController {
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model){
+
         search.setFlightServices(flightServices);
         List<Flight> flights = search.runBasicSearch();
         model.addAttribute("search", search);
