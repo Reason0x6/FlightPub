@@ -2,10 +2,7 @@ package com.FlightPub.Controllers;
 
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
-import com.FlightPub.model.BasicSearch;
-import com.FlightPub.model.Flight;
-import com.FlightPub.model.LoginRequest;
-import com.FlightPub.model.UserAccount;
+import com.FlightPub.model.*;
 import com.FlightPub.repository.FlightRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +23,7 @@ import java.util.List;
 @Controller
 public class IndexController {
     private UserAccountServices usrServices;
-    private UserAccount SessionUser;
+    private UserSession SessionUser = new UserSession(null);
     private FlightServices flightServices;
 
     @Autowired
@@ -52,13 +49,21 @@ public class IndexController {
         cal.add(Calendar.YEAR, 1);
         date = cal.getTime();
         String max = dateFormat.format(date);
-        model.addAttribute("max", max); // Temp/placeholder
+        model.addAttribute("max", max);
+        model.addAttribute("usr", SessionUser); // Temp/placeholder
         return "index";
     }
 
     @RequestMapping("/login")
     public String loadLogin(Model model){
-        model.addAttribute("usr", ""); // Temp/placeholder
+        model.addAttribute("usr", SessionUser); // Temp/placeholder
+        return "login";
+    }
+
+    @RequestMapping("/logout")
+    public String loadLogout(Model model){
+        SessionUser = new UserSession(null);
+        model.addAttribute("usr", SessionUser); // Temp/placeholder
         return "login";
     }
 
@@ -71,10 +76,14 @@ public class IndexController {
             if(req.getPassword().equals(newUser.getPassword())) {
                 System.out.println(true);
                 model.addAttribute("method", "post");
+                SessionUser = new UserSession(newUser);
+                model.addAttribute("usr", SessionUser);
             }else{
                 System.out.println(false);
                 System.out.println(req.getPassword());
                 System.out.println(newUser.getPassword());
+
+                // TODO: Add a 'forgot password' workflow
 
                 model.addAttribute("valid", false);
             }
@@ -98,6 +107,9 @@ public class IndexController {
         List<Flight> flights = search.runBasicSearch();
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
+        model.addAttribute("usr", SessionUser);
         return "search";
+
+        // TODO: Add advanced searches
     }
 }

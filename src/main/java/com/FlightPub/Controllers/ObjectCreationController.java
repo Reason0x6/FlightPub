@@ -50,7 +50,7 @@ public class ObjectCreationController {
 
         newFlight.setFlightID(flightID);
         newFlight.setOriginID(originID);
-        newFlight.setDestinationID(destinationID);
+        newFlight.setDestinationID(destinationID);;
         newFlight.setAirline(airline);
         newFlight.setDeparture(departure);
         newFlight.setArrival(arrival);
