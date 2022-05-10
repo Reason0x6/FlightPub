@@ -41,7 +41,7 @@ public class ObjectCreationController {
     }
 
     @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM
-    public String addFlight( @RequestParam int flightID, @RequestParam String originID,
+    public String addFlight( @RequestParam String flightID, @RequestParam String originID,
                              @RequestParam String destinationID, @RequestParam String airline,
                              @RequestParam String departure, @RequestParam String arrival,
                              Model mod){
