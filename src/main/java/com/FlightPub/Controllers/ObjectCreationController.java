@@ -61,6 +61,8 @@ public class ObjectCreationController {
             UserAccount nUser = new UserAccount(newUser.getFirstname(),newUser.getEmail(), newUser.getPassword());
             usrServices.saveOrUpdate(nUser);
 
+            // TODO: Notification of new user account to be sent to newUser.getEmail()
+
             model.addAttribute("addedUser", nUser);
             return "Confirmations/NewUser";
         }
@@ -78,6 +80,9 @@ public class ObjectCreationController {
         Flight newFlight = new Flight(flightID, originID,
                 destinationID, departure, arrival, flightCode, airline,ticketprice);
 
+        if(flightServices.getById("" + flightID) != null){
+            // TODO: Notification of flight detail change to be sent to users
+        }
 
         flightServices.saveOrUpdate(newFlight);
         model.addAttribute("flight", newFlight);
