@@ -11,7 +11,7 @@
 
       </div>
 
-      <nav id="navbar" class="navbar">
+      <nav id="navbar" class="navbar" th:if="${usr} != null">
         <ul th:if="${usr.isLoggedIn()} == false">
           <li><a class="nav-link scrollto " href="/#search">Fights</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
