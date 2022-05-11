@@ -162,8 +162,7 @@ public class IndexController {
     }
 
     private List<Flight> getRecommendation() {
-        // TODO work out how to get this dynamically
-        //  Either though geolocation or a toggle in the frontend
+        // TODO If a user is logged in get their preferred location
         // Set current location
         Location currentLocation = locationServices.getById("SYD");
 
@@ -172,20 +171,7 @@ public class IndexController {
             System.err.println("No current location was found in database");
             return null;
         }
-        // Get currently popular locations
-        List<Location> locations = locationServices.findAllExcluding(currentLocation.getLocationID());
 
-        // TODO maybe do this through a query call
-        locations.sort(Comparator.comparing(Location::getPopularity).reversed());
-
-        List<Location> popularLocations = new LinkedList<>();
-        // Get top 3 locations
-        for (int i = 0; i < 3; i++) {
-            popularLocations.add(locations.get(i));
-
-        }
-
-        // Find flights that match that popular location from current location
         // Create new search
         BasicSearch search = new BasicSearch();
         search.setFlightServices(flightServices);
@@ -205,17 +191,31 @@ public class IndexController {
         date = cal.getTime();
         String max = dateFormat.format(date);
 
+        // Get currently popular locations
+        List<Location> locations = locationServices.findAllExcluding(currentLocation.getLocationID());
+
+        // TODO maybe do this through a query call
+        locations.sort(Comparator.comparing(Location::getPopularity).reversed());
+
         // Get 1 flight from each popular location
-        for (Location popularLocation : popularLocations) {
+        for (Location popularLocation : locations) {
+            // Set search destination to next popular location
             search.setDestinationIn(popularLocation.getLocationID());
 
+            // Find flights that are going from current location to popular location
             try {
                 List<Flight> recommendSearch = search.runBasicSearch(today, max);
+                // If at least one flight was found add first flight to recommendation list
                 if(!recommendSearch.isEmpty()) {
                     recommendedFlights.add(recommendSearch.get(0));
                 }
             } catch (ParseException e) {
                 throw new RuntimeException(e);
+            }
+
+            // Once 3 recommended flights have been found break for loop
+            if (recommendedFlights.size() == 3) {
+                break;
             }
         }
 
