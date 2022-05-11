@@ -40,9 +40,7 @@ public class BasicSearch {
         this.flightServices = flightService;
     }
 
-    BasicSearch(){
-
-    }
+    public BasicSearch(){}
 
     public List<Flight> runBasicSearch(){
         return flightServices.getByOriginAndDestination(departure, destination);

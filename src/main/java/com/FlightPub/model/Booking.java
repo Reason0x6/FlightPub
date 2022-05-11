@@ -29,4 +29,6 @@ public class Booking {
     @Setter
     @Getter
     private String bookingStatus;
+
+    public Booking() {}
 }

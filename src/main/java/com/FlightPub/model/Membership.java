@@ -15,4 +15,6 @@ public class Membership {
     @Getter
     @Setter
     private String airlineID;
+
+    public Membership() {}
 }

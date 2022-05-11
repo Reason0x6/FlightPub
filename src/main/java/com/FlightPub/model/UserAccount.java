@@ -8,36 +8,34 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("UserAccount")
 public class UserAccount {
+	@Getter
+	@Setter
+	private String username;
 
+	@Id
+	@Getter
+	@Setter
+	private String email;
 
-		@Getter
-		@Setter
-		private String username;
+	@Getter
+	@Setter
+	private String password;
 
-		@Id
-		@Getter
-		@Setter
-		private String email;
+	public UserAccount(String username, String email, String password, int api) {
 
-		@Getter
-		@Setter
-		private String password;
-		
-		public UserAccount(String username, String email, String password, int api) {
+		try {
+			SecurityService sec = new SecurityService();
 
-			try {
-				SecurityService sec = new SecurityService();
-
-				if(api == 1){this.password = sec.hash(password);}
-				else{ this.password = password;}
-			}catch(Exception r){
-
-			}
-
-				this.username = username;
-				this.email = email;
+			if(api == 1){this.password = sec.hash(password);}
+			else{ this.password = password;}
+		} catch(Exception r) {
 
 		}
+
+			this.username = username;
+			this.email = email;
+
+	}
 
 	public UserAccount(String username, String email, String password) {
 		super();
@@ -47,8 +45,5 @@ public class UserAccount {
 
 	}
 
-
 	UserAccount(){}
-
-
 }

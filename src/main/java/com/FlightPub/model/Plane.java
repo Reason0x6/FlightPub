@@ -23,4 +23,6 @@ public class Plane {
     @Getter
     @Setter
     private String planeType;
+
+    public Plane() {}
 }

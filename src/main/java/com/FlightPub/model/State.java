@@ -15,4 +15,6 @@ public class State {
     @Getter
     @Setter
     private String countryName;
+
+    public State() {}
 }

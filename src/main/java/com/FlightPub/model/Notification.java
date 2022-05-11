@@ -27,4 +27,6 @@ public class Notification {
     @Getter
     @Setter
     private int dateTime;
+
+    public Notification() {}
 }

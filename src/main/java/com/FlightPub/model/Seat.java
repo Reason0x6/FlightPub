@@ -19,4 +19,6 @@ public class Seat {
     @Setter
     @Getter
     private String seatClass;
+
+    public Seat() {}
 }

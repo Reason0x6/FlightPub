@@ -31,4 +31,6 @@ public class Address {
     @Getter
     @Setter
     private int postcode;
+
+    public Address() {}
 }

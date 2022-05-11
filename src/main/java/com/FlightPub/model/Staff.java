@@ -7,4 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("Staff")
 public class Staff extends UserAccount{
+
+    public Staff() {}
 }
