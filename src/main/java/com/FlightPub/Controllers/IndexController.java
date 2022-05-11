@@ -7,7 +7,6 @@ import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.*;
-import com.sun.tools.javac.file.Locations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -48,7 +48,7 @@ public class IndexController {
 
 
     @RequestMapping("/")
-    public String loadIndex(Model model, HttpSession session){
+    public String loadIndex(Model model, HttpSession session) {
 
         // Get server time for flight date pickers
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -64,6 +64,9 @@ public class IndexController {
         model.addAttribute("max", max);
 
         model.addAttribute("usr", getSession(session));
+
+        getRecommendation();
+
         return "index";
     }
 
@@ -123,7 +126,7 @@ public class IndexController {
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
-        List<Flight> flights = null;
+        List<Flight> flights;
         search.setFlightServices(flightServices);
         try{
            flights =  search.runBasicSearch(search.getStart(), search.getEnd());
@@ -158,35 +161,60 @@ public class IndexController {
 
     private List<Flight> getRecommendation() {
         // TODO work out how to get this dynamically
-        //  Either though geolocation
+        //  Either though geolocation or a toggle in the frontend
         // Set current location
-        // TODO integrate with actual Location Service
-//        Location currentLocation = LocationServices.getLocationId("Syd");
+        Location currentLocation = locationServices.getById("Syd");
 
         // Get currently popular locations
-        // TODO see previous
-//        List<Location> locations = Locations.listAll();
-        List<Location> locations = new LinkedList<>();
+        List<Location> locations = locationServices.findAllExcluding(currentLocation.getLocationID());
+
+        // TODO maybe do this through a query call
+        locations.sort(Comparator.comparing(Location::getPopularity).reversed());
 
         List<Location> popularLocations = new LinkedList<>();
         // Get top 3 locations
         for (int i = 0; i < 3; i++) {
             popularLocations.add(locations.get(i));
+
         }
 
         // Find flights that match that popular location from current location
         // Create new search
         BasicSearch search = new BasicSearch();
-        // TODO see previous
-//        search.setDeparture(currentLocation.getLocationID());
+        search.setFlightServices(flightServices);
+        search.setDeparture(currentLocation.getLocationID());
 
+        // The final list of recommended flights
         List<Flight> recommendedFlights = new LinkedList<>();
+
+        // Get current date and date in 3 months
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String today = dateFormat.format(date);
+
+        cal.add(Calendar.MONTH, 3);
+        date = cal.getTime();
+        String max = dateFormat.format(date);
 
         // Get 1 flight from each popular location
         for (Location popularLocation : popularLocations) {
-            // TODO handle not finding flights
             search.setDestination(popularLocation.getLocationID());
-            recommendedFlights.add(search.runBasicSearch().get(0));
+
+            try {
+                List<Flight> recommendSearch = search.runBasicSearch(today, max);
+                if(!recommendSearch.isEmpty()) {
+                    recommendedFlights.add(recommendSearch.get(0));
+                }
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+        // TODO remove
+        for (Flight flight : recommendedFlights) {
+            System.out.println(flight.getFlightID());
         }
 
         return recommendedFlights;

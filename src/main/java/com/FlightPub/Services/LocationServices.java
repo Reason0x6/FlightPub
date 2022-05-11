@@ -1,9 +1,7 @@
 package com.FlightPub.Services;
 
 import com.FlightPub.model.Location;
-import com.FlightPub.model.UserAccount;
 import com.FlightPub.repository.LocationRepo;
-import com.FlightPub.repository.UserAccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +12,7 @@ import java.util.List;
 public class LocationServices {
 
 
-        private LocationRepo locationRepo;
+        private final LocationRepo locationRepo;
 
         @Autowired
         public LocationServices(LocationRepo locationRepository) {
@@ -44,5 +42,9 @@ public class LocationServices {
             locationRepo.deleteById(id);
         }
 
+
+        public List<Location> findAllExcluding(String locationID) {
+            return locationRepo.findAllExcluding(locationID);
+        }
     }
 
