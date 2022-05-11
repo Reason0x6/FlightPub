@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Header"> </head>
+<div class="container">
+    <main id="main" style="margin-top: 100px" th:if="${usr != null}">
+        <!-- ======= Services Section ======= -->
+        <p th:text="'First: ' + ${addedUser.getFirstname()}"></p>
+        <p th:text="'Email: ' + ${addedUser.getEmail()}"></p>
+        <p th:text="'Passhash: ' + ${addedUser.getPassword()}"></p>
+    </main>
+</div>
+
+
+

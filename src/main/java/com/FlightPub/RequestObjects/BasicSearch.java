@@ -1,7 +1,8 @@
-package com.FlightPub.model;
+package com.FlightPub.RequestObjects;
 
 
 import com.FlightPub.Services.FlightServices;
+import com.FlightPub.model.Flight;
 import com.FlightPub.repository.FlightRepo;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,9 +41,7 @@ public class BasicSearch {
         this.flightServices = flightService;
     }
 
-    BasicSearch(){
-
-    }
+    public BasicSearch(){}
 
     public List<Flight> runBasicSearch(){
         return flightServices.getByOriginAndDestination(departure, destination);

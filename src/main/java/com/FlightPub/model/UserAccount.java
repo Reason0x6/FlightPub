@@ -12,7 +12,7 @@ public class UserAccount {
 
 		@Getter
 		@Setter
-		private String username;
+		private String firstname;
 
 		@Id
 		@Getter
@@ -23,7 +23,7 @@ public class UserAccount {
 		@Setter
 		private String password;
 		
-		public UserAccount(String username, String email, String password, int api) {
+		public UserAccount(String firstname, String email, String password, int api) {
 
 			try {
 				SecurityService sec = new SecurityService();
@@ -34,15 +34,15 @@ public class UserAccount {
 
 			}
 
-				this.username = username;
+				this.firstname = firstname;
 				this.email = email;
 
 		}
 
-	public UserAccount(String username, String email, String password) {
+	public UserAccount(String firstname, String email, String password) {
 		super();
 		this.password = password;
-		this.username = username;
+		this.firstname = firstname;
 		this.email = email;
 
 	}

@@ -20,6 +20,8 @@ public class UserGroup{
     @Setter
     private String adminID;
 
+    public UserGroup() {}
+
     public UserGroup(String adminID) {
         super();
         userIDs = new LinkedList<>();
@@ -27,9 +29,7 @@ public class UserGroup{
         this.adminID = adminID;
     }
 
-    public String getAdminID(){
-        return adminID;
-    }
+
 
     public void addUser(String id){
         if (! userIDs.contains(id)){

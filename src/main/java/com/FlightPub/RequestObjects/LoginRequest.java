@@ -1,4 +1,4 @@
-package com.FlightPub.model;
+package com.FlightPub.RequestObjects;
 
 import com.FlightPub.Services.SecurityService;
 import lombok.Getter;
@@ -14,7 +14,6 @@ public class LoginRequest {
     @Setter
     private String email;
 
-
     @Getter
     private String password;
 
@@ -27,5 +26,7 @@ public class LoginRequest {
     public void setPassword(String in){
         this.password = secService.hash(in);
     }
+
+
 
 }

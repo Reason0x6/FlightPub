@@ -5,24 +5,16 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("Plane")
-public class Plane {
+@Document("State")
+public class State {
     @Id
     @Getter
     @Setter
-    private String planeID;
+    private int stateID;
 
     @Getter
     @Setter
-    private String airlineID;
+    private String countryName;
 
-    @Getter
-    @Setter
-    private int seatCount;
-
-    @Getter
-    @Setter
-    private String planeType;
-
-    public Plane() {}
+    public State() {}
 }

@@ -17,7 +17,7 @@ public class Flight {
     @Id
     @Getter
     @Setter
-    private int flightID;
+    private String flightID;
 
     @Getter
     @Setter
@@ -27,9 +27,11 @@ public class Flight {
     @Setter
     private String destinationID;
 
+    @Getter
     @Setter
     private String departure;
 
+    @Getter
     @Setter
     private String arrival;
 
@@ -58,6 +60,22 @@ public class Flight {
     private LinkedList<String> bookings;
 
     public Flight(){}
+
+    public Flight(String flightID, String originID, String destinationID,
+                  String departure, String arrival, String flightCode,
+                  String airline, double ticketPrice){
+
+        this.flightID = flightID;
+        this.originID = originID;
+        this.destinationID = destinationID;
+        this.departure = departure;
+        this.arrival = arrival;
+        this.flightCode = flightCode;
+        this.airline = airline;
+        this.ticketPrice = ticketPrice;
+
+
+    }
 
     public String getArrivalTime() throws ParseException {
 
