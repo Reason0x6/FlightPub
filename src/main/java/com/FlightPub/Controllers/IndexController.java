@@ -6,6 +6,7 @@ import com.FlightPub.RequestObjects.UserSession;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.*;
+import com.sun.tools.javac.file.Locations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class IndexController {
@@ -141,5 +140,41 @@ public class IndexController {
         }
 
         return sessionUser;
+    }
+
+    private List<Flight> getRecommendation() {
+        // TODO work out how to get this dynamically
+        //  Either though geolocation
+        // Set current location
+        // TODO integrate with actual Location Service
+//        Location currentLocation = LocationServices.getLocationId("Syd");
+
+        // Get currently popular locations
+        // TODO see previous
+//        List<Location> locations = Locations.listAll();
+        List<Location> locations = new LinkedList<>();
+
+        List<Location> popularLocations = new LinkedList<>();
+        // Get top 3 locations
+        for (int i = 0; i < 3; i++) {
+            popularLocations.add(locations.get(i));
+        }
+
+        // Find flights that match that popular location from current location
+        // Create new search
+        BasicSearch search = new BasicSearch();
+        // TODO see previous
+//        search.setDeparture(currentLocation.getLocationID());
+
+        List<Flight> recommendedFlights = new LinkedList<>();
+
+        // Get 1 flight from each popular location
+        for (Location popularLocation : popularLocations) {
+            // TODO handle not finding flights
+            search.setDestination(popularLocation.getLocationID());
+            recommendedFlights.add(search.runBasicSearch().get(0));
+        }
+
+        return recommendedFlights;
     }
 }
