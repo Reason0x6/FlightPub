@@ -31,6 +31,15 @@ public class BasicSearch {
     @Getter
     @Setter
     private String end;
+
+    @Getter
+    @Setter
+    private boolean nodest;
+
+    @Getter
+    @Setter
+    private boolean exactdate;
+
     private FlightServices flightServices;
 
     private LocationServices locService;
