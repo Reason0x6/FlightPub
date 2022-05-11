@@ -92,6 +92,7 @@ public class Flight {
         departure = date;
     }
 
+
     public String getArrivalTime(){
         return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
     }
