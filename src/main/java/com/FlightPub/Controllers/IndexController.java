@@ -151,7 +151,7 @@ public class IndexController {
         UserSession sessionUser = null;
         try{
            sessionUser = (UserSession) session.getAttribute("User");
-        }catch(Exception e){}
+        } catch(Exception e){}
 
         if(sessionUser == null){
             sessionUser =  new UserSession(null);
@@ -167,6 +167,11 @@ public class IndexController {
         // Set current location
         Location currentLocation = locationServices.getById("SYD");
 
+        // If no current location is found in database
+        if (currentLocation == null) {
+            System.err.println("No current location was found in database");
+            return null;
+        }
         // Get currently popular locations
         List<Location> locations = locationServices.findAllExcluding(currentLocation.getLocationID());
 
