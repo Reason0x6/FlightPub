@@ -61,7 +61,7 @@ public class Flight {
 
     public Flight(){}
 
-    public Flight(int flightID, String originID, String destinationID,
+    public Flight(String flightID, String originID, String destinationID,
                   String departure, String arrival, String flightCode,
                   String airline, double ticketPrice){
 
