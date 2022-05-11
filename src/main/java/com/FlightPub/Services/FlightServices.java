@@ -2,6 +2,7 @@ package com.FlightPub.Services;
 
 import com.FlightPub.model.Flight;
 import com.FlightPub.repository.FlightRepo;
+import com.FlightPub.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class FlightServices{
 
     private FlightRepo flightRepo;
+
 
     @Autowired
     public FlightServices(FlightRepo flightRepository) {

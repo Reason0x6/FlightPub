@@ -126,6 +126,7 @@ public class IndexController {
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
         List<Flight> flights = null;
         search.setFlightServices(flightServices);
+        search.setLocationServices(locationServices);
         try{
            flights =  search.runBasicSearch(search.getStart(), search.getEnd());
         }catch (Exception e){

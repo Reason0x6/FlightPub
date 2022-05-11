@@ -99,8 +99,8 @@ public class ObjectCreationController {
                              @RequestParam String flightCode, @RequestParam double ticketprice,
                              Model model, HttpSession session){
 
-        Flight newFlight = new Flight(flightID, originID,
-                destinationID, departure, arrival, flightCode, airline,ticketprice);
+        Flight newFlight = new Flight(flightID, originID.toUpperCase(),
+                destinationID.toUpperCase(), departure, arrival, flightCode, airline,ticketprice);
 
         if(flightServices.getById(flightID) != null){
             // TODO: Notification of flight detail change to be sent to users

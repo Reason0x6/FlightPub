@@ -44,5 +44,14 @@ public class LocationServices {
             locationRepo.deleteById(id);
         }
 
+    public Location findByLocation(String originIn) {
+            List<Location> out = locationRepo.findByLocation(originIn);
+            if(!out.isEmpty()){
+                return out.get(0);
+            }
+
+            System.out.println(0);
+            return null;
     }
+}
 
