@@ -65,7 +65,8 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
 
-        getRecommendation();
+       // getRecommendation();
+        model.addAttribute("reco", getRecommendation());
 
         return "index";
     }
@@ -164,7 +165,7 @@ public class IndexController {
         // TODO work out how to get this dynamically
         //  Either though geolocation or a toggle in the frontend
         // Set current location
-        Location currentLocation = locationServices.getById("Syd");
+        Location currentLocation = locationServices.getById("SYD");
 
         // Get currently popular locations
         List<Location> locations = locationServices.findAllExcluding(currentLocation.getLocationID());
