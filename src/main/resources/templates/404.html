@@ -6,8 +6,10 @@
 <div class="container">
     <main id="main" style="margin: 100px">
         <!-- ======= Services Section ======= -->
-        <h1>Oh.</h1>
-        <p>Somethings gone horribly wrong... or you're lost... Wanna head back <a href="/">home?</a></p>
+        <h1>Oh?..</h1>
+        <p th:if="${exists.equals('User already exists')}">A user with this email already exists.. Would you like to <a href="/login">login?</a></p>
+        <p th:if="${Error.equals('General Error')}">A user with this email already exists.. Would you like to <a href="/login">login?</a></p>
+       <!-- <p>Somethings gone horribly wrong... or you're lost... Wanna head back <a href="/">home?</a></p> -->
     </main>
 </div>
 

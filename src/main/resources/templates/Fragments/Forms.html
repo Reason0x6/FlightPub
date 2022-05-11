@@ -27,6 +27,40 @@
            th:value="${today}"
            th:min="${today}" th:max="${max}">
 
-    <button type="submit" class="btn btn-primary btn-search">Find Flights!</button>
+    <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button>
+</form>
+
+<form id="registerUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
+    <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
+    <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>
+    <input type="text" id="address" class="form-control" name="address" placeholder="Address"><br>
+    <input type="password" id="password" class="form-control" name="password" placeholder="Password"><br>
+    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Confirm Password"><br>
+    <button type="submit" class="btn btn-primary btn-search">Create Account!</button>
+
+    <script>
+       function validateRegister() {
+            let f =  document.forms["registerUser"];
+            let x = true;
+
+             if(f["email"].value == ""){ x = false; }
+             if(f["firstname"].value == ""){ x = false; }
+             if(f["address"].value == ""){ x = false; }
+             if(f["password"].value == ""){ x = false; }
+             if(f["confirmpassword"].value == ""){ x = false; }
+
+              if (x == "") {
+                alert("Please fill in all fields");
+                return false;
+              }
+              else if(!(f["password"].value === f["confirmpassword"].value)){
+                alert("Passwords do not match");
+                return false;
+              }
+              else{
+                return true;
+              }
+        }
+    </script>
 </form>
 </html>

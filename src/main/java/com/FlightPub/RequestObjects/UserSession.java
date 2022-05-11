@@ -1,5 +1,6 @@
-package com.FlightPub.model;
+package com.FlightPub.RequestObjects;
 
+import com.FlightPub.model.UserAccount;
 import lombok.Getter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -23,8 +24,8 @@ public class UserSession {
         return usr != null ? true : false;
     }
 
-    public String getUsername(){
-        return usr.getUsername();
+    public String getFirstname(){
+        return usr.getFirstname();
     }
 
 }

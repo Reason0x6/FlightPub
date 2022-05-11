@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Header"> </head>
+<div class="container">
+  <main id="main" style="margin-top: 100px" th:if="${UserRegister.isValid()}">
+    <h2>Welcome!</h2>
+    <p th:text="'Firstname: ' + ${UserRegister.getFirstname()}"></p>
+    <p th:text="'Email: ' + ${UserRegister.getEmail()}"></p>
+    <a href="/login" class="btn btn-info">Login To View Your Account!</a>
+  </main>
+</div>
+
+
+

@@ -20,7 +20,8 @@
         <ul th:if="${usr.isLoggedIn()} != false">>
           <li><a class="nav-link scrollto " href="/#search">Fights</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getUsername()}"></span></a></li>
+          <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span></a></li>
+          <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
