@@ -29,4 +29,6 @@ public class Location {
     @Getter
     @Setter
     private LinkedList<String> tags;
+
+    public Location() {}
 }
