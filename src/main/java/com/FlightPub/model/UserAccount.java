@@ -22,8 +22,12 @@ public class UserAccount {
 		@Getter
 		@Setter
 		private String password;
+
+		@Getter
+		@Setter
+		private String preferredAirport;
 		
-		public UserAccount(String firstname, String email, String password, int api) {
+		public UserAccount(String firstname, String email, String password, String prefairport, int api) {
 
 			try {
 				SecurityService sec = new SecurityService();
@@ -36,6 +40,7 @@ public class UserAccount {
 
 				this.firstname = firstname;
 				this.email = email;
+				this.preferredAirport = prefairport;
 
 		}
 

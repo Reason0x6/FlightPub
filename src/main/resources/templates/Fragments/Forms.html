@@ -34,6 +34,12 @@
     <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
     <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>
     <input type="text" id="address" class="form-control" name="address" placeholder="Address"><br>
+
+    <label id="airportlbl" class="form-label" name="airportlbl" >Preffered Airport</label><br>
+    <select name="prefAirport" id="prefAirport" class="form-control">
+        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    </select><br>
+
     <input type="password" id="password" class="form-control" name="password" placeholder="Password"><br>
     <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Confirm Password"><br>
     <button type="submit" class="btn btn-primary btn-search">Create Account!</button>

@@ -21,6 +21,10 @@ public class UserRegister {
     private String address;
 
     @Getter
+    @Setter
+    private String prefAirport;
+
+    @Getter
     private String password;
 
     @Getter
@@ -42,7 +46,7 @@ public class UserRegister {
     }
 
     public boolean allFilled(){
-        if(email != null && firstname != null&& address != null){
+        if(email != null && firstname != null && address != null && prefAirport != null){
             return true;
         }
         return false;
