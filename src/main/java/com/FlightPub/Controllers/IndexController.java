@@ -183,7 +183,7 @@ public class IndexController {
         // Create new search
         BasicSearch search = new BasicSearch();
         search.setFlightServices(flightServices);
-        search.setDeparture(currentLocation.getLocationID());
+        search.setDestinationIn(currentLocation.getLocationID());
 
         // The final list of recommended flights
         List<Flight> recommendedFlights = new LinkedList<>();
@@ -200,7 +200,7 @@ public class IndexController {
 
         // Get 1 flight from each popular location
         for (Location popularLocation : popularLocations) {
-            search.setDestination(popularLocation.getLocationID());
+            search.setOriginIn(popularLocation.getLocationID());
 
             try {
                 List<Flight> recommendSearch = search.runBasicSearch(today, max);
