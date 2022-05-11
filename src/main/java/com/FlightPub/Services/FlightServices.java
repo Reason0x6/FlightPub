@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("FlightServices")
-public class FlightServices implements FlightServicesINT{
+public class FlightServices{
 
     private FlightRepo flightRepo;
 
@@ -18,24 +19,23 @@ public class FlightServices implements FlightServicesINT{
         this.flightRepo = flightRepository;
     }
 
-    @Override
+
     public List<Flight> listAll(){
         List<Flight> flights = new ArrayList<>();
         flightRepo.findAll().forEach(flights::add);
         return flights;
     }
 
-    @Override
     public Flight getById(String id){
         return flightRepo.findById(id).orElse(null);
     }
 
-    @Override
+
     public void saveOrUpdate(Flight toUpdate){
         flightRepo.save(toUpdate);
     }
 
-    @Override
+
     public void delete(String id){}
 
     public List<Flight> getByDesination(String dest) {
@@ -50,10 +50,10 @@ public class FlightServices implements FlightServicesINT{
         return flightRepo.findByOrigin(dep);
     }
 
-    public List<Flight> getByOriginAndDestination(String origin, String dep) {
+    public List<Flight> getByOriginAndDestination(String origin, String dep, Date dstart, Date dend) {
 
         // Query defined in flightRepo
-        return flightRepo.findByOriginAndDesitination(origin, dep);
+        return flightRepo.findByOriginAndDesitination(origin, dep, dstart, dend);
     }
 
 }

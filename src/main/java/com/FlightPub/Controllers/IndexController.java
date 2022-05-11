@@ -4,6 +4,7 @@ import com.FlightPub.RequestObjects.BasicSearch;
 import com.FlightPub.RequestObjects.LoginRequest;
 import com.FlightPub.RequestObjects.UserSession;
 import com.FlightPub.Services.FlightServices;
+import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.List;
 public class IndexController {
 
     private UserAccountServices usrServices;
-
+    private LocationServices locationServices;
     private FlightServices flightServices;
 
     @Autowired
@@ -39,6 +40,13 @@ public class IndexController {
     public void setUserService(UserAccountServices usrService) {
         this.usrServices = usrService;
     }
+
+    @Autowired
+    @Qualifier(value = "LocationServices")
+    public void setLocationsServices(LocationServices locService) {
+        this.locationServices = locService;
+    }
+
 
     @RequestMapping("/")
     public String loadIndex(Model model, HttpSession session){
@@ -70,6 +78,7 @@ public class IndexController {
     @RequestMapping("/Register")
     public String loadRegister(Model model, HttpSession session){
 
+        model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "Register";
     }
@@ -115,9 +124,14 @@ public class IndexController {
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
-
+        List<Flight> flights = null;
         search.setFlightServices(flightServices);
-        List<Flight> flights = search.runBasicSearch();
+        try{
+           flights =  search.runBasicSearch(search.getStart(), search.getEnd());
+        }catch (Exception e){
+            return "index";
+        }
+
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
 

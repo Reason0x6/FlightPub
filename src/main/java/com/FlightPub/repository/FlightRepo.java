@@ -5,6 +5,7 @@ import com.FlightPub.model.Flight;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public interface FlightRepo extends MongoRepository<Flight, String> {
@@ -15,6 +16,6 @@ public interface FlightRepo extends MongoRepository<Flight, String> {
     @Query(value="{ 'originID' : ?0 }", fields="{ 'originID' : 1 }")
     List<Flight> findByOrigin(String origin);
 
-    @Query(value="{ 'originID' : ?0, 'destinationID': ?1 }")
-    List<Flight> findByOriginAndDesitination(String origin, String dest);
+    @Query(value="{ 'originID' : ?0, 'destinationID': ?1, 'arrival': {'$gte': ?2}, 'arrival': {'$lte': ?3} }")
+    List<Flight> findByOriginAndDesitination(String origin, String dest, Date start, Date end);
 }
