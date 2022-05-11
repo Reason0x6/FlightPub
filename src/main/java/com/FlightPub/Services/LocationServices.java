@@ -49,8 +49,6 @@ public class LocationServices {
             if(!out.isEmpty()){
                 return out.get(0);
             }
-
-            System.out.println(0);
             return null;
     }
 }

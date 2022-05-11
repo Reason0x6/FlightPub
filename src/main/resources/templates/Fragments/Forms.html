@@ -27,7 +27,36 @@
            th:value="${today}"
            th:min="${today}" th:max="${max}">
 
-    <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button>
+    <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button><br>
+    <input type="checkbox" name="nodest" id="nodest" style="width: 50px;"  onclick="allDest()"><label for="nodest">Show all destinations</label>
+    <input type="checkbox" name="exactdate" id="exactdate" style="width: 50px;" onclick="exactDate()"><label for="exactdate">Use Exact Date</label>
+
+    <script>
+        function allDest(){
+
+            let val = document.getElementById("nodest");
+
+            if(val.checked == true){
+                   document.getElementById("destination").disabled = true;
+                   document.getElementById("destination").value = "Show All";
+            }else{
+                document.getElementById("destination").disabled = false;
+                   document.getElementById("destination").value = "";
+            }
+        }
+        function exactDate(){
+
+            let val = document.getElementById("exactdate");
+
+            if(val.checked == true){
+                   document.getElementById("end").disabled = true;
+                   document.getElementById("end").value = "--/--/----";
+            }else{
+                document.getElementById("end").disabled = false;
+                   document.getElementById("end").value = "";
+            }
+        }
+    </script>
 </form>
 
 <form id="registerUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
