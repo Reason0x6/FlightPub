@@ -8,42 +8,47 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("UserAccount")
 public class UserAccount {
-	@Getter
-	@Setter
-	private String username;
 
-	@Id
-	@Getter
-	@Setter
-	private String email;
 
-	@Getter
-	@Setter
-	private String password;
+		@Getter
+		@Setter
+		private String firstname;
 
-	public UserAccount(String username, String email, String password, int api) {
+		@Id
+		@Getter
+		@Setter
+		private String email;
 
-		try {
-			SecurityService sec = new SecurityService();
+		@Getter
+		@Setter
+		private String password;
+		
+		public UserAccount(String firstname, String email, String password, int api) {
 
-			if(api == 1){this.password = sec.hash(password);}
-			else{ this.password = password;}
-		} catch(Exception r) {
+			try {
+				SecurityService sec = new SecurityService();
+
+				if(api == 1){this.password = sec.hash(password);}
+				else{ this.password = password;}
+			}catch(Exception r){
+
+			}
+
+				this.firstname = firstname;
+				this.email = email;
 
 		}
 
-			this.username = username;
-			this.email = email;
-
-	}
-
-	public UserAccount(String username, String email, String password) {
+	public UserAccount(String firstname, String email, String password) {
 		super();
 		this.password = password;
-		this.username = username;
+		this.firstname = firstname;
 		this.email = email;
 
 	}
 
+
 	UserAccount(){}
+
+
 }
