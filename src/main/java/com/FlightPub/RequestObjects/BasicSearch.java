@@ -9,6 +9,9 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,8 +46,12 @@ public class BasicSearch {
 
     public BasicSearch(){}
 
-    public List<Flight> runBasicSearch(){
-        return flightServices.getByOriginAndDestination(departure, destination);
+    public List<Flight> runBasicSearch(String start, String end) throws ParseException {
+        Date dstart = new SimpleDateFormat("yyyy-MM-dd").parse(start);
+        Date dend = new SimpleDateFormat("yyyy-MM-dd").parse(end);
+        System.out.println(dstart);
+        System.out.println(dend);
+        return flightServices.getByOriginAndDestination(departure, destination, dstart, dend);
     }
 
 }

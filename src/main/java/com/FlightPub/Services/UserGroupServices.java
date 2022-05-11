@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserGroupServices implements UserGroupServicesINT{
+public class UserGroupServices {
         private UserGroupRepo userGroupRepo;
 
         @Autowired

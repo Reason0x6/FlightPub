@@ -16,11 +16,23 @@ public class Location {
 
     @Getter
     @Setter
+    private String location;
+
+    @Getter
+    @Setter
     private String country;
 
     @Getter
     @Setter
-    private String locationName;
+    private double latitude;
+
+    @Getter
+    @Setter
+    private double longitude;
+
+    @Getter
+    @Setter
+    private int popularity;
 
     @Getter
     @Setter
@@ -31,4 +43,13 @@ public class Location {
     private LinkedList<String> tags;
 
     public Location() {}
+
+    public Location(String id, String country, String location, double lat, double lng, int pop) {
+        this.locationID = id.toUpperCase();
+        this.country = country;
+        this.location = location;
+        this.latitude = lat;
+        this.longitude = lng;
+        this.popularity = pop;
+    }
 }

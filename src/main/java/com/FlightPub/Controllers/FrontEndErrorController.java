@@ -19,7 +19,8 @@ public class FrontEndErrorController implements ErrorController {
         return "404";
     }
 
-    public String getErrorPath() {
+    public String getErrorPath(Model model) {
+        model.addAttribute("Error", "General Error");
         return "404";
     }
     private UserSession getSession(HttpSession session){
