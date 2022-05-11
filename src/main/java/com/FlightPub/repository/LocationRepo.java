@@ -11,4 +11,7 @@ import java.util.List;
 public interface LocationRepo extends MongoRepository<Location, String> {
     @Query(value="{ 'locationID' : {$ne : ?0} }")
     List<Location> findAllExcluding(String dest);
+
+    @Query(value="{ 'location' : ?0 }")
+    List<Location> findByLocation(String in);
 }
