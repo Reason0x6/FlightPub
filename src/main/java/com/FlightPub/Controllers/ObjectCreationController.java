@@ -1,15 +1,21 @@
 package com.FlightPub.Controllers;
 
+import com.FlightPub.RequestObjects.UserRegister;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
+import com.FlightPub.RequestObjects.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ObjectCreationController {
@@ -33,32 +39,66 @@ public class ObjectCreationController {
 
 
     @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&password=123
-    public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String password, Model mod){
+    public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String password, Model model, HttpSession session){
         UserAccount newUser = new UserAccount(username,email, password, 1);
         usrServices.saveOrUpdate(newUser);
-        mod.addAttribute("usr", newUser);
-        return "basic";
+
+        model.addAttribute("addedUser", newUser);
+        model.addAttribute("usr", getSession(session));
+
+        return "Confirmations/NewUser";
     }
 
-    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM
+    @PostMapping("/RegisterUser")
+    public String registerUSR(@ModelAttribute UserRegister newUser, Model model, HttpSession session){
+        model.addAttribute("usr", getSession(session));
+        if(usrServices.getById(newUser.getEmail()) != null){
+            model.addAttribute("exists", "User already exists");
+            model.addAttribute("Error", "User already exists");
+            return "404";
+        }
+        else if(newUser.isValid()){
+            UserAccount nUser = new UserAccount(newUser.getFirstname(),newUser.getEmail(), newUser.getPassword());
+            usrServices.saveOrUpdate(nUser);
+
+            model.addAttribute("addedUser", nUser);
+            return "Confirmations/NewUser";
+        }
+
+        return "/Register";
+    }
+
+    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM&flightCode=VH302&ticketprice=112.00
     public String addFlight( @RequestParam int flightID, @RequestParam String originID,
                              @RequestParam String destinationID, @RequestParam String airline,
                              @RequestParam String departure, @RequestParam String arrival,
-                             Model mod){
+                             @RequestParam String flightCode, @RequestParam double ticketprice,
+                             Model model, HttpSession session){
 
-        Flight newFlight = new Flight();
-
-        newFlight.setFlightID(flightID);
-        newFlight.setOriginID(originID);
-        newFlight.setDestinationID(destinationID);;
-        newFlight.setAirline(airline);
-        newFlight.setDeparture(departure);
-        newFlight.setArrival(arrival);
+        Flight newFlight = new Flight(flightID, originID,
+                destinationID, departure, arrival, flightCode, airline,ticketprice);
 
 
         flightServices.saveOrUpdate(newFlight);
-        mod.addAttribute("flight", newFlight);
-        return "basic";
+        model.addAttribute("flight", newFlight);
+        model.addAttribute("usr", getSession(session));
+
+        return "Confirmations/NewFlight";
+    }
+
+
+    private UserSession getSession(HttpSession session){
+        UserSession sessionUser = null;
+        try{
+            sessionUser = (UserSession) session.getAttribute("User");
+        }catch(Exception e){}
+
+        if(sessionUser == null){
+            sessionUser =  new UserSession(null);
+            session.setAttribute("User", sessionUser);
+        }
+
+        return sessionUser;
     }
 
 

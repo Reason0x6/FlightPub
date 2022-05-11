@@ -1,5 +1,8 @@
 package com.FlightPub.Controllers;
 
+import com.FlightPub.RequestObjects.BasicSearch;
+import com.FlightPub.RequestObjects.LoginRequest;
+import com.FlightPub.RequestObjects.UserSession;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.*;
@@ -23,7 +26,6 @@ public class IndexController {
 
     private UserAccountServices usrServices;
 
-
     private FlightServices flightServices;
 
     @Autowired
@@ -40,11 +42,14 @@ public class IndexController {
 
     @RequestMapping("/")
     public String loadIndex(Model model, HttpSession session){
+
+        // Get server time for flight date pickers
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         String today = dateFormat.format(date);
 
+        // get server time + 1 year for current max future booking date
         model.addAttribute("today", today); // Temp/placeholder
         cal.add(Calendar.YEAR, 1);
         date = cal.getTime();
@@ -62,6 +67,13 @@ public class IndexController {
         return "login";
     }
 
+    @RequestMapping("/Register")
+    public String loadRegister(Model model, HttpSession session){
+
+        model.addAttribute("usr", getSession(session));
+        return "Register";
+    }
+
     @RequestMapping("/logout")
     public String loadLogout(Model model, HttpSession session){
         session.setAttribute("User", new UserSession(null));
@@ -71,22 +83,21 @@ public class IndexController {
 
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model, HttpSession session){
+
+        model.addAttribute("usr", getSession(session));
         try {
 
             UserAccount newUser = usrServices.getById(req.getEmail());
 
             if(req.getPassword().equals(newUser.getPassword())) {
-                System.out.println(true);
+                // Set post flag
                 model.addAttribute("method", "post");
+
+                // Set user session
                 UserSession usr = new UserSession(newUser);
                 session.setAttribute("User", usr);
                 model.addAttribute("usr", usr);
             }else{
-                System.out.println(false);
-                System.out.println(req.getPassword());
-                System.out.println(newUser.getPassword());
-
-                // TODO: Add a 'forgot password' workflow
 
                 model.addAttribute("valid", false);
             }
@@ -94,8 +105,7 @@ public class IndexController {
             model.addAttribute("user", req);
 
         }catch(Exception e){
-            System.out.println(req.getPassword());
-            e.printStackTrace();
+
             model.addAttribute("valid", false);
 
         }
@@ -120,7 +130,11 @@ public class IndexController {
 
 
     private UserSession getSession(HttpSession session){
-        UserSession sessionUser = (UserSession) session.getAttribute("User");
+        UserSession sessionUser = null;
+        try{
+           sessionUser = (UserSession) session.getAttribute("User");
+        }catch(Exception e){}
+
         if(sessionUser == null){
             sessionUser =  new UserSession(null);
             session.setAttribute("User", sessionUser);

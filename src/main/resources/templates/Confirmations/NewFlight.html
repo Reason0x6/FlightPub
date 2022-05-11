@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Header"> </head>
+<div class="container">
+  <main id="main" style="margin-top: 100px" th:if="${flight != null}">
+    <!-- ======= Services Section ======= -->
+    <h2>New Flight Created</h2>
+    <p th:text="'Flight: ' + ${flight.getFlightCode()}"></p>
+    <p th:text="'Airline: ' + ${flight.getAirline()}"></p>
+    <p th:text="'Origin: ' + ${flight.getOriginID()}"></p>
+    <p th:text="'Departure: ' + ${flight.getDestinationID()}"></p>
+    <p th:text="'Departure Time Code: ' + ${flight.getDeparture()}"></p>
+    <p th:text="'Origin Time Code: ' + ${flight.getArrival()}"></p>
+    <p th:text="'Ticket Price: ' + ${flight.getTicketPrice()}"></p>
+  </main>
+</div>
+
+
