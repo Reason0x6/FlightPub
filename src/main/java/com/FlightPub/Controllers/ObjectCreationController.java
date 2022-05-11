@@ -2,8 +2,10 @@ package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.UserRegister;
 import com.FlightPub.Services.FlightServices;
+import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.Flight;
+import com.FlightPub.model.Location;
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.RequestObjects.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpSession;
 public class ObjectCreationController {
     private UserAccountServices usrServices;
     private FlightServices flightServices;
+    private LocationServices locationServices;
     private UserAccount SessionUser;
 
     @Autowired
@@ -36,9 +39,30 @@ public class ObjectCreationController {
         this.flightServices = flightService;
     }
 
-    @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&password=123
-    public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String password, Model model, HttpSession session){
-        UserAccount newUser = new UserAccount(username,email, password, 1);
+    @Autowired
+    @Qualifier(value = "LocationServices")
+    public void setLocationsServices(LocationServices locService) {
+        this.locationServices = locService;
+    }
+
+
+    @RequestMapping("/location/add") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
+    public String addLoc( @RequestParam String id, @RequestParam String country, @RequestParam String location, @RequestParam double lat,
+                          @RequestParam double lng, @RequestParam int pop,
+                          Model model, HttpSession session){
+
+        Location newLoc = new Location(id, country,location, lat,lng,pop);
+        locationServices.saveOrUpdate(newLoc);
+
+        model.addAttribute("addedLoc", newLoc);
+        model.addAttribute("usr", getSession(session));
+
+        return "Confirmations/NewLocation";
+    }
+
+    @RequestMapping("/usr/add") //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&prefairport=Syd&password=123
+    public String addUSR( @RequestParam String username, @RequestParam String email, @RequestParam String prefairport, @RequestParam String password, Model model, HttpSession session){
+        UserAccount newUser = new UserAccount(username,email, prefairport, password, 1);
         usrServices.saveOrUpdate(newUser);
 
         model.addAttribute("addedUser", newUser);
@@ -75,8 +99,8 @@ public class ObjectCreationController {
                              @RequestParam String flightCode, @RequestParam double ticketprice,
                              Model model, HttpSession session){
 
-        Flight newFlight = new Flight(flightID, originID,
-                destinationID, departure, arrival, flightCode, airline,ticketprice);
+        Flight newFlight = new Flight(flightID, originID.toUpperCase(),
+                destinationID.toUpperCase(), departure, arrival, flightCode, airline,ticketprice);
 
         if(flightServices.getById(flightID) != null){
             // TODO: Notification of flight detail change to be sent to users
@@ -94,7 +118,9 @@ public class ObjectCreationController {
         UserSession sessionUser = null;
         try{
             sessionUser = (UserSession) session.getAttribute("User");
-        }catch(Exception e){}
+        }catch(Exception e){
+            sessionUser = null;
+        }
 
         if(sessionUser == null){
             sessionUser =  new UserSession(null);

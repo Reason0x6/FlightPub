@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Header"> </head>
+<div class="container">
+    <main id="main" style="margin-top: 100px" th:if="${addedLoc != null}">
+        <!-- ======= Services Section ======= -->
+        <h2>New Location Created</h2>
+        <p th:text="'LocationID: ' + ${addedLoc.getLocationID()}"></p>
+        <p th:text="'Country: ' +${addedLoc.getCountry()}"></p>
+        <p th:text="'Location: ' + ${addedLoc.getLocation()}"></p>
+        <p th:text="'Latitude: ' + ${addedLoc.getLatitude()}"></p>
+        <p th:text="'Longitude: ' + ${addedLoc.getLongitude}"></p>
+        <p th:text="'Popularity: ' + ${addedLoc.getPopularity()}"></p>
+    </main>
+</div>
+
+
