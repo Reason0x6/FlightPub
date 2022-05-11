@@ -75,7 +75,50 @@
       </div>
     </section><!-- End Services Section -->
 
-    
+    <section id = "recommendation" class = "services">
+      <div class="container">
+
+        <div class="section-title" data-aos="zoom-out">
+          <h2>Plan</h2>
+          <p>Recommended Desinations</p>
+        </div>
+        <style>
+          input, select{
+            width: 45%;
+            max-width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+          }
+          .btn-search{
+            margin-top: -3px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+          }
+        </style>
+
+        <div class="row icon-box" data-aos="zoom-in-left">
+        <div class="col-md-12" >
+
+            <div class="card l-1" th:each="flight : ${reco}" style="padding: 10px 0 0 20px;">
+              <div class="row" style="padding-top: 10px;">
+                <div class="col-sm-4">
+                  <p><b><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></p>
+                  <p><b><span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span></b><span th:text="${flight.getArrivalTime()}"></span></p>
+                </div>
+                <div class="col-sm-4">
+                  <p><b>Airline: </b><span th:text="${flight.getAirline()}"></span></p>
+                </div>
+              </div>
+            </div>
+            <div th:if="${reco} == 0">
+              <p>There are currently no recomendation</p>
+            </div>
+          </div>
+
+        </div>
+    </section>
     
 
   </main><!-- End #main -->
