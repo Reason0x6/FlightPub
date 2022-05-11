@@ -16,8 +16,8 @@
 </form>
 
 <form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
-    <input type="text" id="departure" name="departure" placeholder="Fly From">
-    <input type="text" id="destination" name="destination" placeholder="Fly To">
+    <input type="text" id="origin" name="originIn" placeholder="Fly From">
+    <input type="text" id="destination" name="destinationIn" placeholder="Fly To">
     <label for="start" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
     <input type="date" id="start" name="start"
            th:value="${today}"
