@@ -80,7 +80,7 @@ public class ObjectCreationController {
         Flight newFlight = new Flight(flightID, originID,
                 destinationID, departure, arrival, flightCode, airline,ticketprice);
 
-        if(flightServices.getById("" + flightID) != null){
+        if(flightServices.getById(flightID) != null){
             // TODO: Notification of flight detail change to be sent to users
         }
 
