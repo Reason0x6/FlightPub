@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragments/Head"> </head>
+<header th:replace="Fragments/Header"> </header>
+<body>
+
+<!-- ======= Hero Section ======= -->
+
+<main id="main">
+    <!-- ======= Services Section ======= -->
+
+    <section id = "recommendation" class = "services">
+        <div class="container">
+
+
+            <style>
+                input, select{
+                    width: 45%;
+                    max-width: 250px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+                .btn-search{
+                    margin-top: -3px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+            </style>
+            <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+                <h2>Hey There</h2>
+                <p th:text="'Welcome back ' + ${User.getFirstname()}"></p>
+            </div>
+            <div class="row icon-box" data-aos="zoom-in-right" >
+                <h1>Update Your Account!</h1>
+                <form th:replace="Fragments/Forms :: #updateUser"> </form>
+            </div>
+                <hr />
+            <div class="section-title" data-aos="zoom-out" >
+                <h2>Reconnect</h2>
+                <p>Your Frequent Flights</p>
+            </div>
+            <div class="row icon-box" data-aos="zoom-in-left">
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-sm-3" th:each="flight : ${reco}"  >
+                        <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
+                            <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                            <h2 style="font-size: 1.5em" th:text="${flight.getOriginID()} + ' to ' + ${flight.getDestinationID()}"></h2>
+                            <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
+                                <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
+                                Airline: <span th:text="${flight.getAirline()}"></span></em></p>
+                            <a href="" style="margin-bottom: 10px;" class="btn btn-primary">Book Now</a>&nbsp;&nbsp;
+                        </div>
+
+                    </div>
+                </div>
+                <div th:if="${reco} == 0">
+                    <p>There are currently no recomendation</p>
+                </div>
+            </div>
+    <div class="section-title" data-aos="zoom-out"  style="margin-top: 25px">
+        <h2>Discover</h2>
+        <p>Just For You</p>
+    </div>
+    <div class="row icon-box" data-aos="zoom-in-left">
+
+        <div class="row" style="padding-top: 10px;">
+            <div class="col-sm-3" th:each="flight : ${reco}"  >
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
+                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em" th:text="${flight.getOriginID()} + ' to ' + ${flight.getDestinationID()}"></h2>
+                    <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
+                        <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
+                        Airline: <span th:text="${flight.getAirline()}"></span></em></p>
+                    <a href="" style="margin-bottom: 10px;" class="btn btn-primary">Book Now</a>&nbsp;&nbsp;
+                </div>
+
+            </div>
+        </div>
+        <div th:if="${reco} == 0">
+            <p>There are currently no recomendation</p>
+        </div>
+    </div>
+
+            <hr />
+            </div>
+</section><!-- End Cta Section -->
+
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+    <div class="container">
+
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Contact</h2>
+            <p>Contact Us</p>
+        </div>
+
+        <div class="row mt-5">
+
+            <div class="col-lg-4" data-aos="fade-right">
+                <div class="info">
+                    <div class="address">
+                        <i class="bi bi-geo-alt"></i>
+                        <h4>Location:</h4>
+                        <p>123 Newcastle Street, Newcastle 2300</p>
+                    </div>
+
+                    <div class="email">
+                        <i class="bi bi-envelope"></i>
+                        <h4>Email:</h4>
+                        <p>info@example.com</p>
+                    </div>
+
+                    <div class="phone">
+                        <i class="bi bi-phone"></i>
+                        <h4>Call:</h4>
+                        <p>+61 2 123 456 78</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    </div>
+</section><!-- End Contact Section -->
+<!-- ======= Footer ======= -->
+<lower th:replace="Fragments/Footer"> </lower>
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+</body>
+
+</html>

@@ -108,13 +108,16 @@ public class IndexController {
                 // Set user session
                 UserSession usr = new UserSession(newUser);
                 session.setAttribute("User", usr);
-                model.addAttribute("usr", usr);
+                model.addAttribute("User", usr);
+                model.addAttribute("user", req);
+
+                return "redirect:account";
             }else{
 
                 model.addAttribute("valid", false);
             }
 
-            model.addAttribute("user", req);
+
 
         }catch(Exception e){
 
@@ -122,7 +125,17 @@ public class IndexController {
 
         }
 
+
+
         return "login";
+    }
+
+    @RequestMapping("/account")
+    public String account(Model model, HttpSession session){
+
+        model.addAttribute("reco", getRecommendation());
+        model.addAttribute("User", getSession(session));
+        return "Personalised";
     }
 
     @PostMapping("/search")
