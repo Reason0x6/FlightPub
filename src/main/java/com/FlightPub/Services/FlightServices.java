@@ -60,9 +60,19 @@ public class FlightServices{
 
     public List<Flight> getByOrigin(String origin, Date dstart, Date dend){
 
-        System.out.println("Services");
         // Query defined in flightRepo
         return flightRepo.findByOrigin(origin, dstart, dend);
     }
 
+    public List<Flight> getByOriginAndDestinationAndArrivalTimes(String origin, String dep, Date dstart, Date dend) {
+
+        // Query defined in flightRepo
+        return flightRepo.findByOriginAndDesitinationAndArrivalTimes(origin, dep, dstart, dend);
+    }
+
+    public List<Flight> getByOriginAndArrivalTimes(String origin, Date dstart, Date dend) {
+
+        // Query defined in flightRepo
+        return flightRepo.findByOriginAndArrivalTimes(origin, dstart, dend);
+    }
 }

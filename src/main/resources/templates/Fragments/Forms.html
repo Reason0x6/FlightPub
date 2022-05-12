@@ -34,7 +34,7 @@
     <label for="nodest">Show all destinations</label>
     <input type="checkbox" name="exactdate" id="exactdate" style="width: 50px;" onclick="adjustDate()">
     <label for="exactdate">Use Exact Date</label>
-    <input type="checkbox" name="searchByArrival" id="searchByArrival" style="width: 50px;" onclick="searchByArrival()">
+    <input type="checkbox" name="searchByArrival" id="searchByArrival" style="width: 50px;" onclick="adjustDate()">
     <label for="searchByArrival">Search by Arrival Times</label>
 
     <script>
@@ -51,28 +51,27 @@
             }
         }
         function adjustDate(){
-            let exact = document.getElementById("exactdate");
-            let arrival = document.getElementById("searchByArrival");
+            let exact = document.getElementById("exactdate").checked;
+            let arrival = document.getElementById("searchByArrival").checked;
 
-            if((exact.checked == true)&&(arrival == true)){
+            if((exact == true)&&(arrival == true)){
+                document.getElementById("end").disabled = true;
+                document.getElementById("end").value = "--/--/----";
+                document.getElementById("startLabel").innerHTML = "Arrival Date";
+                document.getElementById("endLabel").innerHTML = "";
+            }else if((exact == true)&&(arrival == false)){
                 document.getElementById("end").disabled = true;
                 document.getElementById("end").value = "--/--/----";
                 document.getElementById("startLabel").innerHTML = "Flight Date";
                 document.getElementById("endLabel").innerHTML = "";
-            }else{
+            }else if((exact == false)&&(arrival == true)){
                 document.getElementById("end").disabled = false;
                 document.getElementById("end").value = "";
-                document.getElementById("startLabel").innerHTML = "Earliest Flight Date";
-                document.getElementById("endLabel").innerHTML = "Latest Flight Date";
-            }
-        }
-        function arrivalTimes(){
-            let val = document.getElementById("searchByArrival");
-
-            if((val.checked == true)&&(document.getElementById("exactdate") == true)){
                 document.getElementById("startLabel").innerHTML = "Earliest Arrival Date";
                 document.getElementById("endLabel").innerHTML = "Latest Arrival Date";
             }else{
+                document.getElementById("end").disabled = false;
+                document.getElementById("end").value = "";
                 document.getElementById("startLabel").innerHTML = "Earliest Flight Date";
                 document.getElementById("endLabel").innerHTML = "Latest Flight Date";
             }
@@ -83,23 +82,76 @@
 <form id="advancedSearch" th:action="@{/advancedSearch}" th:object="${BasicSearch}" method="post">
     <input type="text" id="flightOrigin" name="originIn" placeholder="Fly From">
     <input type="text" id="flightDestination" name="destinationIn" placeholder="Fly To">
-    <label for="earliest" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
+    <label for="earliest" id="earliestLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
     <input type="date" id="earliest" name="start"
            th:value="${today}"
            th:min="${today}" th:max="${max}">
-    <label for="earliest" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
+    <label for="earliest" id="latestLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
     <input type="date" id="latest" name="end"
            th:value="${today}"
            th:min="${today}" th:max="${max}">
     <label for="min">Price</label>
-    <input type="number" id="min" name="minPrice" placeholder="Min">
-    <input type="number" id="max" name="maxPrice" placeholder="Min">
+    <input type="number" id="min" name="minPrice" placeholder="Min" value="0" min="0" max="100000">
+    <input type="number" id="max" name="maxPrice" placeholder="Max" value="100000" min="0" max="100000">
     <label for="directFlight">Direct flight Only</label>
     <input type="checkbox" name="directFlight" id="directFlight">
-    <label for="rating">Ratings</label>
-    <input type="number" id="rating" name="rating" placeholder="Stars" min="0" max="5">
+    <label for="rating">Minimum Ratings</label>
+    <output>0</output>
+    <input type="range" id="rating" name="rating" min="0" max="5" value="0" oninput="this.previousElementSibling.value = this.value">
+    <label for="seats">Number of Seats</label>
+    <input type="number" id="seats" name="seats" min="1" value="1">
+    <label for="membership" th:if="${usr.isLoggedIn()} == true">Membership Flights</label>
+    <input type="checkbox" id="membership" name="membershipFlights" th:if="${usr.isLoggedIn()} == true">
 
     <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button><br>
+
+    <input type="checkbox" name="nodest" id="nodestAdvanced" style="width: 50px;"  onclick="allDest()">
+    <label for="nodestAdvanced">Show all destinations</label>
+    <input type="checkbox" name="exactdate" id="exactdateAdvanced" style="width: 50px;" onclick="adjustDate()">
+    <label for="exactdateAdvanced">Use Exact Date</label>
+    <input type="checkbox" name="searchByArrival" id="searchByArrivalAdvanced" style="width: 50px;" onclick="adjustDate()">
+    <label for="searchByArrivalAdvanced">Search by Arrival Times</label>
+
+    <script>
+        function allDest(){
+
+            let val = document.getElementById("nodestAdvanced");
+
+            if(val.checked == true){
+                document.getElementById("flightDestination").disabled = true;
+                document.getElementById("flightDestination").value = "Show All";
+            }else{
+                document.getElementById("flightDestination").disabled = false;
+                document.getElementById("flightDestination").value = "";
+            }
+        }
+        function adjustDate(){
+            let exact = document.getElementById("exactdateAdvanced").checked;
+            let arrival = document.getElementById("searchByArrivalAdvanced").checked;
+
+            if((exact == true)&&(arrival == true)){
+                document.getElementById("latest").disabled = true;
+                document.getElementById("latest").value = "--/--/----";
+                document.getElementById("earliestLabel").innerHTML = "Arrival Date";
+                document.getElementById("latestLabel").innerHTML = "";
+            }else if((exact == true)&&(arrival == false)){
+                document.getElementById("latest").disabled = true;
+                document.getElementById("latest").value = "--/--/----";
+                document.getElementById("earliestLabel").innerHTML = "Flight Date";
+                document.getElementById("latestLabel").innerHTML = "";
+            }else if((exact == false)&&(arrival == true)){
+                document.getElementById("latest").disabled = false;
+                document.getElementById("latest").value = "";
+                document.getElementById("earliestLabel").innerHTML = "Earliest Arrival Date";
+                document.getElementById("latestLabel").innerHTML = "Latest Arrival Date";
+            }else{
+                document.getElementById("latest").disabled = false;
+                document.getElementById("latest").value = "";
+                document.getElementById("earliestLabel").innerHTML = "Earliest Flight Date";
+                document.getElementById("latestLabel").innerHTML = "Latest Flight Date";
+            }
+        }
+    </script>
 </form>
 <!--Register Search--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="registerUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">

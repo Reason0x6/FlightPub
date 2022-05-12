@@ -50,18 +50,7 @@ public class IndexController {
     @RequestMapping("/")
     public String loadIndex(Model model, HttpSession session) {
 
-        // Get server time for flight date pickers
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String today = dateFormat.format(date);
-
-        // get server time + 1 year for current max future booking date
-        model.addAttribute("today", today); // Temp/placeholder
-        cal.add(Calendar.YEAR, 1);
-        date = cal.getTime();
-        String max = dateFormat.format(date);
-        model.addAttribute("max", max);
+        model = addDateAndTimeToModel(model);
 
         model.addAttribute("usr", getSession(session));
 
@@ -124,6 +113,7 @@ public class IndexController {
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
+        model = addDateAndTimeToModel(model);
         List<Flight> flights;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
@@ -146,11 +136,12 @@ public class IndexController {
     @PostMapping("/advancedSearch")
     public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session)
     {
+        model = addDateAndTimeToModel(model);
         List<Flight> flights;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
-            flights =  search.runAdvancedSearch();
+            flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
         } catch (Exception e) {
             e.printStackTrace();
             return "index";
@@ -158,7 +149,6 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
-
         model.addAttribute("usr", getSession(session));
         return "search";
     }
@@ -241,5 +231,21 @@ public class IndexController {
         }
 
         return recommendedFlights;
+    }
+
+    private Model addDateAndTimeToModel(Model model) {
+        // Get server time for flight date pickers
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String today = dateFormat.format(date);
+
+        // get server time + 1 year for current max future booking date
+        model.addAttribute("today", today); // Temp/placeholder
+        cal.add(Calendar.YEAR, 1);
+        date = cal.getTime();
+        String max = dateFormat.format(date);
+        model.addAttribute("max", max);
+        return model;
     }
 }
