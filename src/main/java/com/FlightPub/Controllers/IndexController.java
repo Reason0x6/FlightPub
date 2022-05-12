@@ -98,7 +98,6 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
         try {
-
             UserAccount newUser = usrServices.getById(req.getEmail());
 
             if(req.getPassword().equals(newUser.getPassword())) {
@@ -113,13 +112,11 @@ public class IndexController {
 
                 model.addAttribute("valid", false);
             }
-
             model.addAttribute("user", req);
 
         }catch(Exception e){
 
             model.addAttribute("valid", false);
-
         }
 
         return "login";
@@ -133,6 +130,7 @@ public class IndexController {
         try{
            flights =  search.runBasicSearch(search.getStart(), search.getEnd());
         }catch (Exception e){
+            e.printStackTrace();
             return "index";
         }
 
@@ -151,7 +149,9 @@ public class IndexController {
         UserSession sessionUser = null;
         try{
            sessionUser = (UserSession) session.getAttribute("User");
-        } catch(Exception e){}
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         if(sessionUser == null){
             sessionUser =  new UserSession(null);

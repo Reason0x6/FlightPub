@@ -58,4 +58,11 @@ public class FlightServices{
         return flightRepo.findByOriginAndDesitination(origin, dep, dstart, dend);
     }
 
+    public List<Flight> getByOrigin(String origin, Date dstart, Date dend){
+
+        System.out.println("Services");
+        // Query defined in flightRepo
+        return flightRepo.findByOrigin(origin, dstart, dend);
+    }
+
 }
