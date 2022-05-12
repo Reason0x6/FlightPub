@@ -192,10 +192,7 @@ public class IndexController {
         String max = dateFormat.format(date);
 
         // Get currently popular locations
-        List<Location> locations = locationServices.findAllExcluding(currentLocation.getLocationID());
-
-        // TODO maybe do this through a query call
-        locations.sort(Comparator.comparing(Location::getPopularity).reversed());
+        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
 
         // Get 1 flight from each popular location
         for (Location popularLocation : locations) {
@@ -219,8 +216,6 @@ public class IndexController {
             }
         }
 
-
-        // TODO remove
         System.out.println("Recommended Flights found:");
         for (Flight flight : recommendedFlights) {
             System.out.printf("FlightID: %s, Flight Origin: %s, Flight Destination: %s %n",flight.getFlightID(), flight.getOriginID(), flight.getDestinationID());
