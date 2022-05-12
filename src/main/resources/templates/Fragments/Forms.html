@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!--Login Search--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="login" th:action="@{/login}" th:object="${LoginRequest}" method="post">
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -14,22 +15,27 @@
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
+<!--Basic Search--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
     <input type="text" id="origin" name="originIn" placeholder="Fly From">
     <input type="text" id="destination" name="destinationIn" placeholder="Fly To">
-    <label for="start" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
+    <label for="start" id="startLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight Date</label>
     <input type="date" id="start" name="start"
            th:value="${today}"
            th:min="${today}" th:max="${max}">
-    <label for="start" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
+    <label for="end" id="endLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight Date</label>
     <input type="date" id="end" name="end"
            th:value="${today}"
            th:min="${today}" th:max="${max}">
 
+
     <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button><br>
-    <input type="checkbox" name="nodest" id="nodest" style="width: 50px;"  onclick="allDest()"><label for="nodest">Show all destinations</label>
-    <input type="checkbox" name="exactdate" id="exactdate" style="width: 50px;" onclick="exactDate()"><label for="exactdate">Use Exact Date</label>
+    <input type="checkbox" name="nodest" id="nodest" style="width: 50px;"  onclick="allDest()">
+    <label for="nodest">Show all destinations</label>
+    <input type="checkbox" name="exactdate" id="exactdate" style="width: 50px;" onclick="adjustDate()">
+    <label for="exactdate">Use Exact Date</label>
+    <input type="checkbox" name="searchByArrival" id="searchByArrival" style="width: 50px;" onclick="searchByArrival()">
+    <label for="searchByArrival">Search by Arrival Times</label>
 
     <script>
         function allDest(){
@@ -37,28 +43,65 @@
             let val = document.getElementById("nodest");
 
             if(val.checked == true){
-                   document.getElementById("destination").disabled = true;
-                   document.getElementById("destination").value = "Show All";
+                document.getElementById("destination").disabled = true;
+                document.getElementById("destination").value = "Show All";
             }else{
                 document.getElementById("destination").disabled = false;
-                   document.getElementById("destination").value = "";
+                document.getElementById("destination").value = "";
             }
         }
-        function exactDate(){
+        function adjustDate(){
+            let exact = document.getElementById("exactdate");
+            let arrival = document.getElementById("searchByArrival");
 
-            let val = document.getElementById("exactdate");
-
-            if(val.checked == true){
-                   document.getElementById("end").disabled = true;
-                   document.getElementById("end").value = "--/--/----";
+            if((exact.checked == true)&&(arrival == true)){
+                document.getElementById("end").disabled = true;
+                document.getElementById("end").value = "--/--/----";
+                document.getElementById("startLabel").innerHTML = "Flight Date";
+                document.getElementById("endLabel").innerHTML = "";
             }else{
                 document.getElementById("end").disabled = false;
-                   document.getElementById("end").value = "";
+                document.getElementById("end").value = "";
+                document.getElementById("startLabel").innerHTML = "Earliest Flight Date";
+                document.getElementById("endLabel").innerHTML = "Latest Flight Date";
+            }
+        }
+        function arrivalTimes(){
+            let val = document.getElementById("searchByArrival");
+
+            if((val.checked == true)&&(document.getElementById("exactdate") == true)){
+                document.getElementById("startLabel").innerHTML = "Earliest Arrival Date";
+                document.getElementById("endLabel").innerHTML = "Latest Arrival Date";
+            }else{
+                document.getElementById("startLabel").innerHTML = "Earliest Flight Date";
+                document.getElementById("endLabel").innerHTML = "Latest Flight Date";
             }
         }
     </script>
 </form>
+<!--Advanced Search--------------------------------------------------------------------------------------------------------------------------------------->
+<form id="advancedSearch" th:action="@{/advancedSearch}" th:object="${BasicSearch}" method="post">
+    <input type="text" id="flightOrigin" name="originIn" placeholder="Fly From">
+    <input type="text" id="flightDestination" name="destinationIn" placeholder="Fly To">
+    <label for="earliest" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
+    <input type="date" id="earliest" name="start"
+           th:value="${today}"
+           th:min="${today}" th:max="${max}">
+    <label for="earliest" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
+    <input type="date" id="latest" name="end"
+           th:value="${today}"
+           th:min="${today}" th:max="${max}">
+    <label for="min">Price</label>
+    <input type="number" id="min" name="minPrice" placeholder="Min">
+    <input type="number" id="max" name="maxPrice" placeholder="Min">
+    <label for="directFlight">Direct flight Only</label>
+    <input type="checkbox" name="directFlight" id="directFlight">
+    <label for="rating">Ratings</label>
+    <input type="number" id="rating" name="rating" placeholder="Stars" min="0" max="5">
 
+    <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button><br>
+</form>
+<!--Register Search--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="registerUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
     <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
     <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>

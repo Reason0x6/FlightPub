@@ -99,4 +99,8 @@ public class BasicSearch {
         calendar.add(Calendar.MINUTE, 59);
         return calendar.getTime();
     }
+
+    public List<Flight> runAdvancedSearch() {
+        return null;
+    }
 }

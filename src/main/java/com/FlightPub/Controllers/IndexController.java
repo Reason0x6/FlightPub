@@ -137,11 +137,30 @@ public class IndexController {
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
 
-
         model.addAttribute("usr", getSession(session));
         return "search";
 
         // TODO: Add advanced searches
+    }
+
+    @PostMapping("/advancedSearch")
+    public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session)
+    {
+        List<Flight> flights;
+        search.setFlightServices(flightServices);
+        search.setLocationServices(locationServices);
+        try{
+            flights =  search.runAdvancedSearch();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "index";
+        }
+
+        model.addAttribute("search", search);
+        model.addAttribute("flights", flights);
+
+        model.addAttribute("usr", getSession(session));
+        return "search";
     }
 
 
