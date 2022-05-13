@@ -5,6 +5,7 @@
 <header th:replace="Fragments/Header"> </header>
 <div class="container">
   <div id="main" style="margin-top: 100px"  class="row">
+    <form th:replace="Fragments/Forms :: #advancedSearch"> </form>
     <div class="col-md-12" >
       <h1 th:text="${search.getOriginIn()} + ' -> ' + ${search.getDestinationIn()}"></h1>
 

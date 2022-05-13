@@ -41,8 +41,8 @@ public class LocationServices {
     }
 
 
-    public List<Location> findAllExcluding(String locationID) {
-        return locationRepo.findAllExcluding(locationID);
+    public List<Location> findAllSortedDescendingExcluding(String locationID) {
+        return locationRepo.findAllSortedDescendingExcluding(locationID);
     }
 
 

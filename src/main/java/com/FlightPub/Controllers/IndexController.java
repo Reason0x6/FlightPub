@@ -50,18 +50,7 @@ public class IndexController {
     @RequestMapping("/")
     public String loadIndex(Model model, HttpSession session) {
 
-        // Get server time for flight date pickers
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String today = dateFormat.format(date);
-
-        // get server time + 1 year for current max future booking date
-        model.addAttribute("today", today); // Temp/placeholder
-        cal.add(Calendar.YEAR, 1);
-        date = cal.getTime();
-        String max = dateFormat.format(date);
-        model.addAttribute("max", max);
+        model = addDateAndTimeToModel(model);
 
         model.addAttribute("usr", getSession(session));
 
@@ -98,7 +87,6 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
         try {
-
             UserAccount newUser = usrServices.getById(req.getEmail());
 
             if(req.getPassword().equals(newUser.getPassword())) {
@@ -108,53 +96,36 @@ public class IndexController {
                 // Set user session
                 UserSession usr = new UserSession(newUser);
                 session.setAttribute("User", usr);
-                model.addAttribute("usr", getSession(session));
-
-                return "redirect:account";
+                model.addAttribute("usr", usr);
             }else{
 
                 model.addAttribute("valid", false);
             }
-
-
+            model.addAttribute("user", req);
 
         }catch(Exception e){
 
             model.addAttribute("valid", false);
-
         }
-
-
 
         return "login";
     }
 
-    @RequestMapping("/account")
-    public String account(Model model, HttpSession session){
-        model.addAttribute("locs", locationServices.listAll());
-        model.addAttribute("reco", getRecommendation());
-        model.addAttribute("usr", getSession(session));
-
-        if(!getSession(session).isLoggedIn()){
-            return "redirect:login";
-        }
-        return "Personalised";
-    }
-
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
+        model = addDateAndTimeToModel(model);
         List<Flight> flights;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
            flights =  search.runBasicSearch(search.getStart(), search.getEnd());
         }catch (Exception e){
+            e.printStackTrace();
             return "index";
         }
 
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
-
 
         model.addAttribute("usr", getSession(session));
         return "search";
@@ -162,12 +133,34 @@ public class IndexController {
         // TODO: Add advanced searches
     }
 
+    @PostMapping("/advancedSearch")
+    public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session)
+    {
+        model = addDateAndTimeToModel(model);
+        List<Flight> flights;
+        search.setFlightServices(flightServices);
+        search.setLocationServices(locationServices);
+        try{
+            flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "index";
+        }
+
+        model.addAttribute("search", search);
+        model.addAttribute("flights", flights);
+        model.addAttribute("usr", getSession(session));
+        return "search";
+    }
+
 
     private UserSession getSession(HttpSession session){
         UserSession sessionUser = null;
         try{
            sessionUser = (UserSession) session.getAttribute("User");
-        } catch(Exception e){}
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         if(sessionUser == null){
             sessionUser =  new UserSession(null);
@@ -208,10 +201,7 @@ public class IndexController {
         String max = dateFormat.format(date);
 
         // Get currently popular locations
-        List<Location> locations = locationServices.findAllExcluding(currentLocation.getLocationID());
-
-        // TODO maybe do this through a query call
-        locations.sort(Comparator.comparing(Location::getPopularity).reversed());
+        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
 
         // Get 1 flight from each popular location
         for (Location popularLocation : locations) {
@@ -230,18 +220,32 @@ public class IndexController {
             }
 
             // Once 3 recommended flights have been found break for loop
-            if (recommendedFlights.size() == 4) {
+            if (recommendedFlights.size() == 3) {
                 break;
             }
         }
 
-
-        // TODO remove
         System.out.println("Recommended Flights found:");
         for (Flight flight : recommendedFlights) {
             System.out.printf("FlightID: %s, Flight Origin: %s, Flight Destination: %s %n",flight.getFlightID(), flight.getOriginID(), flight.getDestinationID());
         }
 
         return recommendedFlights;
+    }
+
+    private Model addDateAndTimeToModel(Model model) {
+        // Get server time for flight date pickers
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String today = dateFormat.format(date);
+
+        // get server time + 1 year for current max future booking date
+        model.addAttribute("today", today); // Temp/placeholder
+        cal.add(Calendar.YEAR, 1);
+        date = cal.getTime();
+        String max = dateFormat.format(date);
+        model.addAttribute("max", max);
+        return model;
     }
 }

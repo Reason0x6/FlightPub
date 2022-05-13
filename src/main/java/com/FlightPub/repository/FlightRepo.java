@@ -18,4 +18,13 @@ public interface FlightRepo extends MongoRepository<Flight, String> {
 
     @Query(value="{ 'originID' : ?0, 'destinationID': ?1, 'departure':{$gte: ?2, $lte: ?3} }")
     List<Flight> findByOriginAndDesitination(String origin, String dest, Date start, Date end);
+
+    @Query(value="{ 'originID' : ?0, 'departure':{$gte: ?1, $lte: ?2} }")
+    List<Flight> findByOrigin(String origin, Date start, Date end);
+
+    @Query(value="{ 'originID' : ?0, 'destinationID': ?1, 'arrival':{$gte: ?2, $lte: ?3} }")
+    List<Flight> findByOriginAndDesitinationAndArrivalTimes(String origin, String dest, Date start, Date end);
+
+    @Query(value="{ 'originID' : ?0, 'arrival':{$gte: ?1, $lte: ?2} }")
+    List<Flight> findByOriginAndArrivalTimes(String origin, Date start, Date end);
 }

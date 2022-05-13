@@ -57,6 +57,10 @@ public class Flight {
     @Setter
     private LinkedList<String> bookings;
 
+    @Getter
+    @Setter
+    private double rating;
+
     public Flight(){}
 
     public Flight(String flightID, String originID, String destinationID,
