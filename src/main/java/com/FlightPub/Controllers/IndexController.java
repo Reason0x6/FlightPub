@@ -108,8 +108,7 @@ public class IndexController {
                 // Set user session
                 UserSession usr = new UserSession(newUser);
                 session.setAttribute("User", usr);
-                model.addAttribute("User", usr);
-                model.addAttribute("user", req);
+                model.addAttribute("usr", getSession(session));
 
                 return "redirect:account";
             }else{
@@ -132,9 +131,13 @@ public class IndexController {
 
     @RequestMapping("/account")
     public String account(Model model, HttpSession session){
-
+        model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("reco", getRecommendation());
-        model.addAttribute("User", getSession(session));
+        model.addAttribute("usr", getSession(session));
+
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
         return "Personalised";
     }
 
@@ -227,7 +230,7 @@ public class IndexController {
             }
 
             // Once 3 recommended flights have been found break for loop
-            if (recommendedFlights.size() == 3) {
+            if (recommendedFlights.size() == 4) {
                 break;
             }
         }

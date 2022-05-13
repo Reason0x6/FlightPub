@@ -31,37 +31,55 @@
             </style>
             <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
                 <h2>Hey There</h2>
-                <p th:text="'Welcome back ' + ${User.getFirstname()}"></p>
+                <p th:text="'Welcome back ' + ${usr.getFirstname()}"></p>
             </div>
             <div class="row icon-box" data-aos="zoom-in-right" >
-                <h1>Update Your Account!</h1>
+                <h2>Update Your Account!</h2>
                 <form th:replace="Fragments/Forms :: #updateUser"> </form>
             </div>
                 <hr />
             <div class="section-title" data-aos="zoom-out" >
                 <h2>Reconnect</h2>
-                <p>Your Frequent Flights</p>
+                <p>Your Previous Flights</p>
             </div>
             <div class="row icon-box" data-aos="zoom-in-left">
 
-                <div class="row" style="padding-top: 10px;">
-                    <div class="col-sm-3" th:each="flight : ${reco}"  >
-                        <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
-                            <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
-                            <h2 style="font-size: 1.5em" th:text="${flight.getOriginID()} + ' to ' + ${flight.getDestinationID()}"></h2>
-                            <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
-                                <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
-                                Airline: <span th:text="${flight.getAirline()}"></span></em></p>
-                            <a href="" style="margin-bottom: 10px;" class="btn btn-primary">Book Now</a>&nbsp;&nbsp;
-                        </div>
-
-                    </div>
-                </div>
-                <div th:if="${reco} == 0">
-                    <p>There are currently no recomendation</p>
-                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Departure City</th>
+                        <th scope="col">Destination City</th>
+                        <th scope="col">Airline</th>
+                        <th scope="col">Rebook</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">14/05/2022</th>
+                        <td>Melbourne</td>
+                        <td>Sydney</td>
+                        <td>QANTAS</td>
+                        <td><a href="/#search" class="btn btn-link">Find Similar Flight</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">09/04/2022</th>
+                        <td>Sydney</td>
+                        <td>Melbourne</td>
+                        <td>QANTAS</td>
+                        <td><a href="/#search" class="btn btn-link">Find Similar Flight</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">23/02/2022</th>
+                        <td>Hobart</td>
+                        <td>Newcastle</td>
+                        <td>QANTAS</td>
+                        <td><a href="/#search" class="btn btn-link">Find Similar Flight</a></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-    <div class="section-title" data-aos="zoom-out"  style="margin-top: 25px">
+    <div class="section-title" id="discover" data-aos="zoom-out"  style="margin-top: 25px">
         <h2>Discover</h2>
         <p>Just For You</p>
     </div>
