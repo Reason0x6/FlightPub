@@ -7,17 +7,17 @@
     <div class="container d-flex align-items-center justify-content-between">
 
       <div class="logo">
-        <h1><a href="/"><span class="f">F</span><span style="font-family: 'Poppins', sans-serif;">light Pub</span></a></h1>
+        <h1><a href="/"><span class="f">F</span><span>light <span class="f">P</span>ub</span></a></h1>
 
       </div>
 
-      <nav id="navbar" class="navbar">
+      <nav id="navbar" class="navbar" th:if="${usr} != null">
         <ul th:if="${usr.isLoggedIn()} == false">
           <li><a class="nav-link scrollto " href="/#search">Fights</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
           <li><a class="nav-link scrollto " href="/login">Login/Signup</a></li>
         </ul>
-        <ul th:if="${usr.isLoggedIn()} != false">>
+        <ul th:if="${usr.isLoggedIn()} != false">
           <li><a class="nav-link scrollto " href="/#search">Fights</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
           <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span></a></li>

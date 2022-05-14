@@ -28,4 +28,12 @@ public class UserSession {
         return usr.getFirstname();
     }
 
+    public String getEmail(){
+        return usr.getEmail();
+    }
+    public String getPassword(){
+        return usr.getPassword();
+    }
+
+
 }
