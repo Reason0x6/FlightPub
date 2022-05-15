@@ -29,8 +29,6 @@ public class UserGroup{
         this.adminID = adminID;
     }
 
-
-
     public void addUser(String id){
         if (! userIDs.contains(id)){
             userIDs.add(id);
@@ -42,6 +40,4 @@ public class UserGroup{
             userIDs.remove(id);
         }
     }
-
-
 }
