@@ -3,6 +3,8 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.BasicSearch;
 import com.FlightPub.RequestObjects.LoginRequest;
 import com.FlightPub.RequestObjects.UserSession;
+import com.FlightPub.RequestObjects.SingleStopOver;
+import com.FlightPub.RequestObjects.MultiStopOver;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
