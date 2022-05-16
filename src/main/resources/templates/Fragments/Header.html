@@ -22,6 +22,14 @@
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
           <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span></a></li>
           <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
+          <li class="dropdown">
+                    <a class="nav-link scrollto dropdown-toggle" data-toggle="dropdown" href="/#notification">Notifications
+                      <span class="badge">2</span> </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#" style="font-weight: bold">Booking confirmed</a></li>
+                      <li><a href="#" style="font-weight: bold">New User added to the group</a></li>
+                    </ul>
+          </li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
