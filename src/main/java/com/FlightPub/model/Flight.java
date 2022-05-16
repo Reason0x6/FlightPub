@@ -27,9 +27,7 @@ public class Flight {
     @Setter
     private String destinationID;
 
-
     private Date departure;
-
 
     private Date arrival;
 

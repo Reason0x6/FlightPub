@@ -31,4 +31,13 @@ public class Booking {
     private String bookingStatus;
 
     public Booking() {}
+
+    public Booking(String bookingID, String userID, String flightID, List<String> bookedSeats, String bookingStatus){
+
+        this.bookingID = bookingID;
+        this.userID = userID;
+        this.flightID = flightID;
+        this.bookedSeats = bookedSeats;
+        this.bookingStatus = bookingStatus;
+    }
 }
