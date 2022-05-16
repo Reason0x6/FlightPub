@@ -15,12 +15,10 @@ public class FlightServices{
 
     private FlightRepo flightRepo;
 
-
     @Autowired
     public FlightServices(FlightRepo flightRepository) {
         this.flightRepo = flightRepository;
     }
-
 
     public List<Flight> listAll(){
         List<Flight> flights = new ArrayList<>();
@@ -32,7 +30,6 @@ public class FlightServices{
         return flightRepo.findById(id).orElse(null);
     }
 
-
     public void saveOrUpdate(Flight toUpdate){
         flightRepo.save(toUpdate);
     }
@@ -40,9 +37,10 @@ public class FlightServices{
 
     public void delete(String id){}
 
-    public List<Flight> getByDesination(String dest) {
+    public List<Flight> getByDestination(String dest) {
+
         // Query defined in flightRepo
-       return flightRepo.findByDesitination(dest);
+       return flightRepo.findByDestination(dest);
     }
 
     public List<Flight> getByOrigin(String dep) {

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<!--Login Search--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="login" th:action="@{/login}" th:object="${LoginRequest}" method="post">
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -15,7 +14,7 @@
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-<!--Basic Search--------------------------------------------------------------------------------------------------------------------------------------->
+
 <form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
     <input type="text" id="origin" name="originIn" placeholder="Fly From">
     <input type="text" id="destination" name="destinationIn" placeholder="Fly To">
@@ -74,6 +73,85 @@
                 document.getElementById("end").value = "";
                 document.getElementById("startLabel").innerHTML = "Earliest Flight Date";
                 document.getElementById("endLabel").innerHTML = "Latest Flight Date";
+            }
+        }
+    </script>
+</form>
+
+<form id="registerUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
+    <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
+    <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>
+    <input type="text" id="address" class="form-control" name="address" placeholder="Address"><br>
+
+    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
+    <select name="prefAirport" id="prefAirport" class="form-control">
+        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    </select><br>
+
+    <input type="password" id="password" class="form-control" name="password" placeholder="Password"><br>
+    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Confirm Password"><br>
+    <button type="submit" class="btn btn-primary btn-search">Create Account!</button>
+
+    <script>
+       function validateRegister() {
+            let f =  document.forms["registerUser"];
+            let x = true;
+
+             if(f["email"].value == ""){ x = false; }
+             if(f["firstname"].value == ""){ x = false; }
+             if(f["address"].value == ""){ x = false; }
+             if(f["password"].value == ""){ x = false; }
+             if(f["confirmpassword"].value == ""){ x = false; }
+
+              if (x == "") {
+                alert("Please fill in all fields");
+                return false;
+              }
+              else if(!(f["password"].value === f["confirmpassword"].value)){
+                alert("Passwords do not match");
+                return false;
+              }
+              else{
+                return true;
+              }
+        }
+    </script>
+</form>
+
+<!--REGIESTER USER--------------------------------------------------------------------------------------------------------------------------------------->
+<form id="updateUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
+    <input type="email" id="email" class="form-control" name="email" th:value="${usr.getEmail()}"><br>
+    <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
+
+    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
+    <select name="prefAirport" id="prefAirport" class="form-control">
+        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    </select><br>
+
+    <input type="password" id="password" class="form-control" name="password" placeholder="Password"  th:value="${usr.getPassword()}"><br>
+    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" th:value="${usr.getPassword()}"><br>
+    <button type="submit" class="btn btn-primary btn-search">Update Account!</button>
+
+    <script>
+        function validateRegister() {
+            let f =  document.forms["registerUser"];
+            let x = true;
+
+            if(f["email"].value == ""){ x = false; }
+            if(f["firstname"].value == ""){ x = false; }
+            if(f["password"].value == ""){ x = false; }
+            if(f["confirmpassword"].value == ""){ x = false; }
+
+            if (x == "") {
+                alert("Please fill in all fields");
+                return false;
+            }
+            else if(!(f["password"].value === f["confirmpassword"].value)){
+                alert("Passwords do not match");
+                return false;
+            }
+            else{
+                return true;
             }
         }
     </script>
@@ -159,7 +237,7 @@
     <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>
     <input type="text" id="address" class="form-control" name="address" placeholder="Address"><br>
 
-    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
+    <label id="airportlbl" class="form-label" name="airportlbl" >Preffered Airport</label><br>
     <select name="prefAirport" id="prefAirport" class="form-control">
         <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
     </select><br>
@@ -190,70 +268,6 @@
               else{
                 return true;
               }
-        }
-    </script>
-</form>
-
-
-<form id="updateUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
-    <div class="row">
-        <div class="col-md-3">
-            <label id="emaillbl" class="form-label" name="emaillbl" >Contact Email</label><br>
-            <input type="email" id="email" class="form-control" name="email" th:value="${usr.getEmail()}"><br>
-        </div>
-        <div class="col-md-3">
-            <label id="emaillbl" class="form-label" name="emaillbl" >First Name</label><br>
-            <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
-        </div>
-    </div><hr />
-    <div class="row">
-        <div class="col-md-3">
-            <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
-            <select name="prefAirport" id="prefAirport" class="form-control">
-                <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
-            </select><br>
-        </div>
-        <div class="col-md-3">
-            <label id="passlbl" class="form-label" name="passlbl" >Password</label><br>
-            <input type="password" id="password" class="form-control" name="password" placeholder="Password"  th:value="${usr.getPassword()}"><br>
-        </div>
-        <div class="col-md-3">
-            <label id="conpasslbl" class="form-label" name="conpasslbl" >Confirm Password</label><br>
-            <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" th:value="${usr.getPassword()}"><br>
-        </div>
-        <div class="col-md-2"><br>
-            <button type="submit" class="btn btn-primary btn-search">Update Account!</button>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-    <script>
-        function validateRegister() {
-            let f =  document.forms["registerUser"];
-            let x = true;
-
-            if(f["email"].value == ""){ x = false; }
-            if(f["firstname"].value == ""){ x = false; }
-            if(f["password"].value == ""){ x = false; }
-            if(f["confirmpassword"].value == ""){ x = false; }
-
-            if (x == "") {
-                alert("Please fill in all fields");
-                return false;
-            }
-            else if(!(f["password"].value === f["confirmpassword"].value)){
-                alert("Passwords do not match");
-                return false;
-            }
-            else{
-                return true;
-            }
         }
     </script>
 </form>

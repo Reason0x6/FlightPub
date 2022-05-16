@@ -11,7 +11,7 @@ import java.util.List;
 public interface FlightRepo extends MongoRepository<Flight, String> {
 
     @Query(value="{ 'destinationID' : ?0 }", fields="{ 'destination' : 1 }")
-    List<Flight> findByDesitination(String dest);
+    List<Flight> findByDestination(String dest);
 
     @Query(value="{ 'originID' : ?0 }", fields="{ 'originID' : 1 }")
     List<Flight> findByOrigin(String origin);

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service("LocationServices")
 public class LocationServices {
-        private final LocationRepo locationRepo;
+    private final LocationRepo locationRepo;
 
     @Autowired
     public LocationServices(LocationRepo locationRepository) {
@@ -54,4 +54,3 @@ public class LocationServices {
         return null;
     }
 }
-
