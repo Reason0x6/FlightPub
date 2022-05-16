@@ -52,18 +52,7 @@ public class IndexController {
     @RequestMapping("/")
     public String loadIndex(Model model, HttpSession session) {
 
-        // Get server time for flight date pickers
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String today = dateFormat.format(date);
-
-        // get server time + 1 year for current max future booking date
-        model.addAttribute("today", today); // Temp/placeholder
-        cal.add(Calendar.YEAR, 1);
-        date = cal.getTime();
-        String max = dateFormat.format(date);
-        model.addAttribute("max", max);
+        model = addDateAndTimeToModel(model);
 
         model.addAttribute("usr", getSession(session));
 
@@ -164,10 +153,14 @@ public class IndexController {
     {
         model = addDateAndTimeToModel(model);
         List<Flight> flights;
+        List<SingleStopOver> flights1Stop;
+        List<MultiStopOver> flights2Stop;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
             flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
+            // flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
+            // flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
         } catch (Exception e) {
             e.printStackTrace();
             return "index";
