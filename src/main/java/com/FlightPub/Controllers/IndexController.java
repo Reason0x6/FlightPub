@@ -1,8 +1,6 @@
 package com.FlightPub.Controllers;
 
-import com.FlightPub.RequestObjects.BasicSearch;
-import com.FlightPub.RequestObjects.LoginRequest;
-import com.FlightPub.RequestObjects.UserSession;
+import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
@@ -115,10 +113,14 @@ public class IndexController {
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
         model = addDateAndTimeToModel(model);
         List<Flight> flights;
+        List<SingleStopOver> flights1Stop;
+        List<MultiStopOver> flights2Stop;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
-           flights =  search.runBasicSearch(search.getStart(), search.getEnd());
+           flights = search.runBasicSearch(search.getStart(), search.getEnd(), false);
+           flights1Stop = search.basicSingleStopSearch();
+           flights2Stop = search.basicMultiStopSearch();
         }catch (Exception e){
             e.printStackTrace();
             return "index";
@@ -126,6 +128,8 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
+        model.addAttribute("flightsSingleStop" , flights1Stop);
+        model.addAttribute("flightsMultiStop" , flights2Stop);
 
         model.addAttribute("usr", getSession(session));
         return "search";
@@ -210,7 +214,7 @@ public class IndexController {
 
             // Find flights that are going from current location to popular location
             try {
-                List<Flight> recommendSearch = search.runBasicSearch(today, max);
+                List<Flight> recommendSearch = search.runBasicSearch(today, max, false);
                 // If at least one flight was found add first flight to recommendation list
                 if(!recommendSearch.isEmpty()) {
                     recommendedFlights.add(recommendSearch.get(0));

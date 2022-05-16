@@ -27,10 +27,12 @@ public class Flight {
     @Setter
     private String destinationID;
 
-
+    @Getter
+    @Setter
     private Date departure;
 
-
+    @Getter
+    @Setter
     private Date arrival;
 
     @Getter
@@ -103,4 +105,5 @@ public class Flight {
     public String getDepartureTime(){
         return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
     }
+
 }
