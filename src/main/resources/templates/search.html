@@ -25,6 +25,53 @@
           </div>
         </div>
       </div>
+
+      <hr>
+
+      <div class="card l-1" th:each="flight : ${flightsSingleStop}" style="padding: 10px 0 0 20px;">
+        <div class="row" style="padding-top: 10px;">
+          <div class="col-sm-4">
+            <p><b><span th:text="'Departs ' + ${flight.firstFlight.getOriginID()} + ': '"></span></b><span th:text="${flight.firstFlight.getDepartureTime()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flight.firstFlight.getDestinationID()} + ': '"></span></b><span th:text="${flight.firstFlight.getArrivalTime()}"></span></p>
+            <hr>
+            <p><b><span th:text="'Departs ' + ${flight.secondFlight.getOriginID()} + ': '"></span></b><span th:text="${flight.secondFlight.getDepartureTime()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flight.secondFlight.getDestinationID()} + ': '"></span></b><span th:text="${flight.secondFlight.getArrivalTime()}"></span></p>
+          </div>
+          <div class="col-sm-4">
+            <p><b>Airline: </b><span th:text="${flight.firstFlight.getAirline()}"></span>, <span th:text="${flight.secondFlight.getAirline()}"></span></p>
+            <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.firstFlight.getTicketPrice()+flight.secondFlight.getTicketPrice()}"></span></p>
+          </div>
+          <div class="col-sm-4"  style="padding-top: 10px;">
+            <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
+            <button type="submit" class="btn btn-link">Bookmark</button>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="card l-1" th:each="flight : ${flightsMultiStop}" style="padding: 10px 0 0 20px;">
+        <div class="row" style="padding-top: 10px;">
+          <div class="col-sm-4">
+            <p><b><span th:text="'Departs ' + ${flight.firstFlight.getOriginID()} + ': '"></span></b><span th:text="${flight.firstFlight.getDepartureTime()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flight.firstFlight.getDestinationID()} + ': '"></span></b><span th:text="${flight.firstFlight.getArrivalTime()}"></span></p>
+            <hr>
+            <p><b><span th:text="'Departs ' + ${flight.secondFlight.getOriginID()} + ': '"></span></b><span th:text="${flight.secondFlight.getDepartureTime()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flight.secondFlight.getDestinationID()} + ': '"></span></b><span th:text="${flight.secondFlight.getArrivalTime()}"></span></p>
+            <hr>
+            <p><b><span th:text="'Departs ' + ${flight.thirdFlight.getOriginID()} + ': '"></span></b><span th:text="${flight.thirdFlight.getDepartureTime()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flight.thirdFlight.getDestinationID()} + ': '"></span></b><span th:text="${flight.thirdFlight.getArrivalTime()}"></span></p>
+          </div>
+          <div class="col-sm-4">
+            <p><b>Airline: </b><span th:text="${flight.firstFlight.getAirline()}"></span>, <span th:text="${flight.secondFlight.getAirline()}"></span>, <span th:text="${flight.thirdFlight.getAirline()}"></span></p>
+            <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.firstFlight.getTicketPrice()+flight.secondFlight.getTicketPrice()+flight.thirdFlight.getTicketPrice()}"></span></p>
+          </div>
+          <div class="col-sm-4"  style="padding-top: 10px;">
+            <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
+            <button type="submit" class="btn btn-link">Bookmark</button>
+          </div>
+        </div>
+      </div>
       <div th:if="${flights.size()} == 0">
         <p>There are currently no flights that match this search</p>
       </div>

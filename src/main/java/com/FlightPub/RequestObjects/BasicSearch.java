@@ -81,21 +81,25 @@ public class BasicSearch {
         this.destinationIn = destination;
     }
 
+    // Links associated Flight service
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
         this.flightServices = flightService;
     }
 
+    // Links associated location service
     @Autowired
     @Qualifier(value = "LocationServices")
     public void setLocationServices(LocationServices locRepo) {
         this.locService = locRepo;
     }
 
+    // Default constructor
     public BasicSearch(){}
 
-    public List<Flight> runBasicSearch(String start, String end) throws ParseException {
+    // Returns a flight of flights accoridng to the basic search
+    public List<Flight> runBasicSearch(String start, String end, boolean stopover) throws ParseException {
         Date dstart = new SimpleDateFormat("yyyy-MM-dd").parse(start);
         Date dend = null;
 
@@ -109,28 +113,106 @@ public class BasicSearch {
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = locService.findByLocation(destinationIn);
 
-        if(this.isSearchByArrival() == false)
-        {
-            // Performs Search where all parameters are known
-            if (originObj != null && destinationObj != null) {
-                return flightServices.getByOriginAndDestination(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
+        if(originObj != null) {
+            if (this.isSearchByArrival() == false) {
+                // Performs Search where all parameters are known
+                if (destinationObj != null && stopover == false) {
+                    return flightServices.getByOriginAndDestination(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
+                }
+                // Performs Search where destination is not known
+                else if (destinationObj == null || stopover == true)
+                    return flightServices.getByOrigin(originObj.getLocationID(), dstart, dend);
+
+            } else if (this.isSearchByArrival() == true) {
+                // Performs Search where all parameters are known
+                if (destinationObj != null && stopover == false) {
+                    return flightServices.getByOriginAndDestinationAndArrivalTimes(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
+                }
+                // Performs Search where destination is not known
+                else if (destinationObj == null || stopover == true)
+                    return flightServices.getByOriginAndArrivalTimes(originObj.getLocationID(), dstart, dend);
             }
-            // Performs Search where destination is not known
-            else if(originObj != null && destinationObj == null)
-                return flightServices.getByOrigin(originObj.getLocationID(), dstart, dend);
-        }else if(this.isSearchByArrival() == true)
-        {
-            // Performs Search where all parameters are known
-            if (originObj != null && destinationObj != null) {
-                return flightServices.getByOriginAndDestinationAndArrivalTimes(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
-            }
-            // Performs Search where destination is not known
-            else if(originObj != null && destinationObj == null)
-                return flightServices.getByOriginAndArrivalTimes(originObj.getLocationID(), dstart, dend);
         }
         return flightServices.getByOriginAndDestination(originIn, destinationIn, dstart, dend);
     }
 
+    // Returns a list of flights from the basic search that include a single stop over
+    public List<SingleStopOver> basicSingleStopSearch() throws ParseException{
+        List<Flight> firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
+        List<SingleStopOver> outputFlights = new ArrayList<>();   // Stores the singe stop over flights
+        List<Flight> allFlights = flightServices.listAll();     // returns all flights in the database
+
+        for(Flight firstFlight : firstFlights) {
+            for(Flight secondFlight : allFlights) {
+                if(firstFlight.getDestinationID().equals(secondFlight.getOriginID()) && !firstFlight.getOriginID().equals(secondFlight.getDestinationID())) {
+                    if(destinationIn != null && !destinationIn.equals("")) {
+                        Location finalDestination = locService.findByLocation(destinationIn);
+                        if(finalDestination == null || !secondFlight.getDestinationID().equals(finalDestination.getLocationID())) {
+                            continue;
+                        }
+                    }
+                    if(isSuitableTiming(firstFlight, secondFlight) == true) {
+                        outputFlights.add(new SingleStopOver(firstFlight, secondFlight));
+                    }
+                }
+            }
+        }
+        return outputFlights;
+    }
+
+    // Returns a list of flights from the basic search that include 2 stop overs
+    public List<MultiStopOver> basicMultiStopSearch() throws ParseException{
+        List<Flight> firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
+        List<MultiStopOver> outputFlights = new ArrayList<>();   // Stores the singe stop over flights
+        List<Flight> allFlights = flightServices.listAll();     // returns all flights in the database
+
+        for(Flight firstFlight : firstFlights) {
+            for(Flight secondFlight : allFlights) {
+                if(firstFlight.getDestinationID().equals(secondFlight.getOriginID()) && !firstFlight.getOriginID().equals(secondFlight.getDestinationID())) {
+                    if(destinationIn != null && !destinationIn.equals("")) {
+                        if(locService.findByLocation(destinationIn) == null) {
+                            continue;
+                        }
+                    }
+                    if(isSuitableTiming(firstFlight, secondFlight) == true) {
+                        for(Flight thirdFlight : allFlights) {
+                            if(secondFlight.getDestinationID().equals(thirdFlight.getOriginID()) && !firstFlight.getOriginID().equals(thirdFlight.getDestinationID())) {
+                                if(destinationIn != null && !destinationIn.equals("")) {
+                                    Location finalDestination = locService.findByLocation(destinationIn);
+                                    if(finalDestination == null || !thirdFlight.getDestinationID().equals(finalDestination.getLocationID())) {
+                                        continue;
+                                    }
+                                }
+                                if(isSuitableTiming(secondFlight, thirdFlight) == true) {
+                                    outputFlights.add(new MultiStopOver(firstFlight, secondFlight, thirdFlight));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return outputFlights;
+    }
+
+    // Determines where a flight would be suitable for a stopover in terms of its timing
+    private boolean isSuitableTiming(Flight first, Flight second) {
+        if(first.getArrival().compareTo(second.getDeparture()) == -1) {
+            if(addBuffer(first.getArrival(), 1).compareTo(second.getDeparture()) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Date addBuffer(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, days);
+        return calendar.getTime();
+    }
+
+    // Converts the provided date to include the time for the end of the day
     private Date endOfDay(Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -139,8 +221,9 @@ public class BasicSearch {
         return calendar.getTime();
     }
 
+    // Extension of the basic search that incorperates specific search parameters and filters
     public List<Flight> runAdvancedSearch(UserAccount user) throws ParseException {
-        List<Flight> flights = this.runBasicSearch(this.start, this.end);
+        List<Flight> flights = this.runBasicSearch(this.start, this.end, false);
         List<Flight> filteredFlights = new ArrayList<>();
 
         Location originObj = locService.findByLocation(originIn);
