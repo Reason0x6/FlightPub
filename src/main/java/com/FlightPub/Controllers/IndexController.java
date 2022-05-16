@@ -153,14 +153,16 @@ public class IndexController {
     {
         model = addDateAndTimeToModel(model);
         List<Flight> flights;
-        List<SingleStopOver> flights1Stop;
-        List<MultiStopOver> flights2Stop;
+        List<SingleStopOver> flights1Stop = null;
+        List<MultiStopOver> flights2Stop = null;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
             flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
-            // flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
-            // flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+            if(search.isDirectFlight() == false) {
+                flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
+                flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "index";
@@ -168,7 +170,8 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
-
+        model.addAttribute("flights1Stop", flights1Stop);
+        model.addAttribute("flights2Stop", flights2Stop);
 
         model.addAttribute("usr", getSession(session));
         return "search";

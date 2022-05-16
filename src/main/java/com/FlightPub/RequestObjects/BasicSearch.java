@@ -229,8 +229,7 @@ public class BasicSearch {
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = locService.findByLocation(destinationIn);
 
-        for(Flight flight : flights)
-        {
+        for(Flight flight : flights) {
             // Removes all indirect flights
             if(this.isDirectFlight()){
                 if(originObj != null && !flight.getOriginID().equals(originObj.getLocationID()))
@@ -254,6 +253,78 @@ public class BasicSearch {
                 continue;
             // Filters flights that are not part of the membership program
             if(this.isMembershipFlights()){
+                // TODO: fliter searches with the associated membership
+            }
+            filteredFlights.add(flight);    // adds the flight if all criteria is satisfied
+        }
+
+        return filteredFlights;
+    }
+
+    // Extension of the basicSingeStopSearch that incorperates specific search parameters and filters
+    public List<SingleStopOver> advancedSingleStopSearch(UserAccount user) throws ParseException {
+        List<SingleStopOver> flights = this.basicSingleStopSearch();
+        List<SingleStopOver> filteredFlights = new ArrayList<>();
+
+        Location originObj = locService.findByLocation(originIn);
+        Location destinationObj = locService.findByLocation(destinationIn);
+
+        for(SingleStopOver flight : flights)
+        {
+            // Filters by price
+            if(minPrice != 0 || maxPrice != 100000){
+                double price = flight.getFirstFlight().getTicketPrice()+flight.getSecondFlight().getTicketPrice();
+                if(minPrice != 0 && minPrice > price)
+                    continue;
+                if(maxPrice != 100000 && maxPrice < price)
+                    continue;
+            }
+            // Filter by rating
+            if(rating != 0 && flight.getFirstFlight().getRating() < rating && flight.getSecondFlight().getRating() < rating)
+                continue;
+            // Filter to the number of seats
+            if(seats > (flight.getFirstFlight().getMaxSeats() - flight.getFirstFlight().getBookedSeats())&& seats > (flight.getSecondFlight().getMaxSeats() - flight.getSecondFlight().getBookedSeats()))
+                continue;
+            // Filters flights that are not part of the membership program
+            if(this.isMembershipFlights()){
+                // TODO: fliter searches with the associated membership
+            }
+            filteredFlights.add(flight);    // adds the flight if all criteria is satisfied
+        }
+
+        return filteredFlights;
+    }
+
+    // Extension of the basic search that incorperates specific search parameters and filters
+    public List<MultiStopOver> advancedMultiStopSearch(UserAccount user) throws ParseException {
+        List<MultiStopOver> flights = this.basicMultiStopSearch();
+        List<MultiStopOver> filteredFlights = new ArrayList<>();
+
+        Location originObj = locService.findByLocation(originIn);
+        Location destinationObj = locService.findByLocation(destinationIn);
+
+        for(MultiStopOver flight : flights)
+        {
+            // Filters by price
+            if(minPrice != 0 || maxPrice != 100000) {
+                double price = flight.getFirstFlight().getTicketPrice()+flight.getSecondFlight().getTicketPrice()+flight.getThirdFlight().getTicketPrice();
+                if(minPrice != 0 && minPrice > price)
+                    continue;
+                if(maxPrice != 100000 && maxPrice < price)
+                    continue;
+            }
+            // Filter by rating
+            if(rating != 0 && flight.getFirstFlight().getRating() < rating && flight.getSecondFlight().getRating() < rating && flight.getThirdFlight().getRating() < rating)
+                continue;
+            // Filter to the number of seats
+            if(seats > (flight.getFirstFlight().getMaxSeats() - flight.getFirstFlight().getBookedSeats()))
+                continue;
+            if(seats > (flight.getSecondFlight().getMaxSeats() - flight.getSecondFlight().getBookedSeats()))
+                continue;
+            if(seats > (flight.getThirdFlight().getMaxSeats() - flight.getThirdFlight().getBookedSeats()))
+                continue;
+            // Filters flights that are not part of the membership program
+            if(this.isMembershipFlights()) {
                 // TODO: fliter searches with the associated membership
             }
             filteredFlights.add(flight);    // adds the flight if all criteria is satisfied
