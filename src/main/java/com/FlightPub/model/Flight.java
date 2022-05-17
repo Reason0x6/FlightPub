@@ -103,6 +103,6 @@ public class Flight {
         return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
     }
     public String getDepartureTime(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
+        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departure);
     }
 }

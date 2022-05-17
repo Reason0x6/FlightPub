@@ -29,6 +29,7 @@
                     padding: 10px;
                 }
             </style>
+
             <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
                 <h2>Hey There</h2>
                 <p th:text="'Welcome back ' + ${usr.getFirstname()}"></p>
@@ -37,48 +38,89 @@
                 <h2>Update Your Account!</h2>
                 <form th:replace="Fragments/Forms :: #updateUser"> </form>
             </div>
-                <hr />
-            <div class="section-title" data-aos="zoom-out" >
-                <h2>Reconnect</h2>
-                <p>Your Previous Flights</p>
-            </div>
-            <div class="row icon-box" data-aos="zoom-in-left">
+                <hr /><Br><Br>
+            <div class="row">
+                <div class="col-md-6" style="padding-left: 20px; ">
+                    <div class="section-title" data-aos="zoom-out" >
+                        <h2>Reconnect</h2>
+                        <p>Your Previous Flights</p>
+                    </div>
+                    <div class="card l-1" data-aos="zoom-in-left">
 
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Departure City</th>
-                        <th scope="col">Destination City</th>
-                        <th scope="col">Airline</th>
-                        <th scope="col">Rebook</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">14/05/2022</th>
-                        <td>Melbourne</td>
-                        <td>Sydney</td>
-                        <td>QANTAS</td>
-                        <td><a href="/#search" class="btn btn-link">Find Similar Flight</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">09/04/2022</th>
-                        <td>Sydney</td>
-                        <td>Melbourne</td>
-                        <td>QANTAS</td>
-                        <td><a href="/#search" class="btn btn-link">Find Similar Flight</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">23/02/2022</th>
-                        <td>Hobart</td>
-                        <td>Newcastle</td>
-                        <td>QANTAS</td>
-                        <td><a href="/#search" class="btn btn-link">Find Similar Flight</a></td>
-                    </tr>
-                    </tbody>
-                </table>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Dep. City</th>
+                                <th scope="col">Dest. City</th>
+                                <th scope="col">Airline</th>
+                                <th scope="col">Rebook</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">14/05/2022</th>
+                                <td>Melbourne</td>
+                                <td>Sydney</td>
+                                <td>QANTAS</td>
+                                <td><a href="/#search" class="btn btn-link">Find Similar</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">09/04/2022</th>
+                                <td>Sydney</td>
+                                <td>Melbourne</td>
+                                <td>QANTAS</td>
+                                <td><a href="/#search" class="btn btn-link">Find Similar</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">23/02/2022</th>
+                                <td>Hobart</td>
+                                <td>Newcastle</td>
+                                <td>QANTAS</td>
+                                <td><a href="/#search" class="btn btn-link">Find Similar</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6" style="padding-left: 20px;" id="groups">
+                    <div class="section-title" data-aos="zoom-out" >
+                        <h2>Sharing is Caring</h2>
+                        <p>Your Groups</p>
+                    </div>
+                    <div class="card l-1" data-aos="zoom-in-left">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Capacity</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">View</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">5/20</th>
+                                <td>Family Get Away</td>
+                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11/20</th>
+                                <td>Jason's Batchelor Party</td>
+                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">20/20</th>
+                                <td>IT Department</td>
+                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+
+    <hr />
     <div class="section-title" id="discover" data-aos="zoom-out"  style="margin-top: 25px">
         <h2>Discover</h2>
         <p>Just For You</p>

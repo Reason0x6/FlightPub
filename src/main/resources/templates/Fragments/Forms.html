@@ -120,17 +120,28 @@
 
 <!--REGIESTER USER--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="updateUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
-    <input type="email" id="email" class="form-control" name="email" th:value="${usr.getEmail()}"><br>
-    <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
+    <div class="row">
+        <div class="col-md-4">
+            <label id="emaillbl" class="form-label" name="airportlbl" >Email</label><br>
+            <input type="email" id="email" class="form-control" name="email" th:value="${usr.getEmail()}"><br>
+            <label id="namelbl" class="form-label" name="airportlbl" >First Name</label><br>
+            <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
+        </div>
+        <div class="col-md-4">
+            <label id="passwordlbl" class="form-label" name="airportlbl" >Password</label><br>
+            <input type="password" id="password" class="form-control" name="password" placeholder="Password"  ><br>
+            <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" ><br>
+        </div>
+        <div class="col-md-4">
+            <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
+            <select name="prefAirport" id="prefAirport" class="form-control">
+                <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+            </select><br><button type="submit" class="btn btn-primary btn-search">Update Account!</button>
+        </div>
 
-    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
-    <select name="prefAirport" id="prefAirport" class="form-control">
-        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
-    </select><br>
+    </div>
 
-    <input type="password" id="password" class="form-control" name="password" placeholder="Password"  th:value="${usr.getPassword()}"><br>
-    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" th:value="${usr.getPassword()}"><br>
-    <button type="submit" class="btn btn-primary btn-search">Update Account!</button>
+
 
     <script>
         function validateRegister() {
@@ -158,38 +169,67 @@
 </form>
 <!--Advanced Search--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="advancedSearch" th:action="@{/advancedSearch}" th:object="${BasicSearch}" method="post">
-    <input type="text" id="flightOrigin" name="originIn" placeholder="Fly From">
-    <input type="text" id="flightDestination" name="destinationIn" placeholder="Fly To">
-    <label for="earliest" id="earliestLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
-    <input type="date" id="earliest" name="start"
-           th:value="${today}"
-           th:min="${today}" th:max="${max}">
-    <label for="earliest" id="latestLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
-    <input type="date" id="latest" name="end"
-           th:value="${today}"
-           th:min="${today}" th:max="${max}">
-    <label for="min">Price</label>
-    <input type="number" id="min" name="minPrice" placeholder="Min" value="0" min="0" max="100000">
-    <input type="number" id="max" name="maxPrice" placeholder="Max" value="100000" min="0" max="100000">
-    <label for="directFlight">Direct flight Only</label>
-    <input type="checkbox" name="directFlight" id="directFlight">
-    <label for="rating">Minimum Ratings</label>
-    <output>0</output>
-    <input type="range" id="rating" name="rating" min="0" max="5" value="0" oninput="this.previousElementSibling.value = this.value">
-    <label for="seats">Number of Seats</label>
-    <input type="number" id="seats" name="seats" min="1" value="1">
-    <label for="membership" th:if="${usr.isLoggedIn()} == true">Membership Flights</label>
-    <input type="checkbox" id="membership" name="membershipFlights" th:if="${usr.isLoggedIn()} == true">
+    <div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" id="flightOrigin" class="form-control" name="originIn" placeholder="Fly From"><br>
+            <input type="text" id="flightDestination" class="form-control" name="destinationIn" placeholder="Fly To"><br>
+        </div>
+        <div class="col-md-4">
+            <label for="earliest" id="earliestLabel" class="form-label"  style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
+            <input type="date" id="earliest" class="form-control" name="start"
+                   th:value="${today}"
+                   th:min="${today}" th:max="${max}"><br>
+            <label for="earliest" id="latestLabel" class="form-label"  style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
+            <input type="date" id="latest" class="form-control" name="end"
+                   th:value="${today}"
+                   th:min="${today}" th:max="${max}"><br>
+        </div>
+        <div class="col-md-4">
+        </div><hr>
 
-    <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button><br>
+        <div class="col-md-4">
+            <label for="maxPrice" class="form-label">Max-Price</label>
+            <br>
+            <input type="number" id="maxPrice" class="form-control" name="maxPrice" placeholder="Max" value="12000" min="0" max="12000"><br>
+        </div>
+        <div class="col-md-4">
 
-    <input type="checkbox" name="nodest" id="nodestAdvanced" style="width: 50px;"  onclick="allDest()">
-    <label for="nodestAdvanced">Show all destinations</label>
-    <input type="checkbox" name="exactdate" id="exactdateAdvanced" style="width: 50px;" onclick="adjustDate()">
-    <label for="exactdateAdvanced">Use Exact Date</label>
-    <input type="checkbox" name="searchByArrival" id="searchByArrivalAdvanced" style="width: 50px;" onclick="adjustDate()">
-    <label for="searchByArrivalAdvanced">Search by Arrival Times</label>
+            <label for="seats" class="form-label">Number of Seats</label>
+            <input type="number" id="seats" class="form-control" name="seats" min="1" value="1"><br><br>
 
+
+
+        </div>
+        <div class="col-md-4">
+            <label for="rating" class="form-label">Minimum Ratings
+            </label>&nbsp;
+            <output>
+                0</output><br>
+            <input type="range" id="rating" class="form-control" name="rating" min="0" max="5" value="0" oninput="this.previousElementSibling.value = this.value"><br>
+        </div><hr>
+
+
+
+        <div class="col-md-8">
+            <input type="checkbox" name="nodest" id="nodestAdvanced" style="width: 50px;" onclick="allDest()">
+            <label for="nodestAdvanced" class="form-label">Show all destinations</label>
+            <input type="checkbox" name="exactdate" id="exactdateAdvanced" style="width: 50px;" onclick="adjustDate()">
+            <label for="exactdateAdvanced" class="form-label">Use Exact Date</label>
+
+            <input type="checkbox" name="directFlight" id="directFlight" style="width: 50px;" o="">
+            <label for="directFlight" class="form-label">Direct flight Only</label>
+
+            <input type="checkbox" name="searchByArrival" id="searchByArrivalAdvanced" style="width: 50px;" onclick="adjustDate()">
+            <label for="searchByArrivalAdvanced" class="form-label">Search by Arrival Times</label>
+
+        </div>
+        <div class="col-md-4">
+            <button style="margin-top: -5px" type="submit" class="btn btn-primary btn-search">Find Flights!</button>
+        </div>
+        <br>
+    </div>
+    </div>
     <script>
         function allDest(){
 
