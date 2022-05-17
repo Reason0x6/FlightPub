@@ -120,17 +120,28 @@
 
 <!--REGIESTER USER--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="updateUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
-    <input type="email" id="email" class="form-control" name="email" th:value="${usr.getEmail()}"><br>
-    <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
+    <div class="row">
+        <div class="col-md-4">
+            <label id="emaillbl" class="form-label" name="airportlbl" >Email</label><br>
+            <input type="email" id="email" class="form-control" name="email" th:value="${usr.getEmail()}"><br>
+            <label id="namelbl" class="form-label" name="airportlbl" >First Name</label><br>
+            <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
+        </div>
+        <div class="col-md-4">
+            <label id="passwordlbl" class="form-label" name="airportlbl" >Password</label><br>
+            <input type="password" id="password" class="form-control" name="password" placeholder="Password"  ><br>
+            <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" ><br>
+        </div>
+        <div class="col-md-4">
+            <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
+            <select name="prefAirport" id="prefAirport" class="form-control">
+                <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+            </select><br><button type="submit" class="btn btn-primary btn-search">Update Account!</button>
+        </div>
 
-    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
-    <select name="prefAirport" id="prefAirport" class="form-control">
-        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
-    </select><br>
+    </div>
 
-    <input type="password" id="password" class="form-control" name="password" placeholder="Password"  th:value="${usr.getPassword()}"><br>
-    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" th:value="${usr.getPassword()}"><br>
-    <button type="submit" class="btn btn-primary btn-search">Update Account!</button>
+
 
     <script>
         function validateRegister() {

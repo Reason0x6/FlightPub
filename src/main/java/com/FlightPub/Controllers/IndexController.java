@@ -126,11 +126,24 @@ public class IndexController {
 
     @RequestMapping("/account")
     public String account(Model model, HttpSession session){
-
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
         model.addAttribute("reco", getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "Personalised";
+    }
+
+    @RequestMapping("/groups")
+    public String group(Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        model.addAttribute("reco", getRecommendation());
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("usr", getSession(session));
+        return "Group";
     }
 
     @PostMapping("/advancedSearch")
