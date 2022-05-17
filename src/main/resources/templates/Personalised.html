@@ -135,14 +135,19 @@
                     <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
                         <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
                         Airline: <span th:text="${flight.getAirline()}"></span></em></p>
-                    <a href="" style="margin-bottom: 10px;" class="btn btn-primary">Book Now</a>&nbsp;&nbsp;
+                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-link">Quick Book</a><br><br>
                 </div>
 
-            </div>
+
+
         </div>
         <div th:if="${reco} == 0">
             <p>There are currently no recomendation</p>
         </div>
+            <br>
+            <em style="font-size: 0.7em">What is 'Quick Book'? Flights that are similar to your regular bookings can be booked & paid for in one click, when you are using your regular device.</em>
     </div>
 
             <hr />
