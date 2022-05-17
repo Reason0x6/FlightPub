@@ -38,7 +38,7 @@ public class BasicSearch {
 
     @Getter
     @Setter
-    private double minPrice;
+    private double minPrice = 0;
 
     @Getter
     @Setter

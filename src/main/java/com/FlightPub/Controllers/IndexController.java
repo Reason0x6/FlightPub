@@ -244,7 +244,7 @@ public class IndexController {
             }
 
             // Once 3 recommended flights have been found break for loop
-            if (recommendedFlights.size() == 3) {
+            if (recommendedFlights.size() == 4) {
                 break;
             }
         }
