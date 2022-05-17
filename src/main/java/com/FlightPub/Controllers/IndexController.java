@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
@@ -122,6 +123,20 @@ public class IndexController {
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "Personalised";
+    }
+
+    @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
+    public String addLoc(@RequestParam String id, Model model, HttpSession session){
+
+        Flight f = flightServices.getById(id);
+
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
+        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+
+        model.addAttribute("Flight", f);
+        model.addAttribute("usr", getSession(session));
+
+        return "Flight";
     }
 
     @RequestMapping("/groups")
