@@ -20,6 +20,7 @@
         <ul th:if="${usr.isLoggedIn()} != false">
           <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a class="nav-link scrollto" href="/account#groups">Groups</a></li>
           <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span></a></li>
           <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
            <li class="dropdown">
