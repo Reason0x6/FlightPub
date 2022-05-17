@@ -108,7 +108,7 @@
               <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
                 <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
                 Airline: <span th:text="${flight.getAirline()}"></span></em></p>
-              <a href="" style="margin-bottom: 10px;" class="btn btn-primary">Book Now</a>&nbsp;&nbsp;
+              <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
             </div>
 
           </div>
