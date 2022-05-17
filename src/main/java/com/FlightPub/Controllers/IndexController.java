@@ -3,6 +3,8 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.BasicSearch;
 import com.FlightPub.RequestObjects.LoginRequest;
 import com.FlightPub.RequestObjects.UserSession;
+import com.FlightPub.RequestObjects.SingleStopOver;
+import com.FlightPub.RequestObjects.MultiStopOver;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
@@ -50,18 +52,7 @@ public class IndexController {
     @RequestMapping("/")
     public String loadIndex(Model model, HttpSession session) {
 
-        // Get server time for flight date pickers
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String today = dateFormat.format(date);
-
-        // get server time + 1 year for current max future booking date
-        model.addAttribute("today", today); // Temp/placeholder
-        cal.add(Calendar.YEAR, 1);
-        date = cal.getTime();
-        String max = dateFormat.format(date);
-        model.addAttribute("max", max);
+        model = addDateAndTimeToModel(model);
 
         model.addAttribute("usr", getSession(session));
 
@@ -119,8 +110,6 @@ public class IndexController {
             model.addAttribute("valid", false);
         }
 
-
-
         return "login";
     }
 
@@ -146,33 +135,48 @@ public class IndexController {
         return "Group";
     }
 
-    @PostMapping("/advancedSearch")
-    public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session)
-    {
+   
+    @PostMapping("/search")
+    public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
         model = addDateAndTimeToModel(model);
         List<Flight> flights;
+        List<SingleStopOver> flights1Stop;
+        List<MultiStopOver> flights2Stop;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
-            flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
-        } catch (Exception e) {
+           flights = search.runBasicSearch(search.getStart(), search.getEnd(), false);
+           flights1Stop = search.basicSingleStopSearch();
+           flights2Stop = search.basicMultiStopSearch();
+        }catch (Exception e){
             e.printStackTrace();
             return "index";
         }
 
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
+        model.addAttribute("flightsSingleStop" , flights1Stop);
+        model.addAttribute("flightsMultiStop" , flights2Stop);
+
         model.addAttribute("usr", getSession(session));
         return "search";
     }
-    @PostMapping("/search")
-    public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
+
+    @PostMapping("/advancedSearch")
+    public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session)
+    {
+        model = addDateAndTimeToModel(model);
         List<Flight> flights;
+        List<SingleStopOver> flights1Stop;
+        List<MultiStopOver> flights2Stop;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
-            flights =  search.runBasicSearch(search.getStart(), search.getEnd());
-        }catch (Exception e){
+            flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
+            // flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
+            // flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+        } catch (Exception e) {
+            e.printStackTrace();
             return "index";
         }
 
@@ -244,7 +248,7 @@ public class IndexController {
 
             // Find flights that are going from current location to popular location
             try {
-                List<Flight> recommendSearch = search.runBasicSearch(today, max);
+                List<Flight> recommendSearch = search.runBasicSearch(today, max, false);
                 // If at least one flight was found add first flight to recommendation list
                 if(!recommendSearch.isEmpty()) {
                     recommendedFlights.add(recommendSearch.get(0));
@@ -268,6 +272,7 @@ public class IndexController {
 
         return recommendedFlights;
     }
+
     private Model addDateAndTimeToModel(Model model) {
         // Get server time for flight date pickers
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
