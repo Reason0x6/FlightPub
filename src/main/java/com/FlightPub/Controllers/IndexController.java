@@ -77,6 +77,15 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
         return "login";
     }
+    
+    @RequestMapping("/booking")
+    public String booking(Model model){
+        return "booking";
+    }
+    @RequestMapping("/newuser")
+    public String user(Model model){
+        return "newuser";
+    }
 
     @RequestMapping("/Register")
     public String loadRegister(Model model, HttpSession session){
