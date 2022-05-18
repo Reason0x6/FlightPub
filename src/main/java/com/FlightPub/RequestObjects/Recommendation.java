@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Recommendation {
-    @Getter
     @Setter
     private String recommendationLocation;
     @Setter
@@ -101,5 +100,12 @@ public class Recommendation {
         }
 
         return recommendedFlights;
+    }
+
+    public String getRecommendationLocation() {
+        if(recommendationLocation == null) {
+            recommendationLocation = locationServices.mostPopular().getLocationID();
+        }
+        return recommendationLocation;
     }
 }

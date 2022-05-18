@@ -58,6 +58,7 @@ public class IndexController {
         recommendation.setFlightServices(flightServices);
         recommendation.setLocationServices(locationServices);
         model.addAttribute("reco", recommendation.getRecommendation());
+        model.addAttribute("currentLocation", recommendation.getRecommendationLocation());
 
         return "index";
     }

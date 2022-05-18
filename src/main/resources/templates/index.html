@@ -102,7 +102,11 @@
           <!-- Recommendation location select dropdown -->
           <form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
               <select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
-                  <option th:each="location : ${recommendationLocation}" th:value="${location.locationID}" th:text="${location.locationID} + ' - ' + ${location.location}"></option>
+                  <option
+                          th:each="location : ${recommendationLocation}"
+                          th:value="${location.locationID}"
+                          th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
+                  </option>
               </select>
           </form>
 
