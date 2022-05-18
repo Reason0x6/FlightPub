@@ -55,9 +55,9 @@ public class IndexController {
 
         model.addAttribute("recommendationLocation", locationServices.listAll());
         // getRecommendation();
-        model.addAttribute("reco", getRecommendation());
-
-        System.out.println(recommendation.getRecommendationLocation());
+        recommendation.setFlightServices(flightServices);
+        recommendation.setLocationServices(locationServices);
+        model.addAttribute("reco", recommendation.getRecommendation());
 
         return "index";
     }
@@ -118,7 +118,8 @@ public class IndexController {
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
-        model.addAttribute("reco", getRecommendation());
+
+        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "Personalised";
@@ -143,7 +144,7 @@ public class IndexController {
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
-        model.addAttribute("reco", getRecommendation());
+        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "Group";
@@ -217,74 +218,6 @@ public class IndexController {
         }
 
         return sessionUser;
-    }
-
-    private List<Flight> getRecommendation() {
-        // TODO If a user is logged in get their preferred location
-        // Set current location
-        Location currentLocation = locationServices.getById("SYD");
-
-        // If no current location is found in database
-        if (currentLocation == null) {
-            System.err.println("No current location was found in database");
-            return null;
-        }
-
-        // Create new search
-        BasicSearch search = new BasicSearch();
-        search.setFlightServices(flightServices);
-        search.setLocationServices(locationServices);
-        search.setOriginIn(currentLocation.getLocationID());
-
-        // The final list of recommended flights
-        List<Flight> recommendedFlights = new LinkedList<>();
-
-        // Get current date and date in 3 months
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String today = dateFormat.format(date);
-
-        cal.add(Calendar.MONTH, 3);
-        date = cal.getTime();
-        String max = dateFormat.format(date);
-
-        // Get currently popular locations
-        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
-
-        // TODO maybe do this through a query call
-        locations.sort(Comparator.comparing(Location::getPopularity).reversed());
-
-        // Get 1 flight from each popular location
-        for (Location popularLocation : locations) {
-            // Set search destination to next popular location
-            search.setDestinationIn(popularLocation.getLocationID());
-
-            // Find flights that are going from current location to popular location
-            try {
-                List<Flight> recommendSearch = search.runBasicSearch(today, max, false);
-                // If at least one flight was found add first flight to recommendation list
-                if(!recommendSearch.isEmpty()) {
-                    recommendedFlights.add(recommendSearch.get(0));
-                }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Once 3 recommended flights have been found break for loop
-            if (recommendedFlights.size() == 4) {
-                break;
-            }
-        }
-
-
-        // TODO remove
-        System.out.println("Recommended Flights found:");
-        for (Flight flight : recommendedFlights) {
-            System.out.printf("FlightID: %s, Flight Origin: %s, Flight Destination: %s %n",flight.getFlightID(), flight.getOriginID(), flight.getDestinationID());
-        }
-
-        return recommendedFlights;
     }
 
     private Model addDateAndTimeToModel(Model model) {
