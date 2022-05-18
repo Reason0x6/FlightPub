@@ -1,6 +1,7 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.*;
+import com.FlightPub.Services.BookingServices;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
@@ -26,6 +27,7 @@ public class IndexController {
     private UserAccountServices usrServices;
     private LocationServices locationServices;
     private FlightServices flightServices;
+    private BookingServices bookingServices;
 
     @Autowired
     @Qualifier(value = "FlightServices")
@@ -43,6 +45,12 @@ public class IndexController {
     @Qualifier(value = "LocationServices")
     public void setLocationsServices(LocationServices locService) {
         this.locationServices = locService;
+    }
+
+    @Autowired
+    @Qualifier(value = "BookingServices")
+    public void setBookingServices(BookingServices bookingService) {
+        this.bookingServices = bookingService;
     }
 
 
@@ -118,6 +126,16 @@ public class IndexController {
     public String account(Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
+        }
+
+
+        List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
+
+        if(bookings.size() > 0){
+            model.addAttribute("bookings", bookings);
+            model.addAttribute("flights", flightServices);
+        }else{
+            model.addAttribute("bookings", null);
         }
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());

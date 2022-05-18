@@ -25,4 +25,8 @@ public class BookingServices {
     }
 
     public void delete(String id){}
+
+    public List<Booking> getUserBookings(String userID){
+        return bookingRepo.findByUser(userID);
+    }
 }
