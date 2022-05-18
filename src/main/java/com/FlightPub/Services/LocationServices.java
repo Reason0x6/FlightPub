@@ -48,10 +48,6 @@ public class LocationServices {
     public Location mostPopular() {
         List<Location> out = locationRepo.findAllByOrderByPopularityDesc();
 
-        for (Location location : out) {
-            System.out.println(location);
-        }
-
         if (!out.isEmpty()) {
             return out.get(0);
         }
