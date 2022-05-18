@@ -100,14 +100,13 @@
 
       <div class="row icon-box" data-aos="zoom-in-left">
           <!-- Recommendation location select dropdown -->
-          <form>
-              <select class="form-select" name="recommendationLocations" id="recommendationLocation">
-                  <option th:each="location : ${recommendationLocation}" th:value="${location.location}" th:text="${location.location}"></option>
+          <form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
+              <select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
+                  <option th:each="location : ${recommendationLocation}" th:value="${location.location}" th:text="${location.locationID} + ' - ' + ${location.location}"></option>
               </select>
           </form>
 
-
-          <div class="row" style="padding-top: 10px;">
+          <div id="recommendationRow" class="row" style="padding-top: 10px;">
           <div class="col-sm-3" th:each="flight : ${reco}"  >
             <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
               <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>

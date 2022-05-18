@@ -47,7 +47,7 @@ public class IndexController {
 
 
     @RequestMapping("/")
-    public String loadIndex(Model model, HttpSession session) {
+    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
 
         model = addDateAndTimeToModel(model);
 
@@ -56,6 +56,8 @@ public class IndexController {
         model.addAttribute("recommendationLocation", locationServices.listAll());
         // getRecommendation();
         model.addAttribute("reco", getRecommendation());
+
+        System.out.println(recommendation.getRecommendationLocation());
 
         return "index";
     }
