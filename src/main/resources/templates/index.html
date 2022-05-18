@@ -46,7 +46,7 @@
 
       <div class="section-title" data-aos="zoom-out">
         <h2>Plan</h2>
-        <p>Search Desinations</p>
+        <p>Search Destinations</p>
       </div>
       <style>
 		input, select{
@@ -80,7 +80,7 @@
 
       <div class="section-title" data-aos="zoom-out">
         <h2>Plan</h2>
-        <p>Recommended Desinations</p>
+        <p>Recommended Destinations</p>
       </div>
       <style>
           input, select{
@@ -99,16 +99,7 @@
         </style>
 
       <div class="row icon-box" data-aos="zoom-in-left">
-          <!-- Recommendation location select dropdown -->
-          <form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
-              <select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
-                  <option
-                          th:each="location : ${recommendationLocation}"
-                          th:value="${location.locationID}"
-                          th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
-                  </option>
-              </select>
-          </form>
+          <form th:replace="Fragments/Forms :: #recommendationLocationForm"> </form>
 
           <div id="recommendationRow" class="row" style="padding-top: 10px;">
           <div class="col-sm-3" th:each="flight : ${reco}"  >
@@ -124,7 +115,7 @@
           </div>
         </div>
         <div th:if="${reco} == 0">
-          <p>There are currently no recomendation</p>
+          <p>There are currently no recommendation</p>
         </div>
       </div>
 
