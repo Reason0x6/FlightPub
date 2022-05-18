@@ -46,7 +46,7 @@
 
       <div class="section-title" data-aos="zoom-out">
         <h2>Plan</h2>
-        <p>Search Desinations</p>
+        <p>Search Destinations</p>
       </div>
       <style>
 		input, select{
@@ -80,7 +80,7 @@
 
       <div class="section-title" data-aos="zoom-out">
         <h2>Plan</h2>
-        <p>Recommended Desinations</p>
+        <p>Recommended Destinations</p>
       </div>
       <style>
           input, select{
@@ -99,8 +99,9 @@
         </style>
 
       <div class="row icon-box" data-aos="zoom-in-left">
+          <form th:replace="Fragments/Forms :: #recommendationLocationForm"> </form>
 
-        <div class="row" style="padding-top: 10px;">
+          <div id="recommendationRow" class="row" style="padding-top: 10px;">
           <div class="col-sm-3" th:each="flight : ${reco}"  >
             <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
               <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
@@ -114,7 +115,7 @@
           </div>
         </div>
         <div th:if="${reco} == 0">
-          <p>There are currently no recomendation</p>
+          <p>There are currently no recommendation</p>
         </div>
       </div>
 
