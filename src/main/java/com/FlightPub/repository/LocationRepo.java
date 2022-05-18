@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface LocationRepo extends MongoRepository<Location, String> {
-    @Query(value="{ 'locationID' : {$ne : { '$regex' : ?0 , $options: 'i'}} }", sort = "{'popularity' : -1}")
+    @Query(value="{ 'locationID' : {$not : { '$regex' : ?0 , $options: 'i'} } }", sort = "{'popularity' : -1}")
     List<Location> findAllSortedDescendingExcluding(String dest);
 
     @Query(value="{ 'location' : { '$regex' : ?0 , $options: 'i'} }")
