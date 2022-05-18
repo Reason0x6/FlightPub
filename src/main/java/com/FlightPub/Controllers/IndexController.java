@@ -1,10 +1,6 @@
 package com.FlightPub.Controllers;
 
-import com.FlightPub.RequestObjects.BasicSearch;
-import com.FlightPub.RequestObjects.LoginRequest;
-import com.FlightPub.RequestObjects.UserSession;
-import com.FlightPub.RequestObjects.SingleStopOver;
-import com.FlightPub.RequestObjects.MultiStopOver;
+import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
@@ -57,6 +53,7 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
 
+        model.addAttribute("recommendationLocation", locationServices.listAll());
         // getRecommendation();
         model.addAttribute("reco", getRecommendation());
 
