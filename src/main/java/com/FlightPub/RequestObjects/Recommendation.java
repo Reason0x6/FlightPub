@@ -66,8 +66,6 @@ public class Recommendation {
         // Get 1 flight from each popular location
         for (Location popularLocation : locations) {
 
-            System.out.println(popularLocation.getLocationID());
-
             // Set search destination to next popular location
             search.setDestinationIn(popularLocation.getLocationID());
 

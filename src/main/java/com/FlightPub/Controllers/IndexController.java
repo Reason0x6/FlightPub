@@ -54,7 +54,7 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         model.addAttribute("recommendationLocation", locationServices.listAll());
-        // getRecommendation();
+
         recommendation.setFlightServices(flightServices);
         recommendation.setLocationServices(locationServices);
         model.addAttribute("reco", recommendation.getRecommendation());
