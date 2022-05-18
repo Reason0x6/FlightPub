@@ -45,6 +45,14 @@ public class LocationServices {
         return locationRepo.findAllSortedDescendingExcluding(locationID);
     }
 
+    public Location mostPopular() {
+        List<Location> out = locationRepo.findAllByOrderByPopularityDesc();
+
+        if (!out.isEmpty()) {
+            return out.get(0);
+        }
+        return null;
+    }
 
     public Location findByLocation(String originIn) {
         List<Location> out = locationRepo.findByLocation(originIn);

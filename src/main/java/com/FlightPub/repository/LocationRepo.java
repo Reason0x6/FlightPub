@@ -1,7 +1,5 @@
 package com.FlightPub.repository;
 
-
-import com.FlightPub.model.Flight;
 import com.FlightPub.model.Location;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -14,4 +12,6 @@ public interface LocationRepo extends MongoRepository<Location, String> {
 
     @Query(value="{ 'location' : { '$regex' : ?0 , $options: 'i'} }")
     List<Location> findByLocation(String in);
+
+    List<Location> findAllByOrderByPopularityDesc();
 }
