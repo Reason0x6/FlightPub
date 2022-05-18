@@ -38,6 +38,32 @@
                 <h2>Update Your Account!</h2>
                 <form th:replace="Fragments/Forms :: #updateUser"> </form>
             </div>
+            <div th:if="${bookings != null}">
+                <hr>
+                <div class="row icon-box" data-aos="zoom-in-left" >
+                    <h2>Your Bookings!</h2>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Dep. City</th>
+                            <th scope="col">Dest. City</th>
+                            <th scope="col">Airline</th>
+                            <th scope="col">Flight Info</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="Booking : ${bookings}", th:with="flight = ${flights.getById(Booking.getFlightID())}">
+                            <th scope="row" th:text="${flight.getDepartureTime()}">18/05/2022</th>
+                            <td th:text="${flight.getOriginID()}"></td>
+                            <td th:text="${flight.getDestinationID()}"></td>
+                            <td th:text="${flight.getAirline()}"></td>
+                            <td><a th:href="'/flight?id=' + ${Booking.getFlightID()}" class="btn btn-link">View Flight</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
                 <hr /><Br><Br>
             <div class="row">
                 <div class="col-md-6" style="padding-left: 20px; ">

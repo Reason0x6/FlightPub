@@ -274,7 +274,7 @@
 
 <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
 <form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
-    <select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
+    <span>Departure Location: </span><select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
         <option
                 th:each="location : ${recommendationLocation}"
                 th:value="${location.locationID}"
