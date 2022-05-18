@@ -38,6 +38,32 @@
                 <h2>Update Your Account!</h2>
                 <form th:replace="Fragments/Forms :: #updateUser"> </form>
             </div>
+            <div th:if="${bookings != null}">
+                <hr>
+                <div class="row icon-box" data-aos="zoom-in-left" >
+                    <h2>Your Bookings!</h2>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Departure Date</th>
+                            <th scope="col">Dep. City</th>
+                            <th scope="col">Dest. City</th>
+                            <th scope="col">Airline</th>
+                            <th scope="col">Flight Info</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="Booking : ${bookings}", th:with="flight = ${flights.getById(Booking.getFlightID())}">
+                            <th scope="row" th:text="${flight.getDepartureTime()}">18/05/2022</th>
+                            <td th:text="${flight.getOriginID()}"></td>
+                            <td th:text="${flight.getDestinationID()}"></td>
+                            <td th:text="${flight.getAirline()}"></td>
+                            <td><a th:href="'/flight?id=' + ${Booking.getFlightID()}" class="btn btn-link">View Flight</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
                 <hr /><Br><Br>
             <div class="row">
                 <div class="col-md-6" style="padding-left: 20px; ">
@@ -135,14 +161,19 @@
                     <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
                         <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
                         Airline: <span th:text="${flight.getAirline()}"></span></em></p>
-                    <a href="" style="margin-bottom: 10px;" class="btn btn-primary">Book Now</a>&nbsp;&nbsp;
+                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-link">Quick Book</a><br><br>
                 </div>
 
-            </div>
+
+
         </div>
         <div th:if="${reco} == 0">
             <p>There are currently no recomendation</p>
         </div>
+            <br>
+            <em style="font-size: 0.7em">What is 'Quick Book'? Flights that are similar to your regular bookings can be booked & paid for in one click, when you are using your regular device.</em>
     </div>
 
             <hr />

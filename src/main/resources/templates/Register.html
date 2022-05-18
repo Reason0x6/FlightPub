@@ -19,7 +19,7 @@
         <p><b>Head to the Login Page</b><Br>
           It's more than just a flight finder! Create group with your friends, and plan the dream group getaway... or if flying solo is more your thing, get real time recommendations on the hottest flights and world events!
         </p>
-        <a href="/Login" class="btn btn-primary">Login!</a>
+        <a href="/login" class="btn btn-primary">Login!</a>
       </div>
     </div>
 
@@ -27,11 +27,7 @@
 
 </div>
 
-<div class="container" style="margin-top: 100px;" th:if="${method == 'post'}">
-  <p th:text="'Email: ' + ${user.getEmail()}"></p>
-  <p th:text="'Hashed Password: ' + ${user.getPassword()}"></p>
 
-</div>
 <!--- something needs to go here -->
 
 <lower th:replace="Fragments/Footer"> </lower>

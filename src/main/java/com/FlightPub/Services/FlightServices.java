@@ -2,7 +2,6 @@ package com.FlightPub.Services;
 
 import com.FlightPub.model.Flight;
 import com.FlightPub.repository.FlightRepo;
-import com.FlightPub.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +49,7 @@ public class FlightServices{
 
     public List<Flight> getByOriginAndDestination(String origin, String dep, Date dstart, Date dend) {
         // Query defined in flightRepo
-        return flightRepo.findByOriginAndDesitination(origin, dep, dstart, dend);
+        return flightRepo.findByOriginAndDestination(origin, dep, dstart, dend);
     }
 
     public List<Flight> getByOrigin(String origin, Date dstart, Date dend){
@@ -60,7 +59,7 @@ public class FlightServices{
 
     public List<Flight> getByOriginAndDestinationAndArrivalTimes(String origin, String dep, Date dstart, Date dend) {
         // Query defined in flightRepo
-        return flightRepo.findByOriginAndDesitinationAndArrivalTimes(origin, dep, dstart, dend);
+        return flightRepo.findByOriginAndDestinationAndArrivalTimes(origin, dep, dstart, dend);
     }
 
     public List<Flight> getByOriginAndArrivalTimes(String origin, Date dstart, Date dend) {
