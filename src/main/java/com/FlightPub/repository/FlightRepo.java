@@ -10,21 +10,21 @@ import java.util.List;
 
 public interface FlightRepo extends MongoRepository<Flight, String> {
 
-    @Query(value="{ 'destinationID' : ?0 }", fields="{ 'destination' : 1 }")
+    @Query(value="{ 'destinationID' : { '$regex' : ?0 , $options: 'i'} }", fields="{ 'destination' : 1 }")
     List<Flight> findByDestination(String dest);
 
-    @Query(value="{ 'originID' : ?0 }", fields="{ 'originID' : 1 }")
+    @Query(value="{ 'originID' : { '$regex' : ?0 , $options: 'i'} }", fields="{ 'originID' : 1 }")
     List<Flight> findByOrigin(String origin);
 
-    @Query(value="{ 'originID' : ?0, 'destinationID': ?1, 'departure':{$gte: ?2, $lte: ?3} }")
+    @Query(value="{ 'originID' : { '$regex' : ?0 , $options: 'i'}, 'destinationID': { '$regex' : ?1 , $options: 'i'}, 'departure':{$gte: ?2, $lte: ?3} }")
     List<Flight> findByOriginAndDesitination(String origin, String dest, Date start, Date end);
 
-    @Query(value="{ 'originID' : ?0, 'departure':{$gte: ?1, $lte: ?2} }")
+    @Query(value="{ 'originID' : { '$regex' : ?0 , $options: 'i'}, 'departure':{$gte: ?1, $lte: ?2} }")
     List<Flight> findByOrigin(String origin, Date start, Date end);
 
-    @Query(value="{ 'originID' : ?0, 'destinationID': ?1, 'arrival':{$gte: ?2, $lte: ?3} }")
+    @Query(value="{ 'originID' : { '$regex' : ?0 , $options: 'i'}, 'destinationID': { '$regex' : ?1 , $options: 'i'}, 'arrival':{$gte: ?2, $lte: ?3} }")
     List<Flight> findByOriginAndDesitinationAndArrivalTimes(String origin, String dest, Date start, Date end);
 
-    @Query(value="{ 'originID' : ?0, 'arrival':{$gte: ?1, $lte: ?2} }")
+    @Query(value="{ 'originID' : { '$regex' : ?0 , $options: 'i'}, 'arrival':{$gte: ?1, $lte: ?2} }")
     List<Flight> findByOriginAndArrivalTimes(String origin, Date start, Date end);
 }
