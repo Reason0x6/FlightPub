@@ -6,6 +6,7 @@ import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.*;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -54,7 +56,11 @@ public class IndexController {
 
 
     @RequestMapping("/")
-    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
+    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session, HttpServletRequest request) {
+
+        String ip = getRequestIP(request);
+
+        System.out.println(ip);
 
         model = addDateAndTimeToModel(model);
 
@@ -276,5 +282,33 @@ public class IndexController {
         String max = dateFormat.format(date);
         model.addAttribute("max", max);
         return model;
+    }
+
+
+    private static final String[] IP_HEADERS = {
+            "X-Forwarded-For",
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_FORWARDED",
+            "HTTP_X_CLUSTER_CLIENT_IP",
+            "HTTP_CLIENT_IP",
+            "HTTP_FORWARDED_FOR",
+            "HTTP_FORWARDED",
+            "HTTP_VIA",
+            "REMOTE_ADDR"
+
+            // you can add more matching headers here ...
+    };
+    public static String getRequestIP(HttpServletRequest request) {
+        for (String header: IP_HEADERS) {
+            String v = request.getHeader(header);
+            if (v == null || v.isEmpty()) {
+                continue;
+            }
+            String[] parts = v.split("\\s*,\\s*");
+            return parts[0];
+        }
+        return request.getRemoteAddr();
     }
 }
