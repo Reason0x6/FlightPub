@@ -21,6 +21,7 @@ public class UserSession {
 
     @Getter
     LinkedList<String> sessionCart;
+    // LinkedList<Map<String, Integer>> sessionCart;
 
     public UserSession(UserAccount usr){
         this.usr = usr;
@@ -44,6 +45,7 @@ public class UserSession {
 
     public void addToCart(int numSeats, String flightID){
         sessionCart.add(numSeats, flightID);
+        // sessionCart.add(Map<flightID, numSeats>);
     }
 
     public void removeFromCart(String flightID){

@@ -76,11 +76,7 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
         return "login";
     }
-    
-    @RequestMapping("/booking")
-    public String booking(Model model){
-        return "NewBooking";
-    }
+
     @RequestMapping("/newuser")
     public String user(Model model){
         return "newuser";
@@ -230,6 +226,26 @@ public class IndexController {
         return "search";
 
         // TODO: Add advanced searches
+    }
+
+    @RequestMapping("/cart")
+    public String cart(Model model, HttpSession session, int numSeats, String flightID){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        getSession(session).addToCart(numSeats, flightID);
+        model.addAttribute("usr", getSession(session));
+        return "Cart";
+    }
+
+    @RequestMapping("/checkout")
+    public String checkout(Model model){
+        return "Checkout";
+    }
+
+    @RequestMapping("/bookingConfirmation")
+    public String bookingConfirmation(Model model){
+        return "Booking";
     }
 
 
