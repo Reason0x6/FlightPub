@@ -74,12 +74,12 @@ public class IndexController {
     public String loadLogin(Model model, HttpSession session){
 
         model.addAttribute("usr", getSession(session));
-        return "login";
+        return "User/login";
     }
 
     @RequestMapping("/newuser")
     public String user(Model model){
-        return "newuser";
+        return "Notifications/newuser";
     }
 
     @RequestMapping("/Register")
@@ -87,14 +87,14 @@ public class IndexController {
 
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
-        return "Register";
+        return "User/Register";
     }
 
     @RequestMapping("/logout")
     public String loadLogout(Model model, HttpSession session){
         session.setAttribute("User", new UserSession(null));
         model.addAttribute("usr", getSession(session));
-        return "login";
+        return "User/login";
     }
 
     @PostMapping("/login")
@@ -114,7 +114,7 @@ public class IndexController {
                 session.setAttribute("User", usr);
                 model.addAttribute("usr", usr);
 
-                return "redirect:account";
+                return "redirect:User/account";
             }else{
                 model.addAttribute("valid", false);
             }
@@ -123,13 +123,13 @@ public class IndexController {
             model.addAttribute("valid", false);
         }
 
-        return "login";
+        return "User/login";
     }
 
     @RequestMapping("/account")
     public String account(Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
-            return "redirect:login";
+            return "redirect:User/login";
         }
 
 
@@ -145,7 +145,7 @@ public class IndexController {
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
-        return "Personalised";
+        return "User/Personalised";
     }
 
     @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
@@ -165,12 +165,12 @@ public class IndexController {
     @RequestMapping("/groups")
     public String group(Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
-            return "redirect:login";
+            return "redirect:User/login";
         }
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
-        return "Group";
+        return "User/Group";
     }
 
     @PostMapping("/search")
@@ -230,11 +230,11 @@ public class IndexController {
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session, int numSeats, String flightID){
         if(!getSession(session).isLoggedIn()){
-            return "redirect:login";
+            return "redirect:User/login";
         }
         getSession(session).addToCart(numSeats, flightID);
         model.addAttribute("usr", getSession(session));
-        return "Cart";
+        return "Booking/Cart";
     }
 
     @RequestMapping("/checkout")
