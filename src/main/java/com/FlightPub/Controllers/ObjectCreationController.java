@@ -1,5 +1,6 @@
 package com.FlightPub.Controllers;
 
+import com.FlightPub.RequestObjects.NewGroup;
 import com.FlightPub.RequestObjects.UserRegister;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
@@ -111,6 +112,8 @@ public class ObjectCreationController {
 
         if(flightServices.getById(flightID) != null){
             // TODO: Notification of flight detail change to be sent to users
+            System.out.println("TODO: Notification of flight detail change to be sent to users" +
+                    "\"\nIn class ObjectCreationController\"");
         }
 
         flightServices.saveOrUpdate(newFlight);
@@ -127,6 +130,21 @@ public class ObjectCreationController {
         }
 
         UserGroup newGroup = new UserGroup(getSession(session).getEmail(), groupName);
+        userGroupServices.saveUsers(newGroup);
+
+        model.addAttribute("group", newGroup);
+        model.addAttribute("usr", getSession(session));
+
+        return "Confirmations/NewGroup";
+    }
+
+    @PostMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1
+    public String addUSR(@ModelAttribute NewGroup group, Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "login";
+        }
+
+        UserGroup newGroup = new UserGroup(getSession(session).getEmail(), group.getGroupName());
         userGroupServices.saveUsers(newGroup);
 
         model.addAttribute("group", newGroup);

@@ -115,6 +115,22 @@
                         <p>Your Groups</p>
                     </div>
                     <div class="card l-1" data-aos="zoom-in-left">
+                        <form id="updateUser" name="registerUser" th:action="@{/group/add}" th:object="${NewGroup}" method="post">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label id="nameLabel" class="col-form-label" >Group Name</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="groupName" class="form-control" name="groupName" placeholder="Enter Group Name">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary btn-search">Create Group!</button>
+                                </div>
+
+                            </div>
+                            </form>
+                    </div>
+                    <div class="card l-1" data-aos="zoom-in-left">
                         <table class="table">
                             <thead>
                             <tr th:if="${!groups.isEmpty()}">
@@ -157,9 +173,6 @@
 
                     <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-link">Quick Book</a><br><br>
                 </div>
-
-
-
         </div>
         <div th:if="${reco} == 0">
             <p>There are currently no recomendation</p>
