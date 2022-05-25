@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
 
-@Document("UserAccount")
+@Document("Group")
 public class UserGroup{
     @Id
     private String id;
@@ -36,8 +36,6 @@ public class UserGroup{
     }
 
     public void removeUser(String id){
-        if (userIDs.contains(id)){
-            userIDs.remove(id);
-        }
+        userIDs.remove(id);
     }
 }
