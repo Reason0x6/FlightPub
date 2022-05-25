@@ -230,9 +230,9 @@ public class IndexController {
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session, int numSeats, String flightID){
         if(!getSession(session).isLoggedIn()){
-            return "redirect:User/login";
+            return "redirect:login";
         }
-        getSession(session).addToCart(numSeats, flightID);
+        getSession(session).addToCart(flightID, numSeats);
         model.addAttribute("usr", getSession(session));
         return "Booking/Cart";
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +21,11 @@ public class UserSession {
     UserAccount usr;
 
     @Getter
-    LinkedList<String> sessionCart;
-    // LinkedList<Map<String, Integer>> sessionCart;
+    Map<String, Integer> sessionCart;
 
     public UserSession(UserAccount usr){
         this.usr = usr;
-        this.sessionCart = new LinkedList<>();
+        this.sessionCart = new HashMap<>();
     }
 
     public boolean isLoggedIn(){
@@ -43,13 +43,12 @@ public class UserSession {
         return usr.getPassword();
     }
 
-    public void addToCart(int numSeats, String flightID){
-        sessionCart.add(numSeats, flightID);
-        // sessionCart.add(Map<flightID, numSeats>);
+    public void addToCart(String flightID, int numSeats){
+        sessionCart.put(flightID, numSeats);
     }
 
     public void removeFromCart(String flightID){
-        sessionCart.remove();
+        sessionCart.remove(flightID);
     }
 
 }
