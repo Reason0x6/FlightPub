@@ -178,6 +178,16 @@ public class IndexController {
         return "Group";
     }
 
+    @RequestMapping("/groupStatic")
+    public String groupStatic(Model model, HttpSession session){
+//        if(!getSession(session).isLoggedIn()){
+//            return "redirect:login";
+//        }
+        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("usr", getSession(session));
+        return "GroupStatic";
+    }
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
