@@ -173,7 +173,6 @@ public class IndexController {
         return "Group";
     }
 
-
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
         model = addDateAndTimeToModel(model);
@@ -245,7 +244,7 @@ public class IndexController {
 
     @RequestMapping("/bookingConfirmation")
     public String bookingConfirmation(Model model){
-        return "Booking";
+        return "Confirmation";
     }
 
 

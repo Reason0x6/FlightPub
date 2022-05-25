@@ -51,4 +51,5 @@ public class UserSession {
     public void removeFromCart(String flightID){
         sessionCart.remove();
     }
+
 }
