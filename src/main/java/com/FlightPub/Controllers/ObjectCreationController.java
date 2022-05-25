@@ -83,7 +83,6 @@ public class ObjectCreationController {
     public String registerUSR(@ModelAttribute UserRegister newUser, Model model, HttpSession session){
         model.addAttribute("usr", getSession(session));
         if(usrServices.getById(newUser.getEmail()) != null){
-            model.addAttribute("exists", "User already exists");
             model.addAttribute("Error", "User already exists");
             return "404";
         }
