@@ -4,10 +4,12 @@ import com.FlightPub.RequestObjects.UserRegister;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.Services.UserGroupServices;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.Location;
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.RequestObjects.UserSession;
+import com.FlightPub.model.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ public class ObjectCreationController {
     private UserAccountServices usrServices;
     private FlightServices flightServices;
     private LocationServices locationServices;
+    private UserGroupServices userGroupServices;
     private UserAccount SessionUser;
 
     @Autowired
@@ -31,7 +34,6 @@ public class ObjectCreationController {
     public void setUserService(UserAccountServices usrService) {
         this.usrServices = usrService;
     }
-
 
     @Autowired
     @Qualifier(value = "FlightServices")
@@ -43,6 +45,12 @@ public class ObjectCreationController {
     @Qualifier(value = "LocationServices")
     public void setLocationsServices(LocationServices locService) {
         this.locationServices = locService;
+    }
+
+    @Autowired
+    @Qualifier(value = "UserGroupServices")
+    public void setUserGroupServices(UserGroupServices userGroupServices) {
+        this.userGroupServices = userGroupServices;
     }
 
 
@@ -113,9 +121,23 @@ public class ObjectCreationController {
         return "Confirmations/NewFlight";
     }
 
+    @RequestMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1
+    public String addUSR( @RequestParam String groupName, Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "login";
+        }
+
+        UserGroup newGroup = new UserGroup(getSession(session).getEmail(), groupName);
+        userGroupServices.saveUsers(newGroup);
+
+        model.addAttribute("group", newGroup);
+        model.addAttribute("usr", getSession(session));
+
+        return "Confirmations/NewGroup";
+    }
 
     private UserSession getSession(HttpSession session){
-        UserSession sessionUser = null;
+        UserSession sessionUser;
         try{
             sessionUser = (UserSession) session.getAttribute("User");
         }catch(Exception e){

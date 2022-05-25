@@ -20,13 +20,18 @@ public class UserGroup{
     @Setter
     private String adminID;
 
+    @Getter
+    @Setter
+    private String groupName;
+
     public UserGroup() {}
 
-    public UserGroup(String adminID) {
+    public UserGroup(String adminID, String groupName) {
         super();
         userIDs = new LinkedList<>();
         userIDs.add(adminID);
         this.adminID = adminID;
+        this.groupName = groupName;
     }
 
     public void addUser(String id){
