@@ -182,6 +182,12 @@ public class IndexController {
 
         groupServices.loadUserGroup(groupId);
 
+        if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("usr", getSession(session));
+            model.addAttribute("Error", "Not in group");
+            return "404";
+        }
+
         model.addAttribute("groupUsers", groupServices.listAllUsers());
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());

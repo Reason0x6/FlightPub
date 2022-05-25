@@ -63,5 +63,8 @@ public class UserGroupServices {
                 return userGroupRepo.findAllByUserIDs(userIDs);
         }
 
+        public boolean isUserInGroup(String userId) {
+                return usrGroup.getUserIDs().contains(userId);
+        }
 
 }
