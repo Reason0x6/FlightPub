@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -80,7 +79,7 @@ public class IndexController {
     
     @RequestMapping("/booking")
     public String booking(Model model){
-        return "booking";
+        return "NewBooking";
     }
     @RequestMapping("/newuser")
     public String user(Model model){
