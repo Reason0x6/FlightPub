@@ -175,10 +175,15 @@ public class IndexController {
     }
 
     @RequestMapping("/groups")
-    public String group(Model model, HttpSession session){
+    public String group(@RequestParam String groupId, Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
+
+        groupServices.loadUserGroup(groupId);
+
+        model.addAttribute("groupUsers", groupServices.listAllUsers());
+
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));

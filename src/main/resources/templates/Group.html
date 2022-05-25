@@ -70,33 +70,14 @@
               <tr>
                 <th scope="col">First Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Age</th>
                 <th scope="col">Booked Status</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <th scope="row">Gavin</th>
-                <td>g_example@gmail.com</td>
-                <td>23</td>
-                <td>Not Booked</td>
-              </tr>
-              <tr>
-                <th scope="row">Issy</th>
-                <td>I_example@me.com</td>
-                <td>21</td>
-                <td>Not Booked</td>
-              </tr>
-              <tr>
-                <th scope="row">Jacob</th>
-                <td>Jac_the_planer@gmail.com</td>
-                <td>23</td>
-                <td>Booked</td>
-              </tr><tr>
-                <th scope="row">Toby</th>
-                <td>mr_T@gmail.com</td>
-                <td>43</td>
-                <td>Booked</td>
+              <tr th:each="user : ${groupUsers}">
+                <th scope="row" th:text="${user.firstname}"></th>
+                <td th:text="${user.email}"></td>
+                <td> TODO </td>
               </tr>
               </tbody>
             </table>
