@@ -40,6 +40,4 @@ public class Plane {
            seats.add(s);
        }
     }
-
-
 }

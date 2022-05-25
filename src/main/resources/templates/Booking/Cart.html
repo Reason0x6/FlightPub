@@ -60,10 +60,9 @@
                                 </tr>
                                  <tr th:each="seats : ${#numbers.sequence(1, usr.getSessionCart().get((map)))}">
                                      <td scope="row">
-                                        Seat: <select class="form-select" th:name="'seat' + ${seats}" >
-                                                    <option th:each="seat: ${flight.getAllSeats()}" th:value="${seat}" th:text="${seat}">
-
-                                                    </option>
+                                         Seat: <select class="form-select" th:name="'seat' + ${seats}" >
+                                         <option th:each="seat: ${flight.getAllSeats()}" th:value="${seat}" th:text="${seat}"> </option>
+                                     </select>
                                      </td>
                                      <td>remove</td>
                                 </tr>
