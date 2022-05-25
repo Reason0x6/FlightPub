@@ -115,13 +115,15 @@
                         <p>Your Groups</p>
                     </div>
                     <div class="card l-1" data-aos="zoom-in-left">
-
                         <table class="table">
                             <thead>
-                            <tr>
+                            <tr th:if="${!groups.isEmpty()}">
                                 <th scope="col">Capacity</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">View</th>
+                            </tr>
+                            <tr th:if="${groups.isEmpty()}">
+                                <th>No groups found</th>
                             </tr>
                             </thead>
                             <tbody>
