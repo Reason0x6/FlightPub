@@ -35,16 +35,44 @@
 
             <!-- List each flight in session to be booked -->
             <div class="card l-1" style="padding: 10px 0 0 20px;">
-                <div class="row" style="padding-top: 10px;">
-                    <div class="col-sm-4">
-                        <!-- Flight Departs -->
-                        <!-- Flight Arrives -->
+                <div>
+                    <hr>
+                    <div class="row icon-box" data-aos="zoom-in-left" >
+
+                        <h2>Selected Flights</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Departure Date</th>
+                                    <th scope="col">Flight</th>
+                                    <th scope="col">Seats</th>
+                                    <th scope="col">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <div th:each="map : ${usr.getSessionCart().keySet()}" th:with="flight = ${usr.getFlight(map)}"  >
+                                <tr >
+                                    <th scope="row" th:text="${flight.getDeparture()}"></th>
+                                    <th th:text="${flight.getOriginID()} + ' -> ' + ${flight.getDestinationID()}"></th>
+                                    <th th:text="${usr.getSessionCart().get(map)}"></th>
+
+                                     <th><a href="" class="btn btn-danger">Remove Flight</a></th>
+                                </tr>
+                                 <tr th:each="seats : ${#numbers.sequence(1, usr.getSessionCart().get((map)))}">
+                                     <td scope="row">
+                                        Seat: <select class="form-select" th:name="'seat' + ${seats}" >
+                                                    <option th:each="seat: ${flight.getAllSeats()}" th:value="${seat}" th:text="${seat}">
+
+                                                    </option>
+                                     </td>
+                                     <td>remove</td>
+                                </tr>
+                            </div>
+
+                            </tbody>
+                        </table>
+                        <a href="" class="btn btn-success" style="max-width: 200px">Proceed to Checkout</a>
                     </div>
-                    <!-- Select seats to book -->
-                    <   !-- Seat selection table -->
-
-                    <!-- Flight Total = Ticket Price * Seats selected -->
-
                 </div>
             </div>
             <hr /><Br><Br>
