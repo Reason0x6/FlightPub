@@ -239,12 +239,12 @@ public class IndexController {
 
     @RequestMapping("/checkout")
     public String checkout(Model model){
-        return "Checkout";
+        return "Booking/Checkout";
     }
 
     @RequestMapping("/bookingConfirmation")
     public String bookingConfirmation(Model model){
-        return "Confirmation";
+        return "Confirmations/BookingConfirmation";
     }
 
 
