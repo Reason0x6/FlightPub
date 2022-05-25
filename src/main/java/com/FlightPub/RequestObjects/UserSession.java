@@ -43,12 +43,25 @@ public class UserSession {
         return usr.getPassword();
     }
 
-    public void addToCart(String flightID, int numSeats){
+    public void addToCart(int numSeats, String flightID){
         sessionCart.put(flightID, numSeats);
     }
 
     public void removeFromCart(String flightID){
         sessionCart.remove(flightID);
     }
+
+    public int getSeatsFor(String id){
+        return sessionCart.get(id);
+    }
+
+    /*
+    for (String key: map.keySet()) {
+        System.out.println("key : " + key);
+        System.out.println("value : " + map.get(key));
+    }
+
+    */
+
 
 }
