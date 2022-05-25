@@ -120,7 +120,7 @@ public class IndexController {
                 session.setAttribute("User", usr);
                 model.addAttribute("usr", usr);
 
-                return "redirect:User/account";
+                return "redirect:account";
             }else{
                 model.addAttribute("valid", false);
             }
@@ -135,7 +135,7 @@ public class IndexController {
     @RequestMapping("/account")
     public String account(Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
-            return "redirect:User/login";
+            return "redirect:login";
         }
 
 
@@ -171,7 +171,7 @@ public class IndexController {
     @RequestMapping("/groups")
     public String group(Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
-            return "redirect:User/login";
+            return "redirect:login";
         }
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
@@ -236,7 +236,7 @@ public class IndexController {
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session, int numSeats, String flightID){
         if(!getSession(session).isLoggedIn()){
-            return "redirect:User/login";
+            return "redirect:login";
         }
         getSession(session).addToCart(numSeats, flightID);
         model.addAttribute("usr", getSession(session));
