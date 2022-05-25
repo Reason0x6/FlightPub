@@ -4,9 +4,14 @@ import com.FlightPub.model.UserAccount;
 import lombok.Getter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.mongodb.core.aggregation.VariableOperators;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.annotation.SessionScope;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @SessionScope
@@ -14,10 +19,12 @@ public class UserSession {
     @Getter
     UserAccount usr;
 
+    @Getter
+    LinkedList<String> sessionCart;
+
     public UserSession(UserAccount usr){
-
         this.usr = usr;
-
+        this.sessionCart = new LinkedList<>();
     }
 
     public boolean isLoggedIn(){
@@ -35,5 +42,11 @@ public class UserSession {
         return usr.getPassword();
     }
 
+    public void addToCart(int numSeats, String flightID){
+        sessionCart.add(numSeats, flightID);
+    }
 
+    public void removeFromCart(String flightID){
+        sessionCart.remove();
+    }
 }
