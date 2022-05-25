@@ -6,15 +6,11 @@
 <!-- ======= Header ======= -->
 <header th:replace="Fragments/Header"> </header>
 <body>
-
 <!-- ======= Hero Section ======= -->
-
 <main id="main">
     <!-- ======= Services Section ======= -->
-
-    <section id = "recommendation" class = "services">
+    <section id = "" class = "services">
         <div class="container">
-
 
             <style>
                 input, select{
@@ -36,22 +32,25 @@
                 <h2>Let's Book!</h2>
                 <h3>Your Selected Flights</h3>
             </div>
+
             <!-- List each flight in session to be booked -->
             <div class="card l-1" style="padding: 10px 0 0 20px;">
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-4">
-                        <p><b>Departs: </b><span th:text="${Flight.getOriginID()}"></span> @ <span th:text="${Flight.getDepartureTime()}"></span></p>
-                        <p><b>Arrives: </b><span th:text="${Flight.getDestinationID()}"></span>  @  <span th:text="${Flight.getArrivalTime()}"></span></p>
-                        <p><b>Airline: </b> <span th:text="${Flight.getAirline()}"></span></p>
-                        <p><b>Seats Available: </b> <span th:text="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()}"></span></b></p>
-                        <p><b>Ticket Price: $</b> <span th:text="${Flight.getTicketPrice()}"></span></p>
+                        <!-- Flight Departs -->
+                        <!-- Flight Arrives -->
                     </div>
+                    <!-- Select seats to book -->
+                    <   !-- Seat selection table -->
+
+                    <!-- Flight Total = Ticket Price * Seats selected -->
+
                 </div>
             </div>
-            <!-- List each flight in session to be booked -->
             <hr /><Br><Br>
+            <!-- Submit Booking Request >> Checkout page to process payment -->
         </div>
-    </section><!-- End Cta Section -->
+    </section><!-- End CTA Section -->
 </main>
 <!-- ======= Footer ======= -->
 <lower th:replace="Fragments/Footer"> </lower>
