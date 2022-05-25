@@ -43,7 +43,7 @@ public class UserSession {
         return usr.getPassword();
     }
 
-    public void addToCart(int numSeats, String flightID){
+    public void addToCart(String flightID, int numSeats){
         sessionCart.put(flightID, numSeats);
     }
 
