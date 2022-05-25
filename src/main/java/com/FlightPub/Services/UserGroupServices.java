@@ -59,5 +59,9 @@ public class UserGroupServices {
 
         }
 
+        public List<UserGroup> findGroupsContaining(String userIDs) {
+                return userGroupRepo.findAllByUserIDs(userIDs);
+        }
+
 
 }

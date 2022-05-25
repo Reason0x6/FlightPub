@@ -125,20 +125,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">5/20</th>
-                                <td>Family Get Away</td>
-                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">11/20</th>
-                                <td>Jason's Batchelor Party</td>
-                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">20/20</th>
-                                <td>IT Department</td>
-                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
+                            <tr th:each="group : ${groups}">
+                                <th scope="row" > TODO</th>
+                                <td th:text="${group.getGroupName}"></td>
+                                <td><a th:href="@{/groups(groupId=${group.getId})}" class="btn btn-link">Manage</a></td>
                             </tr>
                             </tbody>
                         </table>

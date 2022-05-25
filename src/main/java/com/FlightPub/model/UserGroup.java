@@ -10,6 +10,7 @@ import java.util.LinkedList;
 @Document("Group")
 public class UserGroup{
     @Id
+    @Getter
     private String id;
 
     @Getter

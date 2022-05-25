@@ -1,10 +1,7 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.*;
-import com.FlightPub.Services.BookingServices;
-import com.FlightPub.Services.FlightServices;
-import com.FlightPub.Services.LocationServices;
-import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,6 +26,7 @@ public class IndexController {
     private FlightServices flightServices;
     private BookingServices bookingServices;
 
+    private UserGroupServices groupServices;
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -51,6 +49,12 @@ public class IndexController {
     @Qualifier(value = "BookingServices")
     public void setBookingServices(BookingServices bookingService) {
         this.bookingServices = bookingService;
+    }
+
+    @Autowired
+    @Qualifier(value = "UserGroupServices")
+    public void setUserGroupServices(UserGroupServices userGroupServices) {
+        this.groupServices = userGroupServices;
     }
 
 
@@ -139,6 +143,7 @@ public class IndexController {
 
 
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
+        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
 
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);
@@ -146,6 +151,8 @@ public class IndexController {
         }else{
             model.addAttribute("bookings", null);
         }
+
+        model.addAttribute("groups", groups);
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
