@@ -1,10 +1,7 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.*;
-import com.FlightPub.Services.BookingServices;
-import com.FlightPub.Services.FlightServices;
-import com.FlightPub.Services.LocationServices;
-import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,6 +26,7 @@ public class IndexController {
     private FlightServices flightServices;
     private BookingServices bookingServices;
 
+    private UserGroupServices groupServices;
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -54,16 +51,17 @@ public class IndexController {
         this.bookingServices = bookingService;
     }
 
+    @Autowired
+    @Qualifier(value = "UserGroupServices")
+    public void setUserGroupServices(UserGroupServices userGroupServices) {
+        this.groupServices = userGroupServices;
+    }
+
 
     @RequestMapping("/")
-    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session, HttpServletRequest request) {
-
-        String ip = getRequestIP(request);
-
-        System.out.println(ip);
+    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
 
         model = addDateAndTimeToModel(model);
-
 
         model.addAttribute("usr", getSession(session));
 
@@ -141,6 +139,7 @@ public class IndexController {
 
 
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
+        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
 
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);
@@ -148,6 +147,8 @@ public class IndexController {
         }else{
             model.addAttribute("bookings", null);
         }
+
+        model.addAttribute("groups", groups);
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
@@ -170,14 +171,36 @@ public class IndexController {
     }
 
     @RequestMapping("/groups")
-    public String group(Model model, HttpSession session){
+    public String group(@RequestParam String groupId, Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
+
+        groupServices.loadUserGroup(groupId);
+
+        if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("usr", getSession(session));
+            model.addAttribute("Error", "Not in group");
+            return "404";
+        }
+
+        model.addAttribute("groupUsers", groupServices.listAllUsers());
+
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Group";
+    }
+
+    @RequestMapping("/groupStatic")
+    public String groupStatic(Model model, HttpSession session){
+//        if(!getSession(session).isLoggedIn()){
+//            return "redirect:login";
+//        }
+        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("usr", getSession(session));
+        return "GroupStatic";
     }
 
     @PostMapping("/search")
@@ -234,41 +257,6 @@ public class IndexController {
         // TODO: Add advanced searches
     }
 
-    @RequestMapping("/cart")
-    public String cart(Model model, HttpSession session){
-        /*   if(!getSession(session).isLoggedIn()){
-            return "redirect:login";
-        } */
-        //getSession(session).addToCart(numSeats, flightID);
-
-        getSession(session).addToCart(2, "1001");
-        getSession(session).addToCart(1, "1002");
-
-        getSession(session).setFlightServices(flightServices);
-        model.addAttribute("usr", getSession(session));
-        return "Booking/Cart";
-    }
-
-    @PostMapping("/cart")
-    public String updateCart(Model model, HttpSession session, @RequestParam String flightID, @RequestParam int numSeats){
-      /*  if(!getSession(session).isLoggedIn()){
-            return "redirect:login";
-        } */
-        getSession(session).addToCart(numSeats, flightID);
-        model.addAttribute("usr", getSession(session));
-        return "Booking/Cart";
-    }
-
-    @RequestMapping("/checkout")
-    public String checkout(Model model){
-        return "Booking/Checkout";
-    }
-
-    @RequestMapping("/bookingConfirmation")
-    public String bookingConfirmation(Model model){
-        return "Confirmations/BookingConfirmation";
-    }
-
 
     private UserSession getSession(HttpSession session){
         UserSession sessionUser = null;
@@ -298,33 +286,5 @@ public class IndexController {
         String max = dateFormat.format(date);
         model.addAttribute("max", max);
         return model;
-    }
-
-
-    private static final String[] IP_HEADERS = {
-            "X-Forwarded-For",
-            "Proxy-Client-IP",
-            "WL-Proxy-Client-IP",
-            "HTTP_X_FORWARDED_FOR",
-            "HTTP_X_FORWARDED",
-            "HTTP_X_CLUSTER_CLIENT_IP",
-            "HTTP_CLIENT_IP",
-            "HTTP_FORWARDED_FOR",
-            "HTTP_FORWARDED",
-            "HTTP_VIA",
-            "REMOTE_ADDR"
-
-            // you can add more matching headers here ...
-    };
-    public static String getRequestIP(HttpServletRequest request) {
-        for (String header: IP_HEADERS) {
-            String v = request.getHeader(header);
-            if (v == null || v.isEmpty()) {
-                continue;
-            }
-            String[] parts = v.split("\\s*,\\s*");
-            return parts[0];
-        }
-        return request.getRemoteAddr();
     }
 }

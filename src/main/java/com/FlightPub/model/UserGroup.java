@@ -1,15 +1,18 @@
 package com.FlightPub.model;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
-@Document("UserAccount")
+@Document("Group")
 public class UserGroup{
     @Id
+    @Getter
     private String id;
 
     @Getter
@@ -20,13 +23,19 @@ public class UserGroup{
     @Setter
     private String adminID;
 
-    public UserGroup() {}
+    @Getter
+    @Setter
+    private String groupName;
 
-    public UserGroup(String adminID) {
-        super();
+    public UserGroup(String adminID, String groupName) {
+        this.adminID = adminID;
+        this.groupName = groupName;
+
+        id = NanoIdUtils.randomNanoId();
+
         userIDs = new LinkedList<>();
         userIDs.add(adminID);
-        this.adminID = adminID;
+
     }
 
     public void addUser(String id){
@@ -36,8 +45,6 @@ public class UserGroup{
     }
 
     public void removeUser(String id){
-        if (userIDs.contains(id)){
-            userIDs.remove(id);
-        }
+        userIDs.remove(id);
     }
 }

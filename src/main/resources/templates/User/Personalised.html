@@ -1,8 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragments/Head"> </head>
+<div th:replace="Fragments/Head"> </div>
 <header th:replace="Fragments/Header"> </header>
+
+<style>
+    input, select{
+        width: 45%;
+        max-width: 250px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+    .btn-search{
+        margin-top: -3px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+</style>
 <body>
 
 <!-- ======= Hero Section ======= -->
@@ -12,24 +28,6 @@
 
     <section id = "recommendation" class = "services">
         <div class="container">
-
-
-            <style>
-                input, select{
-                    width: 45%;
-                    max-width: 250px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    padding: 10px;
-                }
-                .btn-search{
-                    margin-top: -3px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    padding: 10px;
-                }
-            </style>
-
             <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
                 <h2>Hey There</h2>
                 <p th:text="'Welcome back ' + ${usr.getFirstname()}"></p>
@@ -53,7 +51,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="Booking : ${bookings}", th:with="flight = ${flights.getById(Booking.getFlightID())}">
+                        <tr th:each="Booking : ${bookings}" th:with="flight = ${flights.getById(Booking.getFlightID())}">
                             <th scope="row" th:text="${flight.getDepartureTime()}">18/05/2022</th>
                             <td th:text="${flight.getOriginID()}"></td>
                             <td th:text="${flight.getDestinationID()}"></td>
@@ -115,30 +113,38 @@
                         <p>Your Groups</p>
                     </div>
                     <div class="card l-1" data-aos="zoom-in-left">
+                        <form id="updateUser" name="registerUser" th:action="@{/group/add}" th:object="${NewGroup}" method="post">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="groupName" id="nameLabel" class="col-form-label" >Group Name</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="groupName" class="form-control" name="groupName" placeholder="Enter Group Name">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary btn-search">Create Group!</button>
+                                </div>
 
+                            </div>
+                            </form>
+                    </div>
+                    <div class="card l-1" data-aos="zoom-in-left">
                         <table class="table">
                             <thead>
-                            <tr>
+                            <tr th:if="${!groups.isEmpty()}">
                                 <th scope="col">Capacity</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">View</th>
                             </tr>
+                            <tr th:if="${groups.isEmpty()}">
+                                <th>No groups found</th>
+                            </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">5/20</th>
-                                <td>Family Get Away</td>
-                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">11/20</th>
-                                <td>Jason's Batchelor Party</td>
-                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">20/20</th>
-                                <td>IT Department</td>
-                                <td><a href="/groups" class="btn btn-link">Manage</a></td>
+                            <tr th:each="group : ${groups}">
+                                <th scope="row" > TODO</th>
+                                <td th:text="${group.getGroupName}"></td>
+                                <td><a th:href="@{/groups(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -146,38 +152,35 @@
                 </div>
             </div>
 
-    <hr />
-    <div class="section-title" id="discover" data-aos="zoom-out"  style="margin-top: 25px">
-        <h2>Discover</h2>
-        <p>Just For You</p>
-    </div>
-    <div class="row icon-box" data-aos="zoom-in-left">
+        <hr />
+        <div class="section-title" id="discover" data-aos="zoom-out"  style="margin-top: 25px">
+            <h2>Discover</h2>
+            <p>Just For You</p>
+        </div>
+        <div class="row icon-box" data-aos="zoom-in-left">
 
-        <div class="row" style="padding-top: 10px;">
-            <div class="col-sm-3" th:each="flight : ${reco}"  >
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
-                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
-                    <h2 style="font-size: 1.5em" th:text="${flight.getOriginID()} + ' to ' + ${flight.getDestinationID()}"></h2>
-                    <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
-                        <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
-                        Airline: <span th:text="${flight.getAirline()}"></span></em></p>
-                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-sm-3" th:each="flight : ${reco}"  >
+                    <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
+                        <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px" th:alt="${img}"/>
+                        <h2 style="font-size: 1.5em" th:text="${flight.getOriginID()} + ' to ' + ${flight.getDestinationID()}"></h2>
+                        <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
+                            <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
+                            Airline: <span th:text="${flight.getAirline()}"></span></em></p>
+                        <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-link">Quick Book</a><br><br>
+                        <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-link">Quick Book</a><br><br>
+                    </div>
                 </div>
-
-
-
-        </div>
-        <div th:if="${reco} == 0">
-            <p>There are currently no recomendation</p>
-        </div>
-            <br>
-            <em style="font-size: 0.7em">What is 'Quick Book'? Flights that are similar to your regular bookings can be booked & paid for in one click, when you are using your regular device.</em>
-    </div>
-
-            <hr />
+                <div th:if="${reco} == 0">
+                    <p>There are currently no recommendations</p>
+                </div>
+                <br>
+                <em style="font-size: 0.7em">What is 'Quick Book'? Flights that are similar to your regular bookings can be booked & paid for in one click, when you are using your regular device.</em>
             </div>
+        </div>
+        <hr />
+    </div>
 </section><!-- End Cta Section -->
 
 <!-- ======= Contact Section ======= -->
@@ -219,9 +222,8 @@
         </div>
 
     </div>
-
-    </div>
 </section><!-- End Contact Section -->
+</main>
 <!-- ======= Footer ======= -->
 <lower th:replace="Fragments/Footer"> </lower>
 <!-- Template Main JS File -->
