@@ -1,6 +1,7 @@
 package com.FlightPub.Services;
 
 import com.FlightPub.model.Booking;
+import com.FlightPub.model.Flight;
 import com.FlightPub.repository.BookingRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,17 @@ public class BookingServices {
         return bookings;
     }
 
-    public void delete(String id){}
-
     public List<Booking> getUserBookings(String userID){
         return bookingRepo.findByUser(userID);
     }
+
+    public Booking getById(String id){
+        return bookingRepo.findById(id).orElse(null);
+    }
+
+    public void saveOrUpdate(Booking toUpdate){
+        bookingRepo.save(toUpdate);
+    }
+
+    public void delete(String id){}
 }

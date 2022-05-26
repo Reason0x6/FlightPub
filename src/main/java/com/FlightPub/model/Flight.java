@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 @Document("Flight")
 public class Flight {
@@ -63,7 +64,12 @@ public class Flight {
     @Setter
     private double rating;
 
-    public Flight(){}
+    @Getter
+    @Setter
+    private Plane plane = new Plane();
+
+    public Flight(){
+    }
 
     public Flight(String flightID, String originID, String destinationID,
                   String departure, String arrival, String flightCode,
@@ -79,6 +85,8 @@ public class Flight {
             setDepartureTime(departure);
             setArrivalTime(arrival);
         }catch(Exception e){}
+
+        plane = new Plane();
 
     }
 
@@ -105,4 +113,9 @@ public class Flight {
     public String getDepartureTime(){
         return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departure);
     }
+
+    public List<String> getAllSeats(){
+        return plane.getSeats();
+    }
+
 }

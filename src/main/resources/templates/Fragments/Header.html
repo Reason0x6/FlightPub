@@ -19,18 +19,19 @@
         </ul>
         <ul th:if="${usr.isLoggedIn()} != false">
           <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
-          <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
           <li><a class="nav-link scrollto" href="/account#groups">Groups</a></li>
-          <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span></a></li>
-          <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
-           <li class="dropdown">
-                    <a class="nav-link scrollto dropdown-toggle" data-toggle="dropdown" href="/#notifications">Notifications
-                      <span class="badge">2</span> </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="nav-link scrollto" href="/booking" style="font-weight: bold">Booking confirmed</a></li>
-                      <li><a class="nav-link scrollto" href="/newuser" style="font-weight: bold">Alex added to the group</a></li>
-                    </ul>
+          <li><a class="nav-link scrollto" href="/#contact">Contact Us</a></li>
+          <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span>'s Account</a></li>
+          <li><a class="nav-link scrollto" href="/cart"><img src="/assets/img/shopping-cart.png" alt="My Cart"></a></li>
+          <li class="dropdown">
+            <a class="nav-link scrollto dropdown-toggle" data-toggle="dropdown" href="/#notifications"><img src="/assets/img/notification.png" alt="Notifications">
+              <span class="badge">2</span> </a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link scrollto" href="/booking" style="font-weight: bold">Booking confirmed</a></li>
+              <li><a class="nav-link scrollto" href="/newuser" style="font-weight: bold">Alex added to the group</a></li>
+            </ul>
           </li>
+          <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
