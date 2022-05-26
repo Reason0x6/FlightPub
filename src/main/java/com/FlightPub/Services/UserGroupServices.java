@@ -23,7 +23,6 @@ public class UserGroupServices {
                 this.userGroupRepo = userGroupRepository;
         }
 
-
         public LinkedList<UserAccount> listAllUsers() {
                 LinkedList<UserAccount> accounts = new LinkedList<UserAccount>();
                 LinkedList<String> usrs = usrGroup.getUserIDs();
