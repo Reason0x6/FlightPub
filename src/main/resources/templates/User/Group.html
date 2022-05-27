@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragments/Head"> </head>
+<header th:replace="Fragments/Header"> </header>
+<body>
+
+<!-- ======= Hero Section ======= -->
+
+<main id="main">
+  <!-- ======= Services Section ======= -->
+
+  <section id = "recommendation" class = "services">
+    <div class="container">
+
+
+      <style>
+                input, select{
+                    width: 45%;
+                    max-width: 250px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+                .btn-search{
+                    margin-top: -3px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+            </style>
+
+      <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+        <h2>Explore Together</h2>
+        <p>Your Selected Flight</p>
+      </div>
+      <div class="card l-1" style="padding: 10px 0 0 20px;">
+        <div class="row" style="padding-top: 10px;">
+          <div class="col-sm-4">
+            <p><b>Departs: </b>Newcastle @ 4:14pm 31/07/2022</p>
+            <p><b>Arrives: </b>Melbourne @ 6:36pm 31/07/2022</p>
+            <p><b>Airline: </b>Virign Airlines</p>
+            <p><b>Class: </b> Business Class</p>
+            <p><b>Seats: </b> J5, J6, K5, K6</p>
+            <button type="submit" class="btn btn-primary">Pay Now</button>&nbsp;&nbsp;
+            <button type="submit" class="btn btn-link">Reschedule with Group</button><Br><br>
+          </div>
+          <div class="col-sm-8">
+            <style>#chartdiv {
+            width: 100%;
+            height: 200px;
+          }	</style>
+            <div id="chartdiv"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <hr /><Br><Br>
+      <div class="row">
+        <div class="col-md-6" style="padding-left: 20px; ">
+          <div class="section-title" data-aos="zoom-out" >
+            <h2>Members</h2>
+            <p>The Who's Who</p>
+          </div>
+          <div class="card l-1" data-aos="zoom-in-left">
+
+            <table class="table">
+              <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Booked Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="user : ${groupUsers}">
+                <th scope="row" th:text="${user.firstname}"></th>
+                <td th:text="${user.email}"></td>
+                <td> TODO </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-6" style="padding-left: 20px;">
+          <div class="section-title" data-aos="zoom-out" >
+            <h2>Sharing is Caring</h2>
+            <p>Get The Gang Together</p>
+          </div>
+          <div class="card l-1" data-aos="zoom-in-left" style="margin-left: 30px;">
+
+            <p>Invite users to join your group booking with the below code and password:<br>
+            <div class="card l-2" >
+              <b>Link: </b><em>www.flightpub.com/invite</em><br>
+              <b>Group Password: </b><em>GR398#</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+  </section><!-- End Cta Section -->
+
+  <!-- ======= Footer ======= -->
+  <lower th:replace="Fragments/Footer"> </lower>
+  <!-- Template Main JS File -->
+</body>
+<script>
+am4core.useTheme(am4themes_animated);
+
+// Create map instance
+var chart = am4core.create("chartdiv", am4maps.MapChart);
+
+// Set map definition
+chart.geodata = am4geodata_worldHigh;
+
+// Set projection
+chart.projection = new am4maps.projections.Miller();
+
+// Create map polygon series
+var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+
+// Exclude Antartica
+polygonSeries.exclude = ["AQ"];
+
+// Make map load polygon (like country names) data from GeoJSON
+polygonSeries.useGeodata = true;
+
+// Use series data to set custom zoom points for countries
+polygonSeries.data = [{
+  "id": "NZ",
+  "zoomLevel": 7,
+  "zoomGeoPoint": {
+    "latitude": -33,
+    "longitude": 151
+  }
+
+}];
+
+polygonSeries.dataFields.zoomLevel = "zoomLevel";
+polygonSeries.dataFields.zoomGeoPoint = "zoomGeoPoint";
+
+// Configure series
+var polygonTemplate = polygonSeries.mapPolygons.template;
+polygonTemplate.tooltipText = "{name}";
+polygonTemplate.fill = am4core.color("#74B266");
+
+// Create hover state and set alternative fill color
+var hs = polygonTemplate.states.create("hover");
+hs.properties.fill = am4core.color("#367B25");
+
+
+chart.events.on("ready", function(ev) {
+  var target = polygonSeries.getPolygonById("NZ");
+
+  // Pre-zoom
+  chart.zoomToMapObject(target);
+
+  // Set active state
+  setTimeout(function() {
+    target.isActive = true;
+  }, 1000);
+});
+
+var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+
+var imageSeriesTemplate = imageSeries.mapImages.template;
+var circle = imageSeriesTemplate.createChild(am4core.Circle);
+circle.radius = 8;
+circle.fill = am4core.color("#e03e96");
+circle.stroke = am4core.color("#FFFFFF");
+circle.strokeWidth = 3;
+circle.nonScaling = true;
+circle.tooltipText = "{title}";
+
+// Set property fields
+imageSeriesTemplate.propertyFields.latitude = "latitude";
+imageSeriesTemplate.propertyFields.longitude = "longitude";
+
+// Add data for the three cities
+imageSeries.data = [{
+      "latitude": -37.81,
+      "longitude": 144.96,
+      "title": "Melbourne"
+}, {
+  "latitude": -33.868820,
+  "longitude": 151.209290,
+  "title": "Sydney"
+}];
+
+// Add line series
+var lineSeries = chart.series.push(new am4maps.MapLineSeries());
+lineSeries.mapLines.template.strokeWidth = 1;
+lineSeries.mapLines.template.stroke = am4core.color("#e03e96");
+lineSeries.data = [{
+  "multiGeoLine": [
+    [
+      { "latitude": -37.81,    "longitude": 144.96 },
+      { "latitude": -33.868820,  "longitude": 151.209290, }
+    ]
+  ]
+}];
+
+lineSeries.mapLines.template.precision = 1000;
+	</script>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- ======= Head ======= -->
+<head th:replace="Fragments/Head"> </head>
+<!-- ======= Header ======= -->
+<header th:replace="Fragments/Header"> </header>
+<body>
+<!-- ======= Hero Section ======= -->
+<main id="main">
+    <!-- ======= Services Section ======= -->
+    <section id = "" class = "services">
+        <div class="container">
+
+            <style>
+                input, select{
+                    width: 45%;
+                    max-width: 250px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+                .btn-search{
+                    margin-top: -3px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+            </style>
+
+            <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+                <h2>Let's Book!</h2>
+                <h3>Your Selected Flights</h3>
+            </div>
+
+            <!-- List each flight in session to be booked -->
+            <div class="card l-1" style="padding: 10px 0 0 20px;">
+                <div>
+                    <hr>
+                    <div class="row icon-box" data-aos="zoom-in-left" >
+
+                        <h2>Selected Flights</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Departure Date</th>
+                                    <th scope="col">Flight</th>
+                                    <th scope="col">Seats</th>
+                                    <th scope="col">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <div th:each="map : ${usr.getSessionCart().keySet()}" th:with="flight = ${usr.getFlight(map)}"  >
+                                <tr >
+                                    <th scope="row" th:text="${flight.getDeparture()}"></th>
+                                    <th th:text="${flight.getOriginID()} + ' -> ' + ${flight.getDestinationID()}"></th>
+                                    <th th:text="${usr.getSessionCart().get(map)}"></th>
+
+                                     <th><a href="" class="btn btn-danger">Remove Flight</a></th>
+                                </tr>
+                                 <tr th:each="seats : ${#numbers.sequence(1, usr.getSessionCart().get((map)))}">
+                                     <td scope="row">
+                                         Seat: <select class="form-select" th:name="'seat' + ${seats}" >
+                                         <option th:each="seat: ${flight.getAllSeats()}" th:value="${seat}" th:text="${seat}"> </option>
+                                     </select>
+                                     </td>
+                                     <td>remove</td>
+                                </tr>
+                            </div>
+
+                            </tbody>
+                        </table>
+                        <a href="/checkout" class="btn btn-success" style="max-width: 200px">Proceed to Checkout</a>
+                    </div>
+                </div>
+            </div>
+            <hr /><Br><Br>
+            <!-- Submit Booking Request >> Checkout page to process payment -->
+        </div>
+    </section><!-- End CTA Section -->
+</main>
+<!-- ======= Footer ======= -->
+<lower th:replace="Fragments/Footer"> </lower>
+</body>
+<script th:inline="javascript"></script>
+</html>

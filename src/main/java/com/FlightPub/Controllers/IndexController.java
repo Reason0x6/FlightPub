@@ -1,11 +1,9 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.*;
-import com.FlightPub.Services.BookingServices;
-import com.FlightPub.Services.FlightServices;
-import com.FlightPub.Services.LocationServices;
-import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,6 +26,7 @@ public class IndexController {
     private FlightServices flightServices;
     private BookingServices bookingServices;
 
+    private UserGroupServices groupServices;
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -53,6 +51,12 @@ public class IndexController {
         this.bookingServices = bookingService;
     }
 
+    @Autowired
+    @Qualifier(value = "UserGroupServices")
+    public void setUserGroupServices(UserGroupServices userGroupServices) {
+        this.groupServices = userGroupServices;
+    }
+
 
     @RequestMapping("/")
     public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
@@ -75,16 +79,12 @@ public class IndexController {
     public String loadLogin(Model model, HttpSession session){
 
         model.addAttribute("usr", getSession(session));
-        return "login";
+        return "User/login";
     }
-    
-    @RequestMapping("/booking")
-    public String booking(Model model){
-        return "booking";
-    }
+
     @RequestMapping("/newuser")
     public String user(Model model){
-        return "newuser";
+        return "Notifications/newuser";
     }
 
     @RequestMapping("/Register")
@@ -92,14 +92,14 @@ public class IndexController {
 
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
-        return "Register";
+        return "User/Register";
     }
 
     @RequestMapping("/logout")
     public String loadLogout(Model model, HttpSession session){
         session.setAttribute("User", new UserSession(null));
         model.addAttribute("usr", getSession(session));
-        return "login";
+        return "User/login";
     }
 
     @PostMapping("/login")
@@ -128,7 +128,7 @@ public class IndexController {
             model.addAttribute("valid", false);
         }
 
-        return "login";
+        return "User/login";
     }
 
     @RequestMapping("/account")
@@ -139,6 +139,7 @@ public class IndexController {
 
 
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
+        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
 
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);
@@ -147,10 +148,12 @@ public class IndexController {
             model.addAttribute("bookings", null);
         }
 
+        model.addAttribute("groups", groups);
+
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
-        return "Personalised";
+        return "User/Personalised";
     }
 
     @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
@@ -168,16 +171,37 @@ public class IndexController {
     }
 
     @RequestMapping("/groups")
-    public String group(Model model, HttpSession session){
+    public String group(@RequestParam String groupId, Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
+
+        groupServices.loadUserGroup(groupId);
+
+        if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("usr", getSession(session));
+            model.addAttribute("Error", "Not in group");
+            return "404";
+        }
+
+        model.addAttribute("groupUsers", groupServices.listAllUsers());
+
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
-        return "Group";
+        return "User/Group";
     }
 
+    @RequestMapping("/groupStatic")
+    public String groupStatic(Model model, HttpSession session){
+//        if(!getSession(session).isLoggedIn()){
+//            return "redirect:login";
+//        }
+        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("usr", getSession(session));
+        return "GroupStatic";
+    }
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){

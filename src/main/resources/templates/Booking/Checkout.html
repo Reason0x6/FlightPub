@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- ======= Head ======= -->
+<head th:replace="Fragments/Head"> </head>
+<!-- ======= Header ======= -->
+<header th:replace="Fragments/Header"> </header>
+<body>
+<!-- ======= Hero Section ======= -->
+<main id="main">
+    <!-- ======= Services Section ======= -->
+    <section id = "" class = "services">
+        <div class="container">
+            <style>
+                input, select{
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+            </style>
+
+            <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+                <h2>Show me the money!</h2>
+                <h3>Traveller Information & Payment</h3>
+            </div>
+
+            <!-- List each flight in session to be booked -->
+            <div class="card l-1" style="padding: 10px 0 0 20px;">
+                <div>
+                    <div class="row icon-box" data-aos="zoom-in-left" >
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th><h2>Traveller #1</h2></th>
+                            </tr>
+                            </thead>
+                            <!-- For Each Seat Requested -->
+                            <tbody>
+                                <!-- Traveller 1 -->
+                                <tr>
+                                    <th>Select Traveller from Account:</th>
+                                </tr>
+                                <!-- Select Traveller from Account [Dropdown]-->
+                                <tr>
+                                    <td>
+                                        <select class="form-select" name="account-users" id="account-users">
+                                            <option value="default"></option>
+                                            <option value="user">Miss Isabella Andrews</option>
+                                            <option value="user">Mr Mathew Ayre</option>
+                                            <option value="user">Master Dexter Ayre</option>
+                                        </select><br>
+                                    </td>
+                                </tr>
+                                <!-- OR -->
+                                <th>OR add new Traveller details:</th>
+                                <tr>
+                                <!-- Add new Traveller Details -->
+                                <!-- Traveller Info [Input]-->
+                                <!--
+                                <div th:each="map : ${usr.getSessionCart().keySet()}" th:with="flight = ${usr.getFlight(map)}">
+                                <tr th:each="seats : ${#numbers.sequence(1, usr.getSessionCart().get((map)))}">
+                                -->
+                                    <td>
+                                        <select class="form-select" name="title" id="title">
+                                            <option value="default">Title</option>
+                                            <option value="master">Master</option>
+                                            <option value="miss">Miss</option>
+                                            <option value="mr">Mr</option>
+                                            <option value="mrs">Mrs</option>
+                                            <option value="ms">Ms</option>
+                                            <option value="doctor">Dr</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" id="firstname" class="form-control" name="firstname" placeholder="First Name"></td>
+                                    <td><input type="text" id="lastname" class="form-control" name="lastname" placeholder="Last Name"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="tel" id="phone" class="form-control" name="phone" placeholder="Phone Number"></td>
+                                    <td><input type="email" id="email" class="form-control" name="email" placeholder="Email"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="street-number" class="form-control" name="street-number" placeholder="Street Number"></td>
+                                    <td><input type="text" id="street" class="form-control" name="street" placeholder="Street"></td>
+                                    <td><input type="text" id="suburb" class="form-control" name="suburb" placeholder="Suburb"></td>
+                                    <td><select class="form-select" name="state" id="state">
+                                        <option value="default">State</option>
+                                        <option value="nsw">NSW</option>
+                                        <option value="vic">VIC</option>
+                                        <option value="qld">QLD</option>
+                                        <option value="sa">SA</option>
+                                        <option value="wa">WA</option>
+                                        <option value="tas">TAS</option>
+                                        <option value="nt">NT</option>
+                                        <option value="act">ACT</option>
+                                    </select></td>
+                                    <td><input type="text" id="postcode" class="form-control" name="postcode" placeholder="Postcode"></td>
+                                </tr>
+                                <tr>
+                                    <!-- FF Details [Input]-->
+                                    <td><input type="text" id="membership" class="form-control" name="membership" placeholder="Frequent Flyer Number"></td>
+                                </tr>
+                                <tr>
+                                    <!-- Save Traveller to Account [Checkbox]-->
+                                    <th><label for="save-traveller">Save new Traveller to Account?</label></th>
+                                    <td><input type="checkbox" name="save-traveller" id="save-traveller" style="width: 50px;"></td>
+                                </tr>
+                                <!-- Traveller 2++ -->
+                                <!-- Select Traveller from Account [Dropdown]-->
+                                <!-- OR -->
+                                <!-- Add new Traveller Details -->
+                                <!-- Use Traveller 1's Contact Details [Checkbox + Autofill?]-->
+                                <!-- Traveller Info [Input]-->
+                                <!-- FF Details [Input]-->
+                                <!-- Save Traveller to Account [Checkbox]-->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card l-1" style="padding: 10px 0 0 20px;">
+                <div>
+                    <div class="row icon-box" data-aos="zoom-in-left" >
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <!-- Select Payment Option -->
+                                <th><h2>Payment Details</h2></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <!-- Card Number [Input] -->
+                                <td><input type="number" id="card-number" class="form-control" name="card-number" placeholder="Card Number"></td>
+                                <!-- Name On Card [Input] -->
+                                <td><input type="text" id="card-name" class="form-control" name="card-name" placeholder="Name on Card"></td>
+                            </tr>
+                            <tr>
+                                <!-- Card Expiry [Input] -->
+                                <td><input type="number" id="card-expiry" class="form-control" name="card-number" placeholder="Card Expiry, e.g. 0522" maxlength="4"></td>
+                                <!-- Card Security Code [Input] -->
+                                <td><input type="number" id="card-security" class="form-control" name="card-security" placeholder="Security Code" maxlength="3"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- Submit Payment Request -->
+                        <!-- Pay Now [Button] -->
+                        <a href="/bookingConfirmation" class="btn btn-success" style="max-width: 200px">Pay Now</a>
+                        <!-- Validate CC Payment >> Confirmation page upon success -->
+                    </div>
+                </div>
+            </div>
+        <hr /><Br><Br>
+        </div>
+    </section><!-- End CTA Section -->
+</main>
+<!-- ======= Footer ======= -->
+<lower th:replace="Fragments/Footer"> </lower>
+</body>
+<script th:inline="javascript"></script>
+</html>
