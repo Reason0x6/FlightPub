@@ -60,6 +60,7 @@ public class UserSession {
             }
         }
         sessionCart.put(flightID, numSeats);
+        System.out.println(flightID + ", " + numSeats);
         return;
     }
 
