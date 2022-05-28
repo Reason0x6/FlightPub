@@ -16,8 +16,6 @@ public class UserGroupServices {
         private UserAccountServices accData;
         private UserGroup usrGroup;
 
-
-
         @Autowired
         public UserGroupServices(UserGroupRepo userGroupRepository) {
                 this.userGroupRepo = userGroupRepository;
