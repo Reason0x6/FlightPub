@@ -1,20 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<div th:replace="Fragments/Head"></div>
+<head th:replace="Fragments/Head"> </head>
 <header th:replace="Fragments/Header"> </header>
-<body>
 <div class="container">
     <main id="main" style="margin: 100px">
         <!-- ======= Services Section ======= -->
         <h1>Oh?..</h1>
-        <p th:if="${Error.equals('User already exists')}">A user with this email already exists.. Would you like to <a href="/login">login?</a></p>
-        <p th:if="${Error.equals('General Error')}">Nothing here... Wanna head back <a href="/">home?</a></p>
-        <p th:if="${Error.equals('Not in group')}">Sorry, but you have not been invited to this group... Wanna head back <a href="/">home?</a></p>
-        <!-- <p>Somethings gone horribly wrong... or you're lost... Wanna head back <a href="/">home?</a></p> -->
+        <p th:if="${exists.equals('User already exists')}">A user with this email already exists.. Would you like to <a href="/login">login?</a></p>
+        <p th:if="${Error.equals('General Error')}">A user with this email already exists.. Would you like to <a href="/login">login?</a></p>
+       <!-- <p>Somethings gone horribly wrong... or you're lost... Wanna head back <a href="/">home?</a></p> -->
     </main>
 </div>
-</body>
 
 <lower th:replace="Fragments/Footer"> </lower>
 
