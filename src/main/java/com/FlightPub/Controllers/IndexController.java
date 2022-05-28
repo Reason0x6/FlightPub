@@ -157,9 +157,25 @@ public class IndexController {
     }
 
     @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
-    public String addLoc(@RequestParam String id, Model model, HttpSession session){
+    public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
+
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
+        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+
+        model.addAttribute("Flight", f);
+        model.addAttribute("usr", getSession(session));
+
+        return "Flight";
+    }
+
+    @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2
+    public String bookFlight(@RequestParam String id, @RequestParam Integer seats ,Model model, HttpSession session){
+
+        Flight f = flightServices.getById(id);
+
+        getSession(session).addToCart(seats, id);
 
         model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
         model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
