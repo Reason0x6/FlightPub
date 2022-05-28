@@ -250,14 +250,16 @@ public class IndexController {
     {
         model = addDateAndTimeToModel(model);
         List<Flight> flights;
-        List<SingleStopOver> flights1Stop;
-        List<MultiStopOver> flights2Stop;
+        List<SingleStopOver> flights1Stop = null;
+        List<MultiStopOver> flights2Stop = null;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
             flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
-            // flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
-            // flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+            if(search.isDirectFlight() == false) {
+                flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
+                flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "index";
@@ -265,7 +267,8 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
-
+        model.addAttribute("flights1Stop", flights1Stop);
+        model.addAttribute("flights2Stop", flights2Stop);
 
         model.addAttribute("usr", getSession(session));
         return "search";
@@ -275,13 +278,9 @@ public class IndexController {
 
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session){
-        /*   if(!getSession(session).isLoggedIn()){
+         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
-        } */
-        //getSession(session).addToCart(numSeats, flightID);
-
-        getSession(session).addToCart(2, "1001");
-        getSession(session).addToCart(1, "1002");
+        }
 
         getSession(session).setFlightServices(flightServices);
         model.addAttribute("usr", getSession(session));
@@ -289,17 +288,22 @@ public class IndexController {
     }
 
     @PostMapping("/cart")
-    public String updateCart(Model model, HttpSession session, @RequestParam String flightID, @RequestParam int numSeats){
-      /*  if(!getSession(session).isLoggedIn()){
+    public String updateCart(Model model, HttpSession session){
+      if(!getSession(session).isLoggedIn()){
             return "redirect:login";
-        } */
-        getSession(session).addToCart(numSeats, flightID);
+        }
+
         model.addAttribute("usr", getSession(session));
         return "Booking/Cart";
     }
 
     @RequestMapping("/checkout")
-    public String checkout(Model model){
+    public String checkout(Model model, HttpSession session){
+
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
         return "Booking/Checkout";
     }
 
