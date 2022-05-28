@@ -43,6 +43,7 @@
                                 <!-- Select Traveller from Account [Dropdown]-->
                                 <tr>
                                     <td>
+                                        <label for="account-users">Family Member</label>
                                         <select class="form-select" name="account-users" id="account-users">
                                             <option value="default"></option>
                                             <option value="user">Miss Isabella Andrews</option>
@@ -61,6 +62,7 @@
                                 <!-- Add new Traveller Details -->
                                 <!-- Traveller Info [Input]-->
                                         <td>
+                                            <label for="title">Title</label>
                                             <select class="form-select" name="title" id="title">
                                                 <option value="default">Title</option>
                                                 <option value="master">Master</option>
@@ -71,19 +73,27 @@
                                                 <option value="doctor">Dr</option>
                                             </select>
                                         </td>
-                                        <td><input type="text" id="firstname" class="form-control" name="firstname" placeholder="First Name"></td>
-                                        <td><input type="text" id="lastname" class="form-control" name="lastname" placeholder="Last Name"></td>
+                                        <td><label for="firstname">First Name</label>
+                                            <input type="text" id="firstname" class="form-control" name="firstname" placeholder="John"></td>
+                                        <td><label for="lastname">Surname</label>
+                                            <input type="text" id="lastname" class="form-control" name="lastname" placeholder="Smith"></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="tel" id="phone" class="form-control" name="phone" placeholder="Phone Number"></td>
-                                        <td><input type="email" id="email" class="form-control" name="email" placeholder="Email"></td>
+                                        <td><label for="phone">Phone Number</label>
+                                            <input type="tel" id="phone" class="form-control" name="phone" placeholder="XX XXXX XXXX"></td>
+                                        <td><label for="email">Email</label>
+                                            <input type="email" id="email" class="form-control" name="email" placeholder="johnsmith@email.com"></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" id="street-number" class="form-control" name="street-number" placeholder="Street Number"></td>
-                                        <td><input type="text" id="street" class="form-control" name="street" placeholder="Street"></td>
-                                        <td><input type="text" id="suburb" class="form-control" name="suburb" placeholder="Suburb"></td>
-                                        <td><select class="form-select" name="state" id="state">
-                                            <option value="default">State</option>
+                                        <td><label for="street-number">Street Number</label>
+                                            <input type="text" id="street-number" class="form-control" name="street-number" placeholder="123"></td>
+                                        <td><label for="street">Street</label>
+                                            <input type="text" id="street" class="form-control" name="street" placeholder="Ronald Street"></td>
+                                        <td><label for="suburb">Suburb</label>
+                                            <input type="text" id="suburb" class="form-control" name="suburb" placeholder="Cronulla"></td>
+                                        <td><label for="state">State</label>
+                                            <select class="form-select" name="state" id="state">
+                                            <option value="default"> </option>
                                             <option value="nsw">NSW</option>
                                             <option value="vic">VIC</option>
                                             <option value="qld">QLD</option>
@@ -93,11 +103,13 @@
                                             <option value="nt">NT</option>
                                             <option value="act">ACT</option>
                                         </select></td>
-                                        <td><input type="text" id="postcode" class="form-control" name="postcode" placeholder="Postcode"></td>
+                                        <td><label for="postcode">Postcode</label>
+                                            <input type="text" id="postcode" class="form-control" name="postcode" placeholder="2229"></td>
                                     </tr>
                                     <tr>
                                         <!-- FF Details [Input]-->
-                                        <td><input type="text" id="membership" class="form-control" name="membership" placeholder="Frequent Flyer Number"></td>
+                                        <td><label for="membership">Frequent Flyer Number</label>
+                                            <input type="text" id="membership" class="form-control" name="membership" placeholder="XXX XXX XXXX"></td>
                                     </tr>
                                     <tr>
                                         <!-- Save Traveller to Account [Checkbox]-->
@@ -132,30 +144,52 @@
                             <tbody>
                             <tr>
                                 <!-- Card Number [Input] -->
-                                <td><input type="number" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"></td>
+                                <td><label for="card-number"></label>
+                                    <input type="number" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"></td>
                                 <!-- Name On Card [Input] -->
-                                <td><input type="tel" id="card-name" class="form-control" name="card-name" placeholder="Name on Card"></td>
+                                <td><label for="card-name">Name on Card</label>
+                                    <input type="tel" id="card-name" class="form-control" name="card-name" placeholder="John Smith"></td>
                             </tr>
                             <tr>
                                 <!-- Card Expiry [Input] -->
-                                <td><input type="number" id="card-expiry" class="form-control" name="card-number" placeholder="Card Expiry, e.g. 0522" maxlength="4"></td>
+                                <td><label for="card-expiry">Card Expiry</label>
+                                    <input type="number" id="card-expiry" class="form-control" name="card-number" placeholder="02/22" maxlength="4"></td>
                                 <!-- Card Security Code [Input] -->
-                                <td><input type="number" id="card-security" class="form-control" name="card-security" placeholder="Security Code" maxlength="3"></td>
+                                <td><label for="card-security">3-digit Security Code</label>
+                                    <input type="number" id="card-security" class="form-control" name="card-security" placeholder="XXX" maxlength="3"></td>
                             </tr>
                             </tbody>
                         </table>
                         <!-- Submit Payment Request -->
                         <!-- Pay Now [Button] -->
-                        <a href="/bookingConfirmation" class="btn btn-success" style="max-width: 200px">Pay Now</a>
+                        <a href="/bookingConfirmation" class="btn btn-success" onclick="validateCreditCard()" style="max-width: 200px">Pay Now</a>
                         <!-- Validate CC Payment >> Confirmation page upon success -->
-                        <script>
+                        <script th:inline="javascript">
+                            function validateCreditCard() {
+                                let cardNumber = document.getElementById("card-number").value;
+                                if (!cardNumber || /[^\d-\s]/.test(cardNumber)) {
+                                    alert("Credit Card number is invalid. Please try again.");
+                                    return false;
+                                }
 
+                                let digit = 0, check = 0, even = false;
+                                for (let i = cardNumber.length - 1; i >= 0; i--) {
+                                    digit = parseInt(cardNumber.charAt(i), 10);
+                                    if (even) {
+                                        if ((digit *= 2) > 9) digit -= 9;
+                                    }
+                                    check += digit;
+                                    even = !even;
+                                }
+                                return (check % 10) === 0;
+                            }
                         </script>
-                        <p style="color: red" th:if="${valid} != null">Credit Card details are invalid. Please try again.</p>
+                        <!--<p style="color: red" th:if="${valid} != null">Credit Card details are invalid. Please try again.</p>-->
                     </div>
                 </div>
             </div>
-        <hr /><Br><Br>
+            <hr /><Br><Br>
+        </div>
         </div>
     </section><!-- End CTA Section -->
 </main>
