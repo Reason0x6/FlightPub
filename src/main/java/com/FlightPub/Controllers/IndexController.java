@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
@@ -181,15 +178,47 @@ public class IndexController {
         if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
             model.addAttribute("usr", getSession(session));
             model.addAttribute("Error", "Not in group");
-            return "404";
+            return "Error/404";
         }
 
         model.addAttribute("groupUsers", groupServices.listAllUsers());
+        model.addAttribute("groupId", groupId);
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Group";
+    }
+
+    @PostMapping("/invite_list")
+    public String loadInviteList(@RequestParam("inviteUser") String inviteUser, @RequestParam("groupId") String groupId, Model model) {
+        // TODO check is valid user (Actually has an account)
+        // TODO check current logged in user is actually in group
+        // TODO check that user isnt currently in group
+
+        // Ensure that correct group is selected when loading page
+        groupServices.loadUserGroup(groupId);
+
+        // Check if valid user
+        if (usrServices.getById(inviteUser) != null) {
+            groupServices.addInvite(inviteUser);
+        } else if (inviteUser.equals("loading")){
+            System.out.println("Loading invite list for group: " + groupId);
+        } else {
+            // TODO send this to the front end instead
+            System.out.println("Not a valid user");
+        }
+
+
+        model.addAttribute("inviteUsers", groupServices.listAllInvitedUsers());
+
+        return "Fragments/InviteList :: invite_list_fragment";
+    }
+
+    @PostMapping("/invite_list_load")
+    public String inviteListLoad(Model model) {
+        model.addAttribute("inviteUsers", groupServices.listAllInvitedUsers());
+        return "Fragments/InviteList :: invite_list_fragment";
     }
 
     @RequestMapping("/groupStatic")

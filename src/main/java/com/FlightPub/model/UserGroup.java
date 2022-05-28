@@ -27,6 +27,10 @@ public class UserGroup{
     @Setter
     private String groupName;
 
+    @Getter
+    @Setter
+    private LinkedList<String> invitedIds;
+
     public UserGroup(String adminID, String groupName) {
         this.adminID = adminID;
         this.groupName = groupName;
@@ -36,6 +40,7 @@ public class UserGroup{
         userIDs = new LinkedList<>();
         userIDs.add(adminID);
 
+        invitedIds = new LinkedList<>();
     }
 
     public void addUser(String id){
@@ -46,5 +51,11 @@ public class UserGroup{
 
     public void removeUser(String id){
         userIDs.remove(id);
+    }
+
+    public void addInvite(String id){
+        if (! invitedIds.contains(id)){
+            invitedIds.add(id);
+        }
     }
 }

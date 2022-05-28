@@ -34,6 +34,16 @@ public class UserGroupServices {
                 return accounts;
         }
 
+
+        public LinkedList<UserAccount> listAllInvitedUsers() {
+                LinkedList<UserAccount> accounts = new LinkedList<>();
+                LinkedList<String> usrs = usrGroup.getInvitedIds();
+                for(String usr : usrs){
+                        accounts.add(accData.getById(usr));
+                }
+                return accounts;
+        }
+
         public UserAccount getAdmin(String id) {
                String adminID = usrGroup.getAdminID();
                return accData.getById(adminID);
@@ -50,6 +60,11 @@ public class UserGroupServices {
 
         public void removeUser(String id) {
                 usrGroup.removeUser(id);
+                saveUsers(usrGroup);
+        }
+
+        public void addInvite(String id) {
+                usrGroup.addInvite(id);
                 saveUsers(usrGroup);
         }
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table class="table" th:fragment="invite_list_fragment" id="invite_list">
+    <thead>
+    <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Invite Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${inviteUsers}">
+        <th scope="row" th:text="${user.firstname}"></th>
+        <td th:text="${user.email}"></td>
+        <td> TODO </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
