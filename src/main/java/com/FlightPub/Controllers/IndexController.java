@@ -275,13 +275,9 @@ public class IndexController {
 
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session){
-        /*   if(!getSession(session).isLoggedIn()){
+         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
-        } */
-        //getSession(session).addToCart(numSeats, flightID);
-
-        getSession(session).addToCart(2, "1001");
-        getSession(session).addToCart(1, "1002");
+        }
 
         getSession(session).setFlightServices(flightServices);
         model.addAttribute("usr", getSession(session));
@@ -289,17 +285,22 @@ public class IndexController {
     }
 
     @PostMapping("/cart")
-    public String updateCart(Model model, HttpSession session, @RequestParam String flightID, @RequestParam int numSeats){
-      /*  if(!getSession(session).isLoggedIn()){
+    public String updateCart(Model model, HttpSession session){
+      if(!getSession(session).isLoggedIn()){
             return "redirect:login";
-        } */
-        getSession(session).addToCart(numSeats, flightID);
+        }
+
         model.addAttribute("usr", getSession(session));
         return "Booking/Cart";
     }
 
     @RequestMapping("/checkout")
-    public String checkout(Model model){
+    public String checkout(Model model, HttpSession session){
+
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
         return "Booking/Checkout";
     }
 
