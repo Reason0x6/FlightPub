@@ -148,6 +148,10 @@
                         <!-- Pay Now [Button] -->
                         <a href="/bookingConfirmation" class="btn btn-success" style="max-width: 200px">Pay Now</a>
                         <!-- Validate CC Payment >> Confirmation page upon success -->
+                        <script>
+
+                        </script>
+                        <p style="color: red" th:if="${valid} != null">Credit Card details are invalid. Please try again.</p>
                     </div>
                 </div>
             </div>
