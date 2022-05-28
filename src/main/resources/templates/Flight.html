@@ -42,17 +42,23 @@
             <p><b>Airline: </b> <span th:text="${Flight.getAirline()}"></span></p>
             <p><b>Seats Available: </b> <span th:text="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()}"></span></b></p>
             <p><b>Ticket Price: $</b> <span th:text="${Flight.getTicketPrice()}"></span></p>
-           <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>
-            <button type="submit" th:if="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()} != 0" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
-            <button type="submit" disabled th:if="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()} == 0" class="btn btn-danger">Sold out</button><Br><Br>
 
-            <script th:inline="javascript">
-                function addToCart(){
-                  var seats = document.getElementById("seats").value;
-                  location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
-                }
+            <div th:if="">
+               <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>
+                <button type="submit" th:if="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()} != 0" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                <button type="submit" disabled th:if="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()} == 0" class="btn btn-danger">Sold out</button><Br><Br>
 
-            </script>
+                <script th:inline="javascript">
+                    function addToCart(){
+                      var seats = document.getElementById("seats").value;
+                      location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
+                    }
+
+                </script>
+            </div>
+            <div th:if="">
+
+            </div>
           </div>
           <div class="col-sm-8">
             <style>#chartdiv {

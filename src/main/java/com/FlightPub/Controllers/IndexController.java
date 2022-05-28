@@ -273,6 +273,43 @@ public class IndexController {
         // TODO: Add advanced searches
     }
 
+    @RequestMapping("/cart")
+    public String cart(Model model, HttpSession session){
+        /*   if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        } */
+        //getSession(session).addToCart(numSeats, flightID);
+
+        getSession(session).addToCart(2, "1001");
+        getSession(session).addToCart(1, "1002");
+
+        getSession(session).setFlightServices(flightServices);
+        model.addAttribute("usr", getSession(session));
+        return "Booking/Cart";
+    }
+
+    @PostMapping("/cart")
+    public String updateCart(Model model, HttpSession session, @RequestParam String flightID, @RequestParam int numSeats){
+      /*  if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        } */
+        getSession(session).addToCart(numSeats, flightID);
+        model.addAttribute("usr", getSession(session));
+        return "Booking/Cart";
+    }
+
+    @RequestMapping("/checkout")
+    public String checkout(Model model){
+        return "Booking/Checkout";
+    }
+
+    @RequestMapping("/bookingConfirmation")
+    public String bookingConfirmation(Model model){
+        return "Confirmations/BookingConfirmation";
+    }
+
+
+
 
     private UserSession getSession(HttpSession session){
         UserSession sessionUser = null;
