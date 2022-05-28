@@ -132,9 +132,9 @@
                             <tbody>
                             <tr>
                                 <!-- Card Number [Input] -->
-                                <td><input type="number" id="card-number" class="form-control" name="card-number" placeholder="Card Number"></td>
+                                <td><input type="number" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"></td>
                                 <!-- Name On Card [Input] -->
-                                <td><input type="text" id="card-name" class="form-control" name="card-name" placeholder="Name on Card"></td>
+                                <td><input type="tel" id="card-name" class="form-control" name="card-name" placeholder="Name on Card"></td>
                             </tr>
                             <tr>
                                 <!-- Card Expiry [Input] -->
