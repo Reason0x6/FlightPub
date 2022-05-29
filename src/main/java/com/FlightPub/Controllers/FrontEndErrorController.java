@@ -17,7 +17,7 @@ public class FrontEndErrorController implements ErrorController {
     public String myerror(Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("Error", "General Error");
-        return "404";
+        return "Error/404";
     }
 
     public String getErrorPath(Model model, HttpSession session) {
@@ -29,7 +29,9 @@ public class FrontEndErrorController implements ErrorController {
         UserSession sessionUser = null;
         try{
             sessionUser = (UserSession) session.getAttribute("User");
-        }catch(Exception e){}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         if(sessionUser == null){
             sessionUser =  new UserSession(null);

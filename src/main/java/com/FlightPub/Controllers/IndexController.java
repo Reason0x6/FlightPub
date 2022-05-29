@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
@@ -51,11 +48,11 @@ public class IndexController {
         this.bookingServices = bookingService;
     }
 
-    //@Autowired
-    //@Qualifier(value = "UserGroupServices")
-    //public void setUserGroupServices(UserGroupServices userGroupServices) {
-   //     this.groupServices = userGroupServices;
-    //}
+    @Autowired
+    @Qualifier(value = "UserGroupServices")
+    public void setUserGroupServices(UserGroupServices userGroupServices) {
+        this.groupServices = userGroupServices;
+    }
 
 
     @RequestMapping("/")
@@ -139,7 +136,7 @@ public class IndexController {
 
 
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
-        //List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
+        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
 
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);
@@ -148,7 +145,7 @@ public class IndexController {
             model.addAttribute("bookings", null);
         }
 
-        //model.addAttribute("groups", groups);
+        model.addAttribute("groups", groups);
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
@@ -194,18 +191,64 @@ public class IndexController {
 
         groupServices.loadUserGroup(groupId);
 
-        //if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
-        //    model.addAttribute("usr", getSession(session));
-        //    model.addAttribute("Error", "Not in group");
-        //    return "404";
-        //}
+        if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("usr", getSession(session));
+            model.addAttribute("Error", "Not in group");
+            return "Error/404";
+        }
 
         model.addAttribute("groupUsers", groupServices.listAllUsers());
+        model.addAttribute("groupId", groupId);
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Group";
+    }
+
+    @PostMapping("/invite_list")
+    public String loadInviteList(@RequestParam("inviteUser") String inviteUser, @RequestParam("groupId") String groupId, Model model, HttpSession session) {
+        // Ensure that correct group is selected when loading page
+        groupServices.loadUserGroup(groupId);
+
+        // Ensure that the user sending post request is actually a member of the group
+        if (!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("Error", "Not in group");
+            return "redirect:/Error/404";
+        }
+
+        // If invited user is already in group
+        if (groupServices.isUserInGroup(inviteUser)) {
+            // TODO send to this front end
+            System.out.println("User is already in group");
+        }
+        // If valid user
+        else if (usrServices.getById(inviteUser) != null) {
+            groupServices.addInvite(inviteUser);
+
+            // TODO send a notification to user that they have been invited to group
+            //  notification would include group link, group name
+        }
+        // If incoming user email is loading just update users
+        else if (inviteUser.equals("loading")){
+            System.out.println("Loading invite list for group: " + groupId);
+        }
+        // If these checks fail not a valid user
+        else {
+            // TODO send this to the front end instead
+            System.out.println("Not a valid user");
+        }
+
+
+        model.addAttribute("inviteUsers", groupServices.listAllInvitedUsers());
+
+        return "Fragments/InviteList :: invite_list_fragment";
+    }
+
+    @PostMapping("/invite_list_load")
+    public String inviteListLoad(Model model) {
+        model.addAttribute("inviteUsers", groupServices.listAllInvitedUsers());
+        return "Fragments/InviteList :: invite_list_fragment";
     }
 
     @RequestMapping("/groupStatic")
@@ -256,7 +299,7 @@ public class IndexController {
         search.setLocationServices(locationServices);
         try{
             flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
-            if(search.isDirectFlight() == false) {
+            if(!search.isDirectFlight()) {
                 flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
                 flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
             }

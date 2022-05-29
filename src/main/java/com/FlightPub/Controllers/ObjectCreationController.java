@@ -1,12 +1,10 @@
 package com.FlightPub.Controllers;
 
+import com.FlightPub.RequestObjects.NewGroup;
+import com.FlightPub.RequestObjects.Recommendation;
 import com.FlightPub.RequestObjects.UserRegister;
-import com.FlightPub.Services.FlightServices;
-import com.FlightPub.Services.LocationServices;
-import com.FlightPub.Services.UserAccountServices;
-import com.FlightPub.model.Flight;
-import com.FlightPub.model.Location;
-import com.FlightPub.model.UserAccount;
+import com.FlightPub.Services.*;
+import com.FlightPub.model.*;
 import com.FlightPub.RequestObjects.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class ObjectCreationController {
     private UserAccountServices usrServices;
     private FlightServices flightServices;
     private LocationServices locationServices;
+    private BookingServices bookingServices;
+
+    private UserGroupServices groupServices;
     private UserAccount SessionUser;
 
     @Autowired
@@ -45,6 +47,17 @@ public class ObjectCreationController {
         this.locationServices = locService;
     }
 
+    @Autowired
+    @Qualifier(value = "BookingServices")
+    public void setBookingServices(BookingServices bookingService) {
+        this.bookingServices = bookingService;
+    }
+
+    @Autowired
+    @Qualifier(value = "UserGroupServices")
+    public void setUserGroupServices(UserGroupServices userGroupServices) {
+        this.groupServices = userGroupServices;
+    }
 
     @RequestMapping("/location/add") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String addLoc( @RequestParam String id, @RequestParam String country, @RequestParam String location, @RequestParam double lat,
@@ -75,9 +88,8 @@ public class ObjectCreationController {
     public String registerUSR(@ModelAttribute UserRegister newUser, Model model, HttpSession session){
         model.addAttribute("usr", getSession(session));
         if(usrServices.getById(newUser.getEmail()) != null){
-            model.addAttribute("exists", "User already exists");
             model.addAttribute("Error", "User already exists");
-            return "404";
+            return "Error/404";
         }
         else if(newUser.isValid()){
             UserAccount nUser = new UserAccount(newUser.getFirstname(),newUser.getEmail(), newUser.getPassword());
@@ -97,12 +109,12 @@ public class ObjectCreationController {
                              @RequestParam String destinationID, @RequestParam String airline,
                              @RequestParam String departure, @RequestParam String arrival,
                              @RequestParam String flightCode, @RequestParam double ticketprice,
-                             Model model, HttpSession session){
+                             Model model, HttpSession session) {
 
         Flight newFlight = new Flight(flightID, originID.toUpperCase(),
-                destinationID.toUpperCase(), departure, arrival, flightCode, airline,ticketprice);
+                destinationID.toUpperCase(), departure, arrival, flightCode, airline, ticketprice);
 
-        if(flightServices.getById(flightID) != null){
+        if (flightServices.getById(flightID) != null) {
             // TODO: Notification of flight detail change to be sent to users
         }
 
@@ -113,6 +125,32 @@ public class ObjectCreationController {
         return "Confirmations/NewFlight";
     }
 
+    @PostMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1
+    public String addGroup(@ModelAttribute NewGroup group, Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:/login";
+        }
+
+        UserGroup newGroup = new UserGroup(getSession(session).getEmail(), group.getGroupName());
+        groupServices.saveUsers(newGroup);
+
+        List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
+        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
+
+        if(bookings.size() > 0){
+            model.addAttribute("bookings", bookings);
+            model.addAttribute("flights", flightServices);
+        }else{
+            model.addAttribute("bookings", null);
+        }
+
+        model.addAttribute("groups", groups);
+
+        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("usr", getSession(session));
+        return "User/Personalised";
+    }
 
     private UserSession getSession(HttpSession session){
         UserSession sessionUser = null;

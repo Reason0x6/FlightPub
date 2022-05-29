@@ -3,7 +3,7 @@
 
 <head th:replace="Fragments/Head"> </head>
 <header th:replace="Fragments/Header"> </header>
-<body>
+<body onload="loadInviteUserForm()">
 
 <!-- ======= Hero Section ======= -->
 
@@ -70,33 +70,14 @@
               <tr>
                 <th scope="col">First Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Age</th>
                 <th scope="col">Booked Status</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <th scope="row">Gavin</th>
-                <td>g_example@gmail.com</td>
-                <td>23</td>
-                <td>Not Booked</td>
-              </tr>
-              <tr>
-                <th scope="row">Issy</th>
-                <td>I_example@me.com</td>
-                <td>21</td>
-                <td>Not Booked</td>
-              </tr>
-              <tr>
-                <th scope="row">Jacob</th>
-                <td>Jac_the_planer@gmail.com</td>
-                <td>23</td>
-                <td>Booked</td>
-              </tr><tr>
-                <th scope="row">Toby</th>
-                <td>mr_T@gmail.com</td>
-                <td>43</td>
-                <td>Booked</td>
+              <tr th:each="user : ${groupUsers}">
+                  <th scope="row" th:text="${user.firstname}"></th>
+                  <td th:text="${user.email}"></td>
+                  <td> TODO </td>
               </tr>
               </tbody>
             </table>
@@ -107,26 +88,45 @@
             <h2>Sharing is Caring</h2>
             <p>Get The Gang Together</p>
           </div>
-          <div class="card l-1" data-aos="zoom-in-left" style="margin-left: 30px;">
-
-            <p>Invite users to join your group booking with the below code and password:<br>
-            <div class="card l-2" >
-              <b>Link: </b><em>www.flightpub.com/invite</em><br>
-              <b>Group Password: </b><em>GR398#</em></p>
+            <div class="card l-1" data-aos="zoom-in-left">
+                <div class="row" >
+                    <p>Invite users to join your group booking with following url</p>
+                    <b>Invite Link: </b><a th:href="@{__${#httpServletRequest.requestURI}__}" th:text="${#httpServletRequest.requestURL}+'?groupId='+${groupId}"> </a>
+                </div>
             </div>
-          </div>
+            <div class="card l-1" data-aos="zoom-in-left">
+              <form id="inviteUserForm">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <label for="inviteUser" class="col-form-label" >Invite User </label>
+                          <input type="hidden" id="groupId" name="groupId" th:value="${groupId}">
+                      </div>
+                      <div class="col-md-5">
+                          <input type="text" id="inviteUser" class="form-control" name="inviteUser" placeholder="Enter User Email">
+                      </div>
+                      <div class="col-md-3">
+                          <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Invite User!</button>
+                      </div>
+
+                  </div>
+              </form>
+            </div>
+            <div  class="card l-1" data-aos="zoom-in-left">
+                <table id="invite_list" th:replace="Fragments/InviteList">Some initial text displayed here. This will be replaced.</table>
+
+            </div>
         </div>
       </div>
 
       <hr />
-
+    </div>
   </section><!-- End Cta Section -->
-
+</main>
   <!-- ======= Footer ======= -->
   <lower th:replace="Fragments/Footer"> </lower>
   <!-- Template Main JS File -->
 </body>
-<script>
+<script th:inline="javascript">
 am4core.useTheme(am4themes_animated);
 
 // Create map instance
@@ -223,5 +223,25 @@ lineSeries.data = [{
 }];
 
 lineSeries.mapLines.template.precision = 1000;
+
+// Update invite list on submit invite form submit
+function updateInviteUserForm() {
+    $("#inviteUserForm").submit(function(e) {
+        e.preventDefault(); // prevent page refresh
+
+        // Post entered email to be added to invite list
+        $.post("/invite_list", $(this).serialize(), function (fragment) {
+            $("#invite_list").replaceWith(fragment);
+        })
+    });
+}
+
+// Load current invite list
+function loadInviteUserForm() {
+    $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
+        $("#invite_list").replaceWith(fragment);
+    })
+}
+
 	</script>
 </html>
