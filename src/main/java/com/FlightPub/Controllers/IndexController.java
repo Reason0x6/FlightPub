@@ -191,14 +191,17 @@ public class IndexController {
     }
 
     @PostMapping("/invite_list")
-    public String loadInviteList(@RequestParam("inviteUser") String inviteUser, @RequestParam("groupId") String groupId, Model model) {
-        // TODO check is valid user (Actually has an account)
-        // TODO check current logged in user is actually in group
-
+    public String loadInviteList(@RequestParam("inviteUser") String inviteUser, @RequestParam("groupId") String groupId, Model model, HttpSession session) {
         // Ensure that correct group is selected when loading page
         groupServices.loadUserGroup(groupId);
 
-        // If user is already in group
+        // Ensure that the user sending post request is actually a member of the group
+        if (!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("Error", "Not in group");
+            return "redirect:/Error/404";
+        }
+
+        // If invited user is already in group
         if (groupServices.isUserInGroup(inviteUser)) {
             // TODO send to this front end
             System.out.println("User is already in group");
