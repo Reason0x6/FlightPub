@@ -299,7 +299,7 @@ public class IndexController {
         search.setLocationServices(locationServices);
         try{
             flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
-            if(search.isDirectFlight() == false) {
+            if(!search.isDirectFlight()) {
                 flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
                 flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
             }

@@ -5,12 +5,14 @@ import com.FlightPub.model.UserGroup;
 import com.FlightPub.repository.UserAccountRepo;
 import com.FlightPub.repository.UserGroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Service("UserGroupServices")
 public class UserGroupServices {
-        private UserGroupRepo userGroupRepo;
+        private final UserGroupRepo userGroupRepo;
 
         @Autowired
         private UserAccountServices accData;
@@ -22,7 +24,7 @@ public class UserGroupServices {
         }
 
         public LinkedList<UserAccount> listAllUsers() {
-                LinkedList<UserAccount> accounts = new LinkedList<UserAccount>();
+                LinkedList<UserAccount> accounts = new LinkedList<>();
                 LinkedList<String> usrs = usrGroup.getUserIDs();
                 for(String usr : usrs){
                         accounts.add(accData.getById(usr));
@@ -70,5 +72,12 @@ public class UserGroupServices {
 
         }
 
+        public List<UserGroup> findGroupsContaining(String userIDs) {
+                return userGroupRepo.findAllByUserIDs(userIDs);
+        }
+
+        public boolean isUserInGroup(String userId) {
+                return usrGroup.getUserIDs().contains(userId);
+        }
 
 }
