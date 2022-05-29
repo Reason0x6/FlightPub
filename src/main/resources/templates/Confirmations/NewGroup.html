@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Header"> </head>
+<div class="container">
+    <main id="main" style="margin-top: 100px" th:if="${group != null}">
+        <h2>New Group Created</h2>
+        <p th:text="'Group Name: ' + ${group.getGroupName()}"></p>
+        <p th:text="'Admin ID ' + ${group.getAdminID()}"></p>
+    </main>
+</div>
