@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 public class GroupsController {
     private UserAccountServices usrServices;
     private LocationServices locationServices;
-    private FlightServices flightServices;
     private UserGroupServices groupServices;
 
     @Autowired
@@ -36,12 +35,6 @@ public class GroupsController {
     }
 
     @Autowired
-    @Qualifier(value = "FlightServices")
-    public void setFlightServices(FlightServices flightService) {
-        this.flightServices = flightService;
-    }
-
-    @Autowired
     @Qualifier(value = "LocationServices")
     public void setLocationsServices(LocationServices locService) {
         this.locationServices = locService;
@@ -53,18 +46,20 @@ public class GroupsController {
             return "redirect:login";
         }
 
+        // Load group from database
         groupServices.loadUserGroup(groupId);
 
+        // Check if current user is actually in group
         if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
             model.addAttribute("usr", getSession(session));
             model.addAttribute("Error", "Not in group");
             return "Error/404";
         }
 
+        // Add all group users
         model.addAttribute("groupUsers", groupServices.listAllUsers());
         model.addAttribute("groupId", groupId);
 
-        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Group";
@@ -103,7 +98,7 @@ public class GroupsController {
             System.out.println("Not a valid user");
         }
 
-
+        // Get list of all invited users
         model.addAttribute("inviteUsers", groupServices.listAllInvitedUsers());
 
         return "Fragments/InviteList :: invite_list_fragment";
