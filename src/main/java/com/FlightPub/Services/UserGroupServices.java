@@ -66,6 +66,11 @@ public class UserGroupServices {
                 saveUsers(usrGroup);
         }
 
+        public void removeInvite(String id) {
+                usrGroup.removeInvite(id);
+                saveUsers(usrGroup);
+        }
+
         public void loadUserGroup(String id){
 
              usrGroup =  userGroupRepo.findById(id).orElse(null);
@@ -78,6 +83,10 @@ public class UserGroupServices {
 
         public boolean isUserInGroup(String userId) {
                 return usrGroup.getUserIDs().contains(userId);
+        }
+
+        public boolean isUserInvited(String userId) {
+                return usrGroup.getInvitedIds().contains(userId);
         }
 
 }

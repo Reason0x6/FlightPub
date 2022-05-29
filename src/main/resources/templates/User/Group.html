@@ -3,6 +3,7 @@
 
 <head th:replace="Fragments/Head"> </head>
 <header th:replace="Fragments/Header"> </header>
+
 <body onload="loadInviteUserForm()">
 
 <!-- ======= Hero Section ======= -->
@@ -13,6 +14,22 @@
   <section id = "recommendation" class = "services">
     <div class="container">
 
+        <div class="modal" id="myModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invite Accepted</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You have joined a group!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
       <style>
                 input, select{
@@ -30,7 +47,7 @@
                 }
             </style>
 
-      <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+        <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
         <h2>Explore Together</h2>
         <p>Your Selected Flight</p>
       </div>
@@ -242,6 +259,11 @@ function loadInviteUserForm() {
         $("#invite_list").replaceWith(fragment);
     })
 }
-
 	</script>
+
+<script type="text/javascript" th:if="${accepted}">
+    var myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
+    myModal.toggle()
+</script>
+
 </html>
