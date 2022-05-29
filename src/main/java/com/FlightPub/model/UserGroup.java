@@ -31,6 +31,10 @@ public class UserGroup{
     @Setter
     private LinkedList<String> invitedIds;
 
+    @Getter
+    @Setter
+    private LinkedList<Flight> suggestedFlights;
+
     public UserGroup(String adminID, String groupName) {
         this.adminID = adminID;
         this.groupName = groupName;
