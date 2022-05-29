@@ -61,4 +61,8 @@ public class UserGroup{
             invitedIds.add(id);
         }
     }
+
+    public void removeInvite(String id) {
+        invitedIds.remove(id);
+    }
 }

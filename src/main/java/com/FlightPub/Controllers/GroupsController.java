@@ -1,8 +1,6 @@
 package com.FlightPub.Controllers;
 
-import com.FlightPub.RequestObjects.Recommendation;
 import com.FlightPub.RequestObjects.UserSession;
-import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.Services.UserGroupServices;
@@ -49,11 +47,23 @@ public class GroupsController {
         // Load group from database
         groupServices.loadUserGroup(groupId);
 
+        String userId = getSession(session).getEmail();
+
         // Check if current user is actually in group
-        if(!groupServices.isUserInGroup(getSession(session).getEmail())) {
-            model.addAttribute("usr", getSession(session));
-            model.addAttribute("Error", "Not in group");
-            return "Error/404";
+        if(!groupServices.isUserInGroup(userId)) {
+            // Check if user has been invited to group
+            if(groupServices.isUserInvited(userId)) {
+                // Move user from invite list to user list
+                groupServices.removeInvite(userId);
+                groupServices.addUser(userId);
+
+                model.addAttribute("accepted", true);
+            }
+            else {
+                model.addAttribute("usr", getSession(session));
+                model.addAttribute("Error", "Not in group");
+                return "Error/404";
+            }
         }
 
         // Add all group users
