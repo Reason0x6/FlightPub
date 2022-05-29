@@ -154,9 +154,25 @@ public class IndexController {
     }
 
     @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
-    public String addLoc(@RequestParam String id, Model model, HttpSession session){
+    public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
+
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
+        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+
+        model.addAttribute("Flight", f);
+        model.addAttribute("usr", getSession(session));
+
+        return "Flight";
+    }
+
+    @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2
+    public String bookFlight(@RequestParam String id, @RequestParam Integer seats ,Model model, HttpSession session){
+
+        Flight f = flightServices.getById(id);
+
+        getSession(session).addToCart(seats, id);
 
         model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
         model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
@@ -277,14 +293,16 @@ public class IndexController {
     {
         model = addDateAndTimeToModel(model);
         List<Flight> flights;
-        List<SingleStopOver> flights1Stop;
-        List<MultiStopOver> flights2Stop;
+        List<SingleStopOver> flights1Stop = null;
+        List<MultiStopOver> flights2Stop = null;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
             flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
-            // flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
-            // flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+            if(search.isDirectFlight() == false) {
+                flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
+                flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "index";
@@ -292,13 +310,52 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("flights", flights);
-
+        model.addAttribute("flights1Stop", flights1Stop);
+        model.addAttribute("flights2Stop", flights2Stop);
 
         model.addAttribute("usr", getSession(session));
         return "search";
 
         // TODO: Add advanced searches
     }
+
+    @RequestMapping("/cart")
+    public String cart(Model model, HttpSession session){
+         if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        getSession(session).setFlightServices(flightServices);
+        model.addAttribute("usr", getSession(session));
+        return "Booking/Cart";
+    }
+
+    @PostMapping("/cart")
+    public String updateCart(Model model, HttpSession session){
+      if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        model.addAttribute("usr", getSession(session));
+        return "Booking/Cart";
+    }
+
+    @RequestMapping("/checkout")
+    public String checkout(Model model, HttpSession session){
+
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        return "Booking/Checkout";
+    }
+
+    @RequestMapping("/bookingConfirmation")
+    public String bookingConfirmation(Model model){
+        return "Confirmations/BookingConfirmation";
+    }
+
+
 
 
     private UserSession getSession(HttpSession session){
