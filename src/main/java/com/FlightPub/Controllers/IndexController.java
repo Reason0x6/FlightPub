@@ -276,7 +276,24 @@ public class IndexController {
         return "Confirmations/BookingConfirmation";
     }
 
+    @RequestMapping("/bookingalert")
+    public String booking(Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
 
+        model.addAttribute("usr", getSession(session));
+        return "Notifications/booking";
+    }
+    @RequestMapping("/registeredalert")
+    public String user(Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        model.addAttribute("usr", getSession(session));
+        return "Notifications/newuser";
+    }
 
 
     private UserSession getSession(HttpSession session){
