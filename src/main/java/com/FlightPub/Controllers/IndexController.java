@@ -194,17 +194,28 @@ public class IndexController {
     public String loadInviteList(@RequestParam("inviteUser") String inviteUser, @RequestParam("groupId") String groupId, Model model) {
         // TODO check is valid user (Actually has an account)
         // TODO check current logged in user is actually in group
-        // TODO check that user isnt currently in group
 
         // Ensure that correct group is selected when loading page
         groupServices.loadUserGroup(groupId);
 
-        // Check if valid user
-        if (usrServices.getById(inviteUser) != null) {
+        // If user is already in group
+        if (groupServices.isUserInGroup(inviteUser)) {
+            // TODO send to this front end
+            System.out.println("User is already in group");
+        }
+        // If valid user
+        else if (usrServices.getById(inviteUser) != null) {
             groupServices.addInvite(inviteUser);
-        } else if (inviteUser.equals("loading")){
+
+            // TODO send a notification to user that they have been invited to group
+            //  notification would include group link, group name
+        }
+        // If incoming user email is loading just update users
+        else if (inviteUser.equals("loading")){
             System.out.println("Loading invite list for group: " + groupId);
-        } else {
+        }
+        // If these checks fail not a valid user
+        else {
             // TODO send this to the front end instead
             System.out.println("Not a valid user");
         }
