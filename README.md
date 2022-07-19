@@ -1,5 +1,11 @@
-# Spring Boot + Thymeleaf + Mongo DB Web App created for SENG3150
-## Front end in Bootstrap 5 & Jquery 3.6.0
+# FlightPub
+## Spring Boot + Thymeleaf + Mongo DB Web App created for SENG3150
+
+![FlightPub Homepage](src/main/resources/static/assets/img/github-1.png?raw=true "FlightPub Homepage")
+
+![FlightPub Recommendations](src/main/resources/static/assets/img/github-2.png?raw=true "FlightPub Recommendations")
+
+### Front end in Bootstrap 5 & Jquery 3.6.0
 
 https://spring.io/projects/spring-boot
 
