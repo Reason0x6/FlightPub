@@ -1,5 +1,5 @@
 # FlightPub
-## Spring Boot + Thymeleaf + Mongo DB Web App created for SENG3150
+## Spring Boot + Thymeleaf + Mongo DB Web App created for SENG3150 & SENG3160
 
 ![FlightPub Homepage](src/main/resources/static/assets/img/github-1.png?raw=true "FlightPub Homepage")
 
