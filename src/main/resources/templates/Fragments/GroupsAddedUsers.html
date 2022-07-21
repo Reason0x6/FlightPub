@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table class="table" th:fragment="added_users_fragment" id="added_users_fragment">
+    <thead>
+    <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Booked Status</th>
+        <th scope="col" th:if="${isAdmin}" >Remove User?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${groupUsers}">
+        <th scope="row" th:text="${user.firstname}"></th>
+        <td th:text="${user.email}"></td>
+        <td> TODO </td>
+        <td th:if="${isAdmin}"> <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Remove User</button> </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
