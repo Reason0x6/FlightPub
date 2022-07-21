@@ -6,23 +6,46 @@
 </head>
 <body>
 
-<table class="table" th:fragment="added_users_fragment" id="added_users_fragment">
-    <thead>
-    <tr>
-        <th scope="col">First Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Booked Status</th>
-        <th scope="col" th:if="${isAdmin}" >Remove User?</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${groupUsers}">
-        <th scope="row" th:text="${user.firstname}"></th>
-        <td th:text="${user.email}"></td>
-        <td> TODO </td>
-        <td th:if="${isAdmin}"> <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Remove User</button> </td>
-    </tr>
-    </tbody>
-</table>
+<div class="col-md-6" style="padding-left: 20px;" id="added_users_section" th:fragment="added_users_section">
+    <div class="section-title" data-aos="zoom-out" >
+        <h2>Members</h2>
+        <p>The Who's Who</p>
+    </div>
+    <div class="card l-1" data-aos="zoom-in-left">
+        <table class="table" th:fragment="added_users_fragment" id="added_users_fragment">
+            <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Booked Status</th>
+                <th scope="col" th:if="${isAdmin}" >Remove User?</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${groupUsers}">
+                <th scope="row" th:text="${user.firstname}"></th>
+                <td th:text="${user.email}"></td>
+                <td> TODO </td>
+                <td th:if="${isAdmin}"> <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Remove User</button> </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        // TODO inplement removeal correctly
+
+        // TODO make this load correctly
+        // Load current added user list
+        function loadAddedUserForm() {
+            $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
+                $("#invite_list").replaceWith(fragment);
+            })
+        }
+    </script>
+
+</div>
+
+
 </body>
 </html>

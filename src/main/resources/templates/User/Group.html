@@ -14,6 +14,7 @@
   <section id = "recommendation" class = "services">
     <div class="container">
 
+        <!-- This will show a popup to the user to show that they have been accepted to the group-->
         <div class="modal" id="myModal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -30,7 +31,10 @@
                 </div>
             </div>
         </div>
-
+        <script type="text/javascript" th:if="${accepted}">
+            const myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
+            myModal.toggle()
+        </script>
         <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
         <h2>Explore Together</h2>
         <p>Your Selected Flight</p>
@@ -55,16 +59,8 @@
 
       <hr /><Br><Br>
       <div class="row">
-        <div class="col-md-6" style="padding-left: 20px; ">
-          <div class="section-title" data-aos="zoom-out" >
-            <h2>Members</h2>
-            <p>The Who's Who</p>
-          </div>
-          <div class="card l-1" data-aos="zoom-in-left">
-              <table id="added_users_fragment" th:replace="Fragments/GroupsAddedUsers">Some initial text displayed here. This will be replaced.</table>
-          </div>
-        </div>
-        <div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:replace="Fragments/InviteList"> </div>
+          <div class="col-md-6" style="padding-left: 20px;" id="added_users_section" th:replace="Fragments/GroupsAddedUsers"></div>
+          <div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:replace="Fragments/InviteList"> </div>
       </div>
 
       <hr />
@@ -172,20 +168,6 @@ lineSeries.data = [{
 }];
 
 lineSeries.mapLines.template.precision = 1000;
-
-// Load current added user list
-function loadAddedUserForm() {
-    $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
-        $("#invite_list").replaceWith(fragment);
-    })
-}
-
-
-	</script>
-
-<script type="text/javascript" th:if="${accepted}">
-    var myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
-    myModal.toggle()
 </script>
 
 </html>
