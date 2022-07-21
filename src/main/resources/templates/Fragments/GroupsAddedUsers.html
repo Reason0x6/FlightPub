@@ -8,11 +8,11 @@
 
 <div class="col-md-6" style="padding-left: 20px;" id="added_users_section" th:fragment="added_users_section">
     <div class="section-title" data-aos="zoom-out" >
-        <h2>Members</h2>
+        <h2>Members admin: </h2>
         <p>The Who's Who</p>
     </div>
     <div class="card l-1" data-aos="zoom-in-left">
-        <table class="table" th:fragment="added_users_fragment" id="added_users_fragment">
+        <table class="table" th:fragment="added_users_fragment" id="added_users">
             <thead>
             <tr>
                 <th scope="col">First Name</th>
@@ -26,20 +26,38 @@
                 <th scope="row" th:text="${user.firstname}"></th>
                 <td th:text="${user.email}"></td>
                 <td> TODO </td>
-                <td th:if="${isAdmin}"> <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Remove User</button> </td>
+                <td th:if="${isAdmin}">
+                    <span th:if="${user.email == admin.email}"> Group Admin </span>
+
+                    <button th:if="${user.email != admin.email}" type="button" class="btn btn-primary" th:onclick="removeUser([[${user.email}]])">Remove User</button>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <script type="text/javascript">
-        // TODO inplement removeal correctly
+    <script>
+        $(document).ready(function () {
+            loadAddedUsers()
+        })
 
-        // TODO make this load correctly
+        // Remove user id
+        function removeUser(removeUser) {
+                if (confirm('Removing user ' + removeUser)) {
+                    // Post entered email to be added to invite list
+                    $.post("/remove_group_user", {
+                        userId: removeUser,
+                        groupId: $("#groupId").val()
+                    }).always(function () {
+                        loadAddedUsers();
+                    })
+                }
+        }
+
         // Load current added user list
-        function loadAddedUserForm() {
-            $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
-                $("#invite_list").replaceWith(fragment);
+        function loadAddedUsers() {
+            $.post("/added_users", {groupId: $("#groupId").val()}).done(function (fragment) {
+                $("#added_users").replaceWith(fragment);
             })
         }
     </script>

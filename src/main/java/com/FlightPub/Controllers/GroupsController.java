@@ -66,13 +66,6 @@ public class GroupsController {
             }
         }
 
-        // Check if user is admin
-        if(groupServices.isAdmin(userId)) {
-            model.addAttribute("isAdmin", true);
-        }
-
-        // Add all group users
-        model.addAttribute("groupUsers", groupServices.listAllUsers());
         model.addAttribute("groupId", groupId);
 
         model.addAttribute("locs", locationServices.listAll());
@@ -119,14 +112,59 @@ public class GroupsController {
         return "Fragments/InviteList :: invite_list_fragment";
     }
 
-    private UserSession getSession(HttpSession session){
-        UserSession sessionUser = null;
-        try{
-            sessionUser = (UserSession) session.getAttribute("User");
-        } catch(Exception ignored){}
+    @PostMapping("/added_users")
+    public String addedUsersList(@RequestParam("groupId") String groupId, Model model, HttpSession session) {
+        // Ensure that correct group is selected when loading page
+        groupServices.loadUserGroup(groupId);
 
-        if(sessionUser == null){
-            sessionUser =  new UserSession(null);
+        // Ensure that the user sending post request is actually a member of the group
+        if (!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("Error", "Not in group");
+            return "redirect:/Error/404";
+        }
+
+        String userId = getSession(session).getEmail();
+        // Check if user is admin
+        if(groupServices.isAdmin(userId)) {
+            model.addAttribute("isAdmin", true);
+            model.addAttribute("admin", groupServices.getAdmin());
+            model.addAttribute("groupId", groupId);
+        }
+
+        // Add all group users
+        model.addAttribute("groupUsers", groupServices.listAllUsers());
+
+        return "Fragments/GroupsAddedUsers :: added_users_fragment";
+    }
+    @PostMapping("/remove_group_user")
+    public String removeGroupUser(@RequestParam("userId") String userId, @RequestParam("groupId") String groupId, Model model, HttpSession session) {
+        System.out.println("attempting to remove user: " + userId);
+        System.out.println("groupId: " + groupId);
+
+        // Ensure that correct group is selected when loading page
+        groupServices.loadUserGroup(groupId);
+
+        // Ensure that the user sending post request is actually a member of the group
+        if (!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("Error", "Not in group");
+            return "redirect:/Error/404";
+        }
+
+        groupServices.removeUser(userId);
+
+        return "";
+    }
+
+
+    private UserSession getSession(HttpSession session) {
+        UserSession sessionUser = null;
+        try {
+            sessionUser = (UserSession) session.getAttribute("User");
+        } catch (Exception ignored) {
+        }
+
+        if (sessionUser == null) {
+            sessionUser = new UserSession(null);
             session.setAttribute("User", sessionUser);
         }
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body onload="loadInviteUserForm()">
+<body>
 <div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:fragment="invite_section">
     <div class="section-title" data-aos="zoom-out" >
         <h2>Sharing is Caring</h2>
@@ -28,7 +28,7 @@
                         <input type="text" id="inviteUser" class="form-control" name="inviteUser" placeholder="Enter User Email">
                     </div>
                     <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Invite User!</button>
+                        <button type="submit" class="btn btn-primary" onclick="updateInviteUserForm()">Invite User!</button>
                     </div>
 
                 </div>
@@ -53,7 +53,7 @@
             </table>
         </div>
 
-        <script type="text/javascript">
+        <script>
             // Update invite list on submit invite form submit
             function updateInviteUserForm() {
                 $("#inviteUserForm").one('submit',function(e) {
@@ -67,11 +67,11 @@
             }
 
             // Load current invite list
-            function loadInviteUserForm() {
+            $(document).ready( function loadInviteUserForm() {
                 $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
                     $("#invite_list").replaceWith(fragment);
                 })
-            }
+            })
         </script>
     </div>
 </div>
