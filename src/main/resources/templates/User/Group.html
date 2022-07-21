@@ -88,7 +88,7 @@
                 <th scope="col">First Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Booked Status</th>
-                  <th scope="col">Remove User?</th>
+                <th scope="col" th:if="${isAdmin}" >Remove User?</th>
               </tr>
               </thead>
               <tbody>
@@ -96,7 +96,7 @@
                   <th scope="row" th:text="${user.firstname}"></th>
                   <td th:text="${user.email}"></td>
                   <td> TODO </td>
-                  <td> <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Remove User</button> </td>
+                  <td th:if="${isAdmin}"> <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Remove User</button> </td>
               </tr>
               </tbody>
             </table>
