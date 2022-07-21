@@ -66,6 +66,11 @@ public class GroupsController {
             }
         }
 
+        // Check if user is admin
+        if(groupServices.isAdmin(userId)) {
+            model.addAttribute("isAdmin", true);
+        }
+
         // Add all group users
         model.addAttribute("groupUsers", groupServices.listAllUsers());
         model.addAttribute("groupId", groupId);

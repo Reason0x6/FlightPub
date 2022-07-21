@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Head"><title>Group</title></head>
 <header th:replace="Fragments/Header"> </header>
 
 <body onload="loadInviteUserForm()">
@@ -88,6 +88,7 @@
                 <th scope="col">First Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Booked Status</th>
+                  <th scope="col">Remove User?</th>
               </tr>
               </thead>
               <tbody>
@@ -95,6 +96,7 @@
                   <th scope="row" th:text="${user.firstname}"></th>
                   <td th:text="${user.email}"></td>
                   <td> TODO </td>
+                  <td> <button type="submit" class="btn btn-primary btn-search" onclick="updateInviteUserForm()">Remove User</button> </td>
               </tr>
               </tbody>
             </table>

@@ -89,4 +89,7 @@ public class UserGroupServices {
                 return usrGroup.getInvitedIds().contains(userId);
         }
 
+        public boolean isAdmin(String userId) {
+                return usrGroup.getAdminID().equals(userId);
+        }
 }
