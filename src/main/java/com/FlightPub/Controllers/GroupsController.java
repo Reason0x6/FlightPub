@@ -123,6 +123,29 @@ public class GroupsController {
             return "redirect:/Error/404";
         }
 
+        return loadAddedUsers(groupId, model, session);
+    }
+    @PostMapping("/remove_group_user")
+    public String removeGroupUser(@RequestParam("userId") String userId, @RequestParam("groupId") String groupId, Model model, HttpSession session) {
+        System.out.printf("Attempting to remove user: %s from group: %s %n", userId, groupId);
+
+        // Ensure that correct group is selected when loading page
+        groupServices.loadUserGroup(groupId);
+
+        // Ensure that the user sending post request is actually a member of the group
+        if (!groupServices.isUserInGroup(getSession(session).getEmail())) {
+            model.addAttribute("Error", "Not in group");
+            return "redirect:/Error/404";
+        }
+
+        // Remove user from group
+        groupServices.removeUser(userId);
+
+        return loadAddedUsers(groupId, model, session);
+    }
+
+
+    private String loadAddedUsers(String groupId, Model model, HttpSession session) {
         String userId = getSession(session).getEmail();
         // Check if user is admin
         if(groupServices.isAdmin(userId)) {
@@ -136,25 +159,6 @@ public class GroupsController {
 
         return "Fragments/Groups/GroupsAddedUsers :: added_users_fragment";
     }
-    @PostMapping("/remove_group_user")
-    public String removeGroupUser(@RequestParam("userId") String userId, @RequestParam("groupId") String groupId, Model model, HttpSession session) {
-        System.out.println("attempting to remove user: " + userId);
-        System.out.println("groupId: " + groupId);
-
-        // Ensure that correct group is selected when loading page
-        groupServices.loadUserGroup(groupId);
-
-        // Ensure that the user sending post request is actually a member of the group
-        if (!groupServices.isUserInGroup(getSession(session).getEmail())) {
-            model.addAttribute("Error", "Not in group");
-            return "redirect:/Error/404";
-        }
-
-        groupServices.removeUser(userId);
-
-        return "";
-    }
-
 
     private UserSession getSession(HttpSession session) {
         UserSession sessionUser = null;
