@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="col-md-6" style="padding-left: 20px;" id="added_users_section" th:fragment="added_users_section">
+    <div class="section-title" data-aos="zoom-out" >
+        <h2>Members admin: </h2>
+        <p>The Who's Who</p>
+    </div>
+    <div class="card l-1" data-aos="zoom-in-left">
+        <table class="table" th:fragment="added_users_fragment" id="added_users">
+            <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Booked Status</th>
+                <th scope="col" th:if="${isAdmin}" >Remove User?</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${groupUsers}">
+                <th scope="row" th:text="${user.firstname}"></th>
+                <td th:text="${user.email}"></td>
+                <td> TODO </td>
+                <td th:if="${isAdmin}">
+                    <span th:if="${user.email == admin.email}"> Group Admin </span>
+
+                    <button th:if="${user.email != admin.email}" type="button" class="btn btn-primary" th:onclick="removeUser([[${user.email}]])">Remove User</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            loadAddedUsers()
+        })
+
+        // Remove user id
+        function removeUser(removeUser) {
+                if (confirm('Removing user ' + removeUser)) {
+                    // Post entered email to be added to invite list
+                    $.post("/remove_group_user", {
+                        userId: removeUser,
+                        groupId: $("#groupId").val()
+                    }).always(function () {
+                        loadAddedUsers();
+                    })
+                }
+        }
+
+        // Load current added user list
+        function loadAddedUsers() {
+            $.post("/added_users", {groupId: $("#groupId").val()}).done(function (fragment) {
+                $("#added_users").replaceWith(fragment);
+            })
+        }
+    </script>
+
+</div>
+
+
+</body>
+</html>

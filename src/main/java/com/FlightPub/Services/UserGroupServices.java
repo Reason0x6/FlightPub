@@ -42,7 +42,7 @@ public class UserGroupServices {
                 return accounts;
         }
 
-        public UserAccount getAdmin(String id) {
+        public UserAccount getAdmin() {
                String adminID = usrGroup.getAdminID();
                return accData.getById(adminID);
         }
@@ -89,4 +89,7 @@ public class UserGroupServices {
                 return usrGroup.getInvitedIds().contains(userId);
         }
 
+        public boolean isAdmin(String userId) {
+                return usrGroup.getAdminID().equals(userId);
+        }
 }
