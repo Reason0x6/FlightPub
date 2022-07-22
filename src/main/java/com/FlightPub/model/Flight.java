@@ -68,6 +68,10 @@ public class Flight {
     @Setter
     private Plane plane = new Plane();
 
+    @Getter
+    @Setter
+    private boolean promoted;
+
     public Flight(){
     }
 
