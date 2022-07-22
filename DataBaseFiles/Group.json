@@ -1,0 +1,42 @@
+[{
+  "_id": "TzXXbZAwBDeBuGpUmanq6",
+  "userIDs": [
+    "user1@email.com",
+    "user2@email.com"
+  ],
+  "adminID": "user1@email.com",
+  "groupName": "Group1",
+  "invitedIds": [
+    "user3@email.com"
+  ],
+  "_class": "com.FlightPub.model.UserGroup"
+},{
+  "_id": "tnqxQbZhuT3RRtttH8Zx6",
+  "userIDs": [
+    "user1@email.com"
+  ],
+  "adminID": "user1@email.com",
+  "groupName": "Group2",
+  "invitedIds": [
+    "user2@email.com"
+  ],
+  "_class": "com.FlightPub.model.UserGroup"
+},{
+  "_id": "23joEYOxyIVQh5lqvebu9",
+  "userIDs": [
+    "user1@email.com"
+  ],
+  "adminID": "user1@email.com",
+  "groupName": "",
+  "invitedIds": [],
+  "_class": "com.FlightPub.model.UserGroup"
+},{
+  "_id": "e2mqMGwIbrb9yVDc0wHeD",
+  "userIDs": [
+    "user1@email.com"
+  ],
+  "adminID": "user1@email.com",
+  "groupName": "",
+  "invitedIds": [],
+  "_class": "com.FlightPub.model.UserGroup"
+}]
