@@ -109,7 +109,7 @@ public class GroupsController {
         // Get list of all invited users
         model.addAttribute("inviteUsers", groupServices.listAllInvitedUsers());
 
-        return "Fragments/InviteList :: invite_list_fragment";
+        return "Fragments/Groups/InviteList :: invite_list_fragment";
     }
 
     @PostMapping("/added_users")
@@ -134,7 +134,7 @@ public class GroupsController {
         // Add all group users
         model.addAttribute("groupUsers", groupServices.listAllUsers());
 
-        return "Fragments/GroupsAddedUsers :: added_users_fragment";
+        return "Fragments/Groups/GroupsAddedUsers :: added_users_fragment";
     }
     @PostMapping("/remove_group_user")
     public String removeGroupUser(@RequestParam("userId") String userId, @RequestParam("groupId") String groupId, Model model, HttpSession session) {
