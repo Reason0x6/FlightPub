@@ -128,7 +128,11 @@
                         </div>
                     </form>
                 </div>
-                <div class="card l-1" data-aos="zoom-in-left">
+
+                <div class="container card l-1" data-aos="zoom-in-left">
+                    <div class="text-center">
+                        <h2> Joined Groups </h2>
+                    </div>
                     <table class="table">
                         <thead>
                         <tr th:if="${!groups.isEmpty()}">
@@ -137,7 +141,7 @@
                             <th scope="col">View</th>
                         </tr>
                         <tr th:if="${groups.isEmpty()}">
-                            <th>No groups found</th>
+                            <th class="text-center" >No groups found</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -148,6 +152,36 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div class="container card l-1" data-aos="zoom-in-left">
+                    <div class="text-center">
+                        <h2> Group Invites </h2>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                        <tr th:if="${!invitedGroups.isEmpty()}">
+                            <th scope="col">Capacity</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Invite Action</th>
+                        </tr>
+                        <tr th:if="${invitedGroups.isEmpty()}">
+                            <th class="text-center">No invites found</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="group : ${invitedGroups}">
+                            <th scope="row" > TODO</th>
+                            <td th:text="${group.getGroupName}"></td>
+                            <td>
+                                <a th:href="@{/groups(groupId=${group.getId()})}" class="btn btn-primary">Accept Invite</a>
+                                <a th:href="@{/groups(groupId=${group.getId()})}" class="btn btn-secondary">Decline Invite</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
