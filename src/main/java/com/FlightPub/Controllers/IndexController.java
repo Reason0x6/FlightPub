@@ -22,8 +22,12 @@ public class IndexController {
     private LocationServices locationServices;
     private FlightServices flightServices;
     private BookingServices bookingServices;
-
     private UserGroupServices groupServices;
+    private WishListServices wishListServices;
+
+    @Autowired
+    @Qualifier(value = "WishListServices")
+    public void setWishListServices(WishListServices wishListServices) {    this.wishListServices = wishListServices;    }
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -68,6 +72,8 @@ public class IndexController {
         recommendation.setLocationServices(locationServices);
         model.addAttribute("reco", recommendation.getRecommendation());
         model.addAttribute("currentLocation", recommendation.getRecommendationLocation());
+
+        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD" ));
 
         return "index";
     }

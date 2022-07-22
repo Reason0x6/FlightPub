@@ -109,7 +109,6 @@ public class BasicSearch {
             dend = new SimpleDateFormat("yyyy-MM-dd").parse(end);
             dend = endOfDay(dend);
         }
-
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = locService.findByLocation(destinationIn);
 

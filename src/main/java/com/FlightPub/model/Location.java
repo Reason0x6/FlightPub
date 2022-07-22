@@ -40,6 +40,10 @@ public class Location {
 
     @Getter
     @Setter
+    private boolean covid_restricted;
+
+    @Getter
+    @Setter
     private LinkedList<String> tags;
 
     public Location() {}

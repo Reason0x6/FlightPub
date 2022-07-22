@@ -1,0 +1,46 @@
+[{
+  "_id": "SYD",
+  "location": "Sydney",
+  "country": "Australia",
+  "latitude": -33.87,
+  "longitude": 151.2,
+  "popularity": 3,
+  "covid_restricted": false,
+  "_class": "com.FlightPub.model.Location"
+},{
+  "_id": "MEL",
+  "location": "Melbourne",
+  "country": "Australia",
+  "latitude": -37.8,
+  "longitude": 144.9,
+  "popularity": 3,
+  "covid_restricted": false,
+  "_class": "com.FlightPub.model.Location"
+},{
+  "_id": "PER",
+  "location": "Perth",
+  "country": "Australia",
+  "latitude": -31.9,
+  "longitude": 115.8,
+  "popularity": 1,
+  "covid_restricted": false,
+  "_class": "com.FlightPub.model.Location"
+},{
+  "_id": "ADL",
+  "location": "Adelade",
+  "country": "Australia",
+  "latitude": -34.9,
+  "longitude": 138.6,
+  "popularity": 2,
+  "covid_restricted": false,
+  "_class": "com.FlightPub.model.Location"
+},{
+  "_id": "HOB",
+  "location": "Hobart",
+  "country": "Australia",
+  "latitude": -42.3,
+  "longitude": 147.3,
+  "popularity": 1,
+  "covid_restricted": false,
+  "_class": "com.FlightPub.model.Location"
+}]

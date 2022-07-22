@@ -1,18 +1,23 @@
 package com.FlightPub.Services;
 
 import com.FlightPub.model.Flight;
+import com.FlightPub.model.Location;
 import com.FlightPub.repository.FlightRepo;
+import com.FlightPub.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 
 @Service("FlightServices")
 public class FlightServices{
 
     private FlightRepo flightRepo;
+    @Autowired
+    private LocationServices locationServices;
 
     @Autowired
     public FlightServices(FlightRepo flightRepository) {
@@ -43,8 +48,18 @@ public class FlightServices{
     }
 
     public List<Flight> getByOrigin(String dep) {
+        List<Flight> out = new ArrayList<>();
+
+        flightRepo.findByOrigin(dep).forEach(flight -> {
+
+            Location loc = locationServices.getById(flight.getDestinationID());
+
+            if(!loc.isCovid_restricted()){
+                out.add(flight);
+            }
+        });
         // Query defined in flightRepo
-        return flightRepo.findByOrigin(dep);
+        return out;
     }
 
     public List<Flight> getByOriginAndDestination(String origin, String dep, Date dstart, Date dend) {
