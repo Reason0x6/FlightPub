@@ -100,18 +100,27 @@ public class BasicSearch {
 
     // Returns a flight of flights accoridng to the basic search
     public List<Flight> runBasicSearch(String start, String end, boolean stopover) throws ParseException {
+        // Date Processing
         Date dstart = new SimpleDateFormat("yyyy-MM-dd").parse(start);
         Date dend = null;
 
         if(this.isExactdate()) {    // If search is for exact date, time frame is made for a 24 hour period
             dend = endOfDay(dstart);
-        }else{   // Upper date bound is made the end of day
+        } else {   // Upper date bound is made the end of day
             dend = new SimpleDateFormat("yyyy-MM-dd").parse(end);
             dend = endOfDay(dend);
         }
-        Location originObj = locService.findByLocation(originIn);
-        Location destinationObj = locService.findByLocation(destinationIn);
 
+        // Location Proccessing
+        Location originObj = locService.findByLocation(originIn);
+        Location destinationObj = null;
+
+        if(destinationIn == null)   // Removes the 'null' from being displayed on the application
+            destinationIn = "";
+        if(destinationIn != null && !destinationIn.equals(""))  // Eliminates the empty Search for location
+            destinationObj = locService.findByLocation(destinationIn);
+
+        // Perform the correct Search
         if(originObj != null) {
             if (this.isSearchByArrival() == false) {
                 // Performs Search where all parameters are known
