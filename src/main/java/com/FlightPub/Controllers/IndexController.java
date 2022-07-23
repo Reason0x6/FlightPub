@@ -159,6 +159,9 @@ public class IndexController {
         return "User/Personalised";
     }
 
+
+    /*Starting to work on IP based location.*/
+
     @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
