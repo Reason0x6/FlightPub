@@ -144,6 +144,45 @@ public class BasicSearch {
         return flightServices.getByOriginAndDestination(originIn, destinationIn, dstart, dend);
     }
 
+    // Returns a list of flights with a specified number of stopovers
+    public List<StopOver> basicStopOverSearch(int numberOfStops) throws ParseException{
+        List<Flight> firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
+        List<Flight> allFlights = flightServices.listAll();     // returns all flights in the database
+        List<StopOver> flights = new ArrayList<>();   // Stores the singe stop over flights
+
+        for(Flight flight : firstFlights) {
+            flights.add(new StopOver(flight));
+        }
+
+        for(int count = 0; count < numberOfStops; count++) {
+            List<StopOver> output = new ArrayList<>();  // Stores the stopovers of each stopover iteration
+            for(StopOver flight : flights) {
+                for(Flight newFlight : allFlights) {
+                    if(flight.getFlightAtIndex(count).getDestinationID().equals(newFlight.getOriginID())) {
+                        if(flight.locationVisited(newFlight.getDestinationID()) == false) {
+                            if(isSuitableTiming(flight.getFlightAtIndex(count), newFlight)) {
+                                flight.addFlight(newFlight);
+                                output.add(flight);
+                            }
+                        }
+                    }
+                }
+                flights = output;
+            }
+        }
+
+        Location finalDestination = locService.findByLocation(destinationIn);
+        if(finalDestination != null) {
+            List<StopOver> output = new ArrayList<>();
+            for(StopOver flight : flights) {
+                if(flight.getFlightAtIndex(numberOfStops-1).getDestinationID().equals(finalDestination))
+                    output.add(flight);
+            }
+            flights = output;
+        }
+        return flights;
+    }
+
     // Returns a list of flights from the basic search that include a single stop over
     public List<SingleStopOver> basicSingleStopSearch() throws ParseException{
         List<Flight> firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
