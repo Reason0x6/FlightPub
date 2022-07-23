@@ -17,6 +17,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1002",
@@ -37,6 +38,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1003",
@@ -57,6 +59,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1004",
@@ -77,6 +80,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1006",
@@ -97,6 +101,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1007",
@@ -117,6 +122,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1008",
@@ -137,6 +143,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1009",
@@ -157,6 +164,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1010",
@@ -177,6 +185,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1011",
@@ -197,6 +206,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1012",
@@ -217,6 +227,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1013",
@@ -237,6 +248,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1014",
@@ -257,6 +269,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1015",
@@ -277,6 +290,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1016",
@@ -297,6 +311,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "1017",
@@ -317,6 +332,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2001",
@@ -337,6 +353,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2002",
@@ -357,6 +374,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2003",
@@ -377,6 +395,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2004",
@@ -397,6 +416,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2006",
@@ -417,6 +437,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2007",
@@ -437,6 +458,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2008",
@@ -457,6 +479,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2009",
@@ -477,6 +500,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2010",
@@ -497,6 +521,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2011",
@@ -517,6 +542,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2012",
@@ -537,6 +563,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2013",
@@ -557,6 +584,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2014",
@@ -577,6 +605,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2015",
@@ -597,6 +626,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2016",
@@ -617,6 +647,7 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 },{
   "_id": "2017",
@@ -637,5 +668,6 @@
   "ticketPrice": 112,
   "bookedSeats": 0,
   "maxSeats": 0,
+  "promoted": false,
   "_class": "com.FlightPub.model.Flight"
 }]
