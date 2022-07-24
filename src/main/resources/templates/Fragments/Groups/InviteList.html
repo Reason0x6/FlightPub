@@ -10,12 +10,6 @@
         <h2>Sharing is Caring</h2>
         <p>Get The Gang Together</p>
     </div>
-    <div class="card l-1" data-aos="zoom-in-left">
-        <div class="row" >
-            <p>Invite users to join your group booking with following url</p>
-            <b>Invite Link: </b><a th:href="@{__${#httpServletRequest.requestURI}__}" th:text="${#httpServletRequest.requestURL}+'?groupId='+${groupId}"> </a>
-        </div>
-    </div>
     <div>
         <div class="card l-1" data-aos="zoom-in-left">
             <form id="inviteUserForm">
@@ -34,8 +28,8 @@
                 </div>
             </form>
         </div>
-        <div  class="card l-1" data-aos="zoom-in-left">
-            <table class="table" th:fragment="invite_list_fragment" id="invite_list">
+        <div class="card l-1" data-aos="zoom-in-left" th:fragment="invite_list_fragment" id="invite_list">
+            <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">First Name</th>

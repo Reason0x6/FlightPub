@@ -142,8 +142,6 @@ public class IndexController {
 
 
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
-        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
-
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);
             model.addAttribute("flights", flightServices);
@@ -151,7 +149,10 @@ public class IndexController {
             model.addAttribute("bookings", null);
         }
 
+        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
+        List<UserGroup> invitedGroups = groupServices.findInvitedGroupsContaining(getSession(session).getEmail());
         model.addAttribute("groups", groups);
+        model.addAttribute("invitedGroups", invitedGroups);
 
         model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
