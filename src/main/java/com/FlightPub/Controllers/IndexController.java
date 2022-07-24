@@ -219,19 +219,20 @@ public class IndexController {
     }
 
     @PostMapping("/advancedSearch")
-    public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session)
-    {
+    public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session) {
         model = addDateAndTimeToModel(model);
         List<Flight> flights;
-        List<SingleStopOver> flights1Stop = null;
-        List<MultiStopOver> flights2Stop = null;
+        List<StopOver> flights1Stop = null;
+        List<StopOver> flights2Stop = null;
+        List<StopOver> flights3Stop = null;
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
             flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
             if(!search.isDirectFlight()) {
-                flights1Stop =  search.advancedSingleStopSearch(this.getSession(session).getUsr());
-                flights2Stop =  search.advancedMultiStopSearch(this.getSession(session).getUsr());
+                flights1Stop = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
+                flights2Stop = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);
+                flights3Stop = search.advancedStopOverSearch(this.getSession(session).getUsr(), 3);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -242,11 +243,9 @@ public class IndexController {
         model.addAttribute("flights", flights);
         model.addAttribute("flights1Stop", flights1Stop);
         model.addAttribute("flights2Stop", flights2Stop);
-
+        model.addAttribute("flights3Stop", flights3Stop);
         model.addAttribute("usr", getSession(session));
         return "search";
-
-        // TODO: Add advanced searches
     }
 
     @RequestMapping("/cart")

@@ -37,4 +37,31 @@ public class StopOver {
         }
         return false;
     }
+
+    // Returns the total combined price of th flight
+    public double getTotalCost() {
+        double total = 0;
+        for(Flight flight : flights)
+            total += flight.getTicketPrice();
+        return total;
+    }
+
+    // Returns the minimum rating of the flight sequence
+    public double getMinRating() {
+        double min = flights.get(0).getRating();
+        for(Flight flight : flights) {
+            if(flight.getRating() < min)
+                min = flight.getRating();
+        }
+        return min;
+    }
+
+    // Checks that the specified number of seats are available on all flights
+    public boolean seatsAvailable(int numberOfSeats) {
+        for(Flight flight : flights) {
+            if(flight.getMaxSeats() - flight.getBookedSeats() < numberOfSeats)
+                return false;
+        }
+        return true;
+    }
 }

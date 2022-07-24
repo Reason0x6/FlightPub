@@ -183,65 +183,6 @@ public class BasicSearch {
         return flights;
     }
 
-    // Returns a list of flights from the basic search that include a single stop over
-    public List<SingleStopOver> basicSingleStopSearch() throws ParseException{
-        List<Flight> firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
-        List<SingleStopOver> outputFlights = new ArrayList<>();   // Stores the singe stop over flights
-        List<Flight> allFlights = flightServices.listAll();     // returns all flights in the database
-
-        for(Flight firstFlight : firstFlights) {
-            for(Flight secondFlight : allFlights) {
-                if(firstFlight.getDestinationID().equals(secondFlight.getOriginID()) && !firstFlight.getOriginID().equals(secondFlight.getDestinationID())) {
-                    if(destinationIn != null && !destinationIn.equals("")) {
-                        Location finalDestination = locService.findByLocation(destinationIn);
-                        if(finalDestination == null || !secondFlight.getDestinationID().equals(finalDestination.getLocationID())) {
-                            continue;
-                        }
-                    }
-                    if(isSuitableTiming(firstFlight, secondFlight) == true) {
-                        outputFlights.add(new SingleStopOver(firstFlight, secondFlight));
-                    }
-                }
-            }
-        }
-        return outputFlights;
-    }
-
-    // Returns a list of flights from the basic search that include 2 stop overs
-    public List<MultiStopOver> basicMultiStopSearch() throws ParseException{
-        List<Flight> firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
-        List<MultiStopOver> outputFlights = new ArrayList<>();   // Stores the singe stop over flights
-        List<Flight> allFlights = flightServices.listAll();     // returns all flights in the database
-
-        for(Flight firstFlight : firstFlights) {
-            for(Flight secondFlight : allFlights) {
-                if(firstFlight.getDestinationID().equals(secondFlight.getOriginID()) && !firstFlight.getOriginID().equals(secondFlight.getDestinationID())) {
-                    if(destinationIn != null && !destinationIn.equals("")) {
-                        if(locService.findByLocation(destinationIn) == null) {
-                            continue;
-                        }
-                    }
-                    if(isSuitableTiming(firstFlight, secondFlight) == true) {
-                        for(Flight thirdFlight : allFlights) {
-                            if(secondFlight.getDestinationID().equals(thirdFlight.getOriginID()) && !firstFlight.getOriginID().equals(thirdFlight.getDestinationID())) {
-                                if(destinationIn != null && !destinationIn.equals("")) {
-                                    Location finalDestination = locService.findByLocation(destinationIn);
-                                    if(finalDestination == null || !thirdFlight.getDestinationID().equals(finalDestination.getLocationID())) {
-                                        continue;
-                                    }
-                                }
-                                if(isSuitableTiming(secondFlight, thirdFlight) == true) {
-                                    outputFlights.add(new MultiStopOver(firstFlight, secondFlight, thirdFlight));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return outputFlights;
-    }
-
     // Determines where a flight would be suitable for a stopover in terms of its timing
     private boolean isSuitableTiming(Flight first, Flight second) {
         if(first.getArrival().compareTo(second.getDeparture()) == -1) {
@@ -308,71 +249,31 @@ public class BasicSearch {
         return filteredFlights;
     }
 
-    // Extension of the basicSingeStopSearch that incorporates specific search parameters and filters
-    public List<SingleStopOver> advancedSingleStopSearch(UserAccount user) throws ParseException {
-        List<SingleStopOver> flights = this.basicSingleStopSearch();
-        List<SingleStopOver> filteredFlights = new ArrayList<>();
+    // Extension of the basicStopOverSearch that incorporates specific search parameters and filters
+    public List<StopOver> advancedStopOverSearch(UserAccount user, int numberOfStops) throws ParseException {
+        List<StopOver> flights = this.basicStopOverSearch(numberOfStops);
+        List<StopOver> filteredFlights = new ArrayList<>();
 
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = locService.findByLocation(destinationIn);
 
-        for(SingleStopOver flight : flights)
+        for(StopOver flight : flights)
         {
             // Filters by price
             if(minPrice != 0 || maxPrice != 100000){
-                double price = flight.getFirstFlight().getTicketPrice()+flight.getSecondFlight().getTicketPrice();
-                if(minPrice != 0 && minPrice > price)
-                    continue;
-                if(maxPrice != 100000 && maxPrice < price)
+                double price = flight.getTotalCost();
+                if((minPrice != 0 && minPrice > price) || (maxPrice != 100000 && maxPrice < price))
                     continue;
             }
             // Filter by rating
-            if(rating != 0 && flight.getFirstFlight().getRating() < rating && flight.getSecondFlight().getRating() < rating)
+            if(rating != 0 && flight.getMinRating() < rating)
                 continue;
             // Filter to the number of seats
-            if(seats > (flight.getFirstFlight().getMaxSeats() - flight.getFirstFlight().getBookedSeats())&& seats > (flight.getSecondFlight().getMaxSeats() - flight.getSecondFlight().getBookedSeats()))
+            if(flight.seatsAvailable(seats) == false)
                 continue;
             // Filters flights that are not part of the membership program
             if(this.isMembershipFlights()){
                 // TODO: fliter searches with the associated membership
-            }
-            filteredFlights.add(flight);    // adds the flight if all criteria is satisfied
-        }
-
-        return filteredFlights;
-    }
-
-    // Extension of the basic search that incorporates specific search parameters and filters
-    public List<MultiStopOver> advancedMultiStopSearch(UserAccount user) throws ParseException {
-        List<MultiStopOver> flights = this.basicMultiStopSearch();
-        List<MultiStopOver> filteredFlights = new ArrayList<>();
-
-        Location originObj = locService.findByLocation(originIn);
-        Location destinationObj = locService.findByLocation(destinationIn);
-
-        for(MultiStopOver flight : flights)
-        {
-            // Filters by price
-            if(minPrice != 0 || maxPrice != 100000) {
-                double price = flight.getFirstFlight().getTicketPrice()+flight.getSecondFlight().getTicketPrice()+flight.getThirdFlight().getTicketPrice();
-                if(minPrice != 0 && minPrice > price)
-                    continue;
-                if(maxPrice != 100000 && maxPrice < price)
-                    continue;
-            }
-            // Filter by rating
-            if(rating != 0 && flight.getFirstFlight().getRating() < rating && flight.getSecondFlight().getRating() < rating && flight.getThirdFlight().getRating() < rating)
-                continue;
-            // Filter to the number of seats
-            if(seats > (flight.getFirstFlight().getMaxSeats() - flight.getFirstFlight().getBookedSeats()))
-                continue;
-            if(seats > (flight.getSecondFlight().getMaxSeats() - flight.getSecondFlight().getBookedSeats()))
-                continue;
-            if(seats > (flight.getThirdFlight().getMaxSeats() - flight.getThirdFlight().getBookedSeats()))
-                continue;
-            // Filters flights that are not part of the membership program
-            if(this.isMembershipFlights()) {
-                // TODO: filter searches with the associated membership
             }
             filteredFlights.add(flight);    // adds the flight if all criteria is satisfied
         }
