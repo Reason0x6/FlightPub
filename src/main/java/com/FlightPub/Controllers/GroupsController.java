@@ -38,8 +38,14 @@ public class GroupsController {
         this.locationServices = locService;
     }
 
-    @RequestMapping("/groups")
-    public String group(@RequestParam String groupId, Model model, HttpSession session){
+    @RequestMapping("/groupsLoad")
+    public String groupLoad(@RequestParam String groupId, Model model, HttpSession session) {
+        // Bypass invite accepted/decline string
+        return groupInvite(groupId, "bypass", model, session);
+    }
+
+    @RequestMapping("/groupsInvite")
+    public String groupInvite(@RequestParam String groupId, @RequestParam String accepted, Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
@@ -55,9 +61,14 @@ public class GroupsController {
             if(groupServices.isUserInvited(userId)) {
                 // Move user from invite list to user list
                 groupServices.removeInvite(userId);
-                groupServices.addUser(userId);
 
-                model.addAttribute("accepted", true);
+                if (accepted.equals("accept")) {
+                    groupServices.addUser(userId);
+                    model.addAttribute("accepted", true);
+                } else if (accepted.equals("decline")) {
+                    return "redirect:account";
+                }
+
             }
             else {
                 model.addAttribute("usr", getSession(session));

@@ -148,7 +148,7 @@
                         <tr th:each="group : ${groups}">
                             <th scope="row" > TODO</th>
                             <td th:text="${group.getGroupName}"></td>
-                            <td><a th:href="@{/groups(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
+                            <td><a th:href="@{/groupsLoad(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -175,8 +175,8 @@
                             <th scope="row" > TODO</th>
                             <td th:text="${group.getGroupName}"></td>
                             <td>
-                                <a th:href="@{/groups(groupId=${group.getId()})}" class="btn btn-primary">Accept Invite</a>
-                                <a th:href="@{/groups(groupId=${group.getId()})}" class="btn btn-secondary">Decline Invite</a>
+                                <a th:href="@{/groupsInvite(groupId=${group.getId()}, accepted='accept')}" class="btn btn-primary">Accept Invite</a>
+                                <a th:href="@{/groupsInvite(groupId=${group.getId()}, accepted='decline')}" class="btn btn-secondary">Decline Invite</a>
                             </td>
                         </tr>
                         </tbody>
