@@ -1,0 +1,13 @@
+[{
+  "_id": "0001",
+  "userID": "demo@flightpub.com",
+  "flightID": "1006"
+},{
+  "_id": "0002",
+  "userID": "demo@flightpub.com",
+  "flightID": "1007"
+},{
+  "_id": "0003",
+  "userID": "demo@flightpub.com",
+  "flightID": "1008"
+}]

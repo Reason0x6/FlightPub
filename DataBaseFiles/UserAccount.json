@@ -1,0 +1,16 @@
+[{
+  "_id": "user1@email.com",
+  "firstname": "user1",
+  "password": "CgQblGLKpKMbrDVn4Lbm/ZEAeH2yq0M9lvbReMq/zpA=",
+  "_class": "com.FlightPub.model.UserAccount"
+},{
+  "_id": "user2@email.com",
+  "firstname": "user2",
+  "password": "CgQblGLKpKMbrDVn4Lbm/ZEAeH2yq0M9lvbReMq/zpA=",
+  "_class": "com.FlightPub.model.UserAccount"
+},{
+  "_id": "user3@email.com",
+  "firstname": "user3",
+  "password": "CgQblGLKpKMbrDVn4Lbm/ZEAeH2yq0M9lvbReMq/zpA=",
+  "_class": "com.FlightPub.model.UserAccount"
+}]

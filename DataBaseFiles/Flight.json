@@ -1,0 +1,736 @@
+[{
+  "_id": "1001",
+  "originID": "SYD",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684200720000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684204320000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1002",
+  "originID": "SYD",
+  "destinationID": "PER",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684114320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684117920000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1003",
+  "originID": "SYD",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684114320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684117920000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1004",
+  "originID": "SYD",
+  "destinationID": "ADL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684114320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684117920000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1006",
+  "originID": "SYD",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684373520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684377120000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1007",
+  "originID": "SYD",
+  "destinationID": "PER",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684805520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684809120000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1008",
+  "originID": "SYD",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684719120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684722720000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1009",
+  "originID": "SYD",
+  "destinationID": "ADL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684632720000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684636320000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1010",
+  "originID": "SYD",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685583120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685586720000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1011",
+  "originID": "SYD",
+  "destinationID": "PER",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685583120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685586720000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1012",
+  "originID": "SYD",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685410320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685413920000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1013",
+  "originID": "SYD",
+  "destinationID": "ADL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685323920000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685327520000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1014",
+  "originID": "SYD",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1687051920000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1687055520000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1015",
+  "originID": "SYD",
+  "destinationID": "PER",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685151120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685154720000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1016",
+  "originID": "SYD",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685323920000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685327520000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "1017",
+  "originID": "SYD",
+  "destinationID": "ADL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685237520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685241120000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2001",
+  "originID": "ADL",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684200720000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684204320000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2002",
+  "originID": "MEL",
+  "destinationID": "PER",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684114320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684117920000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2003",
+  "originID": "PER",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684114320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684117920000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2004",
+  "originID": "TAM",
+  "destinationID": "SYD",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684114320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684117920000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2006",
+  "originID": "PER",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684373520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684377120000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2007",
+  "originID": "TAM",
+  "destinationID": "PER",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684805520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684809120000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2008",
+  "originID": "MEL",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684719120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684722720000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2009",
+  "originID": "TAM",
+  "destinationID": "ADL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684632720000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684636320000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2010",
+  "originID": "HOB",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685583120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685586720000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2011",
+  "originID": "ADL",
+  "destinationID": "PER",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685583120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685586720000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2012",
+  "originID": "ADL",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685410320000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685413920000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2013",
+  "originID": "MEL",
+  "destinationID": "ADL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685323920000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685327520000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2014",
+  "originID": "MEL",
+  "destinationID": "SYD",
+  "departure": {
+    "$date": {
+      "$numberLong": "1687051920000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1687055520000"
+    }
+  },
+  "flightCode": "QA256",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2015",
+  "originID": "PER",
+  "destinationID": "SYD",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685151120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685154720000"
+    }
+  },
+  "flightCode": "QA856",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2016",
+  "originID": "ADL",
+  "destinationID": "SYD",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685323920000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685327520000"
+    }
+  },
+  "flightCode": "QA766",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2017",
+  "originID": "TAM",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1685237520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1685241120000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2018",
+  "originID": "MEL",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684287120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684290720000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2019",
+  "originID": "HOB",
+  "destinationID": "TAM",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684373520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684377120000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2020",
+  "originID": "HOB",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684373520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684377120000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+}]
