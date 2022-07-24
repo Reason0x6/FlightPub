@@ -33,9 +33,9 @@
         </div>
       </div>
 
-      <div th:if="${flights1Stop.size()} != 0">
+      <div th:if="${stopOver[0].size()} != 0">
         <hr>
-        <div class="card l-1" th:each="flight : ${flights1Stop}" style="padding: 10px 0 0 20px;">
+        <div class="card l-1" th:each="flight : ${stopOver[0]}" style="padding: 10px 0 0 20px;">
           <div class="row" style="padding-top: 10px;">
             <div class="col-sm-4">
               <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(0).getOriginID()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getDepartureTime()}"></span></p>
@@ -56,9 +56,9 @@
         </div>
       </div>
 
-      <div th:if="${flights2Stop.size()} != 0">
+      <div th:if="${stopOver[1].size()} != 0">
         <hr>
-        <div class="card l-1" th:each="flight : ${flights2Stop}" style="padding: 10px 0 0 20px;">
+        <div class="card l-1" th:each="flight : ${stopOver[1]}" style="padding: 10px 0 0 20px;">
           <div class="row" style="padding-top: 10px;">
             <div class="col-sm-4">
               <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(0).getOriginID()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getDepartureTime()}"></span></p>
@@ -82,9 +82,9 @@
         </div>
       </div>
 
-      <div th:if="${flights3Stop.size()} != 0">
+      <div th:if="${stopOver[2].size()} != 0">
         <hr>
-        <div class="card l-1" th:each="flight : ${flights3Stop}" style="padding: 10px 0 0 20px;">
+        <div class="card l-1" th:each="flight : ${stopOver[2]}" style="padding: 10px 0 0 20px;">
           <div class="row" style="padding-top: 10px;">
             <div class="col-sm-4">
               <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(0).getOriginID()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getDepartureTime()}"></span></p>
