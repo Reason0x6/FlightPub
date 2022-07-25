@@ -16,6 +16,11 @@ public class IPLocation {
     @Setter
     private String countryCode;
 
+
+    @Getter
+    @Setter
+    private String country;
+
     @Getter
     @Setter
     private String UtcOffset;
@@ -30,23 +35,24 @@ public class IPLocation {
 
     @Getter
     @Setter
-    private int Zip;
+    private String Zip;
 
     @Getter
     @Setter
-    private double latitude;
+    private String latitude;
 
     @Getter
     @Setter
-    private double longitude;
+    private String longitude;
 
 
 
     public IPLocation() {}
 
-    public IPLocation(String IPAddress, String countryCode, String UtcOffset, String State, String City, int Zip, double lat, double lng) {
+    public IPLocation(String IPAddress, String countryCode, String country, String UtcOffset, String State, String City, String Zip, String lat, String lng) {
         this.IPAddress = IPAddress.toUpperCase();
         this.countryCode = countryCode;
+        this.country = country;
         this.State = State;
         this.UtcOffset = UtcOffset;
         this.City = City;
