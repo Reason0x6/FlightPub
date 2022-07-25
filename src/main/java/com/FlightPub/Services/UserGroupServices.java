@@ -81,6 +81,10 @@ public class UserGroupServices {
                 return userGroupRepo.findAllByUserIDs(userIDs);
         }
 
+        public List<UserGroup> findInvitedGroupsContaining(String userIDs) {
+                return userGroupRepo.findAllByInvitedIds(userIDs);
+        }
+
         public boolean isUserInGroup(String userId) {
                 return usrGroup.getUserIDs().contains(userId);
         }
