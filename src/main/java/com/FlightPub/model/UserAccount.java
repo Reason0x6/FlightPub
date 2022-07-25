@@ -26,7 +26,11 @@ public class UserAccount {
 		@Getter
 		@Setter
 		private String preferredAirport;
-		
+
+		/*@Getter
+		@Setter
+		private String currentlocation;
+		*/
 		public UserAccount(String firstname, String email, String password, String prefairport, int api) {
 
 			try {
@@ -51,7 +55,6 @@ public class UserAccount {
 		this.email = email;
 
 	}
-
 
 	UserAccount(){}
 
