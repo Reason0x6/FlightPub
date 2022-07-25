@@ -670,4 +670,67 @@
   "maxSeats": 0,
   "promoted": false,
   "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2018",
+  "originID": "MEL",
+  "destinationID": "HOB",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684287120000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684290720000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2019",
+  "originID": "HOB",
+  "destinationID": "TAM",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684373520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684377120000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
+},{
+  "_id": "2020",
+  "originID": "HOB",
+  "destinationID": "MEL",
+  "departure": {
+    "$date": {
+      "$numberLong": "1684373520000"
+    }
+  },
+  "arrival": {
+    "$date": {
+      "$numberLong": "1684377120000"
+    }
+  },
+  "flightCode": "QA112",
+  "airline": "QANTAS",
+  "ticketPrice": 112,
+  "bookedSeats": 0,
+  "maxSeats": 0,
+  "promoted": false,
+  "_class": "com.FlightPub.model.Flight"
 }]

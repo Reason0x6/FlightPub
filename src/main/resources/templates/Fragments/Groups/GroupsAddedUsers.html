@@ -11,8 +11,8 @@
         <h2>Members admin: </h2>
         <p>The Who's Who</p>
     </div>
-    <div class="card l-1" data-aos="zoom-in-left">
-        <table class="table" th:fragment="added_users_fragment" id="added_users">
+    <div th:fragment="added_users_fragment" id="added_users" class="card l-1" data-aos="zoom-in-left">
+        <table class="table">
             <thead>
             <tr>
                 <th scope="col">First Name</th>
@@ -43,15 +43,15 @@
 
         // Remove user id
         function removeUser(removeUser) {
-                if (confirm('Removing user ' + removeUser)) {
+                // if (confirm('Removing user ' + removeUser)) {
                     // Post entered email to be added to invite list
                     $.post("/remove_group_user", {
                         userId: removeUser,
                         groupId: $("#groupId").val()
-                    }).always(function () {
-                        loadAddedUsers();
+                    }).done(function (fragment) {
+                        $("#added_users").replaceWith(fragment);
                     })
-                }
+                // }
         }
 
         // Load current added user list

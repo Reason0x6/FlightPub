@@ -172,17 +172,17 @@
     <div class="container">
     <div class="row">
         <div class="col-md-4">
-            <input type="text" id="flightOrigin" class="form-control" name="originIn" placeholder="Fly From"><br>
-            <input type="text" id="flightDestination" class="form-control" name="destinationIn" placeholder="Fly To"><br>
+            <input type="text" id="flightOrigin" class="form-control" name="originIn" th:value="${search.getOriginIn()}"><br>
+            <input type="text" id="flightDestination" class="form-control" name="destinationIn" th:value="${search.getDestinationIn()}"><br>
         </div>
         <div class="col-md-4">
             <label for="earliest" id="earliestLabel" class="form-label"  style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
             <input type="date" id="earliest" class="form-control" name="start"
-                   th:value="${today}"
+                   th:value="${search.getStart()}"
                    th:min="${today}" th:max="${max}"><br>
             <label for="earliest" id="latestLabel" class="form-label"  style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
             <input type="date" id="latest" class="form-control" name="end"
-                   th:value="${today}"
+                   th:value="${search.getEnd()}"
                    th:min="${today}" th:max="${max}"><br>
         </div>
         <div class="col-md-4">
