@@ -329,12 +329,14 @@
             let x = true;
 
             if(f["email"].value == ""){ x = false; }
-            if(f["firstname"].value == ""){ x = false; }
-            if(f["lastname"].value == ""){ x = false; }
+            if(f["firstName"].value == ""){ x = false; }
+            if(f["lastName"].value == ""){ x = false; }
             if(f["company"].value == ""){ x = false; }
             if(f["password"].value == ""){ x = false; }
             if(f["confirmpassword"].value == ""){ x = false; }
             if(f["registrationcode"].value == ""){ x = false; }
+
+            console.log(x);
 
             if (x == "") {
                 alert("Please fill in all fields");
