@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="row icon-box" data-aos="zoom-in-left" th:fragment="recommendation_fragment" id="recommendation_fragment">
+        <form th:replace="Fragments/Forms :: #recommendationLocationForm"> </form>
+
+        <div id="recommendationRow" class="row" style="padding-top: 10px;">
+            <div class="col-sm-3" th:each="flight : ${reco}"  >
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
+                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em" th:text="${flight.getOriginID()} + ' to ' + ${flight.getDestinationID()}"></h2>
+                    <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
+                        <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
+                        Airline: <span th:text="${flight.getAirline()}"></span></em></p>
+                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                </div>
+
+            </div>
+        </div>
+        <div th:if="${reco} == 0">
+            <p>There are currently no recommendation</p>
+        </div>
+    </div>
+
+    <script>
+        // Load current invite list
+        $(document).ready(
+                fetch("https://ipinfo.io/json?token=b7ed283b1c2771").then(
+                        (response) => response.json()
+                ).then(
+                        (jsonResponse) => {
+                            $.post("/recommendations", {city: jsonResponse.city}).done(function (fragment) {
+                                $("#recommendation_fragment").replaceWith(fragment);
+                            })
+                        }
+                )
+        )
+    </script>
+</body>
+</html>
