@@ -194,7 +194,6 @@ public class BasicSearch {
     }
 
     private Date addBuffer(Date date, int days, int hours, int minutes) {
-        System.out.println(date.getClass().getName());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, days);
