@@ -115,7 +115,7 @@ public class BasicSearch {
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = null;
 
-        if(destinationIn != null && !destinationIn.equals(""))  // Eliminates the empty Search for location
+        if(destinationIn != null && !destinationIn.equals("") && !destinationIn.equals("Show All"))  // Eliminates the empty Search for location
             destinationObj = locService.findByLocation(destinationIn);
         if(destinationIn == null || destinationIn.equals(""))   // Removes the 'null' from being displayed on the application
             destinationIn = "Show All";
