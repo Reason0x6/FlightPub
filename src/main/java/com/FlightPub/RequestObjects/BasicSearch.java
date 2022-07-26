@@ -105,10 +105,10 @@ public class BasicSearch {
         Date dend = null;
 
         if(this.isExactdate()) {    // If search is for exact date, time frame is made for a 24 hour period
-            dend = endOfDay(dstart);
+            dend = addBuffer(dstart, 0, 23, 59);
         } else {   // Upper date bound is made the end of day
             dend = new SimpleDateFormat("yyyy-MM-dd").parse(end);
-            dend = endOfDay(dend);
+            dend = addBuffer(dend, 0, 23, 59);
         }
 
         // Location Proccessing
@@ -185,27 +185,21 @@ public class BasicSearch {
 
     // Determines where a flight would be suitable for a stopover in terms of its timing
     private boolean isSuitableTiming(Flight first, Flight second) {
-        if(first.getArrival().compareTo(second.getDeparture()) == -1) {
-            if(addBuffer(first.getArrival(), 1).compareTo(second.getDeparture()) >= 0) {
+        if(addBuffer(first.getArrival(), 0, 1, 0).compareTo(second.getDeparture()) == -1) {
+            if(addBuffer(first.getArrival(), 1, 0, 0).compareTo(second.getDeparture()) >= 0) {
                 return true;
             }
         }
         return false;
     }
 
-    private Date addBuffer(Date date, int days) {
+    private Date addBuffer(Date date, int days, int hours, int minutes) {
+        System.out.println(date.getClass().getName());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, days);
-        return calendar.getTime();
-    }
-
-    // Converts the provided date to include the time for the end of the day
-    private Date endOfDay(Date date){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.HOUR_OF_DAY, 23);
-        calendar.add(Calendar.MINUTE, 59);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        calendar.add(Calendar.MINUTE, minutes);
         return calendar.getTime();
     }
 
