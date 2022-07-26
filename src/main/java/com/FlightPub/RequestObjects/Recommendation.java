@@ -32,7 +32,7 @@ public class Recommendation {
         if(recommendationLocation == null) {
             currentLocation = locationServices.mostPopular();
         } else {
-            currentLocation = locationServices.getById(recommendationLocation);
+            currentLocation = locationServices.findByLocation(recommendationLocation);
         }
 
         // If no current location is found in database
@@ -50,13 +50,13 @@ public class Recommendation {
         // The final list of recommended flights
         List<Flight> recommendedFlights = new LinkedList<>();
 
-        // Get current date and date in 3 months
+        // Get current date and date in 13 months
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         String today = dateFormat.format(date);
 
-        cal.add(Calendar.MONTH, 3);
+        cal.add(Calendar.MONTH, 13);
         date = cal.getTime();
         String max = dateFormat.format(date);
 
