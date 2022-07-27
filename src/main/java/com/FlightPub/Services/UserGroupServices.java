@@ -2,7 +2,6 @@ package com.FlightPub.Services;
 
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.model.UserGroup;
-import com.FlightPub.repository.UserAccountRepo;
 import com.FlightPub.repository.UserGroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +31,18 @@ public class UserGroupServices {
                 return accounts;
         }
 
-
         public LinkedList<UserAccount> listAllInvitedUsers() {
                 LinkedList<UserAccount> accounts = new LinkedList<>();
                 LinkedList<String> usrs = usrGroup.getInvitedIds();
+                for(String usr : usrs){
+                        accounts.add(accData.getById(usr));
+                }
+                return accounts;
+        }
+
+        public LinkedList<UserAccount> listAllDeclinedUsers() {
+                LinkedList<UserAccount> accounts = new LinkedList<>();
+                LinkedList<String> usrs = usrGroup.getDeclinedIds();
                 for(String usr : usrs){
                         accounts.add(accData.getById(usr));
                 }
@@ -63,6 +70,11 @@ public class UserGroupServices {
 
         public void addInvite(String id) {
                 usrGroup.addInvite(id);
+                saveUsers(usrGroup);
+        }
+
+        public void addDecline(String id) {
+                usrGroup.addDecline(id);
                 saveUsers(usrGroup);
         }
 

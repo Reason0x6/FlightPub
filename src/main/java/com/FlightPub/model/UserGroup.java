@@ -32,6 +32,10 @@ public class UserGroup{
 
     @Getter
     @Setter
+    private LinkedList<String> declinedIds;
+
+    @Getter
+    @Setter
     private LinkedList<Flight> suggestedFlights;
 
     public UserGroup(String adminID, String groupName) {
@@ -44,6 +48,7 @@ public class UserGroup{
         userIDs.add(adminID);
 
         invitedIds = new LinkedList<>();
+        declinedIds = new LinkedList<>();
     }
 
     public void addUser(String id){
@@ -59,6 +64,12 @@ public class UserGroup{
     public void addInvite(String id){
         if (! invitedIds.contains(id)){
             invitedIds.add(id);
+        }
+    }
+
+    public void addDecline(String id){
+        if (! declinedIds.contains(id)){
+            declinedIds.add(id);
         }
     }
 
