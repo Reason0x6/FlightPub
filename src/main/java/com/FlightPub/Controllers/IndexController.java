@@ -193,12 +193,13 @@ public class IndexController {
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session){
         model = addDateAndTimeToModel(model);
-        List<Flight> flights;
+        List<Flight>[] flights = new ArrayList[2];
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
-           flights = search.runBasicSearch(search.getStart(), search.getEnd(), false);
+           flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
+           flights[1] = search.getPromotedFlights(flights[0]);
            stopOver[0] = search.basicStopOverSearch(1);
            stopOver[1] = search.basicStopOverSearch(2);
            stopOver[2] = search.basicStopOverSearch(3);
@@ -218,12 +219,12 @@ public class IndexController {
     @PostMapping("/advancedSearch")
     public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session) {
         model = addDateAndTimeToModel(model);
-        List<Flight> flights;
+        List<Flight>[] flights = new ArrayList[2];
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
         try{
-            flights =  search.runAdvancedSearch(this.getSession(session).getUsr());
+            flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
             if(!search.isDirectFlight()) {
                 stopOver[0] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
                 stopOver[1] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);
