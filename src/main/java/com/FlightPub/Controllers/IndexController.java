@@ -225,6 +225,7 @@ public class IndexController {
         search.setLocationServices(locationServices);
         try{
             flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
+            flights[1] = search.getPromotedFlights(flights[0]);
             if(!search.isDirectFlight()) {
                 stopOver[0] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
                 stopOver[1] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);
