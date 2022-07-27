@@ -183,6 +183,16 @@ public class BasicSearch {
         return flights;
     }
 
+    // Determines which of the flights are promoted
+    public List<Flight> getPromotedFlights(List<Flight> allFlights) {
+        List<Flight> promoted = new ArrayList<>();
+        for(Flight flight : allFlights) {
+            if(flight.isPromoted() == true)
+                promoted.add(flight);
+        }
+        return promoted;
+    }
+
     // Determines where a flight would be suitable for a stopover in terms of its timing
     private boolean isSuitableTiming(Flight first, Flight second) {
         if(addBuffer(first.getArrival(), 0, 1, 0).compareTo(second.getDeparture()) == -1) {
