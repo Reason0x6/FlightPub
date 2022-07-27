@@ -38,7 +38,7 @@ public class GroupsController {
         this.locationServices = locService;
     }
 
-    @RequestMapping("/groupsLoad")
+    @RequestMapping("/Group")
     public String groupLoad(@RequestParam String groupId, Model model, HttpSession session) {
         // Bypass invite accepted/decline string
         return groupInvite(groupId, "bypass", model, session);
