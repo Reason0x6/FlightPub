@@ -148,7 +148,7 @@
                         <tr th:each="group : ${groups}">
                             <th scope="row" > TODO</th>
                             <td th:text="${group.getGroupName}"></td>
-                            <td><a th:href="@{/groupsLoad(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
+                            <td><a th:href="@{/Group(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
                         </tr>
                         </tbody>
                     </table>
