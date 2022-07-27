@@ -306,3 +306,19 @@
     <!-- Submit Payment Request -->
     <a href="/bookingConfirmation" class="btn btn-success" onclick="validateCreditCard()" style="max-width: 200px">Pay Now</a>
 </form>
+
+<!-- Create group form -->
+<form id="createGroupForm" th:action="@{/group/add}" th:object="${NewGroup}" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="groupName" id="nameLabel" class="col-form-label" >Group Name</label>
+        </div>
+        <div class="col-md-5">
+            <input type="text" id="groupName" class="form-control" name="groupName" placeholder="Enter Group Name">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary btn-search">Create Group!</button>
+        </div>
+
+    </div>
+</form>
