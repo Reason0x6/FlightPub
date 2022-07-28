@@ -197,20 +197,21 @@ public class IndexController {
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
-        try{
-           flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
-           flights[1] = search.getPromotedFlights(flights[0]);
-           stopOver[0] = search.basicStopOverSearch(1);
-           stopOver[1] = search.basicStopOverSearch(2);
-           stopOver[2] = search.basicStopOverSearch(3);
-        }catch (Exception e){
-            e.printStackTrace();
-            return "index";
-        }
+
+        // Gathers Flights and Stopovers
+        flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
+        flights[1] = search.getPromotedFlights(flights[0]);
+        stopOver[0] = search.basicStopOverSearch(1);
+        stopOver[1] = search.basicStopOverSearch(2);
+        stopOver[2] = search.basicStopOverSearch(3);
+
+        // Stops unnecessary objects from being added to the response
+        if(flights[0] != null || flights[1] != null)
+            model.addAttribute("flights", flights);
+        if(stopOver[0] != null || stopOver[1] != null || stopOver[2] != null)
+            model.addAttribute("stopOver" , stopOver);
 
         model.addAttribute("search", search);
-        model.addAttribute("flights", flights);
-        model.addAttribute("stopOver" , stopOver);
         model.addAttribute("usr", getSession(session));
 
         return "search";
@@ -223,22 +224,23 @@ public class IndexController {
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
-        try{
-            flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
-            flights[1] = search.getPromotedFlights(flights[0]);
-            if(!search.isDirectFlight()) {
-                stopOver[0] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
-                stopOver[1] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);
-                stopOver[2] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 3);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "index";
+
+        // Gathers Flights and Stopovers
+        flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
+        flights[1] = search.getPromotedFlights(flights[0]);
+        if(!search.isDirectFlight()) {
+            stopOver[0] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
+            stopOver[1] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);
+            stopOver[2] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 3);
         }
 
+        // Stops unnecessary objects from being added to the response
+        if(flights[0] != null || flights[1] != null)
+            model.addAttribute("flights", flights);
+        if(stopOver[0] != null || stopOver[1] != null || stopOver[2] != null)
+            model.addAttribute("stopOver" , stopOver);
+
         model.addAttribute("search", search);
-        model.addAttribute("flights", flights);
-        model.addAttribute("stopOver" , stopOver);
         model.addAttribute("usr", getSession(session));
         return "search";
     }
