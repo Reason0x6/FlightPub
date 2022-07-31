@@ -9,13 +9,36 @@
       <form th:replace="Fragments/Forms :: #advancedSearch"> </form>
     </div>
   </div>
+  <div th:if="${flights[1].size()} != 0">
+    <h1>Recommended</h1>
+    <p>Select hand picked flights from all your favorite airline vendors</p>
+    <div th:each="i:${#numbers.sequence(0, 2)}">
+      <div class="card l-1" th:if="${flights[1].size()}-1 >= ${i}">
+        <div class="row" style="padding-top: 10px;">
+          <div class="col-sm-4">
+            <p><b><span th:text="'Departs ' + ${flights[1].get(i).getOriginID()} + ': '"></span></b><span th:text="${flights[1].get(i).getDepartureTime()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flights[1].get(i).getDestinationID()} + ': '"></span></b><span th:text="${flights[1].get(i).getArrivalTime()}"></span></p>
+          </div>
+          <div class="col-sm-4">
+            <p><b>Airline: </b><span th:text="${flights[1].get(i).getAirline()}"></span></p>
+            <p><b>Tickets Start At:</b><span th:text="' $' + ${flights[1].get(i).getTicketPrice()}"></span></p>
+          </div>
+          <div class="col-sm-4"  style="padding-top: 10px;"><br>
+            <a th:href="'/flight?id=' + ${flights[1].get(i).getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
+            <button type="submit" class="btn btn-link">Bookmark</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
   <hr>
   <div class="row">
     <div class="col-md-12" >
       <h1 th:text="${search.getOriginIn()} + ' -> ' + ${search.getDestinationIn()}"></h1>
 
-      <div th:if="${flights.size()} != 0">
-        <div class="card l-1" th:each="flight : ${flights}" style="padding: 10px 0 0 20px;">
+      <div th:if="${flights[0].size()} != 0">
+        <div class="card l-1" th:each="flight : ${flights[0]}" style="padding: 10px 0 0 20px;">
           <div class="row" style="padding-top: 10px;">
             <div class="col-sm-4">
               <p><b><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></p>
@@ -111,7 +134,7 @@
         </div>
       </div>
 
-      <div th:if="${flights.size()} == 0">
+      <div th:if="${flights[0].size()} == 0">
         <p>There are currently no flights that match this search</p>
       </div>
     </div>
