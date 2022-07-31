@@ -136,7 +136,7 @@
                     <table class="table">
                         <thead>
                         <tr th:if="${!groups.isEmpty()}">
-                            <th scope="col">Capacity</th>
+                            <th scope="col">Members</th>
                             <th scope="col">Name</th>
                             <th scope="col">View</th>
                         </tr>
@@ -146,7 +146,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="group : ${groups}">
-                            <th scope="row" > TODO</th>
+                            <th scope="row" th:text="${group.getUserIDs().size()}" ></th>
                             <td th:text="${group.getGroupName}"></td>
                             <td><a th:href="@{/Group(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
                         </tr>
@@ -162,7 +162,7 @@
                     <table class="table">
                         <thead>
                         <tr th:if="${!invitedGroups.isEmpty()}">
-                            <th scope="col">Capacity</th>
+                            <th scope="col">Members</th>
                             <th scope="col">Name</th>
                             <th scope="col">Invite Action</th>
                         </tr>
@@ -172,7 +172,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="group : ${invitedGroups}">
-                            <th scope="row" > TODO</th>
+                            <th scope="row" th:text="${group.getUserIDs().size()}" ></th>
                             <td th:text="${group.getGroupName}"></td>
                             <td>
                                 <a th:href="@{/groupsInvite(groupId=${group.getId()}, accepted='accept')}" class="btn btn-primary">Accept Invite</a>
@@ -208,7 +208,7 @@
         </div>
     </div>
     <div th:if="${reco} == 0">
-        <p>There are currently no recomendation</p>
+        <p>There are currently no recommendations</p>
     </div>
     <div>
         <br>
