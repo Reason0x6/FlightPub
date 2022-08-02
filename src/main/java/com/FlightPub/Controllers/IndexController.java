@@ -94,6 +94,8 @@ public class IndexController {
         return "User/login";
     }
 
+    // This can be used to redirect the login back to a page after logging in
+    // Usage is /login?redirect=a_page_url?params=can_be_included
     @GetMapping(value = "/login", params = "redirect")
     public String loadLoginRedirect(@RequestParam String redirect, Model model, HttpSession session){
         model.addAttribute("redirect", redirect);
