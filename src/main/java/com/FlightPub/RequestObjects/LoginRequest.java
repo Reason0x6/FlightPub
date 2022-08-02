@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.security.NoSuchAlgorithmException;
-import java.security.Security;
 
 public class LoginRequest {
 
@@ -17,7 +16,10 @@ public class LoginRequest {
     @Getter
     private String password;
 
-    private SecurityService secService;
+    @Getter
+    @Setter
+    private String redirect;
+    private final SecurityService secService;
 
     LoginRequest() throws NoSuchAlgorithmException {
         secService = new SecurityService();

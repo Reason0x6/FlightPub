@@ -57,7 +57,7 @@
                 </script>
             </div>
             <div th:if="${usr.isLoggedIn()} == false">
-              <a type="submit" href="\login" class="btn btn-success">Login to Book</a><Br><Br>
+              <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Book</a><Br><Br>
             </div>
           </div>
           <div class="col-sm-8">
@@ -97,7 +97,7 @@
               <p>Create memories together, with an easy to use group booking feature, where you can collaborate and decide on what suits you, then, once you're all set, allocate seating together  but pay separately!</p>
 
               <div th:if="${usr.isLoggedIn()} == false">
-                  <a type="submit" href="\login" class="btn btn-success">Login to Create a Group</a><Br><Br>
+                  <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Create a Group</a><Br><Br>
               </div>
               <div th:if="${usr.isLoggedIn()} == true">
                   <form th:replace="Fragments/Forms :: #createGroupForm"> </form>

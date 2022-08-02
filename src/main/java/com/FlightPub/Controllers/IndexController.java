@@ -85,6 +85,13 @@ public class IndexController {
         return "User/login";
     }
 
+    @GetMapping(value = "/login", params = "redirect")
+    public String loadLoginRedirect(@RequestParam String redirect, Model model, HttpSession session){
+        model.addAttribute("redirect", redirect);
+        model.addAttribute("usr", getSession(session));
+        return "User/login";
+    }
+
     @RequestMapping("/newuser")
     public String user(Model model){
         return "Notifications/newuser";
@@ -102,13 +109,17 @@ public class IndexController {
     public String loadLogout(Model model, HttpSession session){
         session.setAttribute("User", new UserSession(null));
         model.addAttribute("usr", getSession(session));
-        return "User/login";
+        return "redirect:login";
     }
 
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model, HttpSession session){
 
         model.addAttribute("usr", getSession(session));
+
+        String redirect = req.getRedirect();
+        model.addAttribute("redirect", redirect);
+
         try {
 
             UserAccount newUser = usrServices.getById(req.getEmail());
@@ -122,7 +133,12 @@ public class IndexController {
                 session.setAttribute("User", usr);
                 model.addAttribute("usr", usr);
 
-                return "redirect:account";
+                // If a redirect has been set, redirect upon login
+                if (!redirect.equals("")) {
+                    return "redirect:" + redirect;
+                } else {
+                    return "redirect:account";
+                }
             }else{
                 model.addAttribute("valid", false);
             }
