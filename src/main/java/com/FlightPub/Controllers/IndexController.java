@@ -3,17 +3,22 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -71,8 +76,6 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
         model.addAttribute("Admin", getAdminSession(session));
-
-        model.addAttribute("recommendationLocation", locationServices.listAll());
 
         wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
 
