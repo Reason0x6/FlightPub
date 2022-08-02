@@ -324,3 +324,53 @@
 
     </div>
 </form>
+
+<!--Register Admin--------------------------------------------------------------------------------------------------------------------------------------->
+<form id="registerAdmin" name="registerAdmin" onsubmit="return validateAdminRegister()" th:action="@{/RegisterAdmin}" th:object="${AdminRegister}" method="post">
+    <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
+    <input type="text" id="firstName" class="form-control" name="firstName" placeholder="First Name"><br>
+    <input type="text" id="lastName" class="form-control" name="lastName" placeholder="Last Name"><br>
+    <input type="text" id="company" class="form-control" name="company" placeholder="Company"><br>
+    <label id="passwordlbl" class="form-label" name="passwordlbl" >Password</label><br>
+
+    <input type="password" id="password" class="form-control" name="password" placeholder="Password"  ><br>
+    <label id="confirmpasswordlbl" class="form-label" name="confirmpasswordlbl" >Confirm Password</label><br>
+    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Password"><br>
+    <label id="registrationcodelbl" class="form-label" name="registrationcodelbl" >Registration Code</label><br>
+    <input type="text" id="registrationcode" class="form-control" name="registrationcode"><br>
+    <button type="submit" class="btn btn-primary btn-search">Register Account!</button>
+
+
+    <script>
+        function validateAdminRegister() {
+            let f =  document.forms["registerAdmin"];
+            let x = true;
+
+            if(f["email"].value == ""){ x = false; }
+            if(f["firstName"].value == ""){ x = false; }
+            if(f["lastName"].value == ""){ x = false; }
+            if(f["company"].value == ""){ x = false; }
+            if(f["password"].value == ""){ x = false; }
+            if(f["confirmpassword"].value == ""){ x = false; }
+            if(f["registrationcode"].value == ""){ x = false; }
+
+            console.log(x);
+
+            if (x == "") {
+                alert("Please fill in all fields");
+                return false;
+            }
+            else if(!(f["password"].value === f["confirmpassword"].value)){
+                alert("Passwords do not match");
+                return false;
+            }
+            else if(!(f["registrationcode"].value === "h38DxU9QneP1gB")){
+                alert("The registration code is invalid. \n Please contact FlightPub PTY LTD");
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    </script>
+</form>

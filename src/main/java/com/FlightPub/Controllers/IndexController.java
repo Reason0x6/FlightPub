@@ -3,7 +3,6 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -24,6 +26,7 @@ public class IndexController {
     private BookingServices bookingServices;
     private UserGroupServices groupServices;
     private WishListServices wishListServices;
+    private AdminAccountServices adminAccountServices;
 
     @Autowired
     @Qualifier(value = "WishListServices")
@@ -58,6 +61,10 @@ public class IndexController {
         this.groupServices = userGroupServices;
     }
 
+    @Autowired
+    @Qualifier(value = "AdminAccountServices")
+    public void setAdminAccountServices(AdminAccountServices adminAccountServices) { this.adminAccountServices = adminAccountServices; }
+
 
     @RequestMapping("/")
     public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
@@ -65,6 +72,7 @@ public class IndexController {
         model = addDateAndTimeToModel(model);
 
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("Admin", getAdminSession(session));
 
         model.addAttribute("recommendationLocation", locationServices.listAll());
 
@@ -82,6 +90,7 @@ public class IndexController {
     public String loadLogin(Model model, HttpSession session){
 
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("Admin", getAdminSession(session));
         return "User/login";
     }
 
@@ -89,6 +98,7 @@ public class IndexController {
     public String loadLoginRedirect(@RequestParam String redirect, Model model, HttpSession session){
         model.addAttribute("redirect", redirect);
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("Admin", getAdminSession(session));
         return "User/login";
     }
 
@@ -105,6 +115,14 @@ public class IndexController {
         return "User/Register";
     }
 
+    @RequestMapping("/AdminRegister")
+    public String loadAdminRegister(Model model, HttpSession session){
+
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("Admin", getAdminSession(session));
+        return "User/AdminRegister";
+    }
+
     @RequestMapping("/logout")
     public String loadLogout(Model model, HttpSession session){
         session.setAttribute("User", new UserSession(null));
@@ -114,8 +132,8 @@ public class IndexController {
 
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model, HttpSession session){
-
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("Admin", getAdminSession(session));
 
         String redirect = req.getRedirect();
         model.addAttribute("redirect", redirect);
@@ -123,24 +141,43 @@ public class IndexController {
         try {
 
             UserAccount newUser = usrServices.getById(req.getEmail());
+            AdminAccount newAdmin = adminAccountServices.getById(req.getEmail());
 
-            if(req.getPassword().equals(newUser.getPassword())) {
-                // Set post flag
-                model.addAttribute("method", "post");
+            if(newUser != null) {
+                if (req.getPassword().equals(newUser.getPassword())) {
+                    // Set post flag
+                    model.addAttribute("method", "post");
 
-                // Set user session
-                UserSession usr = new UserSession(newUser);
-                session.setAttribute("User", usr);
-                model.addAttribute("usr", usr);
+                    // Set user session
+                    UserSession usr = new UserSession(newUser);
+                    session.setAttribute("User", usr);
+                    model.addAttribute("usr", usr);
 
-                // If a redirect has been set, redirect upon login
-                if (!redirect.equals("")) {
-                    return "redirect:" + redirect;
+                    // If a redirect has been set, redirect upon login
+                    if (!redirect.equals("")) {
+                        return "redirect:" + redirect;
+                    } else {
+                        return "redirect:account";
+                    }
                 } else {
-                    return "redirect:account";
+                    model.addAttribute("valid", false);
                 }
-            }else{
-                model.addAttribute("valid", false);
+            }
+            if(newAdmin != null){
+                if(req.getPassword().equals(newAdmin.getPassword())){
+                    // Set post flag
+                    model.addAttribute("method", "post");
+
+                    // Set admin session
+                    AdminSession admin = new AdminSession(newAdmin);
+                    session.setAttribute("Admin", admin);
+                    model.addAttribute("Admin", admin);
+
+                    return "redirect:AdminControl";
+                }
+                else{
+                    model.addAttribute("valid", false);
+                }
             }
 
         }catch(Exception e){
@@ -316,6 +353,15 @@ public class IndexController {
         return "Notifications/newuser";
     }
 
+    @RequestMapping("/AdminControl")
+    public String adminControl(Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        return "User/AdminControl";
+    }
+
 
     private UserSession getSession(HttpSession session){
         UserSession sessionUser = null;
@@ -345,5 +391,21 @@ public class IndexController {
         String max = dateFormat.format(date);
         model.addAttribute("max", max);
         return model;
+    }
+
+    private AdminSession getAdminSession(HttpSession session){
+        AdminSession sessionAdmin = null;
+        try{
+            sessionAdmin = (AdminSession) session.getAttribute("Admin");
+        } catch (Exception e){
+            sessionAdmin = null;
+        }
+
+        if(sessionAdmin == null){
+            sessionAdmin = new AdminSession(null);
+            session.setAttribute("Admin", sessionAdmin);
+        }
+
+        return sessionAdmin;
     }
 }
