@@ -2,342 +2,342 @@
   "_id": "ADL",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-34.928634",
+  "covid_restricted": false,
+  "latitude": -34.928634,
   "location": "Adelaide",
-  "longitude": "138.599888",
-  "popularity": "2"
+  "longitude": 138.599888,
+  "popularity": 2
 },{
   "_id": "AMS",
   "_class": "com.FlightPub.model.Location",
   "country": "Netherlands",
-  "covid_restricted": "FALSE",
-  "latitude": "52.371009",
+  "covid_restricted": false,
+  "latitude": 52.371009,
   "location": "Amsterdam",
-  "longitude": "4.900112",
-  "popularity": "3"
+  "longitude": 4.900112,
+  "popularity": 3
 },{
   "_id": "ATL",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "33.748547",
+  "covid_restricted": false,
+  "latitude": 33.748547,
   "location": "Atlanta",
-  "longitude": "-84.391502",
-  "popularity": "2"
+  "longitude": -84.391502,
+  "popularity": 2
 },{
   "_id": "BKK",
   "_class": "com.FlightPub.model.Location",
   "country": "Thailand",
-  "covid_restricted": "FALSE",
-  "latitude": "13.752753",
+  "covid_restricted": false,
+  "latitude": 13.752753,
   "location": "Bangkok",
-  "longitude": "100.494086",
-  "popularity": "4"
+  "longitude": 100.494086,
+  "popularity": 4
 },{
   "_id": "BNE",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-27.468968",
+  "covid_restricted": false,
+  "latitude": -27.468968,
   "location": "Brisbane",
-  "longitude": "153.023499",
-  "popularity": "2"
+  "longitude": 153.023499,
+  "popularity": 2
 },{
   "_id": "CBR",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-35.282071",
+  "covid_restricted": false,
+  "latitude": -35.282071,
   "location": "Canberra",
-  "longitude": "149.128667",
-  "popularity": "4"
+  "longitude": 149.128667,
+  "popularity": 4
 },{
   "_id": "CDG",
   "_class": "com.FlightPub.model.Location",
   "country": "France",
-  "covid_restricted": "FALSE",
-  "latitude": "48.84257",
+  "covid_restricted": false,
+  "latitude": 48.84257,
   "location": "Paris - Charles De Gaulle",
-  "longitude": "2.36916",
-  "popularity": "5"
+  "longitude": 2.36916,
+  "popularity": 5
 },{
   "_id": "CNS",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-16.920496",
+  "covid_restricted": false,
+  "latitude": -16.920496,
   "location": "Cairns",
-  "longitude": "145.771901",
-  "popularity": "4"
+  "longitude": 145.771901,
+  "popularity": 4
 },{
   "_id": "DOH",
   "_class": "com.FlightPub.model.Location",
   "country": "Qatar",
-  "covid_restricted": "FALSE",
-  "latitude": "25.285252",
+  "covid_restricted": false,
+  "latitude": 25.285252,
   "location": "Doha",
-  "longitude": "51.526837",
-  "popularity": "5"
+  "longitude": 51.526837,
+  "popularity": 5
 },{
   "_id": "DRW",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "36.267606",
+  "covid_restricted": false,
+  "latitude": 36.267606,
   "location": "Darwin",
-  "longitude": "-117.592446",
-  "popularity": "4"
+  "longitude": -117.592446,
+  "popularity": 4
 },{
   "_id": "DXB",
   "_class": "com.FlightPub.model.Location",
   "country": "United Arab Emirates",
-  "covid_restricted": "FALSE",
-  "latitude": "25.268352",
+  "covid_restricted": false,
+  "latitude": 25.268352,
   "location": "Dubai",
-  "longitude": "55.296196",
-  "popularity": "2"
+  "longitude": 55.296196,
+  "popularity": 2
 },{
   "_id": "FCO",
   "_class": "com.FlightPub.model.Location",
   "country": "Italy",
-  "covid_restricted": "FALSE",
-  "latitude": "41.82123",
+  "covid_restricted": false,
+  "latitude": 41.82123,
   "location": "Rome-Fiumicino",
-  "longitude": "12.23754",
-  "popularity": "4"
+  "longitude": 12.23754,
+  "popularity": 4
 },{
   "_id": "GIG",
   "_class": "com.FlightPub.model.Location",
   "country": "Brazil",
-  "covid_restricted": "FALSE",
-  "latitude": "-22.911014",
+  "covid_restricted": false,
+  "latitude": -22.911014,
   "location": "Rio De Janeiro",
-  "longitude": "-43.209373",
-  "popularity": "5"
+  "longitude": -43.209373,
+  "popularity": 5
 },{
   "_id": "HBA",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-42.882509",
+  "covid_restricted": false,
+  "latitude": -42.882509,
   "location": "Hobart",
-  "longitude": "147.328123",
-  "popularity": "5"
+  "longitude": 147.328123,
+  "popularity": 5
 },{
   "_id": "HEL",
   "_class": "com.FlightPub.model.Location",
   "country": "Finland",
-  "covid_restricted": "FALSE",
-  "latitude": "60.166628",
+  "covid_restricted": false,
+  "latitude": 60.166628,
   "location": "Helsinki",
-  "longitude": "24.943508",
-  "popularity": "3"
+  "longitude": 24.943508,
+  "popularity": 3
 },{
   "_id": "HKG",
   "_class": "com.FlightPub.model.Location",
   "country": "China",
-  "covid_restricted": "FALSE",
-  "latitude": "22.264412",
+  "covid_restricted": false,
+  "latitude": 22.264412,
   "location": "Hong Kong",
-  "longitude": "114.167061",
-  "popularity": "4"
+  "longitude": 114.167061,
+  "popularity": 4
 },{
   "_id": "HNL",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "21.30992",
+  "covid_restricted": false,
+  "latitude": 21.30992,
   "location": "Honolulu",
-  "longitude": "-157.858158",
-  "popularity": "2"
+  "longitude": -157.858158,
+  "popularity": 2
 },{
   "_id": "JFK",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "40.65496",
+  "covid_restricted": false,
+  "latitude": 40.65496,
   "location": "New York - JFK",
-  "longitude": "-73.78974",
-  "popularity": "1"
+  "longitude": -73.78974,
+  "popularity": 1
 },{
   "_id": "JNB",
   "_class": "com.FlightPub.model.Location",
   "country": "South Africa",
-  "covid_restricted": "FALSE",
-  "latitude": "-26.205",
+  "covid_restricted": false,
+  "latitude": -26.205,
   "location": "Johannesburg",
-  "longitude": "28.049722",
-  "popularity": "5"
+  "longitude": 28.049722,
+  "popularity": 5
 },{
   "_id": "KUL",
   "_class": "com.FlightPub.model.Location",
   "country": "Malaysia",
-  "covid_restricted": "FALSE",
-  "latitude": "3.157098",
+  "covid_restricted": false,
+  "latitude": 3.157098,
   "location": "Kuala Lumpur",
-  "longitude": "101.700953",
-  "popularity": "1"
+  "longitude": 101.700953,
+  "popularity": 1
 },{
   "_id": "LAX",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "34.052238",
+  "covid_restricted": false,
+  "latitude": 34.052238,
   "location": "Los Angeles",
-  "longitude": "-118.243344",
-  "popularity": "3"
+  "longitude": -118.243344,
+  "popularity": 3
 },{
   "_id": "LGA",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "40.60561",
+  "covid_restricted": false,
+  "latitude": 40.60561,
   "location": "New York - Laguardia",
-  "longitude": "-74.11805",
-  "popularity": "1"
+  "longitude": -74.11805,
+  "popularity": 1
 },{
   "_id": "LGW",
   "_class": "com.FlightPub.model.Location",
   "country": "United Kingdom",
-  "covid_restricted": "FALSE",
-  "latitude": "51.44832",
+  "covid_restricted": false,
+  "latitude": 51.44832,
   "location": "London-Gatwick",
-  "longitude": "-0.2045",
-  "popularity": "4"
+  "longitude": -0.2045,
+  "popularity": 4
 },{
   "_id": "LHR",
   "_class": "com.FlightPub.model.Location",
   "country": "United Kingdom",
-  "covid_restricted": "FALSE",
-  "latitude": "51.47407",
+  "covid_restricted": false,
+  "latitude": 51.47407,
   "location": "London-Heathrow",
-  "longitude": "-0.45279",
-  "popularity": "3"
+  "longitude": -0.45279,
+  "popularity": 3
 },{
   "_id": "MAD",
   "_class": "com.FlightPub.model.Location",
   "country": "Spain",
-  "covid_restricted": "FALSE",
-  "latitude": "40.416705",
+  "covid_restricted": false,
+  "latitude": 40.416705,
   "location": "Madrid",
-  "longitude": "-3.703583",
-  "popularity": "4"
+  "longitude": -3.703583,
+  "popularity": 4
 },{
   "_id": "MEL",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-37.814255",
+  "covid_restricted": false,
+  "latitude": -37.814255,
   "location": "Melbourne",
-  "longitude": "144.963146",
-  "popularity": "3"
+  "longitude": 144.963146,
+  "popularity": 3
 },{
   "_id": "MIA",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "25.775084",
+  "covid_restricted": false,
+  "latitude": 25.775084,
   "location": "Miami",
-  "longitude": "-80.194702",
-  "popularity": "3"
+  "longitude": -80.194702,
+  "popularity": 3
 },{
   "_id": "MUC",
   "_class": "com.FlightPub.model.Location",
   "country": "Germany",
-  "covid_restricted": "FALSE",
-  "latitude": "48.13641",
+  "covid_restricted": false,
+  "latitude": 48.13641,
   "location": "Munich",
-  "longitude": "11.57753",
-  "popularity": "1"
+  "longitude": 11.57753,
+  "popularity": 1
 },{
   "_id": "NRT",
   "_class": "com.FlightPub.model.Location",
   "country": "Japan",
-  "covid_restricted": "FALSE",
-  "latitude": "7.08695",
+  "covid_restricted": false,
+  "latitude": 7.08695,
   "location": "Tokyo - Narita",
-  "longitude": "125.51333",
-  "popularity": "5"
+  "longitude": 125.51333,
+  "popularity": 5
 },{
   "_id": "OOL",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-28.002373",
+  "covid_restricted": false,
+  "latitude": -28.002373,
   "location": "Gold Coast",
-  "longitude": "153.414599",
-  "popularity": "1"
+  "longitude": 153.414599,
+  "popularity": 1
 },{
   "_id": "ORD",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "41.97667",
+  "covid_restricted": false,
+  "latitude": 41.97667,
   "location": "Chicago - OHare Intl.",
-  "longitude": "-87.88485",
-  "popularity": "3"
+  "longitude": -87.88485,
+  "popularity": 3
 },{
   "_id": "ORY",
   "_class": "com.FlightPub.model.Location",
   "country": "France",
-  "covid_restricted": "FALSE",
-  "latitude": "48.73012",
+  "covid_restricted": false,
+  "latitude": 48.73012,
   "location": "Paris - Orly",
-  "longitude": "2.37039",
-  "popularity": "5"
+  "longitude": 2.37039,
+  "popularity": 5
 },{
   "_id": "PER",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-31.952712",
+  "covid_restricted": false,
+  "latitude": -31.952712,
   "location": "Perth",
-  "longitude": "115.86048",
-  "popularity": "4"
+  "longitude": 115.86048,
+  "popularity": 4
 },{
   "_id": "SFO",
   "_class": "com.FlightPub.model.Location",
   "country": "United States of America",
-  "covid_restricted": "FALSE",
-  "latitude": "37.78008",
+  "covid_restricted": false,
+  "latitude": 37.78008,
   "location": "San Francisco",
-  "longitude": "-122.420168",
-  "popularity": "3"
+  "longitude": -122.420168,
+  "popularity": 3
 },{
   "_id": "SIN",
   "_class": "com.FlightPub.model.Location",
   "country": "Singapore",
-  "covid_restricted": "FALSE",
-  "latitude": "1.290453",
+  "covid_restricted": false,
+  "latitude": 1.290453,
   "location": "Singapore",
-  "longitude": "103.852038",
-  "popularity": "1"
+  "longitude": 103.852038,
+  "popularity": 1
 },{
   "_id": "SYD",
   "_class": "com.FlightPub.model.Location",
   "country": "Australia",
-  "covid_restricted": "FALSE",
-  "latitude": "-33.854816",
+  "covid_restricted": false,
+  "latitude": -33.854816,
   "location": "Sydney",
-  "longitude": "151.216454",
-  "popularity": "4"
+  "longitude": 151.216454,
+  "popularity": 4
 },{
   "_id": "VIE",
   "_class": "com.FlightPub.model.Location",
   "country": "Austria",
-  "covid_restricted": "FALSE",
-  "latitude": "48.192309",
+  "covid_restricted": false,
+  "latitude": 48.192309,
   "location": "Vienna",
-  "longitude": "16.371364",
-  "popularity": "3"
+  "longitude": 16.371364,
+  "popularity": 3
 },{
   "_id": "YYZ",
   "_class": "com.FlightPub.model.Location",
   "country": "Canada",
-  "covid_restricted": "FALSE",
-  "latitude": "43.651893",
+  "covid_restricted": false,
+  "latitude": 43.651893,
   "location": "Toronto",
-  "longitude": "-79.381713",
-  "popularity": "3"
+  "longitude": -79.381713,
+  "popularity": 3
 }]
