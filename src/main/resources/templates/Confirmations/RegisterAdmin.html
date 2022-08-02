@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Header"> </head>
+<div class="container">
+    <main id="main" style="margin-top: 100px" >
+        <h2>Welcome to the team!</h2>
+        <p th:text="'Firstname: ' + ${addedAdmin.getFirstName()}"></p>
+        <p th:text="'Lastname: ' + ${addedAdmin.getLastName()}"></p>
+        <p th:text="'Email: ' + ${addedAdmin.getEmail()}"></p>
+        <p th:text="'Company: ' + ${addedAdmin.getCompany()}"></p>
+        <a href="/login" class="btn btn-info">Login To Use Your Administration Expertise!</a>
+    </main>
+</div>
