@@ -38,7 +38,7 @@ public class GroupsController {
         this.locationServices = locService;
     }
 
-    @RequestMapping("/groupsLoad")
+    @RequestMapping("/Group")
     public String groupLoad(@RequestParam String groupId, Model model, HttpSession session) {
         // Bypass invite accepted/decline string
         return groupInvite(groupId, "bypass", model, session);
@@ -66,6 +66,7 @@ public class GroupsController {
                     groupServices.addUser(userId);
                     model.addAttribute("accepted", true);
                 } else if (accepted.equals("decline")) {
+                    groupServices.addDecline(userId);
                     return "redirect:account";
                 }
 
@@ -103,9 +104,6 @@ public class GroupsController {
         // If valid user
         else if (usrServices.getById(inviteUser) != null) {
             groupServices.addInvite(inviteUser);
-
-            // TODO send a notification to user that they have been invited to group
-            //  notification would include group link, group name
         }
         // If incoming user email is loading just update users
         else if (inviteUser.equals("loading")){
@@ -119,6 +117,7 @@ public class GroupsController {
 
         // Get list of all invited users
         model.addAttribute("inviteUsers", groupServices.listAllInvitedUsers());
+        model.addAttribute("declinedUsers", groupServices.listAllDeclinedUsers());
 
         return "Fragments/Groups/InviteList :: invite_list_fragment";
     }

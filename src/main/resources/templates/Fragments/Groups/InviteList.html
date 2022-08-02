@@ -41,7 +41,12 @@
                 <tr th:each="user : ${inviteUsers}">
                     <th scope="row" th:text="${user.firstname}"></th>
                     <td th:text="${user.email}"></td>
-                    <td> TODO </td>
+                    <td> Invited </td>
+                </tr>
+                <tr th:each="user : ${declinedUsers}">
+                    <th scope="row" th:text="${user.firstname}"></th>
+                    <td th:text="${user.email}"></td>
+                    <td> Declined </td>
                 </tr>
                 </tbody>
             </table>

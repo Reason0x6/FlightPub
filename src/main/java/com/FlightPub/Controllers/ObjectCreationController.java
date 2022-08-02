@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 public class ObjectCreationController {
@@ -157,7 +156,7 @@ public class ObjectCreationController {
     }
 
     @PostMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1
-    public String addGroup(@ModelAttribute NewGroup group, Model model, HttpSession session){
+    public String addGroup(@ModelAttribute NewGroup group, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:/login";
         }
@@ -165,24 +164,7 @@ public class ObjectCreationController {
         UserGroup newGroup = new UserGroup(getSession(session).getEmail(), group.getGroupName());
         groupServices.saveUsers(newGroup);
 
-        List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
-        if(bookings.size() > 0){
-            model.addAttribute("bookings", bookings);
-            model.addAttribute("flights", flightServices);
-        }else{
-            model.addAttribute("bookings", null);
-        }
-
-        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
-        List<UserGroup> invitedGroups = groupServices.findInvitedGroupsContaining(getSession(session).getEmail());
-        model.addAttribute("groups", groups);
-        model.addAttribute("invitedGroups", invitedGroups);
-
-        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
-        model.addAttribute("locs", locationServices.listAll());
-        model.addAttribute("usr", getSession(session));
-
-        return "User/Personalised";
+        return "redirect:/Group?groupId=" + newGroup.getId();
     }
 
     private UserSession getSession(HttpSession session){
