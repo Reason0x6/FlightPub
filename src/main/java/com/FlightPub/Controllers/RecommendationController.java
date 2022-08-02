@@ -30,14 +30,12 @@ public class RecommendationController {
 
     @PostMapping("/recommendations")
     public String loadRecommendations(@RequestParam("city") String city, Model model) {
-
-        System.out.println(city);
-
         recommendation = new Recommendation(locationServices, flightServices);
         recommendation.setRecommendationLocation(city);
 
         model.addAttribute("reco", recommendation.getRecommendation());
         model.addAttribute("currentLocation", recommendation.getRecommendationLocation());
+        model.addAttribute("recommendationLocation", locationServices.listAll());
 
         return "Fragments/Recommendation :: recommendation_fragment";
     }
