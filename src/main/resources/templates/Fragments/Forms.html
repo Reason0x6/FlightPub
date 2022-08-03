@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"></html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> </html>
 <form id="login" th:action="@{/login}" th:object="${LoginRequest}" method="post">
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -11,6 +11,8 @@
         <input type="password" name ="password" class="form-control" id="exampleInputPassword1">
     </div>
     <p style="color: red" th:if="${valid} != null">Username & Password did not match a valid account. Please try again.</p>
+
+    <input type="hidden" id="redirect" name="redirect" th:value="${redirect}">
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -332,6 +334,22 @@
     </div>
     <!-- Submit Payment Request -->
     <a href="/bookingConfirmation" class="btn btn-success" onclick="validateCreditCard()" style="max-width: 200px">Pay Now</a>
+</form>
+
+<!-- Create group form -->
+<form id="createGroupForm" th:action="@{/group/add}" th:object="${NewGroup}" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="groupName" id="nameLabel" class="col-form-label" >Group Name</label>
+        </div>
+        <div class="col-md-5">
+            <input type="text" id="groupName" class="form-control" name="groupName" placeholder="Enter Group Name">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary btn-search">Create Group!</button>
+        </div>
+
+    </div>
 </form>
 
 <!--Register Admin--------------------------------------------------------------------------------------------------------------------------------------->
