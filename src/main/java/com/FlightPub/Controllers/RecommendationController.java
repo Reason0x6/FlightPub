@@ -46,8 +46,6 @@ public class RecommendationController {
 
     @PostMapping("LocateNearestCity")
     public String locateNearestCity(@RequestParam double lat, @RequestParam double lon, Model model) {
-        System.out.printf("Finding nearest city to lat: %f, lon: %f %n", lat, lon);
-
         // Defaults for nearest city comparison
         String currentNearestCity = "";
         double currentSmallestDistance = 0;
