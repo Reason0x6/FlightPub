@@ -77,6 +77,8 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("Admin", getAdminSession(session));
 
+        model.addAttribute("LoadingRecommendation", true);
+
         wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
 
         return "index";
