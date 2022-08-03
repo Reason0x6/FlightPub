@@ -135,21 +135,24 @@ public class ObjectCreationController {
     }
 
     @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM&flightCode=VH302&ticketprice=112.00
-    public String addFlight( @RequestParam String flightID, @RequestParam String originID,
-                             @RequestParam String destinationID, @RequestParam String airline,
-                             @RequestParam String departure, @RequestParam String arrival,
-                             @RequestParam String flightCode, @RequestParam double ticketprice,
-                             Model model, HttpSession session) {
+    public String addFlight( @ModelAttribute Flight flight, Model model, HttpSession session) {
 
-        Flight newFlight = new Flight(flightID, originID.toUpperCase(),
-                destinationID.toUpperCase(), departure, arrival, flightCode, airline, ticketprice);
+        model.addAttribute("flight", flight);
+        if(flight.getMaxSeats()<0 || flight.getBookedSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0)
+            return "Admin/FlightManagement";
 
-        if (flightServices.getById(flightID) != null) {
-            // TODO: Notification of flight detail change to be sent to users
+        // Convert the ID to align with the Database standard)
+        flight.setDestinationID(flight.getDestinationID().toUpperCase());
+        flight.setOriginID(flight.getOriginID().toUpperCase());
+
+        // Ensures that the location exists
+        if(locationServices.getById(flight.getDestinationID()) == null || locationServices.getById(flight.getOriginID()) == null) {
+            return "Admin/FlightManagement";
         }
 
-        flightServices.saveOrUpdate(newFlight);
-        model.addAttribute("flight", newFlight);
+        // Update the database with a update or new entry, then pass flight to the conformation page
+        flightServices.saveOrUpdate(flight);
+        model.addAttribute("flight", flight);
         model.addAttribute("usr", getSession(session));
 
         return "Confirmations/NewFlight";

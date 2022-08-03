@@ -195,7 +195,6 @@ public class IndexController {
             return "redirect:login";
         }
 
-
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);
@@ -227,6 +226,20 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         return "Flight";
+    }
+
+    @RequestMapping("/admin/flight/management")
+    @PostMapping("/admin/flight/management")
+    public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
+        if(flight != null)
+            flight = flightServices.getById(flight.getFlightID());
+
+        if(flight == null)
+            flight = new Flight();
+
+        model.addAttribute("flight", flight);
+
+        return "Admin/FlightManagement";
     }
 
     @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2
