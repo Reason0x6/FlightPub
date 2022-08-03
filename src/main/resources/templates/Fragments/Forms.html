@@ -272,6 +272,40 @@
     </script>
 </form>
 
+<!-- Flight management form for finding existing flights --------------------------------------------------------------------------------->
+<form id="findExisting" th:action="@{/admin/flight/management}" th:object="${Flight}" method="post">
+    <label for="flightID" id="flightIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight ID: </label>
+    <input type="text" id="flightID" name="flightID">
+    <button type="submit" class="btn btn-primary btn-search" >Find Flight</button>
+</form>
+
+<!-- Flight management form for creating/editing flights -------------------------------------------------------------------------------->
+<form id="EditFlight" th:action="@{/flight/add}" th:object="${Flight}" method="post">
+    <label for="flightID" id="flightIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight ID: </label>
+    <input type="text" id="flightID" name="flightID" th:value="${flight.getFlightID()}">
+    <label for="originID" id="originIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Origin: </label>
+    <input type="text" id="originID" name="originID" th:value="${flight.getOriginID()}">
+    <label for="destinationID" id="destinationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
+    <input type="text" id="destinationID" name="destinationID" th:value="${flight.getDestinationID()}">
+    <label for="departure" id="departureLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure</label>
+    <input type="datetime-local" id="departure" name="departure" th:value="${flight.getDepartureDateTime()}">
+    <label for="arrival" id="arrivalLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival</label>
+    <input type="datetime-local" id="arrival" name="arrival" th:value="${flight.getArrivalDateTime()}">
+    <label for="flightCode" id="flightCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Code: </label>
+    <input type="text" id="flightCode" name="flightCode" th:value="${flight.getFlightCode()}">
+    <label for="airline" id="airlineLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline: </label>
+    <input type="text" id="airline" name="airline" th:value="${flight.getAirline()}">
+    <label for="ticketPrice" id="ticketPriceLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Ticket Price: </label>
+    <input type="number" id="ticketPrice" name="ticketPrice" th:value="${flight.getTicketPrice()}">
+    <label for="bookedSeats" id="bookedSeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Booked Seats: </label>
+    <input type="number" id="bookedSeats" name="bookedSeats" th:value="${flight.getBookedSeats()}">
+    <label for="maxSeats" id="maxSeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Max Seats: </label>
+    <input type="number" id="maxSeats" name="maxSeats" th:value="${flight.getMaxSeats()}">
+    <label for="rating" id="ratingLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
+    <input type="number" id="rating" name="rating" th:value="${flight.getRating()}">
+    <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
+</form>
+
 <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
 <form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
     <span>Departure Location: </span><select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
@@ -284,7 +318,7 @@
 </form>
 </html>
 
-<!-- Credit Card Form -->
+<!-- Credit Card Form -------------------------------------------------------------------------------------------------------------------->
 <!-- <form id="payment" th:action="@{/bookingConfirmation}" method="post"> -->
 <form id="payment" th:action="@{/checkout}">
     <div>

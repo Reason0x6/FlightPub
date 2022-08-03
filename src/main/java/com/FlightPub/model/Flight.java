@@ -29,11 +29,9 @@ public class Flight {
     private String destinationID;
 
     @Getter
-    @Setter
     private Date departure;
 
     @Getter
-    @Setter
     private Date arrival;
 
     @Getter
@@ -72,8 +70,7 @@ public class Flight {
     @Setter
     private boolean promoted;
 
-    public Flight(){
-    }
+    public Flight(){}
 
     public Flight(String flightID, String originID, String destinationID,
                   String departure, String arrival, String flightCode,
@@ -85,38 +82,57 @@ public class Flight {
         this.flightCode = flightCode;
         this.airline = airline;
         this.ticketPrice = ticketPrice;
-        try {
-            setDepartureTime(departure);
-            setArrivalTime(arrival);
-        }catch(Exception e){}
+        this.setDeparture(departure);
+        this.setArrival(arrival);
 
         plane = new Plane();
 
     }
 
-    public void setArrivalTime(String in) throws ParseException {
-
-        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
-        Date date = originalFormat.parse(in);
-
-        arrival = date;
+    public void setArrival(String in){
+        try {
+            SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            Date date = originalFormat.parse(in);
+            this.arrival = date;
+        } catch (ParseException e) {
+            System.out.println(e);
+        }
     }
 
-    public void setDepartureTime(String in) throws ParseException {
-
-        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
-        Date date = originalFormat.parse(in);
-
-        departure = date;
+    public void setDeparture(String in){
+        try {
+            SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            Date date = originalFormat.parse(in);
+            this.departure = date;
+        } catch (ParseException e) {
+            System.out.println(e);
+        }
     }
 
 
     public String getArrivalTime(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
+        if(arrival == null)
+            return null;
+        else
+            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
     }
     public String getDepartureTime(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departure);
+        if(arrival == null)
+            return null;
+        else
+            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departure); }
+
+    public String getArrivalDateTime(){
+        if(arrival == null)
+            return null;
+        else
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrival);
     }
+    public String getDepartureDateTime(){
+        if(arrival == null)
+            return null;
+        else
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(departure); }
 
     public List<String> getAllSeats(){
         return plane.getSeats();
