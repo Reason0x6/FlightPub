@@ -52,7 +52,7 @@ public class FlightServices{
 
         flightRepo.findByOrigin(dep).forEach(flight -> {
 
-            Location loc = locationServices.getById(flight.getDestinationID());
+            Location loc = locationServices.getById(flight.getDestinationCode());
 
             if(!loc.isCovid_restricted()){
                 out.add(flight);

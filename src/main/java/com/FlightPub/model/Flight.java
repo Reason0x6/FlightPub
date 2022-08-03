@@ -1,18 +1,19 @@
 package com.FlightPub.model;
 
+import com.FlightPub.Services.PlaneServices;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
-@Document("Flight")
+@Document("Flights")
 public class Flight {
 
     @Id
@@ -22,27 +23,38 @@ public class Flight {
 
     @Getter
     @Setter
-    private String originID;
+    private String DepartureCode;
 
     @Getter
     @Setter
-    private String destinationID;
+    private String DestinationCode;
 
     @Getter
     @Setter
-    private Date departure;
+    private String PlaneCode;
 
     @Getter
     @Setter
-    private Date arrival;
+    private Date DepartureTime;
 
     @Getter
     @Setter
-    private String flightCode;
+    private Date ArrivalTime;
 
     @Getter
     @Setter
-    private String airline;
+    private String FlightNumber;
+
+    @Getter
+    @Setter
+    private String AirlineCode;
+
+
+    //ADDITIONAL VARIABLES
+
+    @Getter
+    @Setter
+    private Plane planeObj;
 
     @Getter
     @Setter
@@ -50,7 +62,7 @@ public class Flight {
 
     @Getter
     @Setter
-    private int bookedSeats;
+    private Map<String, Integer> bookedSeats = new HashMap<>();
 
     @Getter
     @Setter
@@ -64,62 +76,55 @@ public class Flight {
     @Setter
     private double rating;
 
-    @Getter
-    @Setter
-    private Plane plane = new Plane();
-
-    @Getter
-    @Setter
-    private boolean promoted;
-
     public Flight(){
+
     }
 
-    public Flight(String flightID, String originID, String destinationID,
-                  String departure, String arrival, String flightCode,
-                  String airline, double ticketPrice){
+    public Flight(String flightID,
+                  String airline, String arrival, String DepartureCode, String DestinationCode,
+                  String departure,  String flightCode, double ticketPrice){
 
         this.flightID = flightID;
-        this.originID = originID;
-        this.destinationID = destinationID;
-        this.flightCode = flightCode;
-        this.airline = airline;
+        this.DepartureCode = DepartureCode;
+        this.DestinationCode = DestinationCode;
+        this.FlightNumber = flightCode;
+        this.AirlineCode = airline;
         this.ticketPrice = ticketPrice;
+
+
         try {
-            setDepartureTime(departure);
-            setArrivalTime(arrival);
+            setDepartureT(departure);
+            setArrivalT(arrival);
         }catch(Exception e){}
 
-        plane = new Plane();
 
     }
 
-    public void setArrivalTime(String in) throws ParseException {
+    public void setArrivalT(String in) throws ParseException {
 
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
         Date date = originalFormat.parse(in);
 
-        arrival = date;
+        ArrivalTime = date;
     }
 
-    public void setDepartureTime(String in) throws ParseException {
+    public void setDepartureT(String in) throws ParseException {
 
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
         Date date = originalFormat.parse(in);
 
-        departure = date;
+        DepartureTime = date;
     }
 
-
-    public String getArrivalTime(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
-    }
-    public String getDepartureTime(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departure);
+    public int getTotalBookedSeats(){
+        return 0;
     }
 
-    public List<String> getAllSeats(){
-        return plane.getSeats();
+    public String getArrivalT(){
+        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(ArrivalTime);
+    }
+    public String getDepartureT(){
+        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(DepartureTime);
     }
 
 }

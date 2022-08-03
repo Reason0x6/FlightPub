@@ -38,24 +38,29 @@
       <h1 th:text="${search.getOriginIn()} + ' -> ' + ${search.getDestinationIn()}"></h1>
 
       <div th:if="${flights[0].size()} != 0">
-        <div class="card l-1" th:each="flight : ${flights[0]}" style="padding: 10px 0 0 20px;">
-          <div class="row" style="padding-top: 10px;">
-            <div class="col-sm-4">
-              <p><b><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span></b><span th:text="${flight.getArrivalTime()}"></span></p>
-            </div>
-            <div class="col-sm-4">
-              <p><b>Airline: </b><span th:text="${flight.getAirline()}"></span></p>
-              <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getTicketPrice()}"></span></p>
-            </div>
-            <div class="col-sm-4"  style="padding-top: 10px;"><br>
-                  <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
-              <button type="submit" class="btn btn-link">Bookmark</button>
-            </div>
-          </div>
-        </div>
+        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+            <th class="th-sm">Name
+          </tr>
+          </thead>
+          <tbody>
+
+         <tr class="card l-1" th:each="flight : ${flights[0]}" style="padding: 10px 0 0 20px;">
+           <td><b><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span></b></td>
+           <td><b><span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span></b></td>
+           <td><span th:text="${flight.getDepartureTime()}"></span></td>
+           <td><span th:text="${flight.getArrivalTime()}"></span><</td>
+           <td><span th:text="${flight.getAirline()}"></span></td>
+           <td><span th:text="' $' + ${flight.getTicketPrice()}"></span></td>
+           <td><a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
+             <button type="submit" class="btn btn-link">Bookmark</button></td>
+          </tr>
+          </tbody>
+        </table>
       </div>
 
+      <!--
       <div th:if="${stopOver[0].size()} != 0">
         <hr>
         <div class="card l-1" th:each="flight : ${stopOver[0]}" style="padding: 10px 0 0 20px;">
@@ -78,6 +83,7 @@
           </div>
         </div>
       </div>
+
 
       <div th:if="${stopOver[1].size()} != 0">
         <hr>
@@ -133,7 +139,7 @@
           </div>
         </div>
       </div>
-
+      -->
       <div th:if="${flights[0].size()} == 0">
         <p>There are currently no flights that match this search</p>
       </div>

@@ -5,6 +5,8 @@ import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -220,8 +222,8 @@ public class IndexController {
 
         Flight f = flightServices.getById(id);
 
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
-        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
+        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
@@ -236,8 +238,8 @@ public class IndexController {
 
         getSession(session).addToCart(seats, id);
 
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
-        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
+        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
@@ -255,7 +257,7 @@ public class IndexController {
 
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
-        flights[1] = search.getPromotedFlights(flights[0]);
+       // flights[1] = search.getPromotedFlights(flights[0]);
         stopOver[0] = search.basicStopOverSearch(1);
         stopOver[1] = search.basicStopOverSearch(2);
         stopOver[2] = search.basicStopOverSearch(3);
@@ -282,7 +284,7 @@ public class IndexController {
 
         // Gathers Flights and Stopovers
         flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
-        flights[1] = search.getPromotedFlights(flights[0]);
+        //flights[1] = search.getPromotedFlights(flights[0]);
         if(!search.isDirectFlight()) {
             stopOver[0] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
             stopOver[1] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);

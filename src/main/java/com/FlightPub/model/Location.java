@@ -48,12 +48,13 @@ public class Location {
 
     public Location() {}
 
-    public Location(String id, String country, String location, double lat, double lng, int pop) {
+    public Location(String id, String country, String location, double lat, double lng, int pop, boolean covid_restricted) {
         this.locationID = id.toUpperCase();
         this.country = country;
         this.location = location;
         this.latitude = lat;
         this.longitude = lng;
         this.popularity = pop;
+        this.covid_restricted = covid_restricted;
     }
 }

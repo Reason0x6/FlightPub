@@ -32,7 +32,7 @@ public class StopOver {
     // Tests if a provided location has been visited in this stopover chain
     public boolean locationVisited(String location) {
         for(Flight flight : flights) {
-            if(flight.getOriginID().equals(location))
+            if(flight.getDepartureCode().equals(location))
                 return true;
         }
         return false;
@@ -59,7 +59,7 @@ public class StopOver {
     // Checks that the specified number of seats are available on all flights
     public boolean seatsAvailable(int numberOfSeats) {
         for(Flight flight : flights) {
-            if(flight.getMaxSeats() - flight.getBookedSeats() < numberOfSeats)
+            if(flight.getMaxSeats() - flight.getTotalBookedSeats() < numberOfSeats)
                 return false;
         }
         return true;

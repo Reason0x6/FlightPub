@@ -18,26 +18,47 @@ public class Plane {
 
     @Getter
     @Setter
-    private String airlineID;
+    private String Details;
 
     @Getter
     @Setter
-    private int seatCount;
+    private int NumFirstClass;
 
     @Getter
     @Setter
-    private String planeType;
+    private int NumBusiness;
 
     @Getter
     @Setter
-    private List<String> seats = new ArrayList<>();
+    private int NumPremiumEconomy;
 
-    String[] col = {"A", "B", "C", "D"};
+    @Getter
+    @Setter
+    private int Economy;
 
-    public Plane() {
-       for(int i = 0; i <= 28; i++){
-           String s = (col[i % 4]) + (i+1);
-           seats.add(s);
-       }
+
+    public boolean book(int seats, String ticket){
+        switch (ticket) {
+            case "BUS":
+                this.NumBusiness -= seats;
+                break;
+
+            case "ECO":
+                this.Economy -= seats;
+                break;
+
+            case "FIR":
+                this.NumFirstClass -= seats;
+                break;
+
+            case "PME":
+                this.NumPremiumEconomy -= seats;
+                break;
+
+            default:
+                return false;
+        }
+        return true;
     }
+
 }

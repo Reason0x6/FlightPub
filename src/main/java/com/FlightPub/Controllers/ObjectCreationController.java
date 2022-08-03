@@ -66,7 +66,7 @@ public class ObjectCreationController {
                           @RequestParam double lng, @RequestParam int pop,
                           Model model, HttpSession session){
 
-        Location newLoc = new Location(id, country,location, lat,lng,pop);
+        Location newLoc = new Location(id, country,location, lat,lng,pop, false);
         locationServices.saveOrUpdate(newLoc);
 
         model.addAttribute("addedLoc", newLoc);

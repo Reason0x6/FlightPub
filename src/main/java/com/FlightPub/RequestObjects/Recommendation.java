@@ -94,7 +94,7 @@ public class Recommendation {
         
         System.out.println("Recommended Flights found:");
         for (Flight flight : recommendedFlights) {
-            System.out.printf("FlightID: %s, Flight Origin: %s, Flight Destination: %s %n",flight.getFlightID(), flight.getOriginID(), flight.getDestinationID());
+            System.out.printf("FlightID: %s, Flight Origin: %s, Flight Destination: %s %n",flight.getFlightID(), flight.getDepartureCode(), flight.getDestinationCode());
         }
 
         return recommendedFlights;
