@@ -37,7 +37,7 @@ public class AdminAccount {
             if(api == 1){this.password = sec.hash(password);}
             else{ this.password = password;}
         }catch(Exception r){
-
+            r.printStackTrace();
         }
 
         this.email = email;
