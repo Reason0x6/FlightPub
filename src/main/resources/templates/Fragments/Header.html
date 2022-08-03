@@ -15,10 +15,12 @@
         <ul th:if="${usr.isLoggedIn()} == false">
           <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
           <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
+            <li><a class="nav-link scrollto" href="/#recommendation">Recommendations</a></li>
           <li><a class="nav-link scrollto " href="/login">Login/Signup</a></li>
         </ul>
         <ul th:if="${usr.isLoggedIn()} != false">
           <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
+            <li><a class="nav-link scrollto" href="/#recommendation">Recommendations</a></li>
           <li><a class="nav-link scrollto" href="/account#groups">Groups</a></li>
           <li><a class="nav-link scrollto" href="/#contact">Contact Us</a></li>
           <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span>'s Account</a></li>
