@@ -38,16 +38,34 @@
 </div>
 
 <script>
+    // // Load current invite list
+    // $(document).ready(
+    //         fetch("https://ipinfo.io/json?token=b7ed283b1c2771").then(
+    //                 (response) => response.json()
+    //         ).then(
+    //                 (jsonResponse) => {
+    //                     loadRecommendation(jsonResponse.city);
+    //                 }
+    //         )
+    // )
+
     // Load current invite list
     $(document).ready(
-            fetch("https://ipinfo.io/json?token=b7ed283b1c2771").then(
-                    (response) => response.json()
-            ).then(
-                    (jsonResponse) => {
-                        loadRecommendation(jsonResponse.city);
-                    }
-            )
+            getLocation()
     )
+
+    // Get location based on HTML geolocation api
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                $.post("/LocateNearestCity", {lat: position.coords.latitude, lon: position.coords.longitude}).done(function (fragment) {
+                    $("#recommendation_fragment").replaceWith(fragment);
+                }, {enableHighAccuracy: true, timeout: 5000, maximumAge: 0})
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
 
     function loadRecommendation(city) {
         $.post("/recommendations", {city: city}).done(function (fragment) {
