@@ -140,7 +140,6 @@ public class IndexController {
             return "redirect:login";
         }
 
-
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);

@@ -303,6 +303,8 @@
     <input type="number" id="maxSeats" name="maxSeats" th:value="${flight.getMaxSeats()}">
     <label for="rating" id="ratingLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
     <input type="number" id="rating" name="rating" th:value="${flight.getRating()}">
+    <label for="promoted" id="promotedLabel">Promoted: </label>
+    <input type="checkbox" id="promoted" name="promoted">
     <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
 </form>
 

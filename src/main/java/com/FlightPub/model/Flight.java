@@ -84,11 +84,13 @@ public class Flight {
         this.ticketPrice = ticketPrice;
         this.setDeparture(departure);
         this.setArrival(arrival);
+        this.promoted = false;
 
         plane = new Plane();
 
     }
 
+    // Formats the String to be parsed into a Date Object
     public void setArrival(String in){
         try {
             SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
@@ -110,24 +112,28 @@ public class Flight {
     }
 
 
+    // Returns the Date in a readable String format
     public String getArrivalTime(){
         if(arrival == null)
             return null;
         else
             return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
     }
+
     public String getDepartureTime(){
         if(arrival == null)
             return null;
         else
             return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departure); }
 
+    // Returns the Date in a String format that conforms to the expected format of DateTime-local (HTML input)
     public String getArrivalDateTime(){
         if(arrival == null)
             return null;
         else
             return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrival);
     }
+
     public String getDepartureDateTime(){
         if(arrival == null)
             return null;
