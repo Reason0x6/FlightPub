@@ -1,0 +1,10 @@
+[{
+  "_id": "bobalice@email.com",
+  "firstName": "bob",
+  "lastName": "alice",
+  "company": "uon",
+  "password": "pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM=",
+  "_class": "com.FlightPub.model.AdminAccount"
+}
+]
+
