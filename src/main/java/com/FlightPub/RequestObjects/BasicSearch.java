@@ -193,7 +193,7 @@ public class BasicSearch {
 
     //#TODO convvert promoted flights to Promoted Airlines
     // Determines which of the flights are promoted
-     /*   public List<Flight> getPromotedFlights(List<Flight> allFlights) {
+      public List<Flight> getPromotedFlights(List<Flight> allFlights) {
         List<Flight> promoted = new ArrayList<>();
         for (Flight flight : allFlights) {
             if (false)
@@ -201,7 +201,7 @@ public class BasicSearch {
         }
         return promoted;
     }
-*/
+
     // Determines where a flight would be suitable for a stopover in terms of its timing
     private boolean isSuitableTiming(Flight first, Flight second) {
         if (addBuffer(first.getArrivalTime(), 0, 1, 0).compareTo(second.getDepartureTime()) == -1) {
@@ -249,7 +249,7 @@ public class BasicSearch {
             if (rating != 0 && flight.getRating() < rating)
                 continue;
             // Filter to the number of seats
-            if (seats > (flight.getMaxSeats() - flight.getTotalBookedSeats()))
+            if (seats > (flightServices.getAvailableSeats(flight.getFlightID(), flight.getDepartureTime())))
                 continue;
             // Filters flights that are not part of the membership program
             if (this.isMembershipFlights()) {
@@ -279,8 +279,15 @@ public class BasicSearch {
             // Filter by rating
             if (rating != 0 && flight.getMinRating() < rating)
                 continue;
+
+            boolean availableSeats = true;
             // Filter to the number of seats
-            if (flight.seatsAvailable(seats) == false)
+            for(Flight x: flight.getFlights()){
+                if(flightServices.getAvailableSeats(x.getFlightID(), x.getDepartureTime()) <= 0){
+                    availableSeats = false;
+                }
+            }
+            if (availableSeats)
                 continue;
             // Filters flights that are not part of the membership program
             if (this.isMembershipFlights()) {

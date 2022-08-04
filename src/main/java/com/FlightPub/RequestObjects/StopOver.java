@@ -56,12 +56,5 @@ public class StopOver {
         return min;
     }
 
-    // Checks that the specified number of seats are available on all flights
-    public boolean seatsAvailable(int numberOfSeats) {
-        for(Flight flight : flights) {
-            if(flight.getMaxSeats() - flight.getTotalBookedSeats() < numberOfSeats)
-                return false;
-        }
-        return true;
-    }
+    
 }

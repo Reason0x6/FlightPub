@@ -1,0 +1,29 @@
+[{
+  "_id": "A",
+  "Name": "Standby",
+  "Transferrable": "FALSE"
+},{
+  "_id": "B",
+  "Name": "Premium Discounted",
+  "Transferrable": "FALSE"
+},{
+  "_id": "C",
+  "Name": "Discounted",
+  "Transferrable": "FALSE"
+},{
+  "_id": "D",
+  "Name": "Standard",
+  "Transferrable": "FALSE"
+},{
+  "_id": "E",
+  "Name": "Premium",
+  "Transferrable": "FALSE"
+},{
+  "_id": "F",
+  "Name": "ld",
+  "Transferrable": "TRUE"
+},{
+  "_id": "G",
+  "Name": "Platinum",
+  "Transferrable": "TRUE"
+}]

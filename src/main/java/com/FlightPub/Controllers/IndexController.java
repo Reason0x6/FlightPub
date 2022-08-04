@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class IndexController {
@@ -257,7 +254,7 @@ public class IndexController {
 
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
-       // flights[1] = search.getPromotedFlights(flights[0]);
+        flights[1] = search.getPromotedFlights(flights[0]);
         stopOver[0] = search.basicStopOverSearch(1);
         stopOver[1] = search.basicStopOverSearch(2);
         stopOver[2] = search.basicStopOverSearch(3);
@@ -270,7 +267,6 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("usr", getSession(session));
-
         return "search";
     }
 
@@ -284,7 +280,7 @@ public class IndexController {
 
         // Gathers Flights and Stopovers
         flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
-        //flights[1] = search.getPromotedFlights(flights[0]);
+        flights[1] = search.getPromotedFlights(flights[0]);
         if(!search.isDirectFlight()) {
             stopOver[0] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
             stopOver[1] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);

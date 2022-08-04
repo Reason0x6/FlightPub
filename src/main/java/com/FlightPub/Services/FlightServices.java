@@ -1,10 +1,13 @@
 package com.FlightPub.Services;
 
+import com.FlightPub.model.Availability;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.Location;
+import com.FlightPub.repository.AvailabilityRepo;
 import com.FlightPub.repository.FlightRepo;
 import com.FlightPub.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.availability.AvailabilityState;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,11 +19,15 @@ import java.util.ListIterator;
 public class FlightServices{
 
     private FlightRepo flightRepo;
+    private AvailabilityRepo availRepo;
     @Autowired
     private LocationServices locationServices;
 
+
+
     @Autowired
-    public FlightServices(FlightRepo flightRepository) {
+    public FlightServices(FlightRepo flightRepository, AvailabilityRepo availRepo) {
+        this.availRepo = availRepo;
         this.flightRepo = flightRepository;
     }
 
@@ -45,6 +52,15 @@ public class FlightServices{
 
         // Query defined in flightRepo
        return flightRepo.findByDestination(dest);
+    }
+
+    public int getAvailableSeats(String id, Date departTime){
+        List<Availability> avails = availRepo.findByFlightCodeAndDate(id, departTime);
+        int out = 0;
+        for (Availability a: avails) {
+            out += a.getNumberAvailableSeatsLeg1() > a.getNumberAvailableSeatsLeg2() ? a.getNumberAvailableSeatsLeg2() : a.getNumberAvailableSeatsLeg1();
+        }
+        return out;
     }
 
     public List<Flight> getByOrigin(String dep) {

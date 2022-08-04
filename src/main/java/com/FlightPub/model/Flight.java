@@ -1,6 +1,5 @@
 package com.FlightPub.model;
 
-import com.FlightPub.Services.PlaneServices;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -23,46 +22,39 @@ public class Flight {
 
     @Getter
     @Setter
-    private String DepartureCode;
+    private String departureCode;
 
     @Getter
     @Setter
-    private String DestinationCode;
+    private String destinationCode;
 
     @Getter
     @Setter
-    private String PlaneCode;
+    private String planeCode;
 
     @Getter
     @Setter
-    private Date DepartureTime;
+    private Date departureTime;
 
     @Getter
     @Setter
-    private Date ArrivalTime;
+    private Date arrivalTime;
 
     @Getter
     @Setter
-    private String FlightNumber;
+    private String flightNumber;
 
     @Getter
     @Setter
-    private String AirlineCode;
+    private String airlineCode;
 
 
     //ADDITIONAL VARIABLES
 
     @Getter
     @Setter
-    private Plane planeObj;
-
-    @Getter
-    @Setter
     private double ticketPrice;
 
-    @Getter
-    @Setter
-    private Map<String, Integer> bookedSeats = new HashMap<>();
 
     @Getter
     @Setter
@@ -85,10 +77,10 @@ public class Flight {
                   String departure,  String flightCode, double ticketPrice){
 
         this.flightID = flightID;
-        this.DepartureCode = DepartureCode;
-        this.DestinationCode = DestinationCode;
-        this.FlightNumber = flightCode;
-        this.AirlineCode = airline;
+        this.departureCode = DepartureCode;
+        this.destinationCode = DestinationCode;
+        this.flightNumber = flightCode;
+        this.airlineCode = airline;
         this.ticketPrice = ticketPrice;
 
 
@@ -105,7 +97,7 @@ public class Flight {
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
         Date date = originalFormat.parse(in);
 
-        ArrivalTime = date;
+        arrivalTime = date;
     }
 
     public void setDepartureT(String in) throws ParseException {
@@ -113,18 +105,16 @@ public class Flight {
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
         Date date = originalFormat.parse(in);
 
-        DepartureTime = date;
+        departureTime = date;
     }
 
-    public int getTotalBookedSeats(){
-        return 0;
-    }
+
 
     public String getArrivalT(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(ArrivalTime);
+        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrivalTime);
     }
     public String getDepartureT(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(DepartureTime);
+        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departureTime);
     }
 
 }
