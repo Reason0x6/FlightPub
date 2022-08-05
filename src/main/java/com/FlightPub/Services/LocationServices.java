@@ -70,15 +70,11 @@ public class LocationServices {
         // Ensures that the string contains a value
         if(originIn == null || originIn == "")
             return null;
-        // Attempts to catch any exceptions as a result of the string manipulation (StringIndexOutOfBoundsException)
-        try{
-            originIn = originIn.substring(0, 1).toUpperCase() + originIn.substring(1).toLowerCase();
-            List<Location> out = locationRepo.findByLocation(originIn);
-            if (!out.isEmpty()) // returns only a single location
-                return out.get(0);
-        } catch (Exception e) {
-            System.out.println("Error: "+e);
-        }
+
+        List<Location> out = locationRepo.findByLocation(originIn);
+        if (!out.isEmpty()) // returns only a single location
+            return out.get(0);
+
         return null;
     }
 }

@@ -244,9 +244,8 @@ public class IndexController {
         if(location != null) {
             if(location.getLocationID() != null) {
                 String id = location.getLocationID();
-                Location queryResult = locationServices.getById(id.toUpperCase());
-                if(queryResult == null && id.length() >= 2) {
-                    id = id.substring(0, 1).toUpperCase() + id.substring(1).toLowerCase();
+                Location queryResult = locationServices.getById(id);
+                if(queryResult == null) {
                     queryResult = locationServices.findByLocation(id);
                 }
 

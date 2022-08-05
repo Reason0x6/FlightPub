@@ -34,12 +34,15 @@ public class FlightServices{
         if(id == null)
             return null;
         else
-            return flightRepo.findById(id).orElse(null);
+            return flightRepo.findById(id.toUpperCase()).orElse(null);
     }
 
     public Flight saveOrUpdate(Flight flight){
+        // Attempts to align the string values with the database standard
         try {
             flight.setFlightID(flight.getFlightID().toUpperCase());
+            flight.setOriginID(flight.getOriginID().toUpperCase());
+            flight.setDestinationID(flight.getDestinationID().toUpperCase());
             flight.setFlightCode(flight.getFlightCode().toUpperCase());
             flight.setAirline(flight.getAirline().toUpperCase());
             flightRepo.save(flight);
