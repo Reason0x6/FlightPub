@@ -5,13 +5,8 @@ import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
 import javax.servlet.http.HttpServletRequest;
 
-import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +26,7 @@ public class IndexController {
     private UserGroupServices groupServices;
     private WishListServices wishListServices;
     private AdminAccountServices adminAccountServices;
+    private HolidayPackageServices holidayPackageServices;
 
     @Autowired
     @Qualifier(value = "WishListServices")
@@ -68,6 +64,10 @@ public class IndexController {
     @Autowired
     @Qualifier(value = "AdminAccountServices")
     public void setAdminAccountServices(AdminAccountServices adminAccountServices) { this.adminAccountServices = adminAccountServices; }
+
+    @Autowired
+    @Qualifier(value = "HolidayPackageServices")
+    public void setHolidayPackageServices(HolidayPackageServices holidayPackageServices){ this.holidayPackageServices = holidayPackageServices; }
 
 
     @RequestMapping("/")
@@ -387,9 +387,20 @@ public class IndexController {
         else{
             loc.setCovid_restricted(false);
         }
-
         locationServices.saveOrUpdate(loc);
 
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("HolidayPackage")
+    public String holidayPackage(@ModelAttribute HolidayPackage hp, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        holidayPackageServices.saveOrUpdate(hp);
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("admin", getAdminSession(session));
 
