@@ -142,28 +142,60 @@ public class ObjectCreationController {
         return "User/AdminRegister";
     }
 
-    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM&flightCode=VH302&ticketprice=112.00
+    @RequestMapping("/flight/add")
     public String addFlight( @ModelAttribute Flight flight, Model model, HttpSession session) {
-
+        model.addAttribute("usr", getSession(session));
         model.addAttribute("flight", flight);
+
+        // Validates the input
+        boolean invalid = false;
         if(flight.getMaxSeats()<0 || flight.getBookedSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0)
-            return "Admin/FlightManagement";
+            invalid = true;
+        else if(flight.getFlightID()==null || flight.getFlightCode()==null || flight.getAirline()==null || flight.getDestinationID()==null || flight.getOriginID()==null)
+            invalid = true;
+        else if(flight.getFlightID()=="" || flight.getFlightCode()=="" || flight.getAirline()=="")
+            invalid = true;
+        else if(flight.getDeparture()==null || flight.getArrival()==null)
+            invalid = true;
+        else if(flight.getOriginID()==null || flight.getDestinationID()==null || flight.getOriginID()=="" || flight.getDestinationID()=="")
+            invalid = true;
 
-        // Convert the ID to align with the Database standard)
-        flight.setDestinationID(flight.getDestinationID().toUpperCase());
-        flight.setOriginID(flight.getOriginID().toUpperCase());
+        // Checks whether the supplied origin and destination are ID or the location name and that they exist
+        else {
+            // Convert the ID to align with the Database standard)
+            flight.setDestinationID(flight.getDestinationID().toUpperCase());
+            flight.setOriginID(flight.getOriginID().toUpperCase());
 
-        // Ensures that the location exists
-        if(locationServices.getById(flight.getDestinationID()) == null || locationServices.getById(flight.getOriginID()) == null) {
+            // Tests if the supplied string is the name of the locations
+            if(locationServices.getById(flight.getDestinationID()) == null){
+                Location destination = locationServices.findByLocation(flight.getDestinationID());
+                if(destination != null)
+                    flight.setDestinationID(destination.getLocationID());
+                else
+                    invalid = true;
+            }
+            if(!invalid && locationServices.getById(flight.getOriginID())==null){
+                Location origin = locationServices.findByLocation(flight.getOriginID());
+                if(origin != null)
+                    flight.setOriginID(origin.getLocationID());
+                else
+                    invalid = true;
+            }
+        }
+
+        // Returns a invalid flight to the edit and creation page
+        if(invalid) {
             return "Admin/FlightManagement";
         }
 
         // Update the database with a update or new entry, then pass flight to the conformation page
-        flightServices.saveOrUpdate(flight);
-        model.addAttribute("flight", flight);
-        model.addAttribute("usr", getSession(session));
-
-        return "Confirmations/NewFlight";
+        flight = flightServices.saveOrUpdate(flight);
+        if(flight == null)
+            return "Admin/FlightManagement";
+        else {
+            model.addAttribute("flight", flight);
+            return "Confirmations/NewFlight";
+        }
     }
 
     @PostMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1

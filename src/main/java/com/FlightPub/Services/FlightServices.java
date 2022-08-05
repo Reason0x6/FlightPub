@@ -37,8 +37,17 @@ public class FlightServices{
             return flightRepo.findById(id).orElse(null);
     }
 
-    public void saveOrUpdate(Flight toUpdate){
-        flightRepo.save(toUpdate);
+    public Flight saveOrUpdate(Flight flight){
+        try {
+            flight.setFlightID(flight.getFlightID().toUpperCase());
+            flight.setFlightCode(flight.getFlightCode().toUpperCase());
+            flight.setAirline(flight.getAirline().toUpperCase());
+            flightRepo.save(flight);
+            return flight;
+        } catch (Exception e) {
+            System.out.println("Error: "+e);
+            return null;
+        }
     }
 
 
