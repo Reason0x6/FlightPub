@@ -69,26 +69,17 @@ public class ObjectCreationController {
         // Ensures that all fields are filled in and valid
         if(location.getLocationID()==null || location.getLocation()==null || location.getCountry()==null || location.getDescription()==null)
             invalid = true;
-        else if(location.getLocationID()=="" || location.getLocation().length() <= 2 || location.getCountry().length() <= 2)
+        else if(location.getLocationID()=="" || location.getLocation()=="" || location.getCountry()=="" || location.getDescription()=="")
             invalid = true;
         else if(location.getLatitude() > 90 || location.getLatitude() < -90 || location.getLongitude() > 180 || location.getLongitude() < -180)
             invalid = true;
 
-        if(invalid)
+
+        // Checks whether the supplied input is valid then tries to performs database interaction
+        if(invalid || locationServices.saveOrUpdate(location) == null)
             return "Admin/LocationManagement";
 
-        // Prepares the Data for the database
-        String locationName = location.getLocation();
-        String country = location.getCountry();
-        location.setLocationID(location.getLocationID().toUpperCase());
-        location.setLocation(locationName.substring(0, 1).toUpperCase() + locationName.substring(1).toLowerCase());
-        location.setCountry(country.substring(0, 1).toUpperCase() + country.substring(1).toLowerCase());
-
-        // Performs database interaction
-        locationServices.saveOrUpdate(location);
-
         model.addAttribute("addedLoc", location);
-
         return "Confirmations/NewLocation";
     }
 
