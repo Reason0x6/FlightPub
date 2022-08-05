@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> </html>
 <form id="login" th:action="@{/login}" th:object="${LoginRequest}" method="post">
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -12,29 +12,59 @@
     </div>
     <p style="color: red" th:if="${valid} != null">Username & Password did not match a valid account. Please try again.</p>
 
+    <input type="hidden" id="redirect" name="redirect" th:value="${redirect}">
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 <form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
-    <input type="text" id="origin" name="originIn" placeholder="Fly From">
-    <input type="text" id="destination" name="destinationIn" placeholder="Fly To">
-    <label for="start" id="startLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight Date</label>
-    <input type="date" id="start" name="start"
-           th:value="${today}"
-           th:min="${today}" th:max="${max}">
-    <label for="end" id="endLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight Date</label>
-    <input type="date" id="end" name="end"
-           th:value="${today}"
-           th:min="${today}" th:max="${max}">
+    <div class="row g-2">
+        <div class="form-floating col-md">
+            <input class="form-control" type="text" id="origin" name="originIn" placeholder="">
+            <label for="origin">Fly From</label>
+        </div>
+        <div class="form-floating col-md">
+            <input class="form-control" type="text" id="destination" name="destinationIn" placeholder="">
+            <label for="destination">Fly To</label>
+        </div>
 
+        <div class="form-floating col-md">
+            <input class="form-control" type="date" id="start" name="start"
+                   th:value="${today}"
+                   th:min="${today}" th:max="${max}">
+            <label for="start" id="startLabel">Earliest Flight Date</label>
+        </div>
+        <div class="form-floating col-md">
+            <input class="form-control" type="date" id="end" name="end"
+                   th:value="${today}"
+                   th:min="${today}" th:max="${max}">
+            <label for="end" id="endLabel">Latest Flight Date</label>
+        </div>
 
-    <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button><br>
-    <input type="checkbox" name="nodest" id="nodest" style="width: 50px;"  onclick="allDest()">
-    <label for="nodest">Show all destinations</label>
-    <input type="checkbox" name="exactdate" id="exactdate" style="width: 50px;" onclick="adjustDate()">
-    <label for="exactdate">Use Exact Date</label>
-    <input type="checkbox" name="searchByArrival" id="searchByArrival" style="width: 50px;" onclick="adjustDate()">
-    <label for="searchByArrival">Search by Arrival Times</label>
+        <div class="col-md d-grid">
+            <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button>
+        </div>
+    </div>
+    <div>
+        <div class="form-group form-check-inline">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="nodest" id="nodest" onclick="allDest()">
+                <label class="form-check-label" for="nodest">Show all destinations</label>
+            </div>
+        </div>
+        <div class="form-group form-check-inline">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="exactdate" id="exactdate" onclick="adjustDate()">
+                <label class="form-check-label" for="exactdate">Use Exact Date</label>
+            </div>
+        </div>
+        <div class="form-group form-check-inline">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="searchByArrival" id="searchByArrival" onclick="adjustDate()">
+                <label class="form-check-label" for="searchByArrival">Search by Arrival Times</label>
+            </div>
+        </div>
+    </div>
 
     <script>
         function allDest(){
@@ -272,17 +302,52 @@
     </script>
 </form>
 
+<!-- Flight management form for finding existing flights --------------------------------------------------------------------------------->
+<form id="findExisting" th:action="@{/admin/flight/management}" th:object="${Flight}" method="post">
+    <label for="flightID" id="flightIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight ID: </label>
+    <input type="text" id="flightID" name="flightID">
+    <button type="submit" class="btn btn-primary btn-search" >Find Flight</button>
+</form>
+
+<!-- Flight management form for creating/editing flights -------------------------------------------------------------------------------->
+<form id="EditFlight" th:action="@{/flight/add}" th:object="${Flight}" method="post">
+    <label for="flightID" id="flightIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight ID: </label>
+    <input type="text" id="flightID" name="flightID" th:value="${flight.getFlightID()}">
+    <label for="originID" id="originIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Origin: </label>
+    <input type="text" id="originID" name="originID" th:value="${flight.getOriginID()}">
+    <label for="destinationID" id="destinationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
+    <input type="text" id="destinationID" name="destinationID" th:value="${flight.getDestinationID()}">
+    <label for="departure" id="departureLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure</label>
+    <input type="datetime-local" id="departure" name="departure" th:value="${flight.getDepartureDateTime()}">
+    <label for="arrival" id="arrivalLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival</label>
+    <input type="datetime-local" id="arrival" name="arrival" th:value="${flight.getArrivalDateTime()}">
+    <label for="flightCode" id="flightCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Code: </label>
+    <input type="text" id="flightCode" name="flightCode" th:value="${flight.getFlightCode()}">
+    <label for="airline" id="airlineLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline: </label>
+    <input type="text" id="airline" name="airline" th:value="${flight.getAirline()}">
+    <label for="ticketPrice" id="ticketPriceLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Ticket Price: </label>
+    <input type="number" id="ticketPrice" name="ticketPrice" th:value="${flight.getTicketPrice()}">
+    <label for="bookedSeats" id="bookedSeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Booked Seats: </label>
+    <input type="number" id="bookedSeats" name="bookedSeats" th:value="${flight.getBookedSeats()}">
+    <label for="maxSeats" id="maxSeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Max Seats: </label>
+    <input type="number" id="maxSeats" name="maxSeats" th:value="${flight.getMaxSeats()}">
+    <label for="rating" id="ratingLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
+    <input type="number" id="rating" name="rating" th:value="${flight.getRating()}">
+    <label for="promoted" id="promotedLabel">Promoted: </label>
+    <input type="checkbox" id="promoted" name="promoted">
+    <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
+</form>
+
 <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
 <form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
     <span>Departure Location: </span><select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
-        <option
-                th:each="location : ${recommendationLocation}"
-                th:value="${location.locationID}"
-                th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
-        </option>
-    </select>
+    <option
+            th:each="location : ${recommendationLocation}"
+            th:value="${location.locationID}"
+            th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
+    </option>
+</select>
 </form>
-</html>
 
 <!-- Credit Card Form -->
 <!-- <form id="payment" th:action="@{/bookingConfirmation}" method="post"> -->
@@ -305,6 +370,22 @@
     </div>
     <!-- Submit Payment Request -->
     <a href="/bookingConfirmation" class="btn btn-success" onclick="validateCreditCard()" style="max-width: 200px">Pay Now</a>
+</form>
+
+<!-- Create group form -->
+<form id="createGroupForm" th:action="@{/group/add}" th:object="${NewGroup}" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="groupName" id="nameLabel" class="col-form-label" >Group Name</label>
+        </div>
+        <div class="col-md-5">
+            <input type="text" id="groupName" class="form-control" name="groupName" placeholder="Enter Group Name">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary btn-search">Create Group!</button>
+        </div>
+
+    </div>
 </form>
 
 <!--Register Admin--------------------------------------------------------------------------------------------------------------------------------------->

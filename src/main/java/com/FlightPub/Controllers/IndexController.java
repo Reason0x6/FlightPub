@@ -3,8 +3,11 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
+<<<<<<< HEAD
 import javax.servlet.http.HttpServletRequest;
 
+=======
+>>>>>>> 74d92b0568055727ef677cf0792df3696966b289
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -78,14 +84,9 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
 
-        model.addAttribute("recommendationLocation", locationServices.listAll());
+        model.addAttribute("LoadingRecommendation", true);
 
-        recommendation.setFlightServices(flightServices);
-        recommendation.setLocationServices(locationServices);
-        model.addAttribute("reco", recommendation.getRecommendation());
-        model.addAttribute("currentLocation", recommendation.getRecommendationLocation());
-
-        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD" ));
+        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
 
         return "index";
     }
@@ -95,6 +96,16 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
+        return "User/login";
+    }
+
+    // This can be used to redirect the login back to a page after logging in
+    // Usage is /login?redirect=a_page_url?params=can_be_included
+    @GetMapping(value = "/login", params = "redirect")
+    public String loadLoginRedirect(@RequestParam String redirect, Model model, HttpSession session){
+        model.addAttribute("redirect", redirect);
+        model.addAttribute("usr", getSession(session));
+        model.addAttribute("Admin", getAdminSession(session));
         return "User/login";
     }
 
@@ -123,20 +134,24 @@ public class IndexController {
     public String loadLogout(Model model, HttpSession session){
         session.setAttribute("User", new UserSession(null));
         model.addAttribute("usr", getSession(session));
-        return "User/login";
+        return "redirect:login";
     }
 
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model, HttpSession session){
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
+
+        String redirect = req.getRedirect();
+        model.addAttribute("redirect", redirect);
+        
         try {
 
             UserAccount newUser = usrServices.getById(req.getEmail());
             AdminAccount newAdmin = adminAccountServices.getById(req.getEmail());
 
-            if(newUser != null){
-                if(req.getPassword().equals(newUser.getPassword())) {
+            if(newUser != null) {
+                if (req.getPassword().equals(newUser.getPassword())) {
                     // Set post flag
                     model.addAttribute("method", "post");
 
@@ -145,9 +160,13 @@ public class IndexController {
                     session.setAttribute("User", usr);
                     model.addAttribute("usr", usr);
 
-                    return "redirect:account";
-                }
-                else{
+                    // If a redirect has been set, redirect upon login
+                    if (!redirect.equals("")) {
+                        return "redirect:" + redirect;
+                    } else {
+                        return "redirect:account";
+                    }
+                } else {
                     model.addAttribute("valid", false);
                 }
             }
@@ -167,6 +186,7 @@ public class IndexController {
                     model.addAttribute("valid", false);
                 }
             }
+
         }catch(Exception e){
             model.addAttribute("valid", false);
         }
@@ -178,7 +198,6 @@ public class IndexController {
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
-
 
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
         if(bookings.size() > 0){
@@ -236,6 +255,20 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         return "Flight";
+    }
+
+    @RequestMapping("/admin/flight/management")
+    @PostMapping("/admin/flight/management")
+    public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
+        if(flight != null)
+            flight = flightServices.getById(flight.getFlightID());
+
+        if(flight == null)
+            flight = new Flight();
+
+        model.addAttribute("flight", flight);
+
+        return "Admin/FlightManagement";
     }
 
     @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2

@@ -13,7 +13,7 @@ public class AdminSession {
     }
 
     public boolean isLoggedIn(){
-        return admin != null ? true : false;
+        return admin != null;
     }
 
     public String getEmail(){

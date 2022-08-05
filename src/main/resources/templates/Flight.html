@@ -10,7 +10,7 @@
 <main id="main">
   <!-- ======= Services Section ======= -->
 
-  <section id = "recommendation" class = "services">
+  <section id = "flight" class = "services">
     <div class="container">
 
 
@@ -57,7 +57,7 @@
                 </script>
             </div>
             <div th:if="${usr.isLoggedIn()} == false">
-              <a type="submit" href="\login" class="btn btn-success">Login to Book</a><Br><Br>
+              <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Book</a><Br><Br>
             </div>
           </div>
           <div class="col-sm-8">
@@ -95,18 +95,25 @@
           <div class="card l-1" data-aos="zoom-in-left" style="margin-left: 30px;">
               <p>Did you know that Flight Hub allows multiple accounts to join together as a group?!</p>
               <p>Create memories together, with an easy to use group booking feature, where you can collaborate and decide on what suits you, then, once you're all set, allocate seating together  but pay separately!</p>
-             <button type="submit" class="btn btn-primary">Create a Group!</button><Br><Br>
+
+              <div th:if="${usr.isLoggedIn()} == false">
+                  <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Create a Group</a><Br><Br>
+              </div>
+              <div th:if="${usr.isLoggedIn()} == true">
+                  <form th:replace="Fragments/Forms :: #createGroupForm"> </form>
+              </div>
           </div>
         </div>
       </div>
 
       <hr />
-
+    </div>
   </section><!-- End Cta Section -->
 
   <!-- ======= Footer ======= -->
   <lower th:replace="Fragments/Footer"> </lower>
   <!-- Template Main JS File -->
+
 </body>
 <script th:inline="javascript">
   am4core.useTheme(am4themes_animated);
