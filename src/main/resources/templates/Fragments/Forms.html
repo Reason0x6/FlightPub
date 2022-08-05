@@ -18,25 +18,53 @@
 </form>
 
 <form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
-    <input type="text" id="origin" name="originIn" placeholder="Fly From">
-    <input type="text" id="destination" name="destinationIn" placeholder="Fly To">
-    <label for="start" id="startLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight Date</label>
-    <input type="date" id="start" name="start"
-           th:value="${today}"
-           th:min="${today}" th:max="${max}">
-    <label for="end" id="endLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight Date</label>
-    <input type="date" id="end" name="end"
-           th:value="${today}"
-           th:min="${today}" th:max="${max}">
+    <div class="row g-2">
+        <div class="form-floating col-md">
+            <input class="form-control" type="text" id="origin" name="originIn" placeholder="">
+            <label for="origin">Fly From</label>
+        </div>
+        <div class="form-floating col-md">
+            <input class="form-control" type="text" id="destination" name="destinationIn" placeholder="">
+            <label for="destination">Fly To</label>
+        </div>
 
+        <div class="form-floating col-md">
+            <input class="form-control" type="date" id="start" name="start"
+                   th:value="${today}"
+                   th:min="${today}" th:max="${max}">
+            <label for="start" id="startLabel">Earliest Flight Date</label>
+        </div>
+        <div class="form-floating col-md">
+            <input class="form-control" type="date" id="end" name="end"
+                   th:value="${today}"
+                   th:min="${today}" th:max="${max}">
+            <label for="end" id="endLabel">Latest Flight Date</label>
+        </div>
 
-    <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button><br>
-    <input type="checkbox" name="nodest" id="nodest" style="width: 50px;"  onclick="allDest()">
-    <label for="nodest">Show all destinations</label>
-    <input type="checkbox" name="exactdate" id="exactdate" style="width: 50px;" onclick="adjustDate()">
-    <label for="exactdate">Use Exact Date</label>
-    <input type="checkbox" name="searchByArrival" id="searchByArrival" style="width: 50px;" onclick="adjustDate()">
-    <label for="searchByArrival">Search by Arrival Times</label>
+        <div class="col-md d-grid">
+            <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button>
+        </div>
+    </div>
+    <div>
+        <div class="form-group form-check-inline">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="nodest" id="nodest" onclick="allDest()">
+                <label class="form-check-label" for="nodest">Show all destinations</label>
+            </div>
+        </div>
+        <div class="form-group form-check-inline">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="exactdate" id="exactdate" onclick="adjustDate()">
+                <label class="form-check-label" for="exactdate">Use Exact Date</label>
+            </div>
+        </div>
+        <div class="form-group form-check-inline">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="searchByArrival" id="searchByArrival" onclick="adjustDate()">
+                <label class="form-check-label" for="searchByArrival">Search by Arrival Times</label>
+            </div>
+        </div>
+    </div>
 
     <script>
         function allDest(){
@@ -313,16 +341,15 @@
 <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
 <form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
     <span>Departure Location: </span><select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
-        <option
-                th:each="location : ${recommendationLocation}"
-                th:value="${location.locationID}"
-                th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
-        </option>
-    </select>
+    <option
+            th:each="location : ${recommendationLocation}"
+            th:value="${location.locationID}"
+            th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
+    </option>
+</select>
 </form>
 
-
-<!-- Credit Card Form -------------------------------------------------------------------------------------------------------------------->
+<!-- Credit Card Form -->
 <!-- <form id="payment" th:action="@{/bookingConfirmation}" method="post"> -->
 <form id="payment" th:action="@{/checkout}">
     <div>

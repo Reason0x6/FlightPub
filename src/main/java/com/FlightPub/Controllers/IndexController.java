@@ -74,14 +74,9 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("Admin", getAdminSession(session));
 
-        model.addAttribute("recommendationLocation", locationServices.listAll());
+        model.addAttribute("LoadingRecommendation", true);
 
-        recommendation.setFlightServices(flightServices);
-        recommendation.setLocationServices(locationServices);
-        model.addAttribute("reco", recommendation.getRecommendation());
-        model.addAttribute("currentLocation", recommendation.getRecommendationLocation());
-
-        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD" ));
+        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
 
         return "index";
     }
