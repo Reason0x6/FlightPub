@@ -5,7 +5,14 @@
 <head th:replace="Fragments/Header"> </head>
 <div class="container">
     <main id="main" style="margin-top: 100px" >
-        <h2>Hello</h2>
+        <p th:text="'Welcome back ' + ${admin.getFirstName()}"></p>
+        <div th:if="${admin.getCompany()} == 'Flightpub'">
+            <h2>Restrict/Unrestrict Covid Location</h2>
+            <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"> </form>
+        </div>
+        <div>
+            <h2>Holiday Packages</h2>
+        </div>
     </main>
 </div>
 

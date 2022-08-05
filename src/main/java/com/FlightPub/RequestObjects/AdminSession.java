@@ -20,7 +20,7 @@ public class AdminSession {
         return admin.getEmail();
     }
 
-    public String getFirstname(){
+    public String getFirstName(){
         return admin.getFirstName();
     }
 

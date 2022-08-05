@@ -356,3 +356,16 @@
         }
     </script>
 </form>
+
+<!-- Covid restricted location ------------------------------------------------------------------------------------------->
+<form id="covidRestrictedLocationForm" th:action="@{/covidRestrict}" th:object="${Covid}" method="post">
+    <span>Covid Location: </span>
+    <select name="covidRestrictedLocation" id="covidRestrictedLocation" class="form-select">
+        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    </select><br>
+    <select name="covidRestriction" id="covidRestriction">
+        <option value="restrict">Restricted</option>
+        <option value="unrestrict">Unrestricted</option>
+    </select><br>
+    <button type="submit" class="btn btn-primary btn-search">Submit</button>
+</form>
