@@ -219,7 +219,6 @@ public class IndexController {
         //model.addAttribute("groups", groups);
         //model.addAttribute("invitedGroups", invitedGroups);
 
-        //model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("admin", getAdminSession(session));
         return "User/AdminControl";
