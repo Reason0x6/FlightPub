@@ -61,16 +61,33 @@ public class ObjectCreationController {
     @Qualifier(value = "AdminAccountServices")
     public void setAdminServices(AdminAccountServices adminAccountServices) { this.adminAccountServices = adminAccountServices; }
 
-    @RequestMapping("/location/add") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
-    public String addLoc( @RequestParam String id, @RequestParam String country, @RequestParam String location, @RequestParam double lat,
-                          @RequestParam double lng, @RequestParam int pop,
-                          Model model, HttpSession session){
-
-        Location newLoc = new Location(id, country,location, lat,lng,pop);
-        locationServices.saveOrUpdate(newLoc);
-
-        model.addAttribute("addedLoc", newLoc);
+    @RequestMapping("/location/add")
+    public String addLoc(@ModelAttribute Location location, Model model, HttpSession session){
         model.addAttribute("usr", getSession(session));
+        boolean invalid = false;
+
+        // Ensures that all fields are filled in and valid
+        if(location.getLocationID()==null || location.getLocation()==null || location.getCountry()==null || location.getDescription()==null)
+            invalid = true;
+        else if(location.getLocationID()=="" || location.getLocation().length() <= 2 || location.getCountry().length() <= 2)
+            invalid = true;
+        else if(location.getLatitude() > 90 || location.getLatitude() < -90 || location.getLongitude() > 180 || location.getLongitude() < -180)
+            invalid = true;
+
+        if(invalid)
+            return "Admin/LocationManagement";
+
+        // Prepares the Data for the database
+        String locationName = location.getLocation();
+        String country = location.getCountry();
+        location.setLocationID(location.getLocationID().toUpperCase());
+        location.setLocation(locationName.substring(0, 1).toUpperCase() + locationName.substring(1).toLowerCase());
+        location.setCountry(country.substring(0, 1).toUpperCase() + country.substring(1).toLowerCase());
+
+        // Performs database interaction
+        locationServices.saveOrUpdate(location);
+
+        model.addAttribute("addedLoc", location);
 
         return "Confirmations/NewLocation";
     }
