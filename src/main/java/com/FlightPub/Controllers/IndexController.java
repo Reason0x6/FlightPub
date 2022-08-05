@@ -233,8 +233,34 @@ public class IndexController {
             flight = new Flight();
 
         model.addAttribute("flight", flight);
+        model.addAttribute("usr", getSession(session));
 
         return "Admin/FlightManagement";
+    }
+
+    @RequestMapping("/admin/location/management")
+    @PostMapping("/admin/location/management")
+    public String modifyLocation(@ModelAttribute Location location, Model model, HttpSession session) {
+        if(location != null) {
+            if(location.getLocationID() != null) {
+                String id = location.getLocationID();
+                Location queryResult = locationServices.getById(id.toUpperCase());
+                if(queryResult == null && id.length() >= 2) {
+                    id = id.substring(0, 1).toUpperCase() + id.substring(1).toLowerCase();
+                    queryResult = locationServices.findByLocation(id);
+                }
+
+                location = queryResult;
+            }
+
+            if(location == null)
+                location = new Location();
+        }
+
+        model.addAttribute("location", location);
+        model.addAttribute("usr", getSession(session));
+
+        return "Admin/LocationManagement";
     }
 
     @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2

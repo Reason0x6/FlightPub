@@ -303,7 +303,7 @@
 </form>
 
 <!-- Flight management form for finding existing flights --------------------------------------------------------------------------------->
-<form id="findExisting" th:action="@{/admin/flight/management}" th:object="${Flight}" method="post">
+<form id="findExistingFlight" th:action="@{/admin/flight/management}" th:object="${Flight}" method="post">
     <label for="flightID" id="flightIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight ID: </label>
     <input type="text" id="flightID" name="flightID">
     <button type="submit" class="btn btn-primary btn-search" >Find Flight</button>
@@ -317,10 +317,12 @@
     <input type="text" id="originID" name="originID" th:value="${flight.getOriginID()}">
     <label for="destinationID" id="destinationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
     <input type="text" id="destinationID" name="destinationID" th:value="${flight.getDestinationID()}">
+
     <label for="departure" id="departureLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure</label>
     <input type="datetime-local" id="departure" name="departure" th:value="${flight.getDepartureDateTime()}">
     <label for="arrival" id="arrivalLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival</label>
     <input type="datetime-local" id="arrival" name="arrival" th:value="${flight.getArrivalDateTime()}">
+
     <label for="flightCode" id="flightCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Code: </label>
     <input type="text" id="flightCode" name="flightCode" th:value="${flight.getFlightCode()}">
     <label for="airline" id="airlineLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline: </label>
@@ -335,6 +337,36 @@
     <input type="number" id="rating" name="rating" th:value="${flight.getRating()}">
     <label for="promoted" id="promotedLabel">Promoted: </label>
     <input type="checkbox" id="promoted" name="promoted">
+    <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
+</form>
+
+<!-- Location management form for finding existing Locations --------------------------------------------------------------------------------->
+<form id="findExistingLocation" th:action="@{/admin/location/management}" th:object="${Location}" method="post">
+    <label for="locationID" id="locationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location: </label>
+    <input type="text" id="locationID" name="locationID">
+    <button type="submit" class="btn btn-primary btn-search" >Find Flight</button>
+</form>
+
+<!-- Locations management form for creating/editing Locations -------------------------------------------------------------------------------->
+<form id="EditLocation" th:action="@{/location/add}" th:object="${Location}" method="post">
+    <label for="locationID" id="locationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location ID: </label>
+    <input type="text" id="locationID" name="locationID" th:value="${location.getLocationID()}">
+    <label for="location" id="locationLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location Name: </label>
+    <input type="text" id="location" name="location" th:value="${location.getLocation()}">
+    <label for="country" id="countryLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Country: </label>
+    <input type="text" id="country" name="country" th:value="${location.getCountry()}">
+
+    <label for="latitude" id="latitudeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latitude: </label>
+    <input type="number" id="latitude" name="latitude" th:value="${location.getLatitude()}">
+    <label for="longitude" id="longitudeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Longitude: </label>
+    <input type="number" id="longitude" name="longitude" th:value="${location.getLongitude()}">
+    <label for="popularity" id="popularityLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Popularity: </label>
+    <input type="number" id="popularity" name="popularity" th:value="${location.getPopularity()}">
+
+    <label for="description" id="descriptionLabel" >Description: </label>
+    <textarea id="description" name="description" rows="4" cols="50" th:value="${location.getDescription()}"></textarea>
+    <label for="covid_restricted" id="covid_restrictedLabel">Covid Restricted: </label>
+    <input type="checkbox" id="covid_restricted" name="covid_restricted">
     <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
 </form>
 

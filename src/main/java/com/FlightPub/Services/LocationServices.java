@@ -55,10 +55,13 @@ public class LocationServices {
     }
 
     public Location findByLocation(String originIn) {
+        if(originIn == null || originIn == "")
+            return null;
+
         List<Location> out = locationRepo.findByLocation(originIn);
-        if (!out.isEmpty()) {
+        if (!out.isEmpty())
             return out.get(0);
-        }
+
         return null;
     }
 }
