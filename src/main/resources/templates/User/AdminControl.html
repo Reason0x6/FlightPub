@@ -5,10 +5,18 @@
 <head th:replace="Fragments/Header"> </head>
 <div class="container">
     <main id="main" style="margin-top: 100px" >
-        <p th:text="'Welcome back ' + ${admin.getFirstName()}"></p>
+        <h1 th:text="'Welcome back ' + ${admin.getFirstName()}"></h1>
         <div th:if="${admin.getCompany()} == 'Flightpub'">
             <h2>Restrict/Unrestrict Covid Location</h2>
             <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"> </form>
+        </div>
+        <h2>Wish Lists</h2>
+        <div style="overflow:scroll; height:300px;">
+            <div th:each="wli : ${wish}">
+                <p th:text="${wli.getWLID()}"></p>
+                <p th:text="${wli.getUserID()}"></p>
+                <p th:text="${wli.getDestinationID()}"></p>
+            </div>
         </div>
         <div>
             <h2>Holiday Packages</h2>

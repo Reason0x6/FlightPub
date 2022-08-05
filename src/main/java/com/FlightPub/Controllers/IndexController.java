@@ -3,11 +3,7 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
-<<<<<<< HEAD
-import javax.servlet.http.HttpServletRequest;
 
-=======
->>>>>>> 74d92b0568055727ef677cf0792df3696966b289
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -87,6 +83,7 @@ public class IndexController {
         model.addAttribute("LoadingRecommendation", true);
 
         wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
+        wishListServices.saveOrUpdate(new WishListItem("WLI-2", "user4@email.com", "OOL"));
 
         return "index";
     }
@@ -144,7 +141,7 @@ public class IndexController {
 
         String redirect = req.getRedirect();
         model.addAttribute("redirect", redirect);
-        
+
         try {
 
             UserAccount newUser = usrServices.getById(req.getEmail());
@@ -224,7 +221,6 @@ public class IndexController {
             return "redirect:login";
         }
 
-
         //List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
         //if(bookings.size() > 0){
         //    model.addAttribute("bookings", bookings);
@@ -238,6 +234,7 @@ public class IndexController {
         //model.addAttribute("groups", groups);
         //model.addAttribute("invitedGroups", invitedGroups);
 
+        model.addAttribute("wish", wishListServices.listAll());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("admin", getAdminSession(session));
         return "User/AdminControl";
