@@ -364,7 +364,7 @@
     <input type="number" id="popularity" name="popularity" th:value="${location.getPopularity()}">
 
     <label for="description" id="descriptionLabel" >Description: </label>
-    <textarea id="description" name="description" rows="4" cols="50" th:value="${location.getDescription()}"></textarea>
+    <textarea id="description" name="description" rows="4" cols="50" th:text="${location.getDescription()}"></textarea>
     <label for="covid_restricted" id="covid_restrictedLabel">Covid Restricted: </label>
     <input type="checkbox" id="covid_restricted" name="covid_restricted">
     <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
