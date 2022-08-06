@@ -18,37 +18,37 @@ public class Availability {
     @Getter
     @Setter
     @Field("AirlineCode")
-    private String AirlineCode;
+    private String airlineCode;
 
     @Getter
     @Setter
     @Field("ClassCode")
-    private String ClassCode;
+    private String classCode;
 
     @Getter
     @Setter
     @Field("DepartureTime")
-    private Date DepartureTime;
+    private Date departureTime;
 
     @Getter
     @Setter
     @Field("FlightNumber")
-    private String FlightNumber;
+    private String flightNumber;
 
     @Getter
     @Setter
     @Field("NumberAvailableSeatsLeg1")
-    private int NumberAvailableSeatsLeg1;
+    private int numberAvailableSeatsLeg1;
 
     @Getter
     @Setter
     @Field("NumberAvailableSeatsLeg2")
-    private int NumberAvailableSeatsLeg2;
+    private int numberAvailableSeatsLeg2;
 
     @Getter
     @Setter
     @Field("TicketCode")
-    private String TicketCode;
+    private String ticketCode;
 
 
     public Availability() {}

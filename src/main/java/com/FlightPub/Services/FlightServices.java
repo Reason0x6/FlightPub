@@ -65,9 +65,9 @@ public class FlightServices{
     }
 
     public int getAvailableSeats(String id, Date departTime){
-        List<Availability> avails = availRepo.findByFlightCodeAndDate(id, departTime);
+
         int out = 0;
-        for (Availability a: avails) {
+        for (Availability a: availRepo.findByFlightCodeAndDate(id, departTime)) {
             out += a.getNumberAvailableSeatsLeg1() > a.getNumberAvailableSeatsLeg2() ? a.getNumberAvailableSeatsLeg2() : a.getNumberAvailableSeatsLeg1();
         }
         return out;

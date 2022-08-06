@@ -19,47 +19,47 @@ public class Price {
     @Setter
     @Getter
     @Field("AirlineCode")
-    private String AirlineCode;
+    private String airlineCode;
 
     @Setter
     @Getter
     @Field("FlightNumber")
-    private String FlightNumber;
+    private String flightNumber;
 
     @Setter
     @Getter
     @Field("ClassCode")
-    private String ClassCode;
+    private String classCode;
 
     @Setter
     @Getter
     @Field("TicketCode")
-    private String TicketCode;
+    private String ticketCode;
 
     @Setter
     @Getter
     @Field("StartDate")
-    private Date StartDate;
+    private Date startDate;
 
     @Setter
     @Getter
     @Field("EndDate")
-    private Date EndDate;
+    private Date endDate;
 
     @Setter
     @Getter
     @Field("Price")
-    private Double Price;
+    private Double price;
 
     @Setter
     @Getter
     @Field("PriceLeg1")
-    private Double PriceLeg1;
+    private Double priceLeg1;
 
     @Setter
     @Getter
     @Field("PriceLeg2")
-    private Double PriceLeg2;
+    private Double priceLeg2;
 
 
     public Price() {}
