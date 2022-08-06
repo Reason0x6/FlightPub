@@ -56,7 +56,7 @@
         </table>
       </div>
 
-
+<!--
       <div th:if="${stopOver[0].size()} != 0">
         <hr>
         <div class="card l-1" th:each="flight : ${stopOver[0]}" style="padding: 10px 0 0 20px;">
@@ -70,7 +70,7 @@
             </div>
             <div class="col-sm-4">
               <p><b>Airline: </b><span th:text="${flight.getFlightAtIndex(0).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(1).getAirline()}"></span></p>
-              <!-- <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice() + flight.getFlightAtIndex(1).getTicketPrice()}"></span></p> -->
+              <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice() + flight.getFlightAtIndex(1).getTicketPrice()}"></span></p>
             </div>
             <div class="col-sm-4"  style="padding-top: 10px;">
               <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
@@ -97,7 +97,7 @@
             </div>
             <div class="col-sm-4">
               <p><b>Airline: </b><span th:text="${flight.getFlightAtIndex(0).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(1).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(2).getAirline()}"></span></p>
-              <!-- <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice()+flight.getFlightAtIndex(1).getTicketPrice()+flight.getFlightAtIndex(2).getTicketPrice()}"></span></p> -->
+             <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice()+flight.getFlightAtIndex(1).getTicketPrice()+flight.getFlightAtIndex(2).getTicketPrice()}"></span></p>
             </div>
             <div class="col-sm-4"  style="padding-top: 10px;">
               <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
@@ -126,7 +126,7 @@
             </div>
             <div class="col-sm-4">
               <p><b>Airline: </b><span th:text="${flight.getFlightAtIndex(0).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(1).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(2).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(3).getAirline()}"></span></p>
-             <!-- <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice()+flight.getFlightAtIndex(1).getTicketPrice()+flight.getFlightAtIndex(2).getTicketPrice()+flight.getFlightAtIndex(3).getTicketPrice()}"></span></p> -->
+              <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice()+flight.getFlightAtIndex(1).getTicketPrice()+flight.getFlightAtIndex(2).getTicketPrice()+flight.getFlightAtIndex(3).getTicketPrice()}"></span></p>
             </div>
             <div class="col-sm-4"  style="padding-top: 10px;">
               <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
@@ -138,7 +138,7 @@
 
       <div th:if="${flights[0].size()} == 0">
         <p>There are currently no flights that match this search</p>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>

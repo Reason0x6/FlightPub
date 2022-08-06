@@ -149,7 +149,7 @@ public class Flight {
 
 
     public String getDepartureString(){
-        if(arrivalTime == null)
+        if(departureTime == null)
             return null;
         else
             return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(departureTime);
