@@ -53,7 +53,7 @@
                             <div th:each="map : ${usr.getSessionCart().keySet()}" th:with="flight = ${usr.getFlight(map)}"  >
                                 <tr >
                                     <th scope="row" th:text="${flight.getDeparture()}"></th>
-                                    <th th:text="${flight.getOriginID()} + ' -> ' + ${flight.getDestinationID()}"></th>
+                                    <th th:text="${flight.getDepartureCode()} + ' -> ' + ${flight.getDestinationCode()}"></th>
                                     <th th:text="${usr.getSessionCart().get(map)}"></th>
 
                                      <th><a href="" class="btn btn-danger">Remove Flight</a></th>

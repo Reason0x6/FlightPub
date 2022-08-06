@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.LinkedList;
 
@@ -16,18 +17,22 @@ public class UserGroup{
 
     @Getter
     @Setter
+    @Field("userIDs")
     private LinkedList<String> userIDs;
 
     @Getter
     @Setter
+    @Field("adminID")
     private String adminID;
 
     @Getter
     @Setter
+    @Field("groupName")
     private String groupName;
 
     @Getter
     @Setter
+    @Field("invitedIds")
     private LinkedList<String> invitedIds;
 
     @Getter

@@ -5,6 +5,8 @@ import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class IndexController {
@@ -213,9 +212,10 @@ public class IndexController {
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
+        System.out.println(id);
 
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
-        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
+        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
@@ -269,8 +269,8 @@ public class IndexController {
 
         getSession(session).addToCart(seats, id);
 
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
-        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
+        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
@@ -301,7 +301,6 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("usr", getSession(session));
-
         return "search";
     }
 
