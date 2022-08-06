@@ -47,7 +47,7 @@ public class LocationServices {
 
     public Location mostPopular() {
         List<Location> out = locationRepo.findAllByOrderByPopularityDesc();
-
+        System.out.println(out);
         if (!out.isEmpty()) {
             return out.get(0);
         }
@@ -61,4 +61,6 @@ public class LocationServices {
         }
         return null;
     }
+
+
 }

@@ -10,7 +10,7 @@ public class Address {
     @Id
     @Setter
     @Getter
-    private String UserID;
+    private String userID;
 
     @Getter
     @Setter

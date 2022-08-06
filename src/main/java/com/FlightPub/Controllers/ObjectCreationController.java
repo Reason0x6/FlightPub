@@ -66,7 +66,7 @@ public class ObjectCreationController {
                           @RequestParam double lng, @RequestParam int pop,
                           Model model, HttpSession session){
 
-        Location newLoc = new Location(id, country,location, lat,lng,pop);
+        Location newLoc = new Location(id, country,location, lat,lng,pop, false);
         locationServices.saveOrUpdate(newLoc);
 
         model.addAttribute("addedLoc", newLoc);
@@ -138,15 +138,15 @@ public class ObjectCreationController {
     public String addFlight( @ModelAttribute Flight flight, Model model, HttpSession session) {
 
         model.addAttribute("flight", flight);
-        if(flight.getMaxSeats()<0 || flight.getBookedSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0)
-            return "Admin/FlightManagement";
+       // if(flight.getMaxSeats()<0 || flight.getBookedSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0)
+         //   return "Admin/FlightManagement";
 
         // Convert the ID to align with the Database standard)
-        flight.setDestinationID(flight.getDestinationID().toUpperCase());
-        flight.setOriginID(flight.getOriginID().toUpperCase());
+        flight.setDestinationCode(flight.getDestinationCode().toUpperCase());
+        flight.setDepartureCode(flight.getDepartureCode().toUpperCase());
 
         // Ensures that the location exists
-        if(locationServices.getById(flight.getDestinationID()) == null || locationServices.getById(flight.getOriginID()) == null) {
+        if(locationServices.getById(flight.getDestinationCode()) == null || locationServices.getById(flight.getDepartureCode()) == null) {
             return "Admin/FlightManagement";
         }
 

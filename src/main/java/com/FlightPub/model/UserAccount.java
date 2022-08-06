@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("UserAccount")
 public class UserAccount {
 
-
-		@Getter
-		@Setter
-		private String firstname;
 
 		@Id
 		@Getter
@@ -21,6 +18,13 @@ public class UserAccount {
 
 		@Getter
 		@Setter
+		@Field("firstname")
+		private String firstname;
+
+
+		@Getter
+		@Setter
+		@Field("password")
 		private String password;
 
 		@Getter

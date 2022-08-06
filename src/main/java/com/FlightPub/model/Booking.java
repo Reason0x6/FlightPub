@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -16,19 +17,15 @@ public class Booking {
 
     @Setter
     @Getter
+    @Field("userID")
     private String userID;
 
     @Setter
     @Getter
+    @Field("flightID")
     private String flightID;
 
-    @Setter
-    @Getter
-    private List<String> bookedSeats;
 
-    @Setter
-    @Getter
-    private String bookingStatus;
 
     public Booking() {}
 
@@ -37,7 +34,5 @@ public class Booking {
         this.bookingID = bookingID;
         this.userID = userID;
         this.flightID = flightID;
-        this.bookedSeats = bookedSeats;
-        this.bookingStatus = bookingStatus;
     }
 }
