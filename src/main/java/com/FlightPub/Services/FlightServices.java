@@ -3,13 +3,17 @@ package com.FlightPub.Services;
 import com.FlightPub.model.Availability;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.Location;
+import com.FlightPub.model.Price;
 import com.FlightPub.repository.AvailabilityRepo;
 import com.FlightPub.repository.FlightRepo;
 import com.FlightPub.repository.LocationRepo;
+import com.FlightPub.repository.PriceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.availability.AvailabilityState;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,15 +24,15 @@ public class FlightServices{
 
     private FlightRepo flightRepo;
     private AvailabilityRepo availRepo;
+    private PriceRepo priceRepo;
     @Autowired
     private LocationServices locationServices;
 
-
-
     @Autowired
-    public FlightServices(FlightRepo flightRepository, AvailabilityRepo availRepo) {
+    public FlightServices(FlightRepo flightRepository, AvailabilityRepo availRepo, PriceRepo priceRepo) {
         this.availRepo = availRepo;
         this.flightRepo = flightRepository;
+        this.priceRepo = priceRepo;
     }
 
     public List<Flight> listAll(){
@@ -45,6 +49,9 @@ public class FlightServices{
         flightRepo.save(toUpdate);
     }
 
+    public List<Price> getPrices(Flight flight){
+        return priceRepo.findPrices(flight.getFlightNumber(), flight.getDepartureTime());
+    }
 
     public void delete(String id){}
 
@@ -78,9 +85,9 @@ public class FlightServices{
         return out;
     }
 
-    public List<Flight> getByOriginAndDestination(String origin, String dep, Date dstart, Date dend) {
+    public List<Flight> getByOriginAndDestination(String origin, String dest, Date dstart, Date dend) {
         // Query defined in flightRepo
-        return flightRepo.findByOriginAndDestination(origin, dep, dstart, dend);
+        return flightRepo.findByOriginAndDestination(origin, dest, dstart, dend);
     }
 
     public List<Flight> getByOrigin(String origin, Date dstart, Date dend){

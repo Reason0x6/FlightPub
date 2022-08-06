@@ -114,14 +114,15 @@ public class BasicSearch {
                 dend = new SimpleDateFormat("yyyy-MM-dd").parse(end);
                 dend = addBuffer(dend, 0, 23, 59);
             }
+
         } catch (ParseException e) {
             System.out.println(e);
             return null;
         }
-
         // Location Proccessing
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = null;
+
 
         if (destinationIn != null && !destinationIn.equals("") && !destinationIn.equals("Show All"))  // Eliminates the empty Search for location
             destinationObj = locService.findByLocation(destinationIn);

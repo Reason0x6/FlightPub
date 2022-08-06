@@ -218,6 +218,7 @@ public class IndexController {
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
+        System.out.println(id);
 
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));

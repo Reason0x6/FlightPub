@@ -134,15 +134,15 @@ public class ObjectCreationController {
         return "User/AdminRegister";
     }
 
-    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM&flightCode=VH302&ticketprice=112.00
+    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM&flightCode=VH302&ticketprice=112.00
     public String addFlight( @RequestParam String flightID, @RequestParam String originID,
                              @RequestParam String destinationID, @RequestParam String airline,
                              @RequestParam String departure, @RequestParam String arrival,
                              @RequestParam String flightCode, @RequestParam double ticketprice,
                              Model model, HttpSession session) {
 
-        Flight newFlight = new Flight(flightID, originID.toUpperCase(),
-                destinationID.toUpperCase(), departure, arrival, flightCode, airline, ticketprice);
+       /* Flight newFlight = new Flight(flightID, originID.toUpperCase(),
+                destinationID.toUpperCase(), departure, arrival, flightCode, airline);
 
         if (flightServices.getById(flightID) != null) {
             // TODO: Notification of flight detail change to be sent to users
@@ -150,6 +150,7 @@ public class ObjectCreationController {
 
         flightServices.saveOrUpdate(newFlight);
         model.addAttribute("flight", newFlight);
+        */
         model.addAttribute("usr", getSession(session));
 
         return "Confirmations/NewFlight";

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,35 +19,69 @@ public class Flight {
     @Id
     @Getter
     @Setter
+    @Field("_id")
     private String flightID;
 
     @Getter
     @Setter
+    @Field("DepartureCode")
     private String departureCode;
 
     @Getter
     @Setter
+    @Field("DestinationCode")
     private String destinationCode;
 
     @Getter
     @Setter
+    @Field("PlaneCode")
     private String planeCode;
 
     @Getter
     @Setter
+    @Field("DepartureTime")
     private Date departureTime;
 
     @Getter
     @Setter
+    @Field("DepartureTimeStopOver")
+    private Date DepartureTimeStopOver;
+
+    @Getter
+    @Setter
+    @Field("ArrivalTime")
     private Date arrivalTime;
 
     @Getter
     @Setter
+    @Field("ArrivalTimeStopOver")
+    private Date ArrivalTimeStopOver;
+
+    @Getter
+    @Setter
+    @Field("FlightNumber")
     private String flightNumber;
 
     @Getter
     @Setter
+    @Field("AirlineCode")
     private String airlineCode;
+
+    @Getter
+    @Setter
+    @Field("Duration")
+    private int duration;
+
+    @Getter
+    @Setter
+    @Field("DurationSecondLeg")
+    private int durationSecondLeg;
+
+    @Getter
+    @Setter
+    @Field("StopoverCode")
+    private String stopoverCode;
+
 
 
     //ADDITIONAL VARIABLES
@@ -71,17 +106,17 @@ public class Flight {
     public Flight(){
 
     }
-
+/*
     public Flight(String flightID,
                   String airline, String arrival, String DepartureCode, String DestinationCode,
-                  String departure,  String flightCode, double ticketPrice){
+                  String departure,  String flightCode){
 
         this.flightID = flightID;
         this.departureCode = DepartureCode;
         this.destinationCode = DestinationCode;
         this.flightNumber = flightCode;
         this.airlineCode = airline;
-        this.ticketPrice = ticketPrice;
+
 
 
         try {
@@ -90,7 +125,7 @@ public class Flight {
         }catch(Exception e){}
 
 
-    }
+    } */
 
     public void setArrivalT(String in) throws ParseException {
 

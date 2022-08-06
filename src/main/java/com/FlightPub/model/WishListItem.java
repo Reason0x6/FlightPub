@@ -3,6 +3,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 
 @Document("WishList")
@@ -14,10 +15,12 @@ public class WishListItem {
 
     @Setter
     @Getter
+    @Field("userID")
     private String userID;
 
     @Getter
     @Setter
+    @Field("destinationID")
     private String destinationID;
 
     public WishListItem() {}

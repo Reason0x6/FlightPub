@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 
 @Document("TicketType")
@@ -15,22 +16,27 @@ public class TicketType {
 
     @Setter
     @Getter
+    @Field("Name")
     private String name;
 
     @Setter
     @Getter
+    @Field("Refundable")
     private boolean refundable;
 
     @Setter
     @Getter
+    @Field("Transferable")
     private boolean transferable;
 
     @Setter
     @Getter
+    @Field("Exchangable")
     private boolean exchangable;
 
     @Setter
     @Getter
+    @Field("FrequentFlyerPoints")
     private boolean FrequentFlyerPoints;
 
     public TicketType() {}

@@ -103,12 +103,12 @@
 
           <div id="recommendationRow" class="row" style="padding-top: 10px;">
           <div class="col-sm-3" th:each="flight : ${reco}"  >
-            <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationID()} + '.jpg'">
+            <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationCode()} + '.jpg'">
               <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
-              <h2 style="font-size: 1.5em" th:text="${flight.getOriginID()} + ' to ' + ${flight.getDestinationID()}"></h2>
-              <p><em><span th:text="'Departs ' + ${flight.getOriginID()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
-                <span th:text="'Arrives in ' + ${flight.getDestinationID()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
-                Airline: <span th:text="${flight.getAirline()}"></span></em></p>
+              <h2 style="font-size: 1.5em" th:text="${flight.getDepartureCode()} + ' to ' + ${flight.getDestinationCode()}"></h2>
+              <p><em><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span><span th:text="${flight.getDepartureTime()}"></span><br>
+                <span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span><span th:text="${flight.getArrivalTime()}"></span><br>
+                Airline: <span th:text="${flight.getAirlineCode()}"></span></em></p>
               <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
             </div>
 
