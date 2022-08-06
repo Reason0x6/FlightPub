@@ -148,29 +148,7 @@ public class Flight {
     }
 
 
-    // Returns the Date in a readable String format
-    public String getArrivalTime(){
-        if(arrivalTime == null)
-            return null;
-        else
-            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrivalTime);
-    }
-
-    public String getDepartureTime(){
-        if(arrivalTime == null)
-            return null;
-        else
-            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departureTime); }
-
-    // Returns the Date in a String format that conforms to the expected format of DateTime-local (HTML input)
-    public String getArrivalDateTime(){
-        if(arrivalTime == null)
-            return null;
-        else
-            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrivalTime);
-    }
-
-    public String getDepartureDateTime(){
+    public String getDepartureString(){
         if(arrivalTime == null)
             return null;
         else

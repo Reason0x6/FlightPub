@@ -66,7 +66,7 @@ public class ObjectCreationController {
                           @RequestParam double lng, @RequestParam int pop,
                           Model model, HttpSession session){
 
-        Location newLoc = new Location(id, country,location, lat,lng,pop);
+        Location newLoc = new Location(id, country,location, lat,lng,pop, false);
         locationServices.saveOrUpdate(newLoc);
 
         model.addAttribute("addedLoc", newLoc);
@@ -146,7 +146,7 @@ public class ObjectCreationController {
         flight.setDepartureCode(flight.getDepartureCode().toUpperCase());
 
         // Ensures that the location exists
-        if(locationServices.getById(flight.getDestinationCode()) == null || locationServices.getById(flight.getOriginID()) == null) {
+        if(locationServices.getById(flight.getDestinationCode()) == null || locationServices.getById(flight.getDepartureCode()) == null) {
             return "Admin/FlightManagement";
         }
 
