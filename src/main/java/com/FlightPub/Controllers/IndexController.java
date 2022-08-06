@@ -73,14 +73,9 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("Admin", getAdminSession(session));
 
-        model.addAttribute("recommendationLocation", locationServices.listAll());
+        model.addAttribute("LoadingRecommendation", true);
 
-        recommendation.setFlightServices(flightServices);
-        recommendation.setLocationServices(locationServices);
-        model.addAttribute("reco", recommendation.getRecommendation());
-        model.addAttribute("currentLocation", recommendation.getRecommendationLocation());
-
-        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD" ));
+        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
 
         return "index";
     }
@@ -194,7 +189,6 @@ public class IndexController {
             return "redirect:login";
         }
 
-
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
         if(bookings.size() > 0){
             model.addAttribute("bookings", bookings);
@@ -227,6 +221,20 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         return "Flight";
+    }
+
+    @RequestMapping("/admin/flight/management")
+    @PostMapping("/admin/flight/management")
+    public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
+        if(flight != null)
+            flight = flightServices.getById(flight.getFlightID());
+
+        if(flight == null)
+            flight = new Flight();
+
+        model.addAttribute("flight", flight);
+
+        return "Admin/FlightManagement";
     }
 
     @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2

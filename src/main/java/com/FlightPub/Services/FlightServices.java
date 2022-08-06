@@ -42,7 +42,10 @@ public class FlightServices{
     }
 
     public Flight getById(String id){
-        return flightRepo.findById(id).orElse(null);
+        if(id == null)
+            return null;
+        else
+            return flightRepo.findById(id).orElse(null);
     }
 
     public void saveOrUpdate(Flight toUpdate){

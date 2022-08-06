@@ -128,28 +128,55 @@ public class Flight {
     } */
 
     public void setArrivalT(String in) throws ParseException {
-
-        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
-        Date date = originalFormat.parse(in);
-
-        arrivalTime = date;
+        try{
+            SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            Date date = originalFormat.parse(in);
+            this.arrivalTime = date;
+        } catch (ParseException e) {
+            System.out.println(e);
+        }
     }
 
-    public void setDepartureT(String in) throws ParseException {
-
-        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMddhhmmaa");
-        Date date = originalFormat.parse(in);
-
-        departureTime = date;
+    public void setDeparture(String in){
+        try {
+            SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            Date date = originalFormat.parse(in);
+            this.departureTime = date;
+        } catch (ParseException e) {
+            System.out.println(e);
+        }
     }
 
 
+    // Returns the Date in a readable String format
+    public String getArrivalTime(){
+        if(arrivalTime == null)
+            return null;
+        else
+            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrivalTime);
+    }
 
-    public String getArrivalT(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrivalTime);
+    public String getDepartureTime(){
+        if(arrivalTime == null)
+            return null;
+        else
+            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departureTime); }
+
+    // Returns the Date in a String format that conforms to the expected format of DateTime-local (HTML input)
+    public String getArrivalDateTime(){
+        if(arrivalTime == null)
+            return null;
+        else
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrivalTime);
     }
-    public String getDepartureT(){
-        return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departureTime);
+
+    public String getDepartureDateTime(){
+        if(arrivalTime == null)
+            return null;
+        else
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(departureTime);
     }
+
+
 
 }

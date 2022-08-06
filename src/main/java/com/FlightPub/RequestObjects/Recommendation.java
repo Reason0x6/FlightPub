@@ -91,11 +91,6 @@ public class Recommendation {
                 break;
             }
         }
-        
-        System.out.println("Recommended Flights found:");
-        for (Flight flight : recommendedFlights) {
-            System.out.printf("FlightID: %s, Flight Origin: %s, Flight Destination: %s %n",flight.getFlightID(), flight.getDepartureCode(), flight.getDestinationCode());
-        }
 
         return recommendedFlights;
     }
