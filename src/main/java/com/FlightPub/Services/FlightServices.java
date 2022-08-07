@@ -84,7 +84,27 @@ public class FlightServices{
         for (Availability ticket : availableSeats) {
             if (ticket.getClassCode().equals(a)) {
                 int seatsAvailable = ticket.getNumberAvailableSeatsLeg1() > ticket.getNumberAvailableSeatsLeg2() ? ticket.getNumberAvailableSeatsLeg1() : ticket.getNumberAvailableSeatsLeg2();
-                seats.add(new AbstractMap.SimpleEntry<>(ticket.getTicketCode(), seatsAvailable));
+                String ticketCode = ticket.getTicketCode();
+                switch (ticketCode){
+                    case "A":
+                        seats.add(new AbstractMap.SimpleEntry<>("Standby", seatsAvailable));
+                        break;
+                    case "B":
+                        seats.add(new AbstractMap.SimpleEntry<>("Premium Discounted", seatsAvailable));
+                        break;
+                    case "C":
+                        seats.add(new AbstractMap.SimpleEntry<>("Discounted", seatsAvailable));
+                        break;
+                    case "D":
+                        seats.add(new AbstractMap.SimpleEntry<>("Standard", seatsAvailable));
+                        break;
+                    case "E":
+                        seats.add(new AbstractMap.SimpleEntry<>("LD", seatsAvailable));
+                        break;
+                    case "F":
+                        seats.add(new AbstractMap.SimpleEntry<>("Platinum", seatsAvailable));
+                        break;
+                }
             }
         }
         return seats;

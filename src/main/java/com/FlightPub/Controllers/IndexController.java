@@ -214,13 +214,14 @@ public class IndexController {
         Flight f = flightServices.getById(id);
 
         System.out.println(id);
-        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
+        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime()); // Here
 
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
+
 
         model.addAttribute("businessClass", flightServices.getSeatList("BUS", availableSeats));
         model.addAttribute("economyClass", flightServices.getSeatList("ECO", availableSeats));

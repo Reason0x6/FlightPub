@@ -40,29 +40,29 @@
             <p><b>Departs: </b><span th:text="${Flight.getDepartureCode()}"></span> @ <span th:text="${Flight.getDepartureTime()}"></span></p>
             <p><b>Arrives: </b><span th:text="${Flight.getDestinationCode()}"></span>  @  <span th:text="${Flight.getArrivalTime()}"></span></p>
             <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
-              <p><b>Available Seats: </b></p>
+              <p><b>Available Seats on <span th:text="${Flight.getFlightID()}"></span></b></p>
               <div th:each="avail:${firstClass}">
-                  <p><b>Standby: </b></p><p>
+                  <p><b>First Class: </b></p><p>
                       <span th:text="${avail.getKey()}"></span>
                       <span th:text="${avail.getValue()}"></span>
                   </p>
               </div>
               <div th:each="avail:${businessClass}">
-                  <p><b>Premium Discounted: </b></p>
+                  <p><b>Business Class: </b></p>
                   <p>
                     <span th:text="${avail.getKey()}"></span>
                     <span th:text="${avail.getValue()}"></span>
                   </p>
               </div>
               <div th:each="avail:${premiumEconomy}">
-                  <p><b>Discounted: </b></p>
+                  <p><b>Premium Economy: </b></p>
                   <p>
                       <span th:text="${avail.getKey()}"></span>
                       <span th:text="${avail.getValue()}"></span>
                   </p>
               </div>
               <div th:each="avail:${economyClass}">
-                  <p><b>Standard: </b></p>
+                  <p><b>Economy: </b></p>
                   <p>
                       <span th:text="${avail.getKey()}"></span>
                       <span th:text="${avail.getValue()}"></span>
