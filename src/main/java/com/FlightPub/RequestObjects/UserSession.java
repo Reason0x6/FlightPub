@@ -1,6 +1,7 @@
 package com.FlightPub.RequestObjects;
 
 import com.FlightPub.Services.FlightServices;
+import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
 import lombok.Getter;
@@ -23,6 +24,10 @@ public class UserSession {
     @Getter
     @Setter
     private FlightServices flightServices;
+
+    @Getter
+    @Setter
+    private UserAccountServices usrService;
     @Getter
     Map<String, Integer> sessionCart;
 
@@ -31,6 +36,13 @@ public class UserSession {
     public void setFlightServices(FlightServices flightService) {
         this.flightServices = flightService;
     }
+
+    @Autowired
+    @Qualifier(value = "UserAccountServices")
+    public void setUserServices(UserAccountServices usrService) {
+        this.usrService = usrService;
+    }
+
 
     public UserSession(UserAccount usr){
         this.usr = usr;
@@ -77,6 +89,12 @@ public class UserSession {
         return sessionCart;
     }
 
+    public boolean addToWishList(String id){
+
+            Flight tempF = flightServices.getById(id);
+            return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
+
+    }
 
     public Flight getFlight(String id){
         return flightServices.getById(id);
