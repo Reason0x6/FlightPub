@@ -12,4 +12,5 @@ public interface WishListItemRepo  extends MongoRepository<WishListItem, String>
 
     @Query(value="{ 'userID' : ?0,  'destinationID' :  ?1}")
     List<WishListItem> findIfExist(String userID, String Location);
+
 }

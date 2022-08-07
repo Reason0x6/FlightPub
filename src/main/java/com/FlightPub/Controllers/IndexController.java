@@ -252,22 +252,43 @@ public class IndexController {
     }
 
     @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
-    public String bookFlight(@RequestParam String id, Model model, HttpSession session){
+    public String bookFlight(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session){
 
 
         getSession(session).setFlightServices(flightServices);
         getSession(session).setUserServices(usrServices);
+        if(remove != null){
+            try{
+                getSession(session).removeFromWishList(remove);
+            }catch(Exception e){
+                System.out.println(e.getStackTrace());
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
 
-        Boolean accepted = getSession(session).addToWishList(id);
+            model.addAttribute("WishL", getSession(session).getWishList());
+            model.addAttribute("usr", getSession(session));
+            return "WishList";
+        }
+        if(id != null){
 
-        model.addAttribute("usr", getSession(session));
-        if(accepted){
-            return "Flight";
+            Boolean accepted = getSession(session).addToWishList(id);
+            Flight f = flightServices.getById(id);
+            model.addAttribute("Flight", f);
+            if(accepted){
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
         }
 
+
+
+        model.addAttribute("WishL", getSession(session).getWishList());
         model.addAttribute("usr", getSession(session));
 
-        return "Flight";
+        return "WishList";
     }
 
     @PostMapping("/search")

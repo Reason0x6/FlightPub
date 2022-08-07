@@ -4,6 +4,7 @@ import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
+import com.FlightPub.model.WishListItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @SessionScope
@@ -94,6 +94,15 @@ public class UserSession {
             Flight tempF = flightServices.getById(id);
             return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
 
+    }
+
+    public void removeFromWishList(String id){
+        usrService.removeWIL(id, usr.getEmail());
+    }
+
+    public List<Map.Entry<String, String>> getWishList(){
+
+        return usrService.getWishList(usr);
     }
 
     public Flight getFlight(String id){
