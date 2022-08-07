@@ -41,28 +41,29 @@
             <p><b>Arrives: </b><span th:text="${Flight.getDestinationCode()}"></span>  @  <span th:text="${Flight.getArrivalTime()}"></span></p>
             <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
               <p><b>Available Seats on <span th:text="${Flight.getFlightID()}"></span></b></p>
+              <p><b>First Class</b></p>
               <div th:each="avail:${firstClass}">
-                  <p><b>First Class: </b></p><p>
+                  <p>
                       <span th:text="${avail.getKey()}"></span>
                       <span th:text="${avail.getValue()}"></span>
                   </p>
               </div>
+              <p><b>Business Class</b></p>
               <div th:each="avail:${businessClass}">
-                  <p><b>Business Class: </b></p>
                   <p>
                     <span th:text="${avail.getKey()}"></span>
                     <span th:text="${avail.getValue()}"></span>
                   </p>
               </div>
+              <p><b>Premium Economy</b></p>
               <div th:each="avail:${premiumEconomy}">
-                  <p><b>Premium Economy: </b></p>
                   <p>
                       <span th:text="${avail.getKey()}"></span>
                       <span th:text="${avail.getValue()}"></span>
                   </p>
               </div>
+              <p><b>Economy</b></p>
               <div th:each="avail:${economyClass}">
-                  <p><b>Economy: </b></p>
                   <p>
                       <span th:text="${avail.getKey()}"></span>
                       <span th:text="${avail.getValue()}"></span>
@@ -70,9 +71,9 @@
               </div>
 
             <div th:if="${usr.isLoggedIn()} != false">
-              <!--  <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>
-               <button type="submit" th:if="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()} != 0" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
-               <button type="submit" disabled th:if="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()} == 0" class="btn btn-danger">Sold out</button><Br><Br> -->
+                <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>
+                <!-- <button type="submit" th:if="" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                <button type="submit" disabled th:if="" class="btn btn-danger">Sold out</button><Br><Br> -->
 
                <script th:inline="javascript">
                    function addToCart(){

@@ -87,22 +87,22 @@ public class FlightServices{
                 String ticketCode = ticket.getTicketCode();
                 switch (ticketCode){
                     case "A":
-                        seats.add(new AbstractMap.SimpleEntry<>("Standby", seatsAvailable));
+                        seats.add(new AbstractMap.SimpleEntry<>("Standby Seats:", seatsAvailable));
                         break;
                     case "B":
-                        seats.add(new AbstractMap.SimpleEntry<>("Premium Discounted", seatsAvailable));
+                        seats.add(new AbstractMap.SimpleEntry<>("Premium Discounted Seats:", seatsAvailable));
                         break;
                     case "C":
-                        seats.add(new AbstractMap.SimpleEntry<>("Discounted", seatsAvailable));
+                        seats.add(new AbstractMap.SimpleEntry<>("Discounted Seats:", seatsAvailable));
                         break;
                     case "D":
-                        seats.add(new AbstractMap.SimpleEntry<>("Standard", seatsAvailable));
+                        seats.add(new AbstractMap.SimpleEntry<>("Standard Seats:", seatsAvailable));
                         break;
                     case "E":
-                        seats.add(new AbstractMap.SimpleEntry<>("LD", seatsAvailable));
+                        seats.add(new AbstractMap.SimpleEntry<>("LD Seats:", seatsAvailable));
                         break;
                     case "F":
-                        seats.add(new AbstractMap.SimpleEntry<>("Platinum", seatsAvailable));
+                        seats.add(new AbstractMap.SimpleEntry<>("Platinum Seats:", seatsAvailable));
                         break;
                 }
             }
