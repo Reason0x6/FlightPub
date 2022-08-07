@@ -84,26 +84,28 @@ public class FlightServices{
         for (Availability ticket : availableSeats) {
             if (ticket.getClassCode().equals(a)) {
                 int seatsAvailable = ticket.getNumberAvailableSeatsLeg1() > ticket.getNumberAvailableSeatsLeg2() ? ticket.getNumberAvailableSeatsLeg1() : ticket.getNumberAvailableSeatsLeg2();
-                String ticketCode = ticket.getTicketCode();
-                switch (ticketCode){
-                    case "A":
-                        seats.add(new AbstractMap.SimpleEntry<>("Standby Seats:", seatsAvailable));
-                        break;
-                    case "B":
-                        seats.add(new AbstractMap.SimpleEntry<>("Premium Discounted Seats:", seatsAvailable));
-                        break;
-                    case "C":
-                        seats.add(new AbstractMap.SimpleEntry<>("Discounted Seats:", seatsAvailable));
-                        break;
-                    case "D":
-                        seats.add(new AbstractMap.SimpleEntry<>("Standard Seats:", seatsAvailable));
-                        break;
-                    case "E":
-                        seats.add(new AbstractMap.SimpleEntry<>("LD Seats:", seatsAvailable));
-                        break;
-                    case "F":
-                        seats.add(new AbstractMap.SimpleEntry<>("Platinum Seats:", seatsAvailable));
-                        break;
+                if (seatsAvailable > 0) {
+                    String ticketCode = ticket.getTicketCode();
+                    switch (ticketCode) {
+                        case "A":
+                            seats.add(new AbstractMap.SimpleEntry<>("Standby Seats:", seatsAvailable));
+                            break;
+                        case "B":
+                            seats.add(new AbstractMap.SimpleEntry<>("Premium Discounted Seats:", seatsAvailable));
+                            break;
+                        case "C":
+                            seats.add(new AbstractMap.SimpleEntry<>("Discounted Seats:", seatsAvailable));
+                            break;
+                        case "D":
+                            seats.add(new AbstractMap.SimpleEntry<>("Standard Seats:", seatsAvailable));
+                            break;
+                        case "E":
+                            seats.add(new AbstractMap.SimpleEntry<>("LD Seats:", seatsAvailable));
+                            break;
+                        case "F":
+                            seats.add(new AbstractMap.SimpleEntry<>("Platinum Seats:", seatsAvailable));
+                            break;
+                    }
                 }
             }
         }

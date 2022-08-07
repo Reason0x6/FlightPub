@@ -44,8 +44,9 @@
               <p><b>First Class</b></p>
               <div th:each="avail:${firstClass}">
                   <p>
-                      <span th:text="${avail.getKey()}"></span>
-                      <span th:text="${avail.getValue()}"></span>
+                    <span th:text="${avail.getKey()}"></span>
+                    <span th:text="${avail.getValue()}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                   </p>
               </div>
               <p><b>Business Class</b></p>
@@ -53,20 +54,23 @@
                   <p>
                     <span th:text="${avail.getKey()}"></span>
                     <span th:text="${avail.getValue()}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                   </p>
               </div>
               <p><b>Premium Economy</b></p>
               <div th:each="avail:${premiumEconomy}">
                   <p>
-                      <span th:text="${avail.getKey()}"></span>
-                      <span th:text="${avail.getValue()}"></span>
+                    <span th:text="${avail.getKey()}"></span>
+                    <span th:text="${avail.getValue()}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                   </p>
               </div>
               <p><b>Economy</b></p>
               <div th:each="avail:${economyClass}">
                   <p>
-                      <span th:text="${avail.getKey()}"></span>
-                      <span th:text="${avail.getValue()}"></span>
+                    <span th:text="${avail.getKey()}"></span>
+                    <span th:text="${avail.getValue()}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                   </p>
               </div>
 
