@@ -40,8 +40,34 @@
             <p><b>Departs: </b><span th:text="${Flight.getDepartureCode()}"></span> @ <span th:text="${Flight.getDepartureTime()}"></span></p>
             <p><b>Arrives: </b><span th:text="${Flight.getDestinationCode()}"></span>  @  <span th:text="${Flight.getArrivalTime()}"></span></p>
             <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
-           <!-- <p><b>Seats Available: </b> <span th:text="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()}"></span></b></p>
-            <p><b>Ticket Price: $</b> <span th:text="${Flight.getTicketPrice()}"></span></p>  -->
+              <p><b>Available Seats: </b></p>
+              <div th:each="avail:${firstClass}">
+                  <p><b>Standby: </b></p><p>
+                      <span th:text="${avail.getKey()}"></span>
+                      <span th:text="${avail.getValue()}"></span>
+                  </p>
+              </div>
+              <div th:each="avail:${businessClass}">
+                  <p><b>Premium Discounted: </b></p>
+                  <p>
+                    <span th:text="${avail.getKey()}"></span>
+                    <span th:text="${avail.getValue()}"></span>
+                  </p>
+              </div>
+              <div th:each="avail:${premiumEconomy}">
+                  <p><b>Discounted: </b></p>
+                  <p>
+                      <span th:text="${avail.getKey()}"></span>
+                      <span th:text="${avail.getValue()}"></span>
+                  </p>
+              </div>
+              <div th:each="avail:${economyClass}">
+                  <p><b>Standard: </b></p>
+                  <p>
+                      <span th:text="${avail.getKey()}"></span>
+                      <span th:text="${avail.getValue()}"></span>
+                  </p>
+              </div>
 
             <div th:if="${usr.isLoggedIn()} != false">
               <!--  <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>

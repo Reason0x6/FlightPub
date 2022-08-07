@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 @Service("FlightServices")
 public class FlightServices{
@@ -28,11 +25,20 @@ public class FlightServices{
     @Autowired
     private LocationServices locationServices;
 
+    private List<Availability> savedAvails;
+
+
     @Autowired
     public FlightServices(FlightRepo flightRepository, AvailabilityRepo availRepo, PriceRepo priceRepo) {
         this.availRepo = availRepo;
         this.flightRepo = flightRepository;
         this.priceRepo = priceRepo;
+    }
+
+    public List<Availability> getAvailability(String flightNumber, Date departureTime) {
+        List<Availability> avail = availRepo.findByFlightCodeAndDate(flightNumber, departureTime);
+        savedAvails = avail;
+        return savedAvails;
     }
 
     public List<Flight> listAll(){
@@ -71,6 +77,17 @@ public class FlightServices{
             out += a.getNumberAvailableSeatsLeg1() > a.getNumberAvailableSeatsLeg2() ? a.getNumberAvailableSeatsLeg2() : a.getNumberAvailableSeatsLeg1();
         }
         return out;
+    }
+
+    public Object getSeatList(String a, List<Availability> availableSeats) {
+        List<Map.Entry<String, Integer>> seats = new ArrayList<>();
+        for (Availability ticket : availableSeats) {
+            if (ticket.getClassCode().equals(a)) {
+                int seatsAvailable = ticket.getNumberAvailableSeatsLeg1() > ticket.getNumberAvailableSeatsLeg2() ? ticket.getNumberAvailableSeatsLeg1() : ticket.getNumberAvailableSeatsLeg2();
+                seats.add(new AbstractMap.SimpleEntry<>(ticket.getTicketCode(), seatsAvailable));
+            }
+        }
+        return seats;
     }
 
     public List<Flight> getByOrigin(String dep) {
