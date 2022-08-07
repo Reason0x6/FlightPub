@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 
-@Document("WishList")
+@Document("WishListItem")
 public class WishListItem {
     @Id
     @Setter
@@ -25,9 +25,8 @@ public class WishListItem {
 
     public WishListItem() {}
 
-    public WishListItem(String WLID, String userID, String destinationID) {
+    public WishListItem(String userID, String destinationID) {
 
-        this.WLID = WLID;
         this.userID = userID;
         this.destinationID = destinationID;
     }
