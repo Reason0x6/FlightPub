@@ -9,8 +9,8 @@
                 <option
                         th:each="location : ${recommendationLocation}"
                         th:id="city"
-                        th:value="${location.location}"
-                        th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.location} == ${currentLocation})">
+                        th:value="${location.locationID}"
+                        th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
 
                 </option>
                 <option th:if="${LoadingRecommendation} == true"> RECOMMENDATION LOADING... </option>
@@ -33,7 +33,7 @@
 
             </div>
         </div>
-        <div th:if="${reco} == 0">
+        <div th:if="${reco} == null">
             <p>There are currently no recommendations</p>
         </div>
     </div>
@@ -72,7 +72,7 @@
                         })
                     }, function error(msg) {
                         if (msg.PERMISSION_DENIED) {
-                            loadRecommendation("Adelaide");
+                            loadRecommendation("ADL");
                         } else {
                             console.log("Error getting position. Error code: " + msg.code)
                         }

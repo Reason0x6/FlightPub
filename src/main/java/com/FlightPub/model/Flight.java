@@ -155,6 +155,13 @@ public class Flight {
             return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(departureTime);
     }
 
+    public String getArrivalString(){
+        if(arrivalTime == null)
+            return null;
+        else
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrivalTime);
+    }
+
 
 
 }
