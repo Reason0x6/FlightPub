@@ -6,18 +6,12 @@ import com.FlightPub.model.Location;
 import com.FlightPub.model.Price;
 import com.FlightPub.repository.AvailabilityRepo;
 import com.FlightPub.repository.FlightRepo;
-import com.FlightPub.repository.LocationRepo;
 import com.FlightPub.repository.PriceRepo;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.availability.AvailabilityState;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 @Service("FlightServices")
 public class FlightServices{
@@ -28,11 +22,20 @@ public class FlightServices{
     @Autowired
     private LocationServices locationServices;
 
+    private List<Availability> savedAvails;
+
+
     @Autowired
     public FlightServices(FlightRepo flightRepository, AvailabilityRepo availRepo, PriceRepo priceRepo) {
         this.availRepo = availRepo;
         this.flightRepo = flightRepository;
         this.priceRepo = priceRepo;
+    }
+
+    public List<Availability> getAvailability(String flightNumber, Date departureTime) {
+        List<Availability> avail = availRepo.findByFlightCodeAndDate(flightNumber, departureTime);
+        savedAvails = avail;
+        return savedAvails;
     }
 
     public List<Flight> listAll(){
@@ -71,6 +74,93 @@ public class FlightServices{
             out += a.getNumberAvailableSeatsLeg1() > a.getNumberAvailableSeatsLeg2() ? a.getNumberAvailableSeatsLeg2() : a.getNumberAvailableSeatsLeg1();
         }
         return out;
+    }
+
+    public Object getSeatList(String classCode, List<Availability> availableSeats) {
+        List<Map.Entry<String, Integer>> seats = new ArrayList<>();
+        for (Availability ticket : availableSeats) {
+            if (ticket.getClassCode().equals(classCode)) {
+                int seatsAvailable = ticket.getNumberAvailableSeatsLeg1() > ticket.getNumberAvailableSeatsLeg2() ? ticket.getNumberAvailableSeatsLeg1() : ticket.getNumberAvailableSeatsLeg2();
+                if (seatsAvailable > 0) {
+                    String ticketCode = ticket.getTicketCode();
+                    switch (ticketCode) {
+                        case "A":
+                            seats.add(new AbstractMap.SimpleEntry<>("Standby", seatsAvailable));
+                            break;
+                        case "B":
+                            seats.add(new AbstractMap.SimpleEntry<>("Premium Discounted", seatsAvailable));
+                            break;
+                        case "C":
+                            seats.add(new AbstractMap.SimpleEntry<>("Discounted", seatsAvailable));
+                            break;
+                        case "D":
+                            seats.add(new AbstractMap.SimpleEntry<>("Standard", seatsAvailable));
+                            break;
+                        case "E":
+                            seats.add(new AbstractMap.SimpleEntry<>("Long Distance", seatsAvailable));
+                            break;
+                        case "F":
+                            seats.add(new AbstractMap.SimpleEntry<>("Platinum", seatsAvailable));
+                            break;
+                    }
+                }
+            }
+        }
+        return seats;
+    }
+
+    public Object getPrice(String classCode, List<Availability> availableSeats) {
+        String ticketFlightNumber;
+        String ticketCode;
+        Date ticketDepartureDate;
+        for (Availability ticketAvailability : availableSeats) {
+            if (ticketAvailability.getClassCode().equals(classCode)) {
+                ticketFlightNumber = ticketAvailability.getFlightNumber();
+                ticketCode = ticketAvailability.getTicketCode();
+                ticketDepartureDate = ticketAvailability.getDepartureTime();
+                switch (ticketCode) {
+                    case "A":
+                        return getPriceForTicketType(ticketFlightNumber, classCode, "A", ticketDepartureDate);
+                    case "B":
+                        return getPriceForTicketType(ticketFlightNumber, classCode, "B", ticketDepartureDate);
+                    case "C":
+                        return getPriceForTicketType(ticketFlightNumber, classCode, "C", ticketDepartureDate);
+                    case "D":
+                        return getPriceForTicketType(ticketFlightNumber, classCode, "D", ticketDepartureDate);
+                    case "E":
+                        return getPriceForTicketType(ticketFlightNumber, classCode, "E", ticketDepartureDate);
+                    case "F":
+                        return getPriceForTicketType(ticketFlightNumber, classCode, "F", ticketDepartureDate);
+                    case "G":
+                        String temp = getPriceForTicketType(ticketFlightNumber, classCode, "G", ticketDepartureDate);
+                        System.out.println(temp);
+                        return temp;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + ticketCode);
+                }
+            }
+        }
+        return null;
+    }
+
+    private @NotNull String getPriceForTicketType(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
+        List<Price> price = priceRepo.findPriceByClassTicketCode(ticketFlightNumber, classCode, ticketCode);
+        Date startDate;
+        Date endDate;
+        Double pricePerTicket;
+        boolean dateInRange;
+        for (int i = 0; i < price.size(); i++) {
+            startDate = price.get(i).getStartDate();
+            endDate = price.get(i).getEndDate();
+            dateInRange = startDate.compareTo(ticketDepartureDate) <= 0 && endDate.compareTo(ticketDepartureDate) >= 0;
+            pricePerTicket = price.get(i).getPrice();
+            if (dateInRange) {
+                System.out.println("Price Per Ticket: " + pricePerTicket + " Ticket Code: " + ticketCode + " Class Code: " + classCode);
+                return "$" + pricePerTicket;
+            }
+            i++;
+        }
+        return "No Price Available";
     }
 
     public List<Flight> getByOrigin(String dep) {

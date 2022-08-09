@@ -52,6 +52,11 @@ font-size: 0.9em;
 #register input {
     margin-bottom: 10px;
 }
+
+#seatSelect select{
+  width: 100%;
+}
+
 /*--------------------------------------------------------------
 # Material Design Cards
 --------------------------------------------------------------*/

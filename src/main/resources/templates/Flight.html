@@ -40,16 +40,76 @@
             <p><b>Departs: </b><span th:text="${Flight.getDepartureCode()}"></span> @ <span th:text="${Flight.getDepartureTime()}"></span></p>
             <p><b>Arrives: </b><span th:text="${Flight.getDestinationCode()}"></span>  @  <span th:text="${Flight.getArrivalTime()}"></span></p>
             <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
-           <!-- <p><b>Seats Available: </b> <span th:text="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()}"></span></b></p>
-            <p><b>Ticket Price: $</b> <span th:text="${Flight.getTicketPrice()}"></span></p>  -->
+              <p><b>Available Seats on <span th:text="${Flight.getFlightNumber()}"></span></b></p>
+              <hr>
+              <p><b>First Class</b></p>
+              <div th:each="avail:${firstClass}">
+                  <p>
+                    <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                    <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                    <b>Price per Seat: </b><span th:text="${firstClassPrice}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                  </p>
+              </div>
+              <hr>
+              <p><b>Business Class</b></p>
+              <div th:each="avail:${businessClass}">
+                  <p>
+                    <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                    <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                    <b>Price per Seat: </b><span th:text="${businessClassPrice}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                  </p>
+              </div>
+              <hr>
+              <p><b>Premium Economy</b></p>
+              <div th:each="avail:${premiumEconomy}">
+                  <p>
+                    <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                    <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                    <b>Price per Seat: </b><span th:text="${premiumEconomyPrice}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                  </p>
+              </div>
+              <hr>
+              <p><b>Economy</b></p>
+              <div th:each="avail:${economyClass}">
+                  <div th:if="${avail.getValue()} != 0">
+                      <p>
+                        <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                        <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                        <b>Price per Seat: </b><span th:text="${economyClassPrice}"></span>
+                        <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                      </p>
+                  </div>
+              </div>
+              <hr>
+              <p><b>Total Seats: </b><span th:text="${totalSeats}"></span></p>
+              <p id="showTotal"><b>Total Cost:</b> 0</p>
 
-            <div th:if="${usr.isLoggedIn()} != false">
+              <div th:if="${usr.isLoggedIn()} != false">
+                <button type="submit" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                <button type="submit" disabled class="btn btn-danger">Sold out</button>
+                <Br><Br>
                 <a th:href="@{'/wishlist?id=' +${Flight.getFlightID()}}" class="btn btn-primary">Add Location To Wishlist</a>
-              <!--  <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>
-               <button type="submit" th:if="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()} != 0" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
-               <button type="submit" disabled th:if="${Flight.getBookedSeats()} - ${Flight.getMaxSeats()} == 0" class="btn btn-danger">Sold out</button><Br><Br> -->
 
                <script th:inline="javascript">
+                   function calculateSeats(){
+                       var total = 0;
+                       for(var i = 0; i < firstClass.length; i++){
+                           total += firstClass[i].getValue();
+                       }
+                       for(var i = 0; i < businessClass.length; i++){
+                           total += businessClass[i].getValue();
+                       }
+                       for(var i = 0; i < premiumEconomy.length; i++){
+                           total += premiumEconomy[i].getValue();
+                       }
+                       for(var i = 0; i < economyClass.length; i++){
+                           total += economyClass[i].getValue();
+                       }
+                       document.getElementById("showTotal").innerHTML = "Total: " + total;
+                   }
                    function addToCart(){
                      var seats = document.getElementById("seats").value;
                      location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
@@ -114,7 +174,7 @@
   <!-- ======= Footer ======= -->
   <lower th:replace="Fragments/Footer"> </lower>
   <!-- Template Main JS File -->
-
+</main>
 </body>
 <script th:inline="javascript">
   am4core.useTheme(am4themes_animated);
