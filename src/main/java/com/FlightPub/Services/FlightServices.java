@@ -79,10 +79,10 @@ public class FlightServices{
         return out;
     }
 
-    public Object getSeatList(String a, List<Availability> availableSeats) {
+    public Object getSeatList(String classCode, List<Availability> availableSeats) {
         List<Map.Entry<String, Integer>> seats = new ArrayList<>();
         for (Availability ticket : availableSeats) {
-            if (ticket.getClassCode().equals(a)) {
+            if (ticket.getClassCode().equals(classCode)) {
                 int seatsAvailable = ticket.getNumberAvailableSeatsLeg1() > ticket.getNumberAvailableSeatsLeg2() ? ticket.getNumberAvailableSeatsLeg1() : ticket.getNumberAvailableSeatsLeg2();
                 if (seatsAvailable > 0) {
                     String ticketCode = ticket.getTicketCode();
@@ -110,6 +110,29 @@ public class FlightServices{
             }
         }
         return seats;
+    }
+
+    public Object getPrice(String classCode, List<Availability> availableSeats) {
+        for (Availability ticketPrices : availableSeats) {
+            if (ticketPrices.getClassCode().equals(classCode)) {
+                String ticketCode = ticketPrices.getTicketCode();
+                switch (ticketCode) {
+                    case "A":
+                        return priceRepo.findPriceByClassTicketCode(ticketPrices.getFlightNumber(), "A");
+                    case "B":
+                        return priceRepo.findPriceByClassTicketCode(ticketPrices.getFlightNumber(), "B");
+                    case "C":
+                        return priceRepo.findPriceByClassTicketCode(ticketPrices.getFlightNumber(), "C");
+                    case "D":
+                        return priceRepo.findPriceByClassTicketCode(ticketPrices.getFlightNumber(), "D");
+                    case "E":
+                        return priceRepo.findPriceByClassTicketCode(ticketPrices.getFlightNumber(), "E");
+                    case "F":
+                        return priceRepo.findPriceByClassTicketCode(ticketPrices.getFlightNumber(), "F");
+                }
+            }
+        }
+        return null;
     }
 
     public List<Flight> getByOrigin(String dep) {

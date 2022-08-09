@@ -46,7 +46,8 @@
                   <p>
                     <span th:text="${avail.getKey()}"></span>
                     <span th:text="${avail.getValue()}"></span>
-                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
+                    <span th:text="${firstClassPrice}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
                   </p>
               </div>
               <p><b>Business Class</b></p>
@@ -54,7 +55,8 @@
                   <p>
                     <span th:text="${avail.getKey()}"></span>
                     <span th:text="${avail.getValue()}"></span>
-                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
+                      <span th:text="${businessClassPrice}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
                   </p>
               </div>
               <p><b>Premium Economy</b></p>
@@ -62,25 +64,47 @@
                   <p>
                     <span th:text="${avail.getKey()}"></span>
                     <span th:text="${avail.getValue()}"></span>
-                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
+                    <span th:text="${premiumEconomyPrice}"></span>
+                    <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
                   </p>
               </div>
               <p><b>Economy</b></p>
               <div th:each="avail:${economyClass}">
-                  <p>
-                    <span th:text="${avail.getKey()}"></span>
-                    <span th:text="${avail.getValue()}"></span>
-                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
-                  </p>
+                  <div th:if="${avail.getValue()} != 0">
+                      <p>
+                          <span th:text="${avail.getKey()}"></span>
+                          <span th:text="${avail.getValue()}"></span>
+                          <span th:text="${economyClassPrice}"></span>
+                          <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                      </p>
+                  </div>
               </div>
+              <p><b>Total Seats: </b><span th:text="${totalSeats}"></span></p>
+              <p id="showTotal"><b>Total:</b> 0</p>
 
-            <div th:if="${usr.isLoggedIn()} != false">
-                <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>
-                <!-- <button type="submit" th:if="" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
-                <button type="submit" disabled th:if="" class="btn btn-danger">Sold out</button><Br><Br> -->
+              <div th:if="${usr.isLoggedIn()} != false">
+                <button type="submit" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                <button type="submit" disabled class="btn btn-danger">Sold out</button>
+                <Br><Br>
                 <a th:href="@{'/wishlist?id=' +${Flight.getFlightID()}}" class="btn btn-primary">Add Location To Wishlist</a>
 
                <script th:inline="javascript">
+                   function calculateSeats(){
+                       var total = 0;
+                       for(var i = 0; i < firstClass.length; i++){
+                           total += firstClass[i].getValue();
+                       }
+                       for(var i = 0; i < businessClass.length; i++){
+                           total += businessClass[i].getValue();
+                       }
+                       for(var i = 0; i < premiumEconomy.length; i++){
+                           total += premiumEconomy[i].getValue();
+                       }
+                       for(var i = 0; i < economyClass.length; i++){
+                           total += economyClass[i].getValue();
+                       }
+                       document.getElementById("showTotal").innerHTML = "Total: " + total;
+                   }
                    function addToCart(){
                      var seats = document.getElementById("seats").value;
                      location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
