@@ -1,8 +1,10 @@
 package com.FlightPub.RequestObjects;
 
 import com.FlightPub.Services.FlightServices;
+import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
+import com.FlightPub.model.WishListItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @SessionScope
@@ -23,6 +24,10 @@ public class UserSession {
     @Getter
     @Setter
     private FlightServices flightServices;
+
+    @Getter
+    @Setter
+    private UserAccountServices usrService;
     @Getter
     Map<String, Integer> sessionCart;
 
@@ -31,6 +36,13 @@ public class UserSession {
     public void setFlightServices(FlightServices flightService) {
         this.flightServices = flightService;
     }
+
+    @Autowired
+    @Qualifier(value = "UserAccountServices")
+    public void setUserServices(UserAccountServices usrService) {
+        this.usrService = usrService;
+    }
+
 
     public UserSession(UserAccount usr){
         this.usr = usr;
@@ -77,6 +89,21 @@ public class UserSession {
         return sessionCart;
     }
 
+    public boolean addToWishList(String id){
+
+            Flight tempF = flightServices.getById(id);
+            return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
+
+    }
+
+    public void removeFromWishList(String id){
+        usrService.removeWIL(id, usr.getEmail());
+    }
+
+    public List<Map.Entry<String, String>> getWishList(){
+
+        return usrService.getWishList(usr);
+    }
 
     public Flight getFlight(String id){
         return flightServices.getById(id);

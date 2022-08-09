@@ -75,8 +75,6 @@ public class IndexController {
 
         model.addAttribute("LoadingRecommendation", true);
 
-        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
-
         return "index";
     }
 
@@ -208,7 +206,7 @@ public class IndexController {
         return "User/Personalised";
     }
 
-    @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
+    @RequestMapping("/flight")
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
@@ -259,6 +257,46 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         return "Flight";
+    }
+
+    @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
+    public String bookFlight(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session){
+
+
+        getSession(session).setFlightServices(flightServices);
+        getSession(session).setUserServices(usrServices);
+        if(remove != null){
+            try{
+                getSession(session).removeFromWishList(remove);
+            }catch(Exception e){
+                System.out.println(e.getStackTrace());
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
+
+            model.addAttribute("WishL", getSession(session).getWishList());
+            model.addAttribute("usr", getSession(session));
+            return "WishList";
+        }
+        if(id != null){
+
+            Boolean accepted = getSession(session).addToWishList(id);
+            Flight f = flightServices.getById(id);
+            model.addAttribute("Flight", f);
+            if(accepted){
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
+        }
+
+
+
+        model.addAttribute("WishL", getSession(session).getWishList());
+        model.addAttribute("usr", getSession(session));
+
+        return "WishList";
     }
 
     @PostMapping("/search")

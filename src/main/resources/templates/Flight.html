@@ -78,6 +78,7 @@
                 <span>Tickets: </span> <input type="number" class="form-control" value="0" id="seats" th:max="${Flight.getMaxSeats()} - ${Flight.getBookedSeats()}"/>
                 <!-- <button type="submit" th:if="" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
                 <button type="submit" disabled th:if="" class="btn btn-danger">Sold out</button><Br><Br> -->
+                <a th:href="@{'/wishlist?id=' +${Flight.getFlightID()}}" class="btn btn-primary">Add Location To Wishlist</a>
 
                <script th:inline="javascript">
                    function addToCart(){
