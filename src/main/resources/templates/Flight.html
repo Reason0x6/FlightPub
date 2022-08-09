@@ -40,47 +40,52 @@
             <p><b>Departs: </b><span th:text="${Flight.getDepartureCode()}"></span> @ <span th:text="${Flight.getDepartureTime()}"></span></p>
             <p><b>Arrives: </b><span th:text="${Flight.getDestinationCode()}"></span>  @  <span th:text="${Flight.getArrivalTime()}"></span></p>
             <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
-              <p><b>Available Seats on <span th:text="${Flight.getFlightID()}"></span></b></p>
+              <p><b>Available Seats on <span th:text="${Flight.getFlightNumber()}"></span></b></p>
+              <hr>
               <p><b>First Class</b></p>
               <div th:each="avail:${firstClass}">
                   <p>
-                    <span th:text="${avail.getKey()}"></span>
-                    <span th:text="${avail.getValue()}"></span>
-                    <span th:text="${firstClassPrice}"></span>
+                    <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                    <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                    <b>Price per Seat: </b><span th:text="${firstClassPrice}"></span>
                     <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
                   </p>
               </div>
+              <hr>
               <p><b>Business Class</b></p>
               <div th:each="avail:${businessClass}">
                   <p>
-                    <span th:text="${avail.getKey()}"></span>
-                    <span th:text="${avail.getValue()}"></span>
-                      <span th:text="${businessClassPrice}"></span>
+                    <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                    <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                    <b>Price per Seat: </b><span th:text="${businessClassPrice}"></span>
                     <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
                   </p>
               </div>
+              <hr>
               <p><b>Premium Economy</b></p>
               <div th:each="avail:${premiumEconomy}">
                   <p>
-                    <span th:text="${avail.getKey()}"></span>
-                    <span th:text="${avail.getValue()}"></span>
-                    <span th:text="${premiumEconomyPrice}"></span>
+                    <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                    <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                    <b>Price per Seat: </b><span th:text="${premiumEconomyPrice}"></span>
                     <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
                   </p>
               </div>
+              <hr>
               <p><b>Economy</b></p>
               <div th:each="avail:${economyClass}">
                   <div th:if="${avail.getValue()} != 0">
                       <p>
-                          <span th:text="${avail.getKey()}"></span>
-                          <span th:text="${avail.getValue()}"></span>
-                          <span th:text="${economyClassPrice}"></span>
-                          <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                        <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
+                        <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
+                        <b>Price per Seat: </b><span th:text="${economyClassPrice}"></span>
+                        <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
                       </p>
                   </div>
               </div>
+              <hr>
               <p><b>Total Seats: </b><span th:text="${totalSeats}"></span></p>
-              <p id="showTotal"><b>Total:</b> 0</p>
+              <p id="showTotal"><b>Total Cost:</b> 0</p>
 
               <div th:if="${usr.isLoggedIn()} != false">
                 <button type="submit" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
