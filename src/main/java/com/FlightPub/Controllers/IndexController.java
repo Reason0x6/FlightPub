@@ -66,7 +66,7 @@ public class IndexController {
 
 
     @RequestMapping("/")
-    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
+    public String loadIndex(Model model, HttpSession session) {
 
         model = addDateAndTimeToModel(model);
 
@@ -200,7 +200,6 @@ public class IndexController {
         model.addAttribute("groups", groups);
         model.addAttribute("invitedGroups", invitedGroups);
 
-        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Personalised";
