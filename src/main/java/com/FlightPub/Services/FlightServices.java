@@ -15,7 +15,8 @@ import java.util.*;
 
 @Service("FlightServices")
 public class FlightServices{
-
+    private HashMap<String, Map.Entry<Date, List<Flight>>> flightCache;
+    private HashMap<String, Map.Entry<Date, List<Availability>>> availCache;
     private FlightRepo flightRepo;
     private AvailabilityRepo availRepo;
     private PriceRepo priceRepo;
@@ -30,18 +31,52 @@ public class FlightServices{
         this.availRepo = availRepo;
         this.flightRepo = flightRepository;
         this.priceRepo = priceRepo;
+        flightCache = new HashMap<>();
+        availCache = new HashMap<>();
     }
 
+
+
+
     public List<Availability> getAvailability(String flightNumber, Date departureTime) {
-        List<Availability> avail = availRepo.findByFlightCodeAndDate(flightNumber, departureTime);
-        savedAvails = avail;
-        return savedAvails;
+
+        if(availCache.containsKey(flightNumber+departureTime.toString()) && availCache.get(flightNumber+departureTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println(flightNumber+departureTime.toString() +" was returned from cache");
+            return availCache.get(flightNumber+departureTime.toString()).getValue();
+        }else {
+            List<Availability> avail = availRepo.findByFlightCodeAndDate(flightNumber, departureTime);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+
+            Map.Entry<Date, List<Availability>> input = new AbstractMap.SimpleEntry<>(time, avail);
+
+            availCache.put(flightNumber + departureTime.toString(), input);
+            return avail;
+        }
     }
 
     public List<Flight> listAll(){
-        List<Flight> flights = new ArrayList<>();
-        flightRepo.findAll().forEach(flights::add);
-        return flights;
+
+        if(flightCache.containsKey("ALL") && flightCache.get("ALL").getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println("* was returned from cache");
+            return flightCache.get("ALL").getValue();
+        }else {
+            List<Flight> flights = new ArrayList<>();
+            flightRepo.findAll().forEach(flights::add);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, flights);
+
+            flightCache.put("ALL", input);
+            return flights;
+        }
+
     }
 
     public Flight getById(String id){
@@ -63,14 +98,45 @@ public class FlightServices{
 
     public List<Flight> getByDestination(String dest) {
 
-        // Query defined in flightRepo
-       return flightRepo.findByDestination(dest);
+        if(flightCache.containsKey("DEST" + dest) && flightCache.get("DEST" + dest).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println("DEST" + dest + " was returned from cache");
+            return flightCache.get("DEST" + dest).getValue();
+        }else {
+            List<Flight> flights = flightRepo.findByDestination(dest);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, flights);
+
+            flightCache.put("DEST" + dest, input);
+            return flights;
+        }
+
     }
 
     public int getAvailableSeats(String id, Date departTime){
+        List<Availability> outArr;
+        if(availCache.containsKey(id+departTime.toString()) && availCache.get(id+departTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println(id+departTime.toString() + " was returned from cache");
+            outArr = availCache.get(id+departTime.toString()).getValue();
+        }else {
+            outArr = availRepo.findByFlightCodeAndDate(id, departTime);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+
+            Map.Entry<Date, List<Availability>> input = new AbstractMap.SimpleEntry<>(time, outArr);
+
+            availCache.put(id + departTime.toString(), input);
+
+        }
 
         int out = 0;
-        for (Availability a: availRepo.findByFlightCodeAndDate(id, departTime)) {
+        for (Availability a: outArr) {
             out += a.getNumberAvailableSeatsLeg1() > a.getNumberAvailableSeatsLeg2() ? a.getNumberAvailableSeatsLeg2() : a.getNumberAvailableSeatsLeg1();
         }
         return out;
@@ -162,37 +228,124 @@ public class FlightServices{
     }
 
     public List<Flight> getByOrigin(String dep) {
-        List<Flight> out = new ArrayList<>();
 
-        flightRepo.findByOrigin(dep).forEach(flight -> {
+        if(flightCache.containsKey("DEP"+dep) && flightCache.get("DEP"+dep).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println("DEP"+dep + " was returned from cache");
+            return flightCache.get("DEP"+dep).getValue();
+        }else {
+            System.out.println("DEP"+dep + " was returned from cache");
+            List<Flight> out = new ArrayList<>();
+            flightRepo.findByOrigin(dep).forEach(flight -> {
 
-            Location loc = locationServices.getById(flight.getDestinationCode());
+                Location loc = locationServices.getById(flight.getDestinationCode());
 
-            if(!loc.isCovid_restricted()){
-                out.add(flight);
-            }
-        });
-        // Query defined in flightRepo
-        return out;
+                if(!loc.isCovid_restricted()){
+                    out.add(flight);
+                }
+            });
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
+
+            flightCache.put("DEP"+dep, input);
+            return out;
+        }
     }
 
     public List<Flight> getByOriginAndDestination(String origin, String dest, Date dstart, Date dend) {
-        // Query defined in flightRepo
-        return flightRepo.findByOriginAndDestination(origin, dest, dstart, dend);
+        String key = "DEP"+origin+"DEST"+dest+"DEP"+dstart.toString()+dend.toString();
+        if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println(key + " was returned from cache");
+            return flightCache.get(key).getValue();
+        }else {
+            List<Flight> out = flightRepo.findByOriginAndDestination(origin, dest, dstart, dend);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
+
+            flightCache.put(key, input);
+            return out;
+        }
+
     }
 
     public List<Flight> getByOrigin(String origin, Date dstart, Date dend){
-        // Query defined in flightRepo
-        return flightRepo.findByOrigin(origin, dstart, dend);
+        String key = "DEP"+origin+dstart.toString()+dend.toString();
+        if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println(key + " was returned from cache");
+            return flightCache.get(key).getValue();
+        }else {
+            System.out.println(key + " was generated");
+            List<Flight> out = flightRepo.findByOrigin(origin, dstart, dend);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
+
+            flightCache.put(key, input);
+            return out;
+        }
     }
 
     public List<Flight> getByOriginAndDestinationAndArrivalTimes(String origin, String dep, Date dstart, Date dend) {
-        // Query defined in flightRepo
-        return flightRepo.findByOriginAndDestinationAndArrivalTimes(origin, dep, dstart, dend);
+        String key = "DEP"+origin+"DEST"+dep+"DEST"+dstart.toString()+dend.toString();
+        if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println(key + " was returned from cache");
+            return flightCache.get(key).getValue();
+        }else {
+            List<Flight> out = flightRepo.findByOriginAndDestinationAndArrivalTimes(origin, dep, dstart, dend);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
+
+            flightCache.put(key, input);
+            return out;
+        }
+
     }
 
     public List<Flight> getByOriginAndArrivalTimes(String origin, Date dstart, Date dend) {
-        // Query defined in flightRepo
-        return flightRepo.findByOriginAndArrivalTimes(origin, dstart, dend);
+
+        String key = "DEP"+origin+"DEST"+dstart.toString()+dend.toString();
+        if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println(key + " was returned from cache");
+            return flightCache.get(key).getValue();
+        }else {
+            List<Flight> out = flightRepo.findByOriginAndArrivalTimes(origin, dstart, dend);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
+
+            flightCache.put(key, input);
+            return out;
+        }
+
     }
+
+    public void invalidate(){
+
+        flightCache = new HashMap<>();
+        availCache = new HashMap<>();
+
+    }
+
 }

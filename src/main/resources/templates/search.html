@@ -38,23 +38,110 @@
       <h1 th:text="${search.getOriginIn()} + ' -> ' + ${search.getDestinationIn()}"></h1>
 
       <div th:if="${flights[0].size()} != 0">
-        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-          <thead>
+        <hr />
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFC">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFC" aria-expanded="false" aria-controls="collapseFC">
+                <h4>Direct Flights</h4>
+              </button>
+            </h2>
+            <div id="collapseFC" class="accordion-collapse collapse" aria-labelledby="headingFC" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <div class="row">
 
-          </thead>
-          <tbody>
+                  <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                    <th id="departs">Departs</th>
+                    <th id="arrives">Arrives</th>
+                    <th id="airlines">Airline</th>
+                    <th id="info">Information</th>
+                    </thead>
+                    <tbody>
 
-         <tr class="" th:each="flight : ${flights[0]}" style="padding: 10px 0 0 20px;">
-           <td><b><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></td>
-           <td><b><span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span></b><span th:text="${flight.getArrivalTime()}"></span></td>
-           <td><span th:text="${flight.getAirlineCode()}"></span></td>
-          <!-- <td><span th:text="' $' + ${flight.getTicketPrice()}"></span></td> -->
-           <td><a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
-             <button type="submit" class="btn btn-link">Bookmark</button></td>
-          </tr>
-          </tbody>
-        </table>
+                    <tr class="" th:each="flight : ${flights[0]}" style="padding: 10px 0 0 20px;">
+                      <td th:data="${flight.getDepartureString()}" ><b><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></td>
+                      <td th:data="${flight.getArrivalString()}"> <b><span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span></b><span th:text="${flight.getArrivalTime()}"></span></td>
+                      <td th:data="${flight.getAirlineCode()}"><span th:text="${flight.getAirlineCode()}"></span></td>
+                      <!-- <td><span th:text="' $' + ${flight.getTicketPrice()}"></span></td> -->
+                      <td><a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-link">Bookmark</button></td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
       </div>
+
+
+
+      <div th:if="${stopOver[0].size()} != 0">
+        <hr />
+        <div class="accordion" id="accordionExample2">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFC2">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFC2" aria-expanded="false" aria-controls="collapseFC2">
+                <h4>Single Stopover Flights</h4>
+              </button>
+            </h2>
+            <div id="collapseFC2" class="accordion-collapse collapse show" aria-labelledby="headingFC2" data-bs-parent="#accordionExample2">
+              <div class="accordion-body">
+                <div class="row">
+
+                  <table id="dtStopoverExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                    <th id="route">Route</th>
+                    <th id="departstop">Departure</th>
+                    <th id="arrivesstop">Arrival</th>
+                    <th id="airlinesstop">Airlines</th>
+                    <th id="infostop">Information</th>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="flight : ${stopOver[0]}" style="padding: 10px 0 0 20px;">
+                      <td th:data="${flight.getFlightAtIndex(0).getDepartureString()}"> <span th:text="${flight.getFlightAtIndex(0).getDepartureCode()} + ' -> ' + ${flight.getFlightAtIndex(1).getDestinationCode()} + ' VIA ' + ${flight.getFlightAtIndex(1).getDepartureCode()}"></span></td>
+                      <td th:data="${flight.getFlightAtIndex(0).getDepartureString()}" >
+                        <span th:text="'Departs ' + ${flight.getFlightAtIndex(0).getDepartureCode()} + ': '"></span><span th:text="${flight.getFlightAtIndex(0).getDepartureTime()}"></span>
+                      </td>
+
+                      <td th:data="${flight.getFlightAtIndex(1).getArrivalString()}">
+                        <span th:text="'Arrives in ' + ${flight.getFlightAtIndex(1).getDestinationCode()} + ': '"></span><span th:text="${flight.getFlightAtIndex(1).getArrivalTime()}"></span><br>
+                      </td>
+
+                      <td th:data="${flight.getFlightAtIndex(0).getAirlineCode()}"><b>Airline: </b><span th:text="${flight.getFlightAtIndex(0).getAirlineCode()}"></span>, <span th:text="${flight.getFlightAtIndex(1).getAirlineCode()}"></span></td>
+                      <!-- <td><span th:text="' $' + ${flight.getTicketPrice()}"></span></td> -->
+                      <td>
+                        <!--
+                        <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-link">Bookmark</button>
+                        -->
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+
+
+      </div>
+<br><Br>
+
 
 <!--
       <div th:if="${stopOver[0].size()} != 0">
@@ -134,15 +221,50 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
       <div th:if="${flights[0].size()} == 0">
         <p>There are currently no flights that match this search</p>
-      </div>-->
+      </div>
     </div>
   </div>
 </div>
 <lower th:replace="Fragments/Footer"> </lower>
+
+<script>
+  $('#dtBasicExample th').on('click', function(){
+    var table = $(this).parents('table').eq(0)
+    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+    this.asc = !this.asc
+    if (!this.asc){rows = rows.reverse()}
+    for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+  })
+  function comparer(index) {
+    return function(a, b) {
+      var valA = getCellValue(a, index), valB = getCellValue(b, index)
+      return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+    }
+  }
+  function getCellValue(row, index){
+    return $(row).children('td').eq(index).attr("data");
+  }
+  $('#dtStopoverExample th').on('click', function(){
+    var table = $(this).parents('table').eq(0)
+    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+    this.asc = !this.asc
+    if (!this.asc){rows = rows.reverse()}
+    for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+  })
+  function comparer(index) {
+    return function(a, b) {
+      var valA = getCellValue(a, index), valB = getCellValue(b, index)
+      return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+    }
+  }
+  function getCellValue(row, index){
+    return $(row).children('td').eq(index).attr("data");
+  }
+</script>
 
 
 
