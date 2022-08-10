@@ -132,9 +132,7 @@ public class FlightServices{
                     case "F":
                         return getPriceForTicketType(ticketFlightNumber, classCode, "F", ticketDepartureDate);
                     case "G":
-                        String temp = getPriceForTicketType(ticketFlightNumber, classCode, "G", ticketDepartureDate);
-                        System.out.println(temp);
-                        return temp;
+                        return getPriceForTicketType(ticketFlightNumber, classCode, "G", ticketDepartureDate);
                     default:
                         throw new IllegalStateException("Unexpected value: " + ticketCode);
                 }
