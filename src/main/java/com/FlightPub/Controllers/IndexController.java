@@ -6,8 +6,6 @@ import com.FlightPub.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +26,7 @@ public class IndexController {
     private WishListServices wishListServices;
     private AdminAccountServices adminAccountServices;
     private HolidayPackageServices holidayPackageServices;
+
 
     @Autowired
     @Qualifier(value = "WishListServices")
@@ -70,6 +69,12 @@ public class IndexController {
     @Qualifier(value = "HolidayPackageServices")
     public void setHolidayPackageServices(HolidayPackageServices holidayPackageServices){ this.holidayPackageServices = holidayPackageServices; }
 
+    @RequestMapping("/invalidatecache")
+    public String cache(){
+        System.out.println("Cache Cleared");
+        flightServices.invalidate();
+        return "index";
+    }
 
     @RequestMapping("/")
     public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
