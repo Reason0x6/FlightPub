@@ -84,6 +84,7 @@ public class IndexController {
 
         wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
         wishListServices.saveOrUpdate(new WishListItem("WLI-2", "user4@email.com", "OOL"));
+        wishListServices.saveOrUpdate(new WishListItem("WLI-3", "user4@email.com", "SYD"));
 
         return "index";
     }
@@ -220,19 +221,6 @@ public class IndexController {
         if(!getAdminSession(session).isLoggedIn()){
             return "redirect:login";
         }
-
-        //List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
-        //if(bookings.size() > 0){
-        //    model.addAttribute("bookings", bookings);
-        //    model.addAttribute("flights", flightServices);
-        //}else{
-        //    model.addAttribute("bookings", null);
-        //}
-
-        //List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
-        //List<UserGroup> invitedGroups = groupServices.findInvitedGroupsContaining(getSession(session).getEmail());
-        //model.addAttribute("groups", groups);
-        //model.addAttribute("invitedGroups", invitedGroups);
 
         model.addAttribute("wish", wishListServices.listAll());
         model.addAttribute("locs", locationServices.listAll());

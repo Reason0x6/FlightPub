@@ -41,5 +41,9 @@ public class WishListServices {
         wishlistRepo.findAll().forEach(wishListItems::add);
         return wishListItems;
     }
+
+    public List<WishListItem> findAllByPopularitySortDesc(){
+        return wishlistRepo.findAllByPopularitySortDesc();
+    }
 }
 

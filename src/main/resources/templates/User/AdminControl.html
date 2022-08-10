@@ -10,6 +10,7 @@
             <h2>Restrict/Unrestrict Covid Location</h2>
             <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"> </form>
         </div>
+        <br>
         <h2>Wish Lists</h2>
         <div style="overflow:scroll; height:300px;">
             <div th:each="wli : ${wish}">
@@ -18,10 +19,12 @@
                 <p th:text="${wli.getDestinationID()}"></p>
             </div>
         </div>
+        <br>
         <div>
             <h2>Holiday Packages</h2>
             <form th:replace="Fragments/Forms :: #holidayPackageForm"> </form>
         </div>
+        <br>
     </main>
 </div>
 
