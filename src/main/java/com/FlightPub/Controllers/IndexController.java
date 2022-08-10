@@ -167,7 +167,7 @@ public class IndexController {
                 if(req.getPassword().equals(newAdmin.getPassword())){
                     // Set post flag
                     model.addAttribute("method", "post");
-
+                    System.out.println("Admin" + newAdmin.getEmail());
                     // Set admin session
                     AdminSession admin = new AdminSession(newAdmin);
                     session.setAttribute("Admin", admin);
