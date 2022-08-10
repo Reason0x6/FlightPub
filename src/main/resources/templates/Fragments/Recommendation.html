@@ -10,7 +10,7 @@
                         th:each="location : ${recommendationLocation}"
                         th:id="city"
                         th:value="${location.locationID}"
-                        th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
+                        th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation.locationID})">
 
                 </option>
                 <option th:if="${LoadingRecommendation} == true"> RECOMMENDATION LOADING... </option>
@@ -20,15 +20,30 @@
     </div>
 
     <div>
+<!--        <div id="recommendationRow" class="row" style="padding-top: 10px;">-->
+<!--            <div class="col-sm-3" th:each="flight : ${reco}"  >-->
+<!--                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationCode()} + '.jpg'">-->
+<!--                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>-->
+<!--                    <h2 style="font-size: 1.5em" th:text="${flight.getDepartureCode()} + ' to ' + ${flight.getDestinationCode()}"></h2>-->
+<!--                    <p><em><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span><span th:text="${flight.getDepartureString()}"></span><br>-->
+<!--                        <span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span><span th:text="${flight.getArrivalString()}"></span><br>-->
+<!--                        Airline: <span th:text="${flight.getAirlineCode()}"></span></em></p>-->
+<!--                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
         <div id="recommendationRow" class="row" style="padding-top: 10px;">
-            <div class="col-sm-3" th:each="flight : ${reco}"  >
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationCode()} + '.jpg'">
-                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
-                    <h2 style="font-size: 1.5em" th:text="${flight.getDepartureCode()} + ' to ' + ${flight.getDestinationCode()}"></h2>
-                    <p><em><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span><span th:text="${flight.getDepartureString()}"></span><br>
-                        <span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span><span th:text="${flight.getArrivalString()}"></span><br>
-                        Airline: <span th:text="${flight.getAirlineCode()}"></span></em></p>
-                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+            <div class="col-sm-3" th:each="location : ${reco}"  >
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
+                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em" th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
+                    <h3 style="font-size: 1em"  th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
+                    <p>
+
+                        TODO maybe add weather stats or similar if time
+                    <p>
+                    <a th:href="'/flight?id='" class="btn btn-primary">Find FLights</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
 
             </div>

@@ -19,10 +19,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class RecommendationController {
-    private String recommendationLocation;
+    private Location recommendationLocation;
     private FlightServices flightServices;
     private LocationServices locationServices;
 
@@ -40,7 +41,7 @@ public class RecommendationController {
 
     @PostMapping("/recommendations")
     public String loadRecommendations(@RequestParam String city, Model model) {
-        recommendationLocation = city;
+        recommendationLocation = locationServices.getById(city);
 
         model.addAttribute("reco", getRecommendation());
         model.addAttribute("currentLocation", getRecommendationLocation());
@@ -70,14 +71,14 @@ public class RecommendationController {
         return loadRecommendations(currentNearestCity, model);
     }
 
-    public List<Flight> getRecommendation() {
+    public List<Location> getRecommendation() {
         // TODO If a user is logged in get their preferred location
         // Set current location
         Location currentLocation;
         if(recommendationLocation == null) {
             currentLocation = locationServices.mostPopular();
         } else {
-            currentLocation = locationServices.getById(recommendationLocation);
+            currentLocation = locationServices.getById(recommendationLocation.getLocationID());
         }
 
         // If no current location is found in database
@@ -86,11 +87,19 @@ public class RecommendationController {
             return null;
         }
 
-        // Create new search
-        BasicSearch search = new BasicSearch();
-        search.setFlightServices(flightServices);
-        search.setLocationServices(locationServices);
-        search.setOriginIn(currentLocation.getLocationID());
+        // TODO Remove if not needed
+//        return searchForRecommendedFlights(currentLocation);
+
+        // Get currently popular locations
+        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
+
+        // The final list of recommended locations
+        return locations.stream().limit(4).collect(Collectors.toList());
+    }
+
+    private List<Flight> searchForRecommendedFlights(Location currentLocation) {
+        // Get currently popular locations
+        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
 
         // The final list of recommended flights
         List<Flight> recommendedFlights = new LinkedList<>();
@@ -105,8 +114,11 @@ public class RecommendationController {
         date = cal.getTime();
         String max = dateFormat.format(date);
 
-        // Get currently popular locations
-        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
+        // Create new search
+        BasicSearch search = new BasicSearch();
+        search.setFlightServices(flightServices);
+        search.setLocationServices(locationServices);
+        search.setOriginIn(currentLocation.getLocationID());
 
         // Get 1 flight from each popular location
         for (Location popularLocation : locations) {
@@ -140,9 +152,10 @@ public class RecommendationController {
         return recommendedFlights;
     }
 
-    public String getRecommendationLocation() {
+
+    public Location getRecommendationLocation() {
         if(recommendationLocation == null) {
-            recommendationLocation = locationServices.mostPopular().getLocationID();
+            recommendationLocation = locationServices.mostPopular();
         }
         return recommendationLocation;
     }
