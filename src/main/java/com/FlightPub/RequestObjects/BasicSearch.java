@@ -114,14 +114,15 @@ public class BasicSearch {
                 dend = new SimpleDateFormat("yyyy-MM-dd").parse(end);
                 dend = addBuffer(dend, 0, 23, 59);
             }
+
         } catch (ParseException e) {
             System.out.println(e);
             return null;
         }
-
         // Location Proccessing
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = null;
+
 
         if (destinationIn != null && !destinationIn.equals("") && !destinationIn.equals("Show All"))  // Eliminates the empty Search for location
             destinationObj = locService.findByLocation(destinationIn);
@@ -166,8 +167,8 @@ public class BasicSearch {
             List<StopOver> output = new ArrayList<>();  // Stores the stopovers of each stopover iteration
             for (StopOver flight : flights) {
                 for (Flight newFlight : allFlights) {
-                    if (flight.getFlightAtIndex(count).getDestinationID().equals(newFlight.getOriginID())) {
-                        if (flight.locationVisited(newFlight.getDestinationID()) == false) {
+                    if (flight.getFlightAtIndex(count).getDestinationCode().equals(newFlight.getDepartureCode())) {
+                        if (flight.locationVisited(newFlight.getDestinationCode()) == false) {
                             if (isSuitableTiming(flight.getFlightAtIndex(count), newFlight)) {
                                 flight.addFlight(newFlight);
                                 output.add(flight);
@@ -183,7 +184,7 @@ public class BasicSearch {
         if (finalDestination != null) {
             List<StopOver> output = new ArrayList<>();
             for (StopOver flight : flights) {
-                if (flight.getFlightAtIndex(numberOfStops - 1).getDestinationID().equals(finalDestination))
+                if (flight.getFlightAtIndex(numberOfStops - 1).getDestinationCode().equals(finalDestination))
                     output.add(flight);
             }
             flights = output;
@@ -191,11 +192,12 @@ public class BasicSearch {
         return flights;
     }
 
+    //#TODO convvert promoted flights to Promoted Airlines
     // Determines which of the flights are promoted
-    public List<Flight> getPromotedFlights(List<Flight> allFlights) {
+      public List<Flight> getPromotedFlights(List<Flight> allFlights) {
         List<Flight> promoted = new ArrayList<>();
         for (Flight flight : allFlights) {
-            if (flight.isPromoted())
+            if (false)
                 promoted.add(flight);
         }
         return promoted;
@@ -203,8 +205,8 @@ public class BasicSearch {
 
     // Determines where a flight would be suitable for a stopover in terms of its timing
     private boolean isSuitableTiming(Flight first, Flight second) {
-        if (addBuffer(first.getArrival(), 0, 1, 0).compareTo(second.getDeparture()) == -1) {
-            if (addBuffer(first.getArrival(), 1, 0, 0).compareTo(second.getDeparture()) >= 0) {
+        if (addBuffer(first.getArrivalTime(), 0, 1, 0).compareTo(second.getDepartureTime()) == -1) {
+            if (addBuffer(first.getArrivalTime(), 1, 0, 0).compareTo(second.getDepartureTime()) >= 0) {
                 return true;
             }
         }
@@ -231,9 +233,9 @@ public class BasicSearch {
         for (Flight flight : flights) {
             // Removes all indirect flights
             if (this.isDirectFlight()) {
-                if (originObj != null && !flight.getOriginID().equals(originObj.getLocationID()))
+                if (originObj != null && !flight.getDepartureCode().equals(originObj.getLocationID()))
                     continue;
-                if (destinationObj != null && !flight.getDestinationID().equals(destinationObj.getLocationID()))
+                if (destinationObj != null && !flight.getDestinationCode().equals(destinationObj.getLocationID()))
                     continue;
             }
             // Filters by price
@@ -248,7 +250,7 @@ public class BasicSearch {
             if (rating != 0 && flight.getRating() < rating)
                 continue;
             // Filter to the number of seats
-            if (seats > (flight.getMaxSeats() - flight.getBookedSeats()))
+            if (seats > flightServices.getAvailableSeats(flight.getFlightNumber(), flight.getDepartureTime()))
                 continue;
             // Filters flights that are not part of the membership program
             if (this.isMembershipFlights()) {
@@ -278,8 +280,15 @@ public class BasicSearch {
             // Filter by rating
             if (rating != 0 && flight.getMinRating() < rating)
                 continue;
+
+            boolean availableSeats = true;
             // Filter to the number of seats
-            if (flight.seatsAvailable(seats) == false)
+            for(Flight x: flight.getFlights()){
+                if(flightServices.getAvailableSeats(x.getFlightNumber(), x.getDepartureTime()) <= 0){
+                    availableSeats = false;
+                }
+            }
+            if (availableSeats)
                 continue;
             // Filters flights that are not part of the membership program
             if (this.isMembershipFlights()) {

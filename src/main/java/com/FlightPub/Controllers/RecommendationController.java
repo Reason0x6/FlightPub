@@ -57,7 +57,7 @@ public class RecommendationController {
 
             // Compare new distance to existing smallest distance
             if(currentNearestCity.equals("") || tempDistance < currentSmallestDistance) {
-                currentNearestCity = location.getLocation();
+                currentNearestCity = location.getLocationID();
                 currentSmallestDistance = tempDistance;
             }
         }

@@ -1,6 +1,0 @@
-[{
-  "_id": "WLI-1",
-  "userID": "user1@email.com",
-  "destinationID": "SYD",
-  "_class": "com.FlightPub.model.WishListItem"
-}]

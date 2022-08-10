@@ -4,51 +4,92 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
-@Document("Flight")
+@Document("Flights")
 public class Flight {
 
     @Id
     @Getter
     @Setter
+    @Field("_id")
     private String flightID;
 
     @Getter
     @Setter
-    private String originID;
+    @Field("DepartureCode")
+    private String departureCode;
 
     @Getter
     @Setter
-    private String destinationID;
-
-    @Getter
-    private Date departure;
-
-    @Getter
-    private Date arrival;
+    @Field("DestinationCode")
+    private String destinationCode;
 
     @Getter
     @Setter
-    private String flightCode;
+    @Field("PlaneCode")
+    private String planeCode;
 
     @Getter
     @Setter
-    private String airline;
+    @Field("DepartureTime")
+    private Date departureTime;
+
+    @Getter
+    @Setter
+    @Field("DepartureTimeStopOver")
+    private Date DepartureTimeStopOver;
+
+    @Getter
+    @Setter
+    @Field("ArrivalTime")
+    private Date arrivalTime;
+
+    @Getter
+    @Setter
+    @Field("ArrivalTimeStopOver")
+    private Date ArrivalTimeStopOver;
+
+    @Getter
+    @Setter
+    @Field("FlightNumber")
+    private String flightNumber;
+
+    @Getter
+    @Setter
+    @Field("AirlineCode")
+    private String airlineCode;
+
+    @Getter
+    @Setter
+    @Field("Duration")
+    private int duration;
+
+    @Getter
+    @Setter
+    @Field("DurationSecondLeg")
+    private int durationSecondLeg;
+
+    @Getter
+    @Setter
+    @Field("StopoverCode")
+    private String stopoverCode;
+
+
+
+    //ADDITIONAL VARIABLES
 
     @Getter
     @Setter
     private double ticketPrice;
 
-    @Getter
-    @Setter
-    private int bookedSeats;
 
     @Getter
     @Setter
@@ -62,40 +103,35 @@ public class Flight {
     @Setter
     private double rating;
 
-    @Getter
-    @Setter
-    private Plane plane = new Plane();
-
-    @Getter
-    @Setter
-    private boolean promoted;
-
-    public Flight(){}
-
-    public Flight(String flightID, String originID, String destinationID,
-                  String departure, String arrival, String flightCode,
-                  String airline, double ticketPrice){
-
-        this.flightID = flightID;
-        this.originID = originID;
-        this.destinationID = destinationID;
-        this.flightCode = flightCode;
-        this.airline = airline;
-        this.ticketPrice = ticketPrice;
-        this.setDeparture(departure);
-        this.setArrival(arrival);
-        this.promoted = false;
-
-        plane = new Plane();
+    public Flight(){
 
     }
+/*
+    public Flight(String flightID,
+                  String airline, String arrival, String DepartureCode, String DestinationCode,
+                  String departure,  String flightCode){
 
-    // Formats the String to be parsed into a Date Object
-    public void setArrival(String in){
+        this.flightID = flightID;
+        this.departureCode = DepartureCode;
+        this.destinationCode = DestinationCode;
+        this.flightNumber = flightCode;
+        this.airlineCode = airline;
+
+
+
         try {
+            setDepartureT(departure);
+            setArrivalT(arrival);
+        }catch(Exception e){}
+
+
+    } */
+
+    public void setArrivalT(String in) throws ParseException {
+        try{
             SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
             Date date = originalFormat.parse(in);
-            this.arrival = date;
+            this.arrivalTime = date;
         } catch (ParseException e) {
             System.out.println(e);
         }
@@ -105,43 +141,27 @@ public class Flight {
         try {
             SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
             Date date = originalFormat.parse(in);
-            this.departure = date;
+            this.departureTime = date;
         } catch (ParseException e) {
             System.out.println(e);
         }
     }
 
 
-    // Returns the Date in a readable String format
-    public String getArrivalTime(){
-        if(arrival == null)
+    public String getDepartureString(){
+        if(departureTime == null)
             return null;
         else
-            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(arrival);
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(departureTime);
     }
 
-    public String getDepartureTime(){
-        if(arrival == null)
+    public String getArrivalString(){
+        if(arrivalTime == null)
             return null;
         else
-            return new SimpleDateFormat("dd/MM/yy hh:mm aa").format(departure); }
-
-    // Returns the Date in a String format that conforms to the expected format of DateTime-local (HTML input)
-    public String getArrivalDateTime(){
-        if(arrival == null)
-            return null;
-        else
-            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrival);
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrivalTime);
     }
 
-    public String getDepartureDateTime(){
-        if(arrival == null)
-            return null;
-        else
-            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(departure); }
 
-    public List<String> getAllSeats(){
-        return plane.getSeats();
-    }
 
 }

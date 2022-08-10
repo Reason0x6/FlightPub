@@ -8,9 +8,9 @@
     <!-- ======= Services Section ======= -->
     <h2>New Flight Created</h2>
     <p th:text="'Flight: ' + ${flight.getFlightCode()}"></p>
-    <p th:text="'Airline: ' + ${flight.getAirline()}"></p>
-    <p th:text="'Origin: ' + ${flight.getOriginID()}"></p>
-    <p th:text="'Departure: ' + ${flight.getDestinationID()}"></p>
+    <p th:text="'Airline: ' + ${flight.getAirlineCode()}"></p>
+    <p th:text="'Origin: ' + ${flight.getDepartureCode()}"></p>
+    <p th:text="'Departure: ' + ${flight.getDestinationCode()}"></p>
     <p th:text="'Departure Time Code: ' + ${flight.getDepartureTime()}"></p>
     <p th:text="'Origin Time Code: ' + ${flight.getArrivalTime()}"></p>
     <p th:text="'Ticket Price: ' + ${flight.getTicketPrice()}"></p>

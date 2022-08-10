@@ -6,6 +6,8 @@ import com.FlightPub.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class IndexController {
@@ -81,10 +80,6 @@ public class IndexController {
         model.addAttribute("admin", getAdminSession(session));
 
         model.addAttribute("LoadingRecommendation", true);
-
-        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
-        wishListServices.saveOrUpdate(new WishListItem("WLI-2", "user4@email.com", "OOL"));
-        wishListServices.saveOrUpdate(new WishListItem("WLI-3", "user4@email.com", "SYD"));
 
         return "index";
     }
@@ -216,6 +211,7 @@ public class IndexController {
         return "User/Personalised";
     }
 
+
     @RequestMapping("/adminAccount")
     public String adminAccount(Model model, HttpSession session){
         if(!getAdminSession(session).isLoggedIn()){
@@ -232,12 +228,27 @@ public class IndexController {
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
+       //Price p = priceServices.getById(id);
 
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
-        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+        System.out.println(id);
+        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
+
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
+        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
+
+
+        model.addAttribute("businessClass", flightServices.getSeatList("BUS", availableSeats));
+        model.addAttribute("economyClass", flightServices.getSeatList("ECO", availableSeats));
+        model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
+        model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
+
+        model.addAttribute("businessClassPrice", flightServices.getPrice("BUS", availableSeats));
+        model.addAttribute("economyClassPrice", flightServices.getPrice("ECO", availableSeats));
+        model.addAttribute("firstClassPrice", flightServices.getPrice("FIR", availableSeats));
+        model.addAttribute("premiumEconomyPrice", flightServices.getPrice("PME", availableSeats));
 
         return "Flight";
     }
@@ -263,13 +274,53 @@ public class IndexController {
 
         getSession(session).addToCart(seats, id);
 
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationID()));
-        model.addAttribute("Dep", locationServices.getById(f.getOriginID()));
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
+        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
 
         return "Flight";
+    }
+
+    @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
+    public String bookFlight(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session){
+
+
+        getSession(session).setFlightServices(flightServices);
+        getSession(session).setUserServices(usrServices);
+        if(remove != null){
+            try{
+                getSession(session).removeFromWishList(remove);
+            }catch(Exception e){
+                System.out.println(e.getStackTrace());
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
+
+            model.addAttribute("WishL", getSession(session).getWishList());
+            model.addAttribute("usr", getSession(session));
+            return "WishList";
+        }
+        if(id != null){
+
+            Boolean accepted = getSession(session).addToWishList(id);
+            Flight f = flightServices.getById(id);
+            model.addAttribute("Flight", f);
+            if(accepted){
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
+        }
+
+
+
+        model.addAttribute("WishL", getSession(session).getWishList());
+        model.addAttribute("usr", getSession(session));
+
+        return "WishList";
     }
 
     @PostMapping("/search")
@@ -295,7 +346,6 @@ public class IndexController {
 
         model.addAttribute("search", search);
         model.addAttribute("usr", getSession(session));
-
         return "search";
     }
 
