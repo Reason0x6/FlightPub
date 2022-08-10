@@ -222,7 +222,7 @@ public class IndexController {
             return "redirect:login";
         }
 
-        model.addAttribute("wish", wishListServices.listAll());
+        model.addAttribute("wish", wishListServices.findAllByPopularitySortDesc());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("admin", getAdminSession(session));
         return "User/AdminControl";

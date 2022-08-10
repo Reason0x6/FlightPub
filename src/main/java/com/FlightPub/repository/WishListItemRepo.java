@@ -1,5 +1,6 @@
 package com.FlightPub.repository;
 import com.FlightPub.model.WishListItem;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -10,9 +11,8 @@ public interface WishListItemRepo  extends MongoRepository<WishListItem, String>
     @Query(value="{ 'UserIDs' : ?0 }")
     List<WishListItem> findAllByUserIDs(String userIDs);
 
-    @Query(value="db.WishListItem.aggregate([{$group: {_id: \"desinationID\", count: { $sum: 1}}}, {$sort:{'count':1}}])")
+    @Aggregation(pipeline = {"{ '$group': { '_id' : '$destinationID', count : { '$sum' : 1 } } }", "{ '$sort' : { 'count' : -1 } }"})
     List<WishListItem> findAllByPopularitySortDesc();
-
 
 
 }
