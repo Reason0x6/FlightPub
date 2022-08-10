@@ -3,6 +3,7 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +27,7 @@ public class IndexController {
     private UserGroupServices groupServices;
     private WishListServices wishListServices;
     private AdminAccountServices adminAccountServices;
+    private HolidayPackageServices holidayPackageServices;
 
     @Autowired
     @Qualifier(value = "WishListServices")
@@ -64,6 +66,10 @@ public class IndexController {
     @Qualifier(value = "AdminAccountServices")
     public void setAdminAccountServices(AdminAccountServices adminAccountServices) { this.adminAccountServices = adminAccountServices; }
 
+    @Autowired
+    @Qualifier(value = "HolidayPackageServices")
+    public void setHolidayPackageServices(HolidayPackageServices holidayPackageServices){ this.holidayPackageServices = holidayPackageServices; }
+
 
     @RequestMapping("/")
     public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
@@ -71,7 +77,7 @@ public class IndexController {
         model = addDateAndTimeToModel(model);
 
         model.addAttribute("usr", getSession(session));
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
 
         model.addAttribute("LoadingRecommendation", true);
 
@@ -82,7 +88,7 @@ public class IndexController {
     public String loadLogin(Model model, HttpSession session){
 
         model.addAttribute("usr", getSession(session));
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
         return "User/login";
     }
 
@@ -113,7 +119,7 @@ public class IndexController {
     public String loadAdminRegister(Model model, HttpSession session){
 
         model.addAttribute("locs", locationServices.listAll());
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
         return "User/AdminRegister";
     }
 
@@ -127,7 +133,7 @@ public class IndexController {
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model, HttpSession session){
         model.addAttribute("usr", getSession(session));
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
 
         String redirect = req.getRedirect();
         model.addAttribute("redirect", redirect);
@@ -165,9 +171,9 @@ public class IndexController {
                     // Set admin session
                     AdminSession admin = new AdminSession(newAdmin);
                     session.setAttribute("Admin", admin);
-                    model.addAttribute("Admin", admin);
+                    model.addAttribute("admin", admin);
 
-                    return "redirect:AdminControl";
+                    return "redirect:adminAccount";
                 }
                 else{
                     model.addAttribute("valid", false);
@@ -177,7 +183,6 @@ public class IndexController {
         }catch(Exception e){
             model.addAttribute("valid", false);
         }
-
         return "User/login";
     }
 
@@ -206,7 +211,20 @@ public class IndexController {
         return "User/Personalised";
     }
 
-    @RequestMapping("/flight")
+
+    @RequestMapping("/adminAccount")
+    public String adminAccount(Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        model.addAttribute("wish", wishListServices.findAllByPopularitySortDesc());
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
@@ -419,6 +437,39 @@ public class IndexController {
         if(!getAdminSession(session).isLoggedIn()){
             return "redirect:login";
         }
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/covidRestrict")
+    public String covidRestrict(@RequestParam String covidRestrictedLocation, @RequestParam String covidRestriction, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        Location loc = locationServices.getById(covidRestrictedLocation);
+        if(covidRestriction.equals("restrict")){
+            loc.setCovid_restricted(true);
+        }
+        else{
+            loc.setCovid_restricted(false);
+        }
+        locationServices.saveOrUpdate(loc);
+
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("HolidayPackage")
+    public String holidayPackage(@ModelAttribute HolidayPackage hp, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        holidayPackageServices.saveOrUpdate(hp);
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
 
         return "User/AdminControl";
     }
