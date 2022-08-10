@@ -495,10 +495,10 @@
     </script>
 </form>
 
-<form id="seatSelection" name="seatSelection" onchange="" >
-    <label>
-        <select id="seatSelect" name="seatSelect">
-            <option value="1">Select</option>
+<form id="seatSelection" name="seatSelection" onchange="calculateSeats()" >
+    <label></label>
+        <select id="seatSelect" name="seatSelect" >
+            <option value="0" selected="true">Select</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -510,5 +510,5 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
-    </label>
+
 </form>
