@@ -14,4 +14,6 @@ public interface LocationRepo extends MongoRepository<Location, String> {
     List<Location> findByLocation(String in);
 
     List<Location> findAllByOrderByPopularityAsc();
+
+    Location findFirstByPopularity(int popularity);
 }

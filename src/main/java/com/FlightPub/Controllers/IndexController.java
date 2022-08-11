@@ -328,6 +328,9 @@ public class IndexController {
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
 
+        //
+        locationServices.incrementPopularity(search.getDestinationIn());
+
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
         flights[1] = search.getPromotedFlights(flights[0]);

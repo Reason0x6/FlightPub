@@ -62,5 +62,19 @@ public class LocationServices {
         return null;
     }
 
+    public void incrementPopularity(String location) {
+        int currentPopularity = findByLocation(location).getPopularity();
+
+        if (currentPopularity != 1) {
+            Location higherPopularityLocation = locationRepo.findFirstByPopularity(currentPopularity-1);
+            Location currentPopularityLocation = locationRepo.findFirstByPopularity(currentPopularity);
+
+            higherPopularityLocation.setPopularity(currentPopularity);
+            currentPopularityLocation.setPopularity(currentPopularity-1);
+
+            saveOrUpdate(higherPopularityLocation);
+            saveOrUpdate(currentPopularityLocation);
+        }
+    }
 
 }
