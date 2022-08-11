@@ -41,12 +41,12 @@ public class LocationServices {
     }
 
 
-    public List<Location> findAllSortedDescendingExcluding(String locationID) {
-        return locationRepo.findAllSortedDescendingExcluding(locationID);
+    public List<Location> findAllSortedAscendingExcluding(String locationID) {
+        return locationRepo.findAllSortedAscendingExcluding(locationID);
     }
 
     public Location mostPopular() {
-        List<Location> out = locationRepo.findAllByOrderByPopularityDesc();
+        List<Location> out = locationRepo.findAllByOrderByPopularityAsc();
         System.out.println(out);
         if (!out.isEmpty()) {
             return out.get(0);
