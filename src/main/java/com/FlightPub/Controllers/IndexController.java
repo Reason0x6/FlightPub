@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -335,6 +339,13 @@ public class IndexController {
         stopOver[0] = search.basicStopOverSearch(1);
         stopOver[1] = search.basicStopOverSearch(2);
         stopOver[2] = search.basicStopOverSearch(3);
+
+        List<String[]> pricesFrom = search.setCheapestPriceForSearchResults(flights[0]);
+        for (int i = 0; i < pricesFrom.size(); i++) {
+            String cheapest = pricesFrom.get(i)[1];
+            // System.out.println("ID: " + flights[0].get(i).getFlightID());
+            flights[0].get(i).setCheapestPrice(cheapest);
+        }
 
         // Stops unnecessary objects from being added to the response
         if(flights[0] != null || flights[1] != null)

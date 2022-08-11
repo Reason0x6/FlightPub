@@ -195,7 +195,7 @@ public class FlightServices{
         return seatDetails;
     }
 
-    private @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
+    public @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
         List<Price> price = priceRepo.findPriceByClassTicketCode(ticketFlightNumber, classCode, ticketCode);
         Date startDate;
         Date endDate;
@@ -207,12 +207,30 @@ public class FlightServices{
             dateInRange = startDate.compareTo(ticketDepartureDate) <= 0 && endDate.compareTo(ticketDepartureDate) >= 0;
             pricePerTicket = price.get(i).getPrice();
             if (dateInRange) {
-                System.out.println("Price Per Ticket: " + pricePerTicket + " Ticket Code: " + ticketCode + " Class Code: " + classCode);
                 return "$" + pricePerTicket;
             }
             i++;
         }
         return "0";
+    }
+
+    public String[] findCheapestFlights(String flightID, String flightNumber, Date departureDate) {
+        List<Price> priceList = priceRepo.findCheapestFlights(flightNumber);
+        String[] flightDetails = new String[2];
+        Date startDate;
+        Date endDate;
+        boolean dateInRange;
+        for (int i = 0; i < priceList.size(); i++) {
+            startDate = priceList.get(i).getStartDate();
+            endDate = priceList.get(i).getEndDate();
+            dateInRange = startDate.compareTo(departureDate) <= 0 && endDate.compareTo(departureDate) >= 0;
+            if (dateInRange) {
+                flightDetails[0] = flightID;
+                flightDetails[1] = priceList.get(i).getPrice().toString();
+            }
+            i++;
+        }
+        return flightDetails;
     }
 
     public List<Flight> getByOrigin(String dep) {
@@ -335,5 +353,4 @@ public class FlightServices{
         availCache = new HashMap<>();
 
     }
-
 }

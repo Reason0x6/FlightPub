@@ -1,5 +1,6 @@
 package com.FlightPub.model;
 
+import com.FlightPub.RequestObjects.BasicSearch;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -9,9 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.List;
 
 @Document("Flights")
 public class Flight {
@@ -103,9 +103,14 @@ public class Flight {
     @Setter
     private double rating;
 
+    @Getter
+    @Field("CheapestPrice")
+    private String cheapestPrice;
+
     public Flight(){
 
     }
+
 /*
     public Flight(String flightID,
                   String airline, String arrival, String DepartureCode, String DestinationCode,
@@ -163,5 +168,7 @@ public class Flight {
     }
 
 
-
+    public void setCheapestPrice(String cheapestFlights) {
+        this.cheapestPrice = cheapestFlights;
+    }
 }

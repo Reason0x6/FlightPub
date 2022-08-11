@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 public class BasicSearch {
@@ -72,7 +69,7 @@ public class BasicSearch {
     @Setter
     private boolean searchByArrival;
 
-    private FlightServices flightServices;
+    private static FlightServices flightServices;
 
     private LocationServices locService;
 
@@ -99,7 +96,7 @@ public class BasicSearch {
     public BasicSearch() {
     }
 
-    // Returns a flight of flights accoridng to the basic search
+    // Returns a flight of flights according to the basic search
     public List<Flight> runBasicSearch(String start, String end, boolean stopover) {
         Date dstart = null;
         Date dend = null;
@@ -119,7 +116,7 @@ public class BasicSearch {
             System.out.println(e);
             return null;
         }
-        // Location Proccessing
+        // Location Processing
         Location originObj = locService.findByLocation(originIn);
         Location destinationObj = null;
 
@@ -192,7 +189,7 @@ public class BasicSearch {
         return flights;
     }
 
-    //#TODO convvert promoted flights to Promoted Airlines
+    //#TODO convert promoted flights to Promoted Airlines
     // Determines which of the flights are promoted
       public List<Flight> getPromotedFlights(List<Flight> allFlights) {
         List<Flight> promoted = new ArrayList<>();
@@ -299,4 +296,13 @@ public class BasicSearch {
 
         return filteredFlights;
     }
+
+    public List<String[]> setCheapestPriceForSearchResults(List<Flight> flight) {
+        List<String[]> cheapestPrice = new ArrayList<>();
+        for (Flight f : flight) {
+            cheapestPrice.add(flightServices.findCheapestFlights(f.getFlightID(), f.getFlightNumber(), f.getDepartureTime()));
+        }
+        return cheapestPrice;
+    }
 }
+
