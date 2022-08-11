@@ -248,20 +248,6 @@ public class IndexController {
         model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
         model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
 
-        String classType;
-        String ticketType;
-
-        for (int i = 0; i < availableSeats.size(); i++) {
-            classType = availableSeats.get(i).getClassCode();
-            ticketType = availableSeats.get(i).getTicketCode();
-
-        }
-
-        model.addAttribute("firstClassPrice", flightServices.getPrice("FIR", availableSeats));
-        model.addAttribute("businessClassPrice", flightServices.getPrice("BUS", availableSeats));
-        model.addAttribute("premiumEconomyPrice", flightServices.getPrice("PME", availableSeats));
-        model.addAttribute("economyClassPrice", flightServices.getPrice("ECO", availableSeats));
-
         return "Flight";
     }
 

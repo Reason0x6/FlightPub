@@ -54,12 +54,12 @@
                         <div id="collapseFC" class="accordion-collapse collapse" aria-labelledby="headingFC" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="row">
-                                    <div th:each="avail:${firstClass}" class="col-md-4">
+                                    <div th:each="availSeats:${firstClass}" class="col-md-4">
                                         <p>
-                                            <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
-                                            <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
-                                            <b>Price per Seat: </b><span th:text="${firstClassPrice}"></span>
-                                            <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                                            <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                            <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                            <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
+                                            <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                                         </p>
                                     </div>
                                 </div>
@@ -74,12 +74,12 @@
                             <div id="collapseBC" class="accordion-collapse collapse" aria-labelledby="headingBC" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row">
-                                        <div th:each="avail:${businessClass}" class="col-md-4">
+                                        <div th:each="availSeats:${businessClass}" class="col-md-4">
                                             <p>
-                                                <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
-                                                <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
-                                                <b>Price per Seat: </b><span th:text="${businessClassPrice}"></span>
-                                            <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                                                <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                                <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                                <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
+                                                <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                                             </p>
                                         </div>
                                     </div>
@@ -95,12 +95,12 @@
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="row">
-                                    <div th:each="avail:${premiumEconomy}" class="col-md-4">
+                                    <div th:each="availSeats:${premiumEconomy}" class="col-md-4">
                                         <p>
-                                            <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
-                                            <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
-                                            <b>Price per Seat: </b><span th:text="${premiumEconomyPrice}"></span>
-                                        <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                                            <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                            <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                            <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
+                                            <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                                         </p>
                                     </div>
                                 </div>
@@ -116,13 +116,12 @@
                             <div id="collapseEconomy" class="accordion-collapse collapse" aria-labelledby="headingEconomy" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row">
-                                        <div th:each="avail:${economyClass}" class="col-md-4">
-                                            <div th:if="${avail.getValue()} != 0">
+                                        <div th:each="availSeats:${economyClass}" class="col-md-4">
                                                 <p>
-                                                    <b>Ticket Type: </b><span th:text="${avail.getKey()}"></span></br>
-                                                    <b>Number of Seats Available: </b><span th:text="${avail.getValue()}"></span></br>
-                                                    <b>Price per Seat: </b><span th:text="${economyClassPrice}"></span>
-                                                    <form th:replace="Fragments/Forms :: #seatSelection" onchange="calculateSeats()"> </form>
+                                                    <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                                    <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                                    <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
+                                                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                                                 </p>
                                             </div>
                                         </div>
@@ -188,22 +187,7 @@
 </main>
 </body>
 <script th:inline="javascript">
-    function calculateSeats(){
-        var total = 0;
-        for(var i = 0; i < firstClass.length; i++){
-            total += firstClass[i].getValue();
-        }
-        for(var i = 0; i < businessClass.length; i++){
-            total += businessClass[i].getValue();
-        }
-        for(var i = 0; i < premiumEconomy.length; i++){
-            total += premiumEconomy[i].getValue();
-        }
-        for(var i = 0; i < economyClass.length; i++){
-            total += economyClass[i].getValue();
-        }
-        document.getElementById("showTotal").innerHTML = "Total: " + total;
-    }
+    function calculateSeats(){}
     function addToCart(){
         var seats = document.getElementById("seats").value;
         location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
