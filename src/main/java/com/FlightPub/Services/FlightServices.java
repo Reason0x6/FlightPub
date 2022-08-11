@@ -152,32 +152,10 @@ public class FlightServices{
                     String ticketCode = ticket.getTicketCode();
                     String ticketFlightNumber = ticket.getFlightNumber();
                     Date ticketDepartureDate = ticket.getDepartureTime();
-                    switch (ticketCode) {
-                        case "A":
-                            seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
-                            break;
-                        case "B":
-                            seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
-                            break;
-                        case "C":
-                            seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
-                            break;
-                        case "D":
-                            seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
-                            break;
-                        case "E":
-                            seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
-                            break;
-                        case "F":
-                            seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
-                            break;
-                        case "G":
-                            seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
-                            break;
+                    seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
                     }
                 }
             }
-        }
         return seatList;
     }
 
