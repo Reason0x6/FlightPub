@@ -233,7 +233,6 @@ public class IndexController {
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
-       //Price p = priceServices.getById(id);
 
         System.out.println(id);
         List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
@@ -244,16 +243,10 @@ public class IndexController {
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
 
-
         model.addAttribute("businessClass", flightServices.getSeatList("BUS", availableSeats));
         model.addAttribute("economyClass", flightServices.getSeatList("ECO", availableSeats));
         model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
         model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
-
-        model.addAttribute("businessClassPrice", flightServices.getPrice("BUS", availableSeats));
-        model.addAttribute("economyClassPrice", flightServices.getPrice("ECO", availableSeats));
-        model.addAttribute("firstClassPrice", flightServices.getPrice("FIR", availableSeats));
-        model.addAttribute("premiumEconomyPrice", flightServices.getPrice("PME", availableSeats));
 
         return "Flight";
     }
