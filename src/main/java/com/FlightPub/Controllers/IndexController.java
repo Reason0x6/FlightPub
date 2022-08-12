@@ -3,10 +3,9 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,8 @@ public class IndexController {
     private UserGroupServices groupServices;
     private WishListServices wishListServices;
     private AdminAccountServices adminAccountServices;
+    private HolidayPackageServices holidayPackageServices;
+
 
     @Autowired
     @Qualifier(value = "WishListServices")
@@ -64,18 +65,26 @@ public class IndexController {
     @Qualifier(value = "AdminAccountServices")
     public void setAdminAccountServices(AdminAccountServices adminAccountServices) { this.adminAccountServices = adminAccountServices; }
 
+    @Autowired
+    @Qualifier(value = "HolidayPackageServices")
+    public void setHolidayPackageServices(HolidayPackageServices holidayPackageServices){ this.holidayPackageServices = holidayPackageServices; }
+
+    @RequestMapping("/invalidatecache")
+    public String cache(){
+        System.out.println("Cache Cleared");
+        flightServices.invalidate();
+        return "index";
+    }
 
     @RequestMapping("/")
-    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
+    public String loadIndex(Model model, HttpSession session) {
 
         model = addDateAndTimeToModel(model);
 
         model.addAttribute("usr", getSession(session));
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
 
         model.addAttribute("LoadingRecommendation", true);
-
-        wishListServices.saveOrUpdate(new WishListItem("WLI-1", "user1@email.com", "SYD"));
 
         return "index";
     }
@@ -84,7 +93,7 @@ public class IndexController {
     public String loadLogin(Model model, HttpSession session){
 
         model.addAttribute("usr", getSession(session));
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
         return "User/login";
     }
 
@@ -115,7 +124,7 @@ public class IndexController {
     public String loadAdminRegister(Model model, HttpSession session){
 
         model.addAttribute("locs", locationServices.listAll());
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
         return "User/AdminRegister";
     }
 
@@ -129,7 +138,7 @@ public class IndexController {
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model, HttpSession session){
         model.addAttribute("usr", getSession(session));
-        model.addAttribute("Admin", getAdminSession(session));
+        model.addAttribute("admin", getAdminSession(session));
 
         String redirect = req.getRedirect();
         model.addAttribute("redirect", redirect);
@@ -163,13 +172,13 @@ public class IndexController {
                 if(req.getPassword().equals(newAdmin.getPassword())){
                     // Set post flag
                     model.addAttribute("method", "post");
-
+                    System.out.println("Admin" + newAdmin.getEmail());
                     // Set admin session
                     AdminSession admin = new AdminSession(newAdmin);
                     session.setAttribute("Admin", admin);
-                    model.addAttribute("Admin", admin);
+                    model.addAttribute("admin", admin);
 
-                    return "redirect:AdminControl";
+                    return "redirect:adminAccount";
                 }
                 else{
                     model.addAttribute("valid", false);
@@ -179,7 +188,6 @@ public class IndexController {
         }catch(Exception e){
             model.addAttribute("valid", false);
         }
-
         return "User/login";
     }
 
@@ -202,23 +210,42 @@ public class IndexController {
         model.addAttribute("groups", groups);
         model.addAttribute("invitedGroups", invitedGroups);
 
-        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Personalised";
+    }
+
+
+    @RequestMapping("/adminAccount")
+    public String adminAccount(Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        model.addAttribute("wish", wishListServices.findAllByPopularitySortDesc());
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+        return "User/AdminControl";
     }
 
     @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
+
         System.out.println(id);
+        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
 
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
+
+        model.addAttribute("businessClass", flightServices.getSeatList("BUS", availableSeats));
+        model.addAttribute("economyClass", flightServices.getSeatList("ECO", availableSeats));
+        model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
+        model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
 
         return "Flight";
     }
@@ -276,6 +303,46 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         return "Flight";
+    }
+
+    @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
+    public String bookFlight(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session){
+
+
+        getSession(session).setFlightServices(flightServices);
+        getSession(session).setUserServices(usrServices);
+        if(remove != null){
+            try{
+                getSession(session).removeFromWishList(remove);
+            }catch(Exception e){
+                System.out.println(e.getStackTrace());
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
+
+            model.addAttribute("WishL", getSession(session).getWishList());
+            model.addAttribute("usr", getSession(session));
+            return "WishList";
+        }
+        if(id != null){
+
+            Boolean accepted = getSession(session).addToWishList(id);
+            Flight f = flightServices.getById(id);
+            model.addAttribute("Flight", f);
+            if(accepted){
+                model.addAttribute("WishL", getSession(session).getWishList());
+                model.addAttribute("usr", getSession(session));
+                return "WishList";
+            }
+        }
+
+
+
+        model.addAttribute("WishL", getSession(session).getWishList());
+        model.addAttribute("usr", getSession(session));
+
+        return "WishList";
     }
 
     @PostMapping("/search")
@@ -392,6 +459,39 @@ public class IndexController {
         if(!getAdminSession(session).isLoggedIn()){
             return "redirect:login";
         }
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/covidRestrict")
+    public String covidRestrict(@RequestParam String covidRestrictedLocation, @RequestParam String covidRestriction, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        Location loc = locationServices.getById(covidRestrictedLocation);
+        if(covidRestriction.equals("restrict")){
+            loc.setCovid_restricted(true);
+        }
+        else{
+            loc.setCovid_restricted(false);
+        }
+        locationServices.saveOrUpdate(loc);
+
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("HolidayPackage")
+    public String holidayPackage(@ModelAttribute HolidayPackage hp, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        holidayPackageServices.saveOrUpdate(hp);
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
 
         return "User/AdminControl";
     }

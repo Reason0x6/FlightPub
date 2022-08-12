@@ -55,4 +55,6 @@ public class AdminAccount {
         this.password = password;
     }
 
+    public AdminAccount(){}
+
 }

@@ -1,8 +1,9 @@
 package com.FlightPub.Controllers;
 
-import com.FlightPub.RequestObjects.Recommendation;
+import com.FlightPub.RequestObjects.BasicSearch;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
+import com.FlightPub.model.Flight;
 import com.FlightPub.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,12 +12,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 public class RecommendationController {
-    private Recommendation recommendation;
+    private Location recommendationLocation;
     private FlightServices flightServices;
     private LocationServices locationServices;
 
@@ -34,11 +41,10 @@ public class RecommendationController {
 
     @PostMapping("/recommendations")
     public String loadRecommendations(@RequestParam String city, Model model) {
-        recommendation = new Recommendation(locationServices, flightServices);
-        recommendation.setRecommendationLocation(city);
+        recommendationLocation = locationServices.getById(city);
 
-        model.addAttribute("reco", recommendation.getRecommendation());
-        model.addAttribute("currentLocation", recommendation.getRecommendationLocation());
+        model.addAttribute("reco", getRecommendation());
+        model.addAttribute("currentLocation", getRecommendationLocation());
         model.addAttribute("recommendationLocation", locationServices.listAll());
 
         return "Fragments/Recommendation :: recommendation_fragment";
@@ -57,12 +63,101 @@ public class RecommendationController {
 
             // Compare new distance to existing smallest distance
             if(currentNearestCity.equals("") || tempDistance < currentSmallestDistance) {
-                currentNearestCity = location.getLocation();
+                currentNearestCity = location.getLocationID();
                 currentSmallestDistance = tempDistance;
             }
         }
 
         return loadRecommendations(currentNearestCity, model);
+    }
+
+    public List<Location> getRecommendation() {
+        // TODO If a user is logged in get their preferred location
+        // Set current location
+        Location currentLocation;
+        if(recommendationLocation == null) {
+            currentLocation = locationServices.mostPopular();
+        } else {
+            currentLocation = locationServices.getById(recommendationLocation.getLocationID());
+        }
+
+        // If no current location is found in database
+        if (currentLocation == null) {
+            System.err.println("No current location was found in database");
+            return null;
+        }
+
+        // TODO Remove if not needed
+//        return searchForRecommendedFlights(currentLocation);
+
+        // Get currently popular locations
+        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
+
+        // The final list of recommended locations
+        return locations.stream().limit(4).collect(Collectors.toList());
+    }
+
+    private List<Flight> searchForRecommendedFlights(Location currentLocation) {
+        // Get currently popular locations
+        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
+
+        // The final list of recommended flights
+        List<Flight> recommendedFlights = new LinkedList<>();
+
+        // Get current date and date in 3 months
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String today = dateFormat.format(date);
+
+        cal.add(Calendar.MONTH, 3);
+        date = cal.getTime();
+        String max = dateFormat.format(date);
+
+        // Create new search
+        BasicSearch search = new BasicSearch();
+        search.setFlightServices(flightServices);
+        search.setLocationServices(locationServices);
+        search.setOriginIn(currentLocation.getLocationID());
+
+        // Get 1 flight from each popular location
+        for (Location popularLocation : locations) {
+
+            // Set search destination to next popular location
+            search.setDestinationIn(popularLocation.getLocationID());
+
+            // Find flights that are going from current location to popular location
+            try {
+                // TODO look into why this doesnt set the destination correctly
+                // List<Flight> recommendSearch = search.runBasicSearch(today, max, false);
+                List<Flight> recommendSearch = flightServices.getByOriginAndDestination(
+                        currentLocation.getLocationID(),
+                        popularLocation.getLocationID(),
+                        new SimpleDateFormat("yyyy-MM-dd").parse(today),
+                        new SimpleDateFormat("yyyy-MM-dd").parse(max));
+                // If at least one flight was found add first flight to recommendation list
+                if(!recommendSearch.isEmpty()) {
+                    recommendedFlights.add(recommendSearch.get(0));
+                }
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Once 3 recommended flights have been found break for loop
+            if (recommendedFlights.size() == 4) {
+                break;
+            }
+        }
+
+        return recommendedFlights;
+    }
+
+
+    public Location getRecommendationLocation() {
+        if(recommendationLocation == null) {
+            recommendationLocation = locationServices.mostPopular();
+        }
+        return recommendationLocation;
     }
 
     // --- Haversine formula for finding distances between two coordinates ---

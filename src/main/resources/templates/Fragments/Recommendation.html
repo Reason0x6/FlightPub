@@ -9,8 +9,8 @@
                 <option
                         th:each="location : ${recommendationLocation}"
                         th:id="city"
-                        th:value="${location.location}"
-                        th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.location} == ${currentLocation})">
+                        th:value="${location.locationID}"
+                        th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation.locationID})">
 
                 </option>
                 <option th:if="${LoadingRecommendation} == true"> RECOMMENDATION LOADING... </option>
@@ -20,20 +20,35 @@
     </div>
 
     <div>
+<!--        <div id="recommendationRow" class="row" style="padding-top: 10px;">-->
+<!--            <div class="col-sm-3" th:each="flight : ${reco}"  >-->
+<!--                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationCode()} + '.jpg'">-->
+<!--                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>-->
+<!--                    <h2 style="font-size: 1.5em" th:text="${flight.getDepartureCode()} + ' to ' + ${flight.getDestinationCode()}"></h2>-->
+<!--                    <p><em><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span><span th:text="${flight.getDepartureString()}"></span><br>-->
+<!--                        <span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span><span th:text="${flight.getArrivalString()}"></span><br>-->
+<!--                        Airline: <span th:text="${flight.getAirlineCode()}"></span></em></p>-->
+<!--                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
         <div id="recommendationRow" class="row" style="padding-top: 10px;">
-            <div class="col-sm-3" th:each="flight : ${reco}"  >
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationCode()} + '.jpg'">
-                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
-                    <h2 style="font-size: 1.5em" th:text="${flight.getDepartureCode()} + ' to ' + ${flight.getDestinationCode()}"></h2>
-                    <p><em><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span><span th:text="${flight.getDepartureString()}"></span><br>
-                        <span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span><span th:text="${flight.getArrivalString()}"></span><br>
-                        Airline: <span th:text="${flight.getAirlineCode()}"></span></em></p>
-                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+            <div class="col-sm-3" th:each="location : ${reco}"  >
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
+                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em" th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
+                    <h3 style="font-size: 1em"  th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
+                    <p>
+
+                        TODO maybe add weather stats or similar if time
+                    <p>
+                    <button th:onclick="findFlight([[${currentLocation.locationID}]], [[${location.locationID}]])" type="button" class="btn btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
 
             </div>
         </div>
-        <div th:if="${reco} == 0">
+        <div th:if="${reco} == null">
             <p>There are currently no recommendations</p>
         </div>
     </div>
@@ -51,13 +66,10 @@
     //         )
     // )
 
-    // Load current invite list
+    // On document ready
     $(document).ready(function () {
-
         getLocation()
     })
-
-
 
     // Get location based on HTML geolocation api
     function getLocation() {
@@ -72,7 +84,7 @@
                         })
                     }, function error(msg) {
                         if (msg.PERMISSION_DENIED) {
-                            loadRecommendation("Adelaide");
+                            loadRecommendation("ADL");
                         } else {
                             console.log("Error getting position. Error code: " + msg.code)
                         }
@@ -87,5 +99,42 @@
         $.post("/recommendations", {city: cityIn}).done(function (fragment) {
             $("#recommendation_fragment").replaceWith(fragment);
         });
+    }
+
+    // Search for flights for a specific location
+    function findFlight(currentLocation, destinationLocation) {
+        post("/search", {originIn: currentLocation, destinationIn: destinationLocation, start: new Date().toLocaleDateString('en-CA'), end: addMonths(new Date(), 3).toLocaleDateString('en-CA')})
+    }
+
+    function post(path, params, method='post') {
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less verbose if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function addMonths(date, months) {
+        const d = date.getDate();
+        date.setMonth(date.getMonth() + +months);
+        if (date.getDate() !== d) {
+            date.setDate(0);
+        }
+        return date;
     }
 </script>

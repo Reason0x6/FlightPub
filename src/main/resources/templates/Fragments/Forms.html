@@ -469,3 +469,78 @@
         }
     </script>
 </form>
+
+<!-- Covid restricted location ------------------------------------------------------------------------------------------->
+<form id="covidRestrictedLocationForm" th:action="@{/covidRestrict}" th:object="${Covid}" method="post">
+    <span>Covid Location: </span>
+    <select name="covidRestrictedLocation" id="covidRestrictedLocation" class="form-select">
+        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    </select><br>
+    <select name="covidRestriction" id="covidRestriction">
+        <option value="restrict">Restricted</option>
+        <option value="unrestrict">Unrestricted</option>
+    </select><br>
+    <button type="submit" class="btn btn-primary btn-search">Submit</button>
+</form>
+
+<!--Holiday Package Form--------------------------------------------------------------------------------------------------------------------------------------->
+<form id="holidayPackageForm" name="holidayPackage" onsubmit="return validateHolidayPackage()" th:action="@{/HolidayPackage}" th:object="${HolidayPackage}" method="post">
+    <input type="text" id="airlineCode" class="form-control" name="airlineCode" placeholder="Airline Code"><br>
+    <input type="text" id="airlineName" class="form-control" name="airlineName" placeholder="Airline Name"><br>
+    <input type="text" id="destinationCode" class="form-control" name="destinationCode" placeholder="Destination Code"><br>
+    <input type="text" id="airport" class="form-control" name="airport" placeholder="Airport"><br>
+    <label for="discountPercentage" class="form-label">Discount Percentage</label>
+    <input type="number" id="discountPercentage" class="form-control" name="discountPercentage" min="10" max="100" value="10"><br>
+    <input type="text" id="hotelName" class="form-control" name="hotelName" placeholder="Hotel Name"><br>
+    <label for="hotelStarRating" class="form-label">Hotel Star Rating</label>
+    <input type="number" id="hotelStarRating" class="form-control" name="hotelStarRating" min="0" max="5"><br>
+    <input type="text" id="hotelDescription" class="form-control" name="hotelDescription" placeholder="Hotel Description"><br>
+    <input type="text" id="packageStartDate" class="form-control" name="packageStartDate" placeholder="YYYY-MM-DD HH:mm:ss"><br>
+    <input type="text" id="packageEndDate" class="form-control" name="packageEndDate" placeholder="YYYY-MM-DD HH:mm:ss"><br>
+    <button type="submit" class="btn btn-primary btn-search">Create Holiday Package</button>
+
+
+    <script>
+        function validateHolidayPackage() {
+            let f =  document.forms["holidayPackage"];
+            let x = true;
+
+            if(f["airlineCode"].value == ""){ x = false; }
+            if(f["airlineName"].value == ""){ x = false; }
+            if(f["destinationCode"].value == ""){ x = false; }
+            if(f["airport"].value == ""){ x = false; }
+            if(f["hotelName"].value == ""){ x = false; }
+            if(f["hotelDescription"].value == ""){ x = false; }
+            if(f["packageStartDate"].value == ""){ x = false; }
+            if(f["packageEndDate"].value == ""){ x = false; }
+
+            console.log(x);
+
+            if (x == "") {
+                alert("Please fill in all fields");
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    </script>
+</form>
+
+<form id="seatSelection" name="seatSelection" onchange="calculateSeats()" >
+    <label></label>
+        <select id="seatSelect" name="seatSelect" >
+            <option value="0" selected="true">Select</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+
+</form>
