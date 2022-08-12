@@ -214,9 +214,10 @@ public class FlightServices{
         return "0";
     }
 
-    public String[] findCheapestFlights(String flightID, String flightNumber, Date departureDate) {
+    public List<String[]> findCheapestFlight(String flightID, String flightNumber, Date departureDate) {
         List<Price> priceList = priceRepo.findCheapestFlights(flightNumber);
         String[] flightDetails = new String[2];
+        List<String[]> cheapestFlight = new ArrayList<>();
         Date startDate;
         Date endDate;
         boolean dateInRange;
@@ -227,10 +228,11 @@ public class FlightServices{
             if (dateInRange) {
                 flightDetails[0] = flightID;
                 flightDetails[1] = priceList.get(i).getPrice().toString();
+                cheapestFlight.add(flightDetails);
             }
             i++;
         }
-        return flightDetails;
+        return cheapestFlight;
     }
 
     public List<Flight> getByOrigin(String dep) {

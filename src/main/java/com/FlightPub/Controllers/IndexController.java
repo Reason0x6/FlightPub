@@ -340,11 +340,14 @@ public class IndexController {
         stopOver[1] = search.basicStopOverSearch(2);
         stopOver[2] = search.basicStopOverSearch(3);
 
-        List<String[]> pricesFrom = search.setCheapestPriceForSearchResults(flights[0]);
-        for (int i = 0; i < pricesFrom.size(); i++) {
-            String cheapest = pricesFrom.get(i)[1];
-            // System.out.println("ID: " + flights[0].get(i).getFlightID());
-            flights[0].get(i).setCheapestPrice(cheapest);
+        List<List<String[]>> pricesFromList = search.setCheapestPriceForSearchResults(flights[0]);
+        for (int i = 0; i < flights[0].size(); i++) {
+            for (List<String[]> price : pricesFromList) {
+                if (flights[0].get(i).getFlightID().equals(price.get(i)[0])) {
+                    flights[0].get(i).setCheapestPrice(String.valueOf(price.get(i)[1]));
+                    System.out.println(flights[0].get(i).getCheapestPrice());
+                }
+            }
         }
 
         // Stops unnecessary objects from being added to the response
