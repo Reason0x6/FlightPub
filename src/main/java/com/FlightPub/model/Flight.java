@@ -8,10 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 @Document("Flights")
 public class Flight {
@@ -38,24 +35,20 @@ public class Flight {
     private String planeCode;
 
     @Getter
-    @Setter
     @Field("DepartureTime")
-    private Date departureTime;
+    private Long departureTime;
 
     @Getter
-    @Setter
     @Field("DepartureTimeStopOver")
-    private Date DepartureTimeStopOver;
+    private Long departureTimeStopOver;
 
     @Getter
-    @Setter
     @Field("ArrivalTime")
-    private Date arrivalTime;
+    private Long arrivalTime;
 
     @Getter
-    @Setter
     @Field("ArrivalTimeStopOver")
-    private Date ArrivalTimeStopOver;
+    private Long arrivalTimeStopOver;
 
     @Getter
     @Setter
@@ -79,7 +72,7 @@ public class Flight {
 
     @Getter
     @Setter
-    @Field("StopoverCode")
+    @Field("StopOverCode")
     private String stopoverCode;
 
 
@@ -103,65 +96,105 @@ public class Flight {
     @Setter
     private double rating;
 
-    public Flight(){
+    public Flight(){}
 
+    // Setters for the time related class variables
+    public void setDepartureTime(String time) {
+        departureTime = stringToLong(time);
     }
-/*
-    public Flight(String flightID,
-                  String airline, String arrival, String DepartureCode, String DestinationCode,
-                  String departure,  String flightCode){
 
-        this.flightID = flightID;
-        this.departureCode = DepartureCode;
-        this.destinationCode = DestinationCode;
-        this.flightNumber = flightCode;
-        this.airlineCode = airline;
+    public void setArrivalTime(String time) {
+        arrivalTime = stringToLong(time);
+    }
 
+    public void setArrivalTimeStopOver(String time) {
+        arrivalTimeStopOver = stringToLong(time);
+    }
 
+    public void setDepartureTimeStopOver(String time) {
+        departureTimeStopOver = stringToLong(time);
+    }
 
-        try {
-            setDepartureT(departure);
-            setArrivalT(arrival);
-        }catch(Exception e){}
+    // Getters for thymeleaf (doesnt work with nested function calls on the template)
+    public String getDepartureString() {
+        return longToString(departureTime);
+    }
 
+    public String getArrivalString() {
+        return longToString(arrivalTime);
+    }
 
-    } */
+    public String getDepartureStopOverString() {
+        return longToString(departureTimeStopOver);
+    }
 
-    public void setArrivalT(String in) throws ParseException {
+    public String getArrivalStopOverString() {
+        return longToString(arrivalTimeStopOver);
+    }
+
+    // Conversions between various time formats
+    public static String longToString(Long in) {
         try{
-            SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-            Date date = originalFormat.parse(in);
-            this.arrivalTime = date;
-        } catch (ParseException e) {
+            Date date = new Date(in.longValue());
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return format.format(date);
+        } catch (Exception e) {
             System.out.println(e);
+            return null;
         }
     }
 
-    public void setDeparture(String in){
-        try {
-            SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-            Date date = originalFormat.parse(in);
-            this.departureTime = date;
-        } catch (ParseException e) {
+    public static Long stringToLong(String in) {
+        try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date date = format.parse(in);
+            return date.getTime();
+        } catch (Exception e) {
             System.out.println(e);
+            return null;
         }
     }
 
-
-    public String getDepartureString(){
-        if(departureTime == null)
+    public static String dateToString(Date in) {
+        try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return format.format(in);
+        } catch (Exception e) {
+            System.out.println(e);
             return null;
-        else
-            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(departureTime);
+        }
     }
 
-    public String getArrivalString(){
-        if(arrivalTime == null)
+    public static Date stringToDate(String in) {
+        try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date date = format.parse(in);
+            return date;
+        } catch (Exception e) {
+            System.out.println(e);
             return null;
-        else
-            return new SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(arrivalTime);
+        }
     }
 
+    public static Date longToDate(Long in) {
+        try{
+            return new Date(in.longValue());
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
-
+    public static Long dateToLong(Date in) {
+        try{
+            return in.getTime();
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 }

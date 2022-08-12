@@ -149,37 +149,60 @@ public class ObjectCreationController {
 
         // Validates the input
         boolean invalid = false;
-        if(flight.getMaxSeats()<0 || flight.getBookedSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0)
+        if(flight.getFlightNumber()==null || flight.getAirlineCode()==null || flight.getDestinationCode()==null
+                || flight.getDepartureCode()==null || flight.getPlaneCode()==null || flight.getDepartureTime()==null
+                || flight.getArrivalTime()==null)
             invalid = true;
-        else if(flight.getFlightID()==null || flight.getFlightCode()==null || flight.getAirline()==null || flight.getDestinationID()==null || flight.getOriginID()==null)
+        else if(flight.getFlightNumber()=="" || flight.getAirlineCode()=="" || flight.getDestinationCode()==""
+                || flight.getDepartureCode()=="" || flight.getPlaneCode()=="")
             invalid = true;
-        else if(flight.getFlightID()=="" || flight.getFlightCode()=="" || flight.getAirline()=="")
+        else if(!((flight.getDepartureTimeStopOver()==null)==(flight.getArrivalTimeStopOver()==null)) ||
+                !((flight.getDepartureTimeStopOver()==null)==(flight.getStopoverCode()==null)))
             invalid = true;
-        else if(flight.getDeparture()==null || flight.getArrival()==null)
+        else if(flight.getMaxSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0
+                || flight.getDurationSecondLeg()<0 || flight.getDuration()<0 || flight.getDepartureTime()<0
+                || flight.getArrivalTime()<0)
             invalid = true;
-        else if(flight.getOriginID()==null || flight.getDestinationID()==null || flight.getOriginID()=="" || flight.getDestinationID()=="")
-            invalid = true;
-
         // Checks whether the supplied origin and destination are ID or the location name and that they exist
         else {
             // Convert the ID to align with the Database standard)
-            flight.setDestinationID(flight.getDestinationID().toUpperCase());
-            flight.setOriginID(flight.getOriginID().toUpperCase());
+            flight.setDestinationCode(flight.getDestinationCode().toUpperCase());
+            flight.setDepartureCode(flight.getDepartureCode().toUpperCase());
 
             // Tests if the supplied string is the name of the locations
-            if(locationServices.getById(flight.getDestinationID()) == null){
-                Location destination = locationServices.findByLocation(flight.getDestinationID());
+            // Test for Destination Location
+            if(locationServices.getById(flight.getDestinationCode()) == null){
+                Location destination = locationServices.findByLocation(flight.getDestinationCode());
                 if(destination != null)
-                    flight.setDestinationID(destination.getLocationID());
+                    flight.setDestinationCode(destination.getLocationID());
                 else
                     invalid = true;
             }
-            if(!invalid && locationServices.getById(flight.getOriginID())==null){
-                Location origin = locationServices.findByLocation(flight.getOriginID());
+            // Test for Departure Location
+            if(!invalid && locationServices.getById(flight.getDepartureCode())==null){
+                Location origin = locationServices.findByLocation(flight.getDepartureCode());
                 if(origin != null)
-                    flight.setOriginID(origin.getLocationID());
+                    flight.setDepartureCode(origin.getLocationID());
                 else
                     invalid = true;
+            }
+            // Test for Stopover location
+            if(!invalid && flight.getStopoverCode()!=null){
+                if(flight.getArrivalTimeStopOver()<0 && flight.getDepartureTimeStopOver()<0)
+                    invalid = true;
+                else{
+                    // Convert the ID to align with the Database standard)
+                    flight.setStopoverCode(flight.getStopoverCode().toUpperCase());
+
+                    // Tests if the supplied string is the name of the locations
+                    if(locationServices.getById(flight.getStopoverCode()) == null){
+                        Location stop = locationServices.findByLocation(flight.getStopoverCode());
+                        if(stop != null)
+                            flight.setDestinationCode(stop.getLocationID());
+                        else
+                            invalid = true;
+                    }
+                }
             }
         }
 

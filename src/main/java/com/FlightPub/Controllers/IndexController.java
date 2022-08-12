@@ -234,7 +234,7 @@ public class IndexController {
         Flight f = flightServices.getById(id);
 
         System.out.println(id);
-        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
+        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), Flight.longToDate(f.getDepartureTime()));
 
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
@@ -254,7 +254,7 @@ public class IndexController {
     @PostMapping("/admin/flight/management")
     public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
         if(flight != null)
-            flight = flightServices.getById(flight.getFlightID());
+            flight = flightServices.getByFlightNumberAndDeparture(flight.getFlightNumber(), flight.getDepartureTime());
 
         if(flight == null)
             flight = new Flight();

@@ -35,9 +35,6 @@ public class FlightServices{
         availCache = new HashMap<>();
     }
 
-
-
-
     public List<Availability> getAvailability(String flightNumber, Date departureTime) {
 
         if(availCache.containsKey(flightNumber+departureTime.toString()) && availCache.get(flightNumber+departureTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
@@ -89,11 +86,19 @@ public class FlightServices{
     public Flight saveOrUpdate(Flight flight){
         // Attempts to align the string values with the database standard
         try {
-            flight.setFlightID(flight.getFlightID().toUpperCase());
-            flight.setOriginID(flight.getOriginID().toUpperCase());
-            flight.setDestinationID(flight.getDestinationID().toUpperCase());
-            flight.setFlightCode(flight.getFlightCode().toUpperCase());
-            flight.setAirline(flight.getAirline().toUpperCase());
+            flight.setDepartureCode(flight.getDepartureCode().toUpperCase());
+            flight.setDestinationCode(flight.getDestinationCode().toUpperCase());
+            flight.setPlaneCode(flight.getPlaneCode().toUpperCase());
+            flight.setFlightNumber(flight.getFlightNumber().toUpperCase());
+            flight.setAirlineCode(flight.getAirlineCode().toUpperCase());
+            if(flight.getStopoverCode() != null)
+                flight.setStopoverCode(flight.getStopoverCode().toUpperCase());
+
+            // Tests if the Flight exists
+            Flight existing = getByFlightNumberAndDeparture(flight.getFlightNumber(), flight.getDepartureTime());
+            if(existing != null && existing.getFlightID() != null)
+                flight.setFlightID(existing.getFlightID());
+
             flightRepo.save(flight);
             return flight;
         } catch (Exception e) {
@@ -103,7 +108,7 @@ public class FlightServices{
     }
 
     public List<Price> getPrices(Flight flight){
-        return priceRepo.findPrices(flight.getFlightNumber(), flight.getDepartureTime());
+        return priceRepo.findPrices(flight.getFlightNumber(), Flight.longToDate(flight.getDepartureTime()));
     }
 
     public void delete(String id){}
@@ -339,6 +344,18 @@ public class FlightServices{
             return out;
         }
 
+    }
+
+    public Flight getByFlightNumberAndDeparture(String flightNumber, Long departure) {
+        if(flightNumber == null || departure == null)
+            return null;
+
+        List<Flight> out = flightRepo.findByFlightNumberAndDeparture(flightNumber, departure);
+
+        if(!out.isEmpty())
+            return out.get(0);
+        else
+            return null;
     }
 
     public void invalidate(){

@@ -30,4 +30,7 @@ public interface FlightRepo extends MongoRepository<Flight, String> {
 
     @Query(value="{ '_id' : ?0 }")
     List<Flight> getByID(String id);
+
+    @Query(value="{ 'FlightNumber' : { '$regex' : ?0 , $options: 'i'}, 'DepartureTime': ?1 }")
+    List<Flight> findByFlightNumberAndDeparture(String flightNumber, Long departure);
 }
