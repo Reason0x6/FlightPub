@@ -80,7 +80,7 @@ public class FlightServices{
         if(id == null)
             return null;
         else
-            return flightRepo.findById(id.toUpperCase()).orElse(null);
+            return flightRepo.findById(id).orElse(null);
     }
 
     public Flight saveOrUpdate(Flight flight){
@@ -261,7 +261,7 @@ public class FlightServices{
         }
     }
 
-    public List<Flight> getByOriginAndDestination(String origin, String dest, Date dstart, Date dend) {
+    public List<Flight> getByOriginAndDestination(String origin, String dest, Long dstart, Long dend) {
         String key = "DEP"+origin+"DEST"+dest+"DEP"+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
             System.out.println(key + " was returned from cache");
@@ -282,7 +282,7 @@ public class FlightServices{
 
     }
 
-    public List<Flight> getByOrigin(String origin, Date dstart, Date dend){
+    public List<Flight> getByOrigin(String origin, Long dstart, Long dend){
         String key = "DEP"+origin+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
             System.out.println(key + " was returned from cache");
@@ -303,7 +303,7 @@ public class FlightServices{
         }
     }
 
-    public List<Flight> getByOriginAndDestinationAndArrivalTimes(String origin, String dep, Date dstart, Date dend) {
+    public List<Flight> getByOriginAndDestinationAndArrivalTimes(String origin, String dep, Long dstart, Long dend) {
         String key = "DEP"+origin+"DEST"+dep+"DEST"+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
             System.out.println(key + " was returned from cache");
@@ -324,7 +324,7 @@ public class FlightServices{
 
     }
 
-    public List<Flight> getByOriginAndArrivalTimes(String origin, Date dstart, Date dend) {
+    public List<Flight> getByOriginAndArrivalTimes(String origin, Long dstart, Long dend) {
 
         String key = "DEP"+origin+"DEST"+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){

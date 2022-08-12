@@ -147,7 +147,11 @@ public class Flight {
 
     public static Long stringToLong(String in) {
         try{
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            SimpleDateFormat format;
+            if(in.length() == 10)
+                format = new SimpleDateFormat("yyyy-MM-dd");
+            else
+                format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
             Date date = format.parse(in);
             return date.getTime();

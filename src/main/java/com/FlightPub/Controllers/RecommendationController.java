@@ -133,13 +133,13 @@ public class RecommendationController {
                 List<Flight> recommendSearch = flightServices.getByOriginAndDestination(
                         currentLocation.getLocationID(),
                         popularLocation.getLocationID(),
-                        new SimpleDateFormat("yyyy-MM-dd").parse(today),
-                        new SimpleDateFormat("yyyy-MM-dd").parse(max));
+                        Flight.stringToLong(today),
+                        Flight.stringToLong(max));
                 // If at least one flight was found add first flight to recommendation list
                 if(!recommendSearch.isEmpty()) {
                     recommendedFlights.add(recommendSearch.get(0));
                 }
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
