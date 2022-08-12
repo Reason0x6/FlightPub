@@ -245,7 +245,7 @@ public class BasicSearch {
             if (rating != 0 && flight.getRating() < rating)
                 continue;
             // Filter to the number of seats
-            if (seats > flightServices.getAvailableSeats(flight.getFlightNumber(), Flight.longToDate(flight.getDepartureTime())))
+            if (seats > flightServices.getAvailableSeats(flight.getFlightNumber(), flight.getDepartureTime()))
                 continue;
             // Filters flights that are not part of the membership program
             if (this.isMembershipFlights()) {
@@ -279,7 +279,7 @@ public class BasicSearch {
             boolean availableSeats = true;
             // Filter to the number of seats
             for(Flight x: flight.getFlights()){
-                if(flightServices.getAvailableSeats(x.getFlightNumber(), Flight.longToDate(x.getDepartureTime())) <= 0){
+                if(flightServices.getAvailableSeats(x.getFlightNumber(), x.getDepartureTime()) <= 0){
                     availableSeats = false;
                 }
             }

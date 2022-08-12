@@ -35,7 +35,7 @@ public class FlightServices{
         availCache = new HashMap<>();
     }
 
-    public List<Availability> getAvailability(String flightNumber, Date departureTime) {
+    public List<Availability> getAvailability(String flightNumber, Long departureTime) {
 
         if(availCache.containsKey(flightNumber+departureTime.toString()) && availCache.get(flightNumber+departureTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
             System.out.println(flightNumber+departureTime.toString() +" was returned from cache");
@@ -108,7 +108,7 @@ public class FlightServices{
     }
 
     public List<Price> getPrices(Flight flight){
-        return priceRepo.findPrices(flight.getFlightNumber(), Flight.longToDate(flight.getDepartureTime()));
+        return priceRepo.findPrices(flight.getFlightNumber(), flight.getDepartureTime());
     }
 
     public void delete(String id){}
@@ -133,7 +133,7 @@ public class FlightServices{
 
     }
 
-    public int getAvailableSeats(String id, Date departTime){
+    public int getAvailableSeats(String id, Long departTime){
         List<Availability> outArr;
         if(availCache.containsKey(id+departTime.toString()) && availCache.get(id+departTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
             System.out.println(id+departTime.toString() + " was returned from cache");

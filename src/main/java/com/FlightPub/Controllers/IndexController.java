@@ -234,7 +234,7 @@ public class IndexController {
         Flight f = flightServices.getById(id);
 
         System.out.println(id);
-        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), Flight.longToDate(f.getDepartureTime()));
+        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
 
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
