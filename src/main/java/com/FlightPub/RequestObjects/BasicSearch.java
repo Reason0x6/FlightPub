@@ -214,7 +214,7 @@ public class BasicSearch {
     }
 
     private Long addBuffer(Long date, int days, int hours, int minutes) {
-        return date += days*86400 + hours+3600 + minutes*60;
+        return date += days*24*60*60*1000 + hours*60*60*1000 + minutes*60*1000;
     }
 
     // Extension of the basic search that incorporates specific search parameters and filters
