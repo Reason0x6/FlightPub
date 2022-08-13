@@ -234,7 +234,7 @@ public class FlightServices{
     public String[] findCheapestFlight(String flightID, String flightNumber, long departureDate) {
         List<Price> priceList = priceRepo.findCheapestFlights(flightNumber);
         String[] flightDetails = new String[3];
-        List<Double> flightList = new ArrayList<>();
+        List<Double> flightPriceList = new ArrayList<>();
         Date travelDate = new Date(departureDate);
         Date startDate;
         Date endDate;
@@ -244,20 +244,24 @@ public class FlightServices{
             endDate = new Date(price.getEndDate().getTime());
             dateInRange = startDate.compareTo(travelDate) <= 0 && endDate.compareTo(travelDate) >= 0;
             if (dateInRange) {
-                flightList.add(price.getPrice());
+                flightPriceList.add(price.getPrice());
                 flightDetails[0] = flightID;
                 flightDetails[1] = flightNumber;
             }
         }
-        for (Double price : flightList) {
-            Double cheapestPrice = 10000.00;
+        flightDetails[2] = Collections.min(flightPriceList).toString();
+
+        /*
+        Double cheapestPrice = 10000.00;
+        for (Double price : flightPriceList) {
             if (price < cheapestPrice) {
                 cheapestPrice = price;
                 flightDetails[2] = cheapestPrice.toString();
                 break;
             }
         }
-        System.out.println(flightDetails[0] + " : " + flightDetails[1] + " : "+ flightDetails[2]);
+         */
+
         return flightDetails;
     }
 

@@ -294,8 +294,6 @@ public class BasicSearch {
 
     public List<String[]> setCheapestPriceForSearchResults(List<Flight> flight) {
         List<String[]> priceList = new ArrayList<>();
-        // List<String[]> cheapestPricePerFlight = new String[2];
-        List<String[]> cheapestPricePerFlight =new ArrayList<>();
         for (Flight f : flight) {
             priceList.add(flightServices.findCheapestFlight(f.getFlightID(), f.getFlightNumber(), f.getDepartureTime()));
         }
