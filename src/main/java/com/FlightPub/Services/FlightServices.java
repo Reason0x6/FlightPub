@@ -239,28 +239,25 @@ public class FlightServices{
         Date startDate;
         Date endDate;
         boolean dateInRange;
-        for (Price price : priceList) {
-            startDate = new Date(price.getStartDate().getTime());
-            endDate = new Date(price.getEndDate().getTime());
+        for (int i = 0; i < priceList.size(); i++) {
+            startDate = new Date(priceList.get(i).getStartDate().getTime());
+            endDate = new Date(priceList.get(i).getEndDate().getTime());
             dateInRange = startDate.compareTo(travelDate) <= 0 && endDate.compareTo(travelDate) >= 0;
             if (dateInRange) {
-                flightPriceList.add(price.getPrice());
+                System.out.println("Price: " + priceList.get(i).getPrice());
+                flightPriceList.add(priceList.get(i).getPrice());
                 flightDetails[0] = flightID;
                 flightDetails[1] = flightNumber;
             }
         }
-        flightDetails[2] = Collections.min(flightPriceList).toString();
 
-        /*
         Double cheapestPrice = 10000.00;
         for (Double price : flightPriceList) {
             if (price < cheapestPrice) {
                 cheapestPrice = price;
                 flightDetails[2] = cheapestPrice.toString();
-                break;
             }
         }
-         */
 
         return flightDetails;
     }
