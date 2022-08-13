@@ -368,8 +368,8 @@ public class IndexController {
         for (int i = 0; i < flights[0].size(); i++) {
             for (String[] priceDetails : pricesFromList) {
                 if (flights[0].get(i).getFlightID().equals(priceDetails[0])) {
-                    flights[0].get(i).setCheapestPrice(String.valueOf(priceDetails[1]));
-                    System.out.println("Cheapest price for " + flights[0].get(i).getFlightID() + flights[0].get(i).getCheapestPrice());
+                    flights[0].get(i).setCheapestPrice(String.valueOf(priceDetails[2]));
+                    System.out.println("Cheapest price for " + flights[0].get(i).getFlightID() + " : " + flights[0].get(i).getCheapestPrice());
                 }
             }
         }
