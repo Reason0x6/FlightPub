@@ -61,17 +61,25 @@ public class ObjectCreationController {
     @Qualifier(value = "AdminAccountServices")
     public void setAdminServices(AdminAccountServices adminAccountServices) { this.adminAccountServices = adminAccountServices; }
 
-    @RequestMapping("/location/add") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
-    public String addLoc( @RequestParam String id, @RequestParam String country, @RequestParam String location, @RequestParam double lat,
-                          @RequestParam double lng, @RequestParam int pop,
-                          Model model, HttpSession session){
-
-        Location newLoc = new Location(id, country,location, lat,lng,pop, false);
-        locationServices.saveOrUpdate(newLoc);
-
-        model.addAttribute("addedLoc", newLoc);
+    @RequestMapping("/location/add")
+    public String addLoc(@ModelAttribute Location location, Model model, HttpSession session){
         model.addAttribute("usr", getSession(session));
+        boolean invalid = false;
 
+        // Ensures that all fields are filled in and valid
+        if(location.getLocationID()==null || location.getLocation()==null || location.getCountry()==null || location.getDescription()==null)
+            invalid = true;
+        else if(location.getLocationID()=="" || location.getLocation()=="" || location.getCountry()=="" || location.getDescription()=="")
+            invalid = true;
+        else if(location.getLatitude() > 90 || location.getLatitude() < -90 || location.getLongitude() > 180 || location.getLongitude() < -180)
+            invalid = true;
+
+
+        // Checks whether the supplied input is valid then tries to performs database interaction
+        if(invalid || locationServices.saveOrUpdate(location) == null)
+            return "Admin/LocationManagement";
+
+        model.addAttribute("addedLoc", location);
         return "Confirmations/NewLocation";
     }
 
@@ -134,28 +142,83 @@ public class ObjectCreationController {
         return "User/AdminRegister";
     }
 
-    @RequestMapping("/flight/add") //e.g localhost:8080/flight/add?flightID=1021&originID=Syd&destinationID=Tam&airline=QANTAS&departure=202205101132AM&arrival=202202101231PM&flightCode=VH302&ticketprice=112.00
+    @RequestMapping("/flight/add")
     public String addFlight( @ModelAttribute Flight flight, Model model, HttpSession session) {
-
+        model.addAttribute("usr", getSession(session));
         model.addAttribute("flight", flight);
-       // if(flight.getMaxSeats()<0 || flight.getBookedSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0)
-         //   return "Admin/FlightManagement";
 
-        // Convert the ID to align with the Database standard)
-        flight.setDestinationCode(flight.getDestinationCode().toUpperCase());
-        flight.setDepartureCode(flight.getDepartureCode().toUpperCase());
+        // Validates the input
+        boolean invalid = false;
+        if(flight.getFlightNumber()==null || flight.getAirlineCode()==null || flight.getDestinationCode()==null
+                || flight.getDepartureCode()==null || flight.getPlaneCode()==null || flight.getDepartureTime()==null
+                || flight.getArrivalTime()==null)
+            invalid = true;
+        else if(flight.getFlightNumber()=="" || flight.getAirlineCode()=="" || flight.getDestinationCode()==""
+                || flight.getDepartureCode()=="" || flight.getPlaneCode()=="")
+            invalid = true;
+        else if(!((flight.getDepartureTimeStopOver()==null)==(flight.getArrivalTimeStopOver()==null)) ||
+                !((flight.getDepartureTimeStopOver()==null)==(flight.getStopoverCode()==null)))
+            invalid = true;
+        else if(flight.getMaxSeats()<0 || flight.getRating()<0 || flight.getTicketPrice()<0
+                || flight.getDurationSecondLeg()<0 || flight.getDuration()<0 || flight.getDepartureTime()<0
+                || flight.getArrivalTime()<0)
+            invalid = true;
+        // Checks whether the supplied origin and destination are ID or the location name and that they exist
+        else {
+            // Convert the ID to align with the Database standard)
+            flight.setDestinationCode(flight.getDestinationCode().toUpperCase());
+            flight.setDepartureCode(flight.getDepartureCode().toUpperCase());
 
-        // Ensures that the location exists
-        if(locationServices.getById(flight.getDestinationCode()) == null || locationServices.getById(flight.getDepartureCode()) == null) {
+            // Tests if the supplied string is the name of the locations
+            // Test for Destination Location
+            if(locationServices.getById(flight.getDestinationCode()) == null){
+                Location destination = locationServices.findByLocation(flight.getDestinationCode());
+                if(destination != null)
+                    flight.setDestinationCode(destination.getLocationID());
+                else
+                    invalid = true;
+            }
+            // Test for Departure Location
+            if(!invalid && locationServices.getById(flight.getDepartureCode())==null){
+                Location origin = locationServices.findByLocation(flight.getDepartureCode());
+                if(origin != null)
+                    flight.setDepartureCode(origin.getLocationID());
+                else
+                    invalid = true;
+            }
+            // Test for Stopover location
+            if(!invalid && flight.getStopoverCode()!=null){
+                if(flight.getArrivalTimeStopOver()<0 && flight.getDepartureTimeStopOver()<0)
+                    invalid = true;
+                else{
+                    // Convert the ID to align with the Database standard)
+                    flight.setStopoverCode(flight.getStopoverCode().toUpperCase());
+
+                    // Tests if the supplied string is the name of the locations
+                    if(locationServices.getById(flight.getStopoverCode()) == null){
+                        Location stop = locationServices.findByLocation(flight.getStopoverCode());
+                        if(stop != null)
+                            flight.setDestinationCode(stop.getLocationID());
+                        else
+                            invalid = true;
+                    }
+                }
+            }
+        }
+
+        // Returns a invalid flight to the edit and creation page
+        if(invalid) {
             return "Admin/FlightManagement";
         }
 
         // Update the database with a update or new entry, then pass flight to the conformation page
-        flightServices.saveOrUpdate(flight);
-        model.addAttribute("flight", flight);
-        model.addAttribute("usr", getSession(session));
-
-        return "Confirmations/NewFlight";
+        flight = flightServices.saveOrUpdate(flight);
+        if(flight == null)
+            return "Admin/FlightManagement";
+        else {
+            model.addAttribute("flight", flight);
+            return "Confirmations/NewFlight";
+        }
     }
 
     @PostMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1
