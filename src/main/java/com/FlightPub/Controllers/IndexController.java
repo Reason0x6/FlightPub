@@ -471,6 +471,62 @@ public class IndexController {
         return "User/AdminControl";
     }
 
+    @RequestMapping("/userModification")
+    public String userModification(@RequestParam String user, @RequestParam String userField, @RequestParam String modification, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        UserAccount userAccount = usrServices.getById(user);
+        if(userAccount != null){
+            if(userField.equals("email")){
+                userAccount.setEmail(modification);
+            }
+            else if(userField.equals("firstName")){
+                userAccount.setFirstname(modification);
+            }
+            else if(userField.equals("password")){
+                userAccount.setPassword(modification);
+            }
+            else if(userField.equals("preferredAirport")){
+                userAccount.setPreferredAirport(modification);
+            }
+            usrServices.saveOrUpdate(userAccount);
+        }
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/userDelete")
+    public String userModification(@RequestParam String userDelete, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        UserAccount userAccount = usrServices.getById(userDelete);
+        if(userAccount != null){
+            usrServices.delete(userDelete);
+        }
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/addUser")
+    public String addUser(@ModelAttribute UserAccount ua, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        usrServices.saveOrUpdate(ua);
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
 
     private UserSession getSession(HttpSession session){
         UserSession sessionUser = null;
