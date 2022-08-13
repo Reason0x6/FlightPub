@@ -231,25 +231,34 @@ public class FlightServices{
         return "0";
     }
 
-    public List<String[]> findCheapestFlight(String flightID, String flightNumber, Date departureDate) {
+    public String[] findCheapestFlight(String flightID, String flightNumber, long departureDate) {
         List<Price> priceList = priceRepo.findCheapestFlights(flightNumber);
-        String[] flightDetails = new String[2];
-        List<String[]> cheapestFlight = new ArrayList<>();
+        String[] flightDetails = new String[3];
+        List<Double> flightList = new ArrayList<>();
+        Date travelDate = new Date(departureDate);
         Date startDate;
         Date endDate;
         boolean dateInRange;
-        for (int i = 0; i < priceList.size(); i++) {
-            startDate = priceList.get(i).getStartDate();
-            endDate = priceList.get(i).getEndDate();
-            dateInRange = startDate.compareTo(departureDate) <= 0 && endDate.compareTo(departureDate) >= 0;
+        for (Price price : priceList) {
+            startDate = new Date(price.getStartDate().getTime());
+            endDate = new Date(price.getEndDate().getTime());
+            dateInRange = startDate.compareTo(travelDate) <= 0 && endDate.compareTo(travelDate) >= 0;
             if (dateInRange) {
+                flightList.add(price.getPrice());
                 flightDetails[0] = flightID;
-                flightDetails[1] = priceList.get(i).getPrice().toString();
-                cheapestFlight.add(flightDetails);
+                flightDetails[1] = flightNumber;
             }
-            i++;
         }
-        return cheapestFlight;
+        for (Double price : flightList) {
+            Double cheapestPrice = 10000.00;
+            if (price < cheapestPrice) {
+                cheapestPrice = price;
+                flightDetails[2] = cheapestPrice.toString();
+                break;
+            }
+        }
+        System.out.println(flightDetails[0] + " : " + flightDetails[1] + " : "+ flightDetails[2]);
+        return flightDetails;
     }
 
     public List<Flight> getByOrigin(String dep) {

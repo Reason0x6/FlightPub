@@ -364,12 +364,12 @@ public class IndexController {
         stopOver[1] = search.basicStopOverSearch(2);
         stopOver[2] = search.basicStopOverSearch(3);
 
-        List<List<String[]>> pricesFromList = search.setCheapestPriceForSearchResults(flights[0]);
+        List<String[]> pricesFromList = search.setCheapestPriceForSearchResults(flights[0]);
         for (int i = 0; i < flights[0].size(); i++) {
-            for (List<String[]> price : pricesFromList) {
-                if (flights[0].get(i).getFlightID().equals(price.get(i)[0])) {
-                    flights[0].get(i).setCheapestPrice(String.valueOf(price.get(i)[1]));
-                    System.out.println(flights[0].get(i).getCheapestPrice());
+            for (String[] priceDetails : pricesFromList) {
+                if (flights[0].get(i).getFlightID().equals(priceDetails[0])) {
+                    flights[0].get(i).setCheapestPrice(String.valueOf(priceDetails[1]));
+                    //System.out.println(flights[0].get(i).getCheapestPrice());
                 }
             }
         }

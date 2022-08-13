@@ -292,12 +292,14 @@ public class BasicSearch {
         return filteredFlights;
     }
 
-    public List<List<String[]>> setCheapestPriceForSearchResults(List<Flight> flight) {
-        List<List<String[]>> cheapestPriceList = new ArrayList<>();
+    public List<String[]> setCheapestPriceForSearchResults(List<Flight> flight) {
+        List<String[]> priceList = new ArrayList<>();
+        // List<String[]> cheapestPricePerFlight = new String[2];
+        List<String[]> cheapestPricePerFlight =new ArrayList<>();
         for (Flight f : flight) {
-            cheapestPriceList.add(flightServices.findCheapestFlight(f.getFlightID(), f.getFlightNumber(), f.getDepartureTime()));
+            priceList.add(flightServices.findCheapestFlight(f.getFlightID(), f.getFlightNumber(), f.getDepartureTime()));
         }
-        return cheapestPriceList;
+        return priceList;
     }
 }
 
