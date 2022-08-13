@@ -9,6 +9,17 @@
         <div th:if="${admin.getCompany()} == 'Flightpub'">
             <h2>Restrict/Unrestrict Covid Location</h2>
             <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"> </form>
+            <br>
+            <h2>User Modification</h2>
+            <br>
+            <h5>Update User Account</h5>
+            <form th:replace="Fragments/Forms :: #userModificationForm"> </form>
+            <br>
+            <h5>Delete User Account</h5>
+            <form th:replace="Fragments/Forms :: #userDelete"> </form>
+            <br>
+            <h5>Create User Account</h5>
+            <form th:replace="Fragments/Forms :: #addUser"> </form>
         </div>
         <br>
         <h2>Most Popular Wish List Destinations</h2>

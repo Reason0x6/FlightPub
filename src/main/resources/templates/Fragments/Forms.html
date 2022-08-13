@@ -512,3 +512,102 @@
         </select>
 
 </form>
+
+<!-- User Modificaion Form ------------------------------------------------------------------------------------------->
+<form id="userModificationForm" onsubmit="return validateUserModification()" th:action="@{/userModification}" method="post">
+    <span>User: </span>
+    <input type="text" id="user" class="form-control" name="user" placeholder="User Email For Modification"><br>
+    <span>User Field: </span>
+    <select name="userField" id="userField" class="form-select">
+        <option value="email" selected="true">Email</option>
+        <option value="firstName">First Name</option>
+        <option value="password">Password</option>
+        <option value="preferredAirport">Preferred Airport</option>
+    </select><br>
+    <input type="text" id="modification" class="form-control" name="modification" placeholder="New User Field Value"><br>
+    <button type="submit" class="btn btn-primary btn-search">Update User</button>
+
+    <script>
+        function validateUserModification() {
+            let f =  document.forms["userModificationForm"];
+            let x = true;
+
+            if(f["modification"].value == ""){ x = false; }
+
+            console.log(x);
+
+            if (x == "") {
+                alert("Please fill in the user modification field");
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    </script>
+</form>
+
+<!-- User Modificaion Form ------------------------------------------------------------------------------------------->
+<form id="userDeleteForm" onsubmit="return validateUserDeletion()" th:action="@{/userDelete}" method="post">
+    <span>User: </span>
+    <input type="text" id="userDelete" class="form-control" name="userDelete" placeholder="User Email For Deletion"><br>
+    <button type="submit" class="btn btn-primary btn-search">Delete User</button>
+
+    <script>
+        function validateUserDeletion() {
+            let f =  document.forms["userDeleteForm"];
+            let x = true;
+
+            if(f["userDelete"].value == ""){ x = false; }
+
+            console.log(x);
+
+            if (x == "") {
+                alert("Please fill in the user deletion field");
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    </script>
+</form>
+
+<!-- Admin Add User Form ------------------------------------------------------------------------------------------->
+<form id="addUser" name="addUser" onsubmit="return validateAddUser()" th:action="@{/addUser}" th:object="${UserAccount}" method="post">
+    <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
+    <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>
+
+    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
+    <select name="prefAirport" id="prefAirport" class="form-control">
+        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    </select><br>
+
+    <input type="password" id="password" class="form-control" name="password" placeholder="Password"><br>
+    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Confirm Password"><br>
+    <button type="submit" class="btn btn-primary btn-search">Create User Account</button>
+
+    <script>
+        function validateAddUser() {
+            let f =  document.forms["addUser"];
+            let x = true;
+
+            if(f["email"].value == ""){ x = false; }
+            if(f["firstname"].value == ""){ x = false; }
+            if(f["password"].value == ""){ x = false; }
+            if(f["confirmpassword"].value == ""){ x = false; }
+
+            if (x == "") {
+                alert("Please fill in all fields");
+                return false;
+            }
+            else if(!(f["password"].value === f["confirmpassword"].value)){
+                alert("Passwords do not match");
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    </script>
+</form>
