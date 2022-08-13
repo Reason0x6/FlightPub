@@ -11,6 +11,6 @@ import java.util.List;
 public interface AvailabilityRepo extends MongoRepository<Availability, String> {
 
     @Query(value="{ 'FlightNumber' : { '$regex' : ?0 , $options: 'i'}, 'DepartureTime': ?1 }")
-    List<Availability> findByFlightCodeAndDate(String flight, Date date);
+    List<Availability> findByFlightCodeAndDate(String flight, Long date);
 
 }

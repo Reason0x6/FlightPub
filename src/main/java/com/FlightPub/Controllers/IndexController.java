@@ -258,14 +258,39 @@ public class IndexController {
     @PostMapping("/admin/flight/management")
     public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
         if(flight != null)
-            flight = flightServices.getById(flight.getFlightID());
+            flight = flightServices.getByFlightNumberAndDeparture(flight.getFlightNumber(), flight.getDepartureTime());
 
         if(flight == null)
             flight = new Flight();
 
         model.addAttribute("flight", flight);
+        model.addAttribute("usr", getSession(session));
 
         return "Admin/FlightManagement";
+    }
+
+    @RequestMapping("/admin/location/management")
+    @PostMapping("/admin/location/management")
+    public String modifyLocation(@ModelAttribute Location location, Model model, HttpSession session) {
+        if(location != null) {
+            if(location.getLocationID() != null) {
+                String id = location.getLocationID();
+                Location queryResult = locationServices.getById(id);
+                if(queryResult == null) {
+                    queryResult = locationServices.findByLocation(id);
+                }
+
+                location = queryResult;
+            }
+
+            if(location == null)
+                location = new Location();
+        }
+
+        model.addAttribute("location", location);
+        model.addAttribute("usr", getSession(session));
+
+        return "Admin/LocationManagement";
     }
 
     @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2
@@ -479,6 +504,62 @@ public class IndexController {
             return "redirect:login";
         }
         holidayPackageServices.saveOrUpdate(hp);
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/userModification")
+    public String userModification(@RequestParam String user, @RequestParam String userField, @RequestParam String modification, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        UserAccount userAccount = usrServices.getById(user);
+        if(userAccount != null){
+            if(userField.equals("email")){
+                userAccount.setEmail(modification);
+            }
+            else if(userField.equals("firstName")){
+                userAccount.setFirstname(modification);
+            }
+            else if(userField.equals("password")){
+                userAccount.setPassword(modification);
+            }
+            else if(userField.equals("preferredAirport")){
+                userAccount.setPreferredAirport(modification);
+            }
+            usrServices.saveOrUpdate(userAccount);
+        }
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/userDelete")
+    public String userModification(@RequestParam String userDelete, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        UserAccount userAccount = usrServices.getById(userDelete);
+        if(userAccount != null){
+            usrServices.delete(userDelete);
+        }
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/addUser")
+    public String addUser(@ModelAttribute UserAccount ua, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        usrServices.saveOrUpdate(ua);
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("admin", getAdminSession(session));
 
