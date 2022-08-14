@@ -191,7 +191,7 @@ public class Flight {
 
     public static Date longToDate(Long in) {
         try{
-            return new Date(in.longValue());
+            return new Date(in);
         } catch (Exception e) {
             System.out.println(e);
             return null;

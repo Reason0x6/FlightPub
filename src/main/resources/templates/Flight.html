@@ -30,8 +30,8 @@
             <div class="card l-1" style="padding: 10px 0 0 20px;">
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-4">
-                        <p><b>Departs: </b><span th:text="${Flight.getDepartureCode()}"></span> @ <span th:text="${Flight.getDepartureTime()}"></span></p>
-                        <p><b>Arrives: </b><span th:text="${Flight.getDestinationCode()}"></span>  @  <span th:text="${Flight.getArrivalTime()}"></span></p>
+                        <p><b>Departs: </b><span th:text="${Flight.getDepartureCode()}"></span> @ <span th:text="${Flight.longToDate(Flight.getDepartureTime())}"></span></p>
+                        <p><b>Arrives: </b><span th:text="${Flight.getDestinationCode()}"></span>  @  <span th:text="${Flight.longToDate(Flight.getArrivalTime())}"></span></p>
                         <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
                     </div>
                     <div class="col-sm-8">

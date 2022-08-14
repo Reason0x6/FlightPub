@@ -235,9 +235,6 @@ public class FlightServices{
         List<Price> priceList = priceRepo.findCheapestFlights(flightNumber);
         List<String[]> flightPriceList = new ArrayList<>();
 
-        String[] flight = new String[5];
-        String[] cheapestFlight = new String[5];
-
         //List<Double> flightPriceList = new ArrayList<>();
         Date travelDate = new Date(departureDate);
         Date startDate;
@@ -245,11 +242,11 @@ public class FlightServices{
         boolean dateInRange;
 
         for (int i = 0; i < priceList.size(); i++) {
+            String[] flight = new String[5];
             startDate = new Date(priceList.get(i).getStartDate().getTime());
             endDate = new Date(priceList.get(i).getEndDate().getTime());
             dateInRange = startDate.compareTo(travelDate) <= 0 && endDate.compareTo(travelDate) >= 0;
             if (dateInRange) {
-                flight = new String[5];
                 flight[0] = flightID;
                 flight[1] = flightNumber;
                 flight[2] = priceList.get(i).getClassCode();
@@ -259,23 +256,20 @@ public class FlightServices{
             }
         }
 
+        String[] cheapestFlight = new String[5];
+        cheapestFlight[4] = "50000";
         for (int i = 0; i < flightPriceList.size(); i++) {
-            if (i == 0) {
-                cheapestFlight = flightPriceList.get(i);
-            } else {
-                if (Double.parseDouble(flightPriceList.get(i)[4]) < Double.parseDouble(cheapestFlight[4])) {
-                    cheapestFlight = new String[5];
-                    cheapestFlight[0] = flightPriceList.get(i)[0];
-                    cheapestFlight[1] = flightPriceList.get(i)[1];
-                    cheapestFlight[2] = flightPriceList.get(i)[2];
-                    cheapestFlight[3] = flightPriceList.get(i)[3];
-                    cheapestFlight[4] = flightPriceList.get(i)[4];
+            for (int j = 0; j < flightPriceList.size(); j++) {
+                if (Double.parseDouble(flightPriceList.get(j)[4]) < Double.parseDouble(cheapestFlight[4])) {
+                    cheapestFlight[0] = flightPriceList.get(j)[0];
+                    cheapestFlight[1] = flightPriceList.get(j)[1];
+                    cheapestFlight[2] = flightPriceList.get(j)[2];
+                    cheapestFlight[3] = flightPriceList.get(j)[3];
+                    cheapestFlight[4] = flightPriceList.get(j)[4];
                 }
             }
         }
-
         System.out.println("Cheapest Flight: " + cheapestFlight[0] + " " + cheapestFlight[1] + " " + cheapestFlight[2] + " " + cheapestFlight[3] + " " + cheapestFlight[4]);
-
         return cheapestFlight;
     }
 
