@@ -353,7 +353,7 @@ public class IndexController {
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
 
-        //
+        // Increase the popularity of destination location
         locationServices.incrementPopularity(search.getDestinationIn());
 
         // Gathers Flights and Stopovers
@@ -381,6 +381,9 @@ public class IndexController {
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
+
+        // Increase the popularity of destination location
+        locationServices.incrementPopularity(search.getDestinationIn());
 
         // Gathers Flights and Stopovers
         flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
