@@ -84,6 +84,7 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
 
+        model.addAttribute("searchLocation", locationServices.listAll());
         model.addAttribute("LoadingRecommendation", true);
 
         return "index";
@@ -353,6 +354,8 @@ public class IndexController {
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
 
+        model.addAttribute("searchLocation", locationServices.listAll());
+
         // Increase the popularity of destination location
         locationServices.incrementPopularity(search.getDestinationIn());
 
@@ -381,6 +384,8 @@ public class IndexController {
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
+
+        model.addAttribute("searchLocation", locationServices.listAll());
 
         // Increase the popularity of destination location
         locationServices.incrementPopularity(search.getDestinationIn());
