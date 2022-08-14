@@ -233,33 +233,50 @@ public class FlightServices{
 
     public String[] findCheapestFlight(String flightID, String flightNumber, long departureDate) {
         List<Price> priceList = priceRepo.findCheapestFlights(flightNumber);
-        String[] flightDetails = new String[3];
-        List<Double> flightPriceList = new ArrayList<>();
+        List<String[]> flightPriceList = new ArrayList<>();
+
+        String[] flight = new String[5];
+        String[] cheapestFlight = new String[5];
+
+        //List<Double> flightPriceList = new ArrayList<>();
         Date travelDate = new Date(departureDate);
         Date startDate;
         Date endDate;
         boolean dateInRange;
+
         for (int i = 0; i < priceList.size(); i++) {
             startDate = new Date(priceList.get(i).getStartDate().getTime());
             endDate = new Date(priceList.get(i).getEndDate().getTime());
             dateInRange = startDate.compareTo(travelDate) <= 0 && endDate.compareTo(travelDate) >= 0;
             if (dateInRange) {
-                System.out.println("Price: " + priceList.get(i).getPrice());
-                flightPriceList.add(priceList.get(i).getPrice());
-                flightDetails[0] = flightID;
-                flightDetails[1] = flightNumber;
+                flight = new String[5];
+                flight[0] = flightID;
+                flight[1] = flightNumber;
+                flight[2] = priceList.get(i).getClassCode();
+                flight[3] = priceList.get(i).getTicketCode();
+                flight[4] = priceList.get(i).getPrice().toString();
+                flightPriceList.add(flight);
             }
         }
 
-        Double cheapestPrice = 10000.00;
-        for (Double price : flightPriceList) {
-            if (price < cheapestPrice) {
-                cheapestPrice = price;
-                flightDetails[2] = cheapestPrice.toString();
+        for (int i = 0; i < flightPriceList.size(); i++) {
+            if (i == 0) {
+                cheapestFlight = flightPriceList.get(i);
+            } else {
+                if (Double.parseDouble(flightPriceList.get(i)[4]) < Double.parseDouble(cheapestFlight[4])) {
+                    cheapestFlight = new String[5];
+                    cheapestFlight[0] = flightPriceList.get(i)[0];
+                    cheapestFlight[1] = flightPriceList.get(i)[1];
+                    cheapestFlight[2] = flightPriceList.get(i)[2];
+                    cheapestFlight[3] = flightPriceList.get(i)[3];
+                    cheapestFlight[4] = flightPriceList.get(i)[4];
+                }
             }
         }
 
-        return flightDetails;
+        System.out.println("Cheapest Flight: " + cheapestFlight[0] + " " + cheapestFlight[1] + " " + cheapestFlight[2] + " " + cheapestFlight[3] + " " + cheapestFlight[4]);
+
+        return cheapestFlight;
     }
 
     public List<Flight> getByOrigin(String dep) {
