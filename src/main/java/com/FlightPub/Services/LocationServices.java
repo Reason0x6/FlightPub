@@ -31,8 +31,20 @@ public class LocationServices {
 
 
     public Location saveOrUpdate(Location location) {
-        locationRepo.save(location);
-        return location;
+        try{
+            // Prepares the Data for the database
+            String locationName = location.getLocation();
+            String country = location.getCountry();
+            location.setLocationID(location.getLocationID().toUpperCase());
+            location.setLocation(locationName.substring(0, 1).toUpperCase() + locationName.substring(1).toLowerCase());
+            location.setCountry(country.substring(0, 1).toUpperCase() + country.substring(1).toLowerCase());
+
+            locationRepo.save(location);
+            return location;
+        } catch(Exception e) {
+            System.out.println("Error: "+e);
+            return null;
+        }
     }
 
 
@@ -55,10 +67,14 @@ public class LocationServices {
     }
 
     public Location findByLocation(String originIn) {
+        // Ensures that the string contains a value
+        if(originIn == null || originIn == "")
+            return null;
+
         List<Location> out = locationRepo.findByLocation(originIn);
-        if (!out.isEmpty()) {
+        if (!out.isEmpty()) // returns only a single location
             return out.get(0);
-        }
+
         return null;
     }
 
