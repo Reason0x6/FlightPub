@@ -99,23 +99,23 @@ public class BasicSearch {
     public BasicSearch() {
     }
 
-    // Returns a flight of flights accoridng to the basic search
+    // Returns a flight of flights according to the basic search
     public List<Flight> runBasicSearch(String start, String end, boolean stopover) {
-        Date dstart = null;
-        Date dend = null;
+        Long dstart = null;
+        Long dend = null;
         // Catch date parse exceptions
         try {
             // Date Processing
-            dstart = new SimpleDateFormat("yyyy-MM-dd").parse(start);
+            dstart = Flight.stringToLong(start);
 
             if (this.isExactdate()) {    // If search is for exact date, time frame is made for a 24 hour period
                 dend = addBuffer(dstart, 0, 23, 59);
             } else {   // Upper date bound is made the end of day
-                dend = new SimpleDateFormat("yyyy-MM-dd").parse(end);
+                dend = Flight.stringToLong(end);
                 dend = addBuffer(dend, 0, 23, 59);
             }
 
-        } catch (ParseException e) {
+        } catch (Exception e) {
             System.out.println(e);
             return null;
         }
@@ -213,13 +213,8 @@ public class BasicSearch {
         return false;
     }
 
-    private Date addBuffer(Date date, int days, int hours, int minutes) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DATE, days);
-        calendar.add(Calendar.HOUR_OF_DAY, hours);
-        calendar.add(Calendar.MINUTE, minutes);
-        return calendar.getTime();
+    private Long addBuffer(Long date, int days, int hours, int minutes) {
+        return date += days*24*60*60*1000 + hours*60*60*1000 + minutes*60*1000;
     }
 
     // Extension of the basic search that incorporates specific search parameters and filters

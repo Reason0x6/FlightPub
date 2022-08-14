@@ -77,7 +77,7 @@ public class IndexController {
     }
 
     @RequestMapping("/")
-    public String loadIndex(@ModelAttribute Recommendation recommendation, Model model, HttpSession session) {
+    public String loadIndex(Model model, HttpSession session) {
 
         model = addDateAndTimeToModel(model);
 
@@ -211,7 +211,6 @@ public class IndexController {
         model.addAttribute("groups", groups);
         model.addAttribute("invitedGroups", invitedGroups);
 
-        model.addAttribute("reco", new Recommendation(locationServices, flightServices).getRecommendation());
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Personalised";
@@ -234,7 +233,6 @@ public class IndexController {
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
-       //Price p = priceServices.getById(id);
 
         System.out.println(id);
         List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
@@ -245,16 +243,10 @@ public class IndexController {
         model.addAttribute("Flight", f);
         model.addAttribute("usr", getSession(session));
 
-
         model.addAttribute("businessClass", flightServices.getSeatList("BUS", availableSeats));
         model.addAttribute("economyClass", flightServices.getSeatList("ECO", availableSeats));
         model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
         model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
-
-        model.addAttribute("businessClassPrice", flightServices.getPrice("BUS", availableSeats));
-        model.addAttribute("economyClassPrice", flightServices.getPrice("ECO", availableSeats));
-        model.addAttribute("firstClassPrice", flightServices.getPrice("FIR", availableSeats));
-        model.addAttribute("premiumEconomyPrice", flightServices.getPrice("PME", availableSeats));
 
         return "Flight";
     }
@@ -263,14 +255,39 @@ public class IndexController {
     @PostMapping("/admin/flight/management")
     public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
         if(flight != null)
-            flight = flightServices.getById(flight.getFlightID());
+            flight = flightServices.getByFlightNumberAndDeparture(flight.getFlightNumber(), flight.getDepartureTime());
 
         if(flight == null)
             flight = new Flight();
 
         model.addAttribute("flight", flight);
+        model.addAttribute("usr", getSession(session));
 
         return "Admin/FlightManagement";
+    }
+
+    @RequestMapping("/admin/location/management")
+    @PostMapping("/admin/location/management")
+    public String modifyLocation(@ModelAttribute Location location, Model model, HttpSession session) {
+        if(location != null) {
+            if(location.getLocationID() != null) {
+                String id = location.getLocationID();
+                Location queryResult = locationServices.getById(id);
+                if(queryResult == null) {
+                    queryResult = locationServices.findByLocation(id);
+                }
+
+                location = queryResult;
+            }
+
+            if(location == null)
+                location = new Location();
+        }
+
+        model.addAttribute("location", location);
+        model.addAttribute("usr", getSession(session));
+
+        return "Admin/LocationManagement";
     }
 
     @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2
@@ -477,6 +494,62 @@ public class IndexController {
             return "redirect:login";
         }
         holidayPackageServices.saveOrUpdate(hp);
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/userModification")
+    public String userModification(@RequestParam String user, @RequestParam String userField, @RequestParam String modification, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        UserAccount userAccount = usrServices.getById(user);
+        if(userAccount != null){
+            if(userField.equals("email")){
+                userAccount.setEmail(modification);
+            }
+            else if(userField.equals("firstName")){
+                userAccount.setFirstname(modification);
+            }
+            else if(userField.equals("password")){
+                userAccount.setPassword(modification);
+            }
+            else if(userField.equals("preferredAirport")){
+                userAccount.setPreferredAirport(modification);
+            }
+            usrServices.saveOrUpdate(userAccount);
+        }
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/userDelete")
+    public String userModification(@RequestParam String userDelete, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        UserAccount userAccount = usrServices.getById(userDelete);
+        if(userAccount != null){
+            usrServices.delete(userDelete);
+        }
+        model.addAttribute("locs", locationServices.listAll());
+        model.addAttribute("admin", getAdminSession(session));
+
+        return "User/AdminControl";
+    }
+
+    @RequestMapping("/addUser")
+    public String addUser(@ModelAttribute UserAccount ua, Model model, HttpSession session){
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        usrServices.saveOrUpdate(ua);
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("admin", getAdminSession(session));
 
