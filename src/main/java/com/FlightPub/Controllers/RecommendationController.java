@@ -91,7 +91,7 @@ public class RecommendationController {
 //        return searchForRecommendedFlights(currentLocation);
 
         // Get currently popular locations
-        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
+        List<Location> locations = locationServices.findAllSortedAscendingExcluding(currentLocation.getLocationID());
 
         // The final list of recommended locations
         return locations.stream().limit(4).collect(Collectors.toList());
@@ -99,7 +99,7 @@ public class RecommendationController {
 
     private List<Flight> searchForRecommendedFlights(Location currentLocation) {
         // Get currently popular locations
-        List<Location> locations = locationServices.findAllSortedDescendingExcluding(currentLocation.getLocationID());
+        List<Location> locations = locationServices.findAllSortedAscendingExcluding(currentLocation.getLocationID());
 
         // The final list of recommended flights
         List<Flight> recommendedFlights = new LinkedList<>();

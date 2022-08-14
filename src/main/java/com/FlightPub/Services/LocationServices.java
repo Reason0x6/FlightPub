@@ -53,12 +53,12 @@ public class LocationServices {
     }
 
 
-    public List<Location> findAllSortedDescendingExcluding(String locationID) {
-        return locationRepo.findAllSortedDescendingExcluding(locationID);
+    public List<Location> findAllSortedAscendingExcluding(String locationID) {
+        return locationRepo.findAllSortedAscendingExcluding(locationID);
     }
 
     public Location mostPopular() {
-        List<Location> out = locationRepo.findAllByOrderByPopularityDesc();
+        List<Location> out = locationRepo.findAllByOrderByPopularityAsc();
         System.out.println(out);
         if (!out.isEmpty()) {
             return out.get(0);
@@ -68,15 +68,35 @@ public class LocationServices {
 
     public Location findByLocation(String originIn) {
         // Ensures that the string contains a value
-        if(originIn == null || originIn == "")
+        if(originIn == null || originIn.equals(""))
             return null;
 
         List<Location> out = locationRepo.findByLocation(originIn);
         if (!out.isEmpty()) // returns only a single location
             return out.get(0);
-
         return null;
     }
 
+    public void incrementPopularity(String location) {
+        Location popularLocation = findByLocation(location);
+
+        if (popularLocation != null) {
+            int currentPopularity = popularLocation.getPopularity();
+
+            // If current popularity is not already number 1
+            if (currentPopularity != 1) {
+                Location higherPopularityLocation = locationRepo.findFirstByPopularity(currentPopularity-1);
+                Location currentPopularityLocation = locationRepo.findFirstByPopularity(currentPopularity);
+
+                higherPopularityLocation.setPopularity(currentPopularity);
+                currentPopularityLocation.setPopularity(currentPopularity-1);
+
+                saveOrUpdate(higherPopularityLocation);
+                saveOrUpdate(currentPopularityLocation);
+            }
+        } else {
+            System.out.println("Could not find a increase location popularity for: " + location);
+        }
+    }
 
 }
