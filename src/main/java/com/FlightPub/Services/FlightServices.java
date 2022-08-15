@@ -159,7 +159,7 @@ public class FlightServices{
         return out;
     }
 
-    public Object getSeatList(String classCode, List<Availability> availableSeats) {
+    public ArrayList<String[]> getSeatList(String classCode, List<Availability> availableSeats) {
         ArrayList<String[]> seatList = new ArrayList<>();
         for (Availability ticket : availableSeats) {
             if (ticket.getClassCode().equals(classCode)) {
@@ -207,12 +207,12 @@ public class FlightServices{
         }
         if (seatDetails[3].equals("0")) {
             seatDetails[1] = "0";
-            seatDetails[3] = "Not Available";
+            seatDetails[3] = "50000.00"; // TODO: Change this to a real price
         }
         return seatDetails;
     }
 
-    private @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
+    public @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
         List<Price> price = priceRepo.findPriceByClassTicketCode(ticketFlightNumber, classCode, ticketCode);
         Date startDate;
         Date endDate;
@@ -224,12 +224,47 @@ public class FlightServices{
             dateInRange = startDate.compareTo(ticketDepartureDate) <= 0 && endDate.compareTo(ticketDepartureDate) >= 0;
             pricePerTicket = price.get(i).getPrice();
             if (dateInRange) {
-                System.out.println("Price Per Ticket: " + pricePerTicket + " Ticket Code: " + ticketCode + " Class Code: " + classCode);
-                return "$" + pricePerTicket;
+                return String.valueOf(pricePerTicket);
             }
             i++;
         }
         return "0";
+    }
+
+    public String[] findCheapestFlight(String flightID, String flightNumber, long departureDate) {
+        List<String[]> flightPriceList = new ArrayList<>();
+
+        List<Availability> availableSeats = getAvailability(flightNumber, departureDate);
+        for (int i = 0; i < availableSeats.size(); i++) {
+            String[] seat = new String[5];
+            seat[0] = flightID;
+            seat[1] = availableSeats.get(i).getFlightNumber();
+            seat[2] = availableSeats.get(i).getClassCode();
+            seat[3] = availableSeats.get(i).getTicketCode();
+            seat[4] = getSeatList(availableSeats.get(i).getClassCode(), availableSeats).get(0)[3];
+            flightPriceList.add(seat);
+        }
+
+        String[] cheapestFlight = new String[5];
+        cheapestFlight[4] = "50000.00"; // Arbitrary large price
+        double currentFlightPrice;
+        for (int i = 0; i < flightPriceList.size(); i++) {
+            for (int j = 0; j < flightPriceList.size(); j++) {
+                currentFlightPrice = Double.parseDouble(flightPriceList.get(j)[4]);
+                if (currentFlightPrice < Double.parseDouble(cheapestFlight[4])) {
+                    cheapestFlight[0] = flightPriceList.get(j)[0];
+                    cheapestFlight[1] = flightPriceList.get(j)[1];
+                    cheapestFlight[2] = flightPriceList.get(j)[2];
+                    cheapestFlight[3] = flightPriceList.get(j)[3];
+                    cheapestFlight[4] = flightPriceList.get(j)[4];
+                }
+            }
+        }
+        if (cheapestFlight[4].equals("50000.00")) {
+            cheapestFlight[4] = "Not Available";
+        }
+
+        return cheapestFlight;
     }
 
     public List<Flight> getByOrigin(String dep) {
@@ -364,5 +399,4 @@ public class FlightServices{
         availCache = new HashMap<>();
 
     }
-
 }

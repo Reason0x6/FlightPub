@@ -1,5 +1,6 @@
 package com.FlightPub.model;
 
+import com.FlightPub.RequestObjects.BasicSearch;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -96,6 +97,10 @@ public class Flight {
     @Setter
     private double rating;
 
+    @Getter
+    @Field("CheapestPrice")
+    private String cheapestPrice;
+
     public Flight(){}
 
     // Setters for the time related class variables
@@ -186,7 +191,7 @@ public class Flight {
 
     public static Date longToDate(Long in) {
         try{
-            return new Date(in.longValue());
+            return new Date(in);
         } catch (Exception e) {
             System.out.println(e);
             return null;
@@ -200,5 +205,10 @@ public class Flight {
             System.out.println(e);
             return null;
         }
+    }
+
+
+    public void setCheapestPrice(String cheapestFlights) {
+        this.cheapestPrice = cheapestFlights;
     }
 }
