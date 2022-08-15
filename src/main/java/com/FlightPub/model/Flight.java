@@ -211,4 +211,7 @@ public class Flight {
     public void setCheapestPrice(String cheapestFlights) {
         this.cheapestPrice = cheapestFlights;
     }
+    public String getCheapestPrice(){
+        return cheapestPrice != null ? cheapestPrice : "TBA";
+    }
 }

@@ -63,7 +63,7 @@
                       <td th:data="${flight.getDepartureString()}" ><b><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span></b><span th:text="${flight.getDepartureTime()}"></span></td>
                       <td th:data="${flight.getArrivalString()}"> <b><span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span></b><span th:text="${flight.getArrivalTime()}"></span></td>
                       <td th:data="${flight.getAirlineCode()}"><span th:text="${flight.getAirlineCode()}"></span></td>
-                      <td><span th:text="' $' + ${flight.getCheapestPrice()} ?: 'Not Available'"></span></td>
+                      <td><span th:text="' $' + ${flight.getCheapestPrice()}"></span></td>
                       <td><a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
                         <button type="submit" class="btn btn-link">Bookmark</button></td>
                     </tr>

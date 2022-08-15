@@ -370,15 +370,7 @@ public class IndexController {
         stopOver[1] = search.basicStopOverSearch(2);
         stopOver[2] = search.basicStopOverSearch(3);
 
-        List<String[]> pricesFromList = search.setCheapestPriceForSearchResults(flights[0]);
-        for (int i = 0; i < flights[0].size(); i++) {
-            for (String[] priceDetails : pricesFromList) {
-                if (flights[0].get(i).getFlightID().equals(priceDetails[0])) {
-                    flights[0].get(i).setCheapestPrice(String.valueOf(priceDetails[4]));
-                    // System.out.println("Cheapest price for " + flights[0].get(i).getFlightID() + " : " + flights[0].get(i).getCheapestPrice());
-                }
-            }
-        }
+        search.setCheapestPriceForSearchResults(flights[0]);
 
         // Stops unnecessary objects from being added to the response
         if(flights[0] != null || flights[1] != null)
@@ -414,8 +406,12 @@ public class IndexController {
         }
 
         // Stops unnecessary objects from being added to the response
-        if(flights[0] != null || flights[1] != null)
+        if(flights[0] != null || flights[1] != null){
+            search.setCheapestPriceForSearchResults(flights[0]);
+
             model.addAttribute("flights", flights);
+        }
+
         if(stopOver[0] != null || stopOver[1] != null || stopOver[2] != null)
             model.addAttribute("stopOver" , stopOver);
 
