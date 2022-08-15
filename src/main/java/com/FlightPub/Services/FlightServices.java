@@ -166,6 +166,7 @@ public class FlightServices{
                     String ticketFlightNumber = ticket.getFlightNumber();
                     Date ticketDepartureDate = ticket.getDepartureTime();
                     String[] seat = getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate);
+
                     if(seat != null){
                         seatList.add(seat);
                     }
@@ -213,19 +214,15 @@ public class FlightServices{
 
     public @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
         List<Price> price = priceRepo.findPriceByClassTicketCode(ticketFlightNumber, classCode, ticketCode);
-        Date startDate;
-        Date endDate;
-        Double pricePerTicket;
-        boolean dateInRange;
         for (int i = 0; i < price.size(); i++) {
-            startDate = price.get(i).getStartDate();
-            endDate = price.get(i).getEndDate();
-            dateInRange = startDate.compareTo(ticketDepartureDate) <= 0 && endDate.compareTo(ticketDepartureDate) >= 0;
-            pricePerTicket = price.get(i).getPrice();
+            Date startDate = price.get(i).getStartDate();
+            Date endDate = price.get(i).getEndDate();
+            boolean dateInRange = startDate.compareTo(new Date()) <= 0 && endDate.compareTo(new Date()) >= 0;
+            Double pricePerTicket = price.get(i).getPrice();
+
             if (dateInRange) {
                 return String.valueOf(pricePerTicket);
             }
-            i++;
         }
         return "0";
     }
@@ -236,7 +233,7 @@ public class FlightServices{
         for (int i = 0; i < availableSeats.size(); i++) {
             List<Price> prices = priceRepo.findPriceByClassTicketCode(flightNumber, availableSeats.get(i).getClassCode(), availableSeats.get(i).getTicketCode());
             for(Price x: prices){
-                if(x.getPrice() < minPrice){
+                if(x.getPrice() < minPrice && (x.getStartDate().compareTo(new Date()) <= 0 ) && x.getEndDate().compareTo(new Date()) >= 0 ) {
                     minPrice = x.getPrice();
                 }
             }
