@@ -3,6 +3,7 @@ package com.FlightPub.model;
 import com.FlightPub.RequestObjects.BasicSearch;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -16,7 +17,6 @@ public class Flight {
 
     @Id
     @Getter
-    @Setter
     @Field("_id")
     private String flightID;
 
@@ -103,6 +103,13 @@ public class Flight {
 
     public Flight(){}
 
+    public void setFlightID(ObjectId id){
+        flightID = id.toString();
+    }
+
+    public void setFlightID(String id){
+        flightID = id;
+    }
     // Setters for the time related class variables
     public void setDepartureTime(String time) {
         departureTime = stringToLong(time);
