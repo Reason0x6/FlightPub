@@ -159,7 +159,7 @@ public class FlightServices{
         return out;
     }
 
-    public Object getSeatList(String classCode, List<Availability> availableSeats) {
+    public ArrayList<String[]> getSeatList(String classCode, List<Availability> availableSeats) {
         ArrayList<String[]> seatList = new ArrayList<>();
         for (Availability ticket : availableSeats) {
             if (ticket.getClassCode().equals(classCode)) {
@@ -207,7 +207,7 @@ public class FlightServices{
         }
         if (seatDetails[3].equals("0")) {
             seatDetails[1] = "0";
-            seatDetails[3] = "Not Available";
+            seatDetails[3] = "50000.00"; // TODO: Change this to a real price
         }
         return seatDetails;
     }
@@ -224,7 +224,7 @@ public class FlightServices{
             dateInRange = startDate.compareTo(ticketDepartureDate) <= 0 && endDate.compareTo(ticketDepartureDate) >= 0;
             pricePerTicket = price.get(i).getPrice();
             if (dateInRange) {
-                return "$" + pricePerTicket;
+                return String.valueOf(pricePerTicket);
             }
             i++;
         }
@@ -232,35 +232,26 @@ public class FlightServices{
     }
 
     public String[] findCheapestFlight(String flightID, String flightNumber, long departureDate) {
-        List<Price> priceList = priceRepo.findCheapestFlights(flightNumber);
         List<String[]> flightPriceList = new ArrayList<>();
 
-        //List<Double> flightPriceList = new ArrayList<>();
-        Date travelDate = new Date(departureDate);
-        Date startDate;
-        Date endDate;
-        boolean dateInRange;
-
-        for (int i = 0; i < priceList.size(); i++) {
-            String[] flight = new String[5];
-            startDate = new Date(priceList.get(i).getStartDate().getTime());
-            endDate = new Date(priceList.get(i).getEndDate().getTime());
-            dateInRange = startDate.compareTo(travelDate) <= 0 && endDate.compareTo(travelDate) >= 0;
-            if (dateInRange) {
-                flight[0] = flightID;
-                flight[1] = flightNumber;
-                flight[2] = priceList.get(i).getClassCode();
-                flight[3] = priceList.get(i).getTicketCode();
-                flight[4] = priceList.get(i).getPrice().toString();
-                flightPriceList.add(flight);
-            }
+        List<Availability> availableSeats = getAvailability(flightNumber, departureDate);
+        for (int i = 0; i < availableSeats.size(); i++) {
+            String[] seat = new String[5];
+            seat[0] = flightID;
+            seat[1] = availableSeats.get(i).getFlightNumber();
+            seat[2] = availableSeats.get(i).getClassCode();
+            seat[3] = availableSeats.get(i).getTicketCode();
+            seat[4] = getSeatList(availableSeats.get(i).getClassCode(), availableSeats).get(0)[3];
+            flightPriceList.add(seat);
         }
 
         String[] cheapestFlight = new String[5];
-        cheapestFlight[4] = "50000";
+        cheapestFlight[4] = "50000.00"; // Arbitrary large price
+        double currentFlightPrice;
         for (int i = 0; i < flightPriceList.size(); i++) {
             for (int j = 0; j < flightPriceList.size(); j++) {
-                if (Double.parseDouble(flightPriceList.get(j)[4]) < Double.parseDouble(cheapestFlight[4])) {
+                currentFlightPrice = Double.parseDouble(flightPriceList.get(j)[4]);
+                if (currentFlightPrice < Double.parseDouble(cheapestFlight[4])) {
                     cheapestFlight[0] = flightPriceList.get(j)[0];
                     cheapestFlight[1] = flightPriceList.get(j)[1];
                     cheapestFlight[2] = flightPriceList.get(j)[2];
@@ -269,7 +260,10 @@ public class FlightServices{
                 }
             }
         }
-        System.out.println("Cheapest Flight: " + cheapestFlight[0] + " " + cheapestFlight[1] + " " + cheapestFlight[2] + " " + cheapestFlight[3] + " " + cheapestFlight[4]);
+        if (cheapestFlight[4].equals("50000.00")) {
+            cheapestFlight[4] = "Not Available";
+        }
+
         return cheapestFlight;
     }
 

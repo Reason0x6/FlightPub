@@ -58,7 +58,7 @@
                                         <p>
                                             <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                             <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
-                                            <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
+                                            <b>Price per Seat: </b><span th:text="'$' + ${availSeats[3]}"></span>
                                             <form th:replace="Fragments/Forms :: #seatSelection"> </form>
                                         </p>
                                     </div>
