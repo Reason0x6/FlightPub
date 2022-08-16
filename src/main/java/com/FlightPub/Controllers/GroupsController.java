@@ -84,6 +84,7 @@ public class GroupsController {
         model.addAttribute("usr", getSession(session));
         return "User/Group";
     }
+    /*To Do: Making separate branch for the time being. */
 
     @PostMapping("/invite_list")
     public String loadInviteList(@RequestParam("inviteUser") String inviteUser, @RequestParam("groupId") String groupId, Model model, HttpSession session) {
@@ -99,7 +100,9 @@ public class GroupsController {
         // If invited user is already in group
         if (groupServices.isUserInGroup(inviteUser)) {
             // TODO send to this front end
+            model.addAttribute("Error", "User is already in group");
             System.out.println("User is already in group");
+            return "redirect:/Error/404";
         }
         // If valid user
         else if (usrServices.getById(inviteUser) != null) {
@@ -112,7 +115,9 @@ public class GroupsController {
         // If these checks fail not a valid user
         else {
             // TODO send this to the front end instead
+            model.addAttribute("Error", "Not a valid user");
             System.out.println("Not a valid user");
+            return "redirect:Fragments/Groups/InviteList";
         }
 
         // Get list of all invited users
