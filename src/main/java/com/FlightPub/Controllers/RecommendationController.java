@@ -1,6 +1,7 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.BasicSearch;
+import com.FlightPub.RequestObjects.UserSession;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.model.Flight;
@@ -12,13 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,6 +25,8 @@ public class RecommendationController {
     private Location recommendationLocation;
     private FlightServices flightServices;
     private LocationServices locationServices;
+
+    private List<Location> searchRecommendations;
 
     @Autowired
     @Qualifier(value = "LocationServices")
@@ -40,18 +41,26 @@ public class RecommendationController {
     }
 
     @PostMapping("/recommendations")
-    public String loadRecommendations(@RequestParam String city, Model model) {
+    public String loadRecommendations(@RequestParam String city, Model model, HttpSession session) {
         recommendationLocation = locationServices.getById(city);
 
-        model.addAttribute("reco", getRecommendation());
+        model.addAttribute("reco", getRecommendation(getSession(session)));
+
+        if (getSession(session).getLastSearchedDestination() != null) {
+            model.addAttribute("searchRecommendation", searchRecommendations.toArray());
+        }
+
         model.addAttribute("currentLocation", getRecommendationLocation());
         model.addAttribute("recommendationLocation", locationServices.listAll());
+
+        model.addAttribute("usr", getSession(session));
 
         return "Fragments/Recommendation :: recommendation_fragment";
     }
 
+
     @PostMapping("LocateNearestCity")
-    public String locateNearestCity(@RequestParam double lat, @RequestParam double lon, Model model) {
+    public String locateNearestCity(@RequestParam double lat, @RequestParam double lon, Model model, HttpSession session) {
         // Defaults for nearest city comparison
         String currentNearestCity = "";
         double currentSmallestDistance = 0;
@@ -68,38 +77,59 @@ public class RecommendationController {
             }
         }
 
-        return loadRecommendations(currentNearestCity, model);
+        return loadRecommendations(currentNearestCity, model, session);
     }
 
-    public List<Location> getRecommendation() {
-        // TODO If a user is logged in get their preferred location
-        // Set current location
-        Location currentLocation;
-        if(recommendationLocation == null) {
-            currentLocation = locationServices.mostPopular();
-        } else {
-            currentLocation = locationServices.getById(recommendationLocation.getLocationID());
-        }
-
-        // If no current location is found in database
-        if (currentLocation == null) {
-            System.err.println("No current location was found in database");
-            return null;
-        }
-
+    private List<Location> getRecommendation(UserSession user) {
         // TODO Remove if not needed
 //        return searchForRecommendedFlights(currentLocation);
 
-        // Get currently popular locations
-        List<Location> locations = locationServices.findAllSortedAscendingExcluding(currentLocation.getLocationID());
+        if(getCurrentLocation() == null) {
+            return null;
+        }
 
-        // The final list of recommended locations
-        return locations.stream().limit(4).collect(Collectors.toList());
+        ArrayList<String> ignoredLocations = new ArrayList<>();
+        ignoredLocations.add(getCurrentLocation().getLocationID());
+
+        // need to get adjacent locations to
+        if (user.getLastSearchedDestination() != null) {
+            Location lastSearchedLocation = locationServices.findByLocation(user.getLastSearchedDestination());
+
+            List<String> adjacentLocations = lastSearchedLocation.getAdjacentLocations();
+            searchRecommendations =  new ArrayList<>();
+            for(String locationString: adjacentLocations) {
+                if (!locationString.equals(getCurrentLocation().getLocationID())) {
+                    ignoredLocations.add(locationString);
+                    searchRecommendations.add(locationServices.getById(locationString));
+                }
+                if (searchRecommendations.size() == 2) break;
+            }
+        }
+
+        // Get currently popular locations
+        List<Location> locations = locationServices.findAllSortedAscendingExcluding(ignoredLocations);
+
+        // TODO add as separate commit
+//        // Limit locations to top 10 most popular
+//        locations = locations.stream().limit(10).collect(Collectors.toList());
+//        // Shuffle top 10
+//        Collections.shuffle(locations);
+
+        // Also ensure that normal recommendations dont have duplicates
+        // Also ensure that current location is skipped
+
+        if (user.getLastSearchedDestination() == null) {
+            // The final list of recommended locations
+            return locations.stream().limit(4).collect(Collectors.toList());
+        } else {
+            // The final list of recommended locations
+            return locations.stream().limit(2).collect(Collectors.toList());
+        }
     }
 
     private List<Flight> searchForRecommendedFlights(Location currentLocation) {
         // Get currently popular locations
-        List<Location> locations = locationServices.findAllSortedAscendingExcluding(currentLocation.getLocationID());
+        List<Location> locations = locationServices.findAllSortedAscendingExcluding(Collections.singletonList(currentLocation.getLocationID()));
 
         // The final list of recommended flights
         List<Flight> recommendedFlights = new LinkedList<>();
@@ -152,8 +182,25 @@ public class RecommendationController {
         return recommendedFlights;
     }
 
+    private Location getCurrentLocation() {
+        // Set current location
+        Location currentLocation;
+        if(recommendationLocation == null) {
+            currentLocation = locationServices.mostPopular();
+        } else {
+            currentLocation = locationServices.getById(recommendationLocation.getLocationID());
+        }
 
-    public Location getRecommendationLocation() {
+        // If no current location is found in database
+        if (currentLocation == null) {
+            System.err.println("No current location was found in database");
+            return null;
+        }
+
+        return currentLocation;
+    }
+
+    private Location getRecommendationLocation() {
         if(recommendationLocation == null) {
             recommendationLocation = locationServices.mostPopular();
         }
@@ -180,5 +227,19 @@ public class RecommendationController {
 
     private static double haversine(double val) {
         return Math.pow(Math.sin(val / 2), 2);
+    }
+
+    private UserSession getSession(HttpSession session){
+        UserSession sessionUser = null;
+        try{
+            sessionUser = (UserSession) session.getAttribute("User");
+        } catch(Exception e){}
+
+        if(sessionUser == null){
+            sessionUser =  new UserSession(null);
+            session.setAttribute("User", sessionUser);
+        }
+
+        return sessionUser;
     }
 }

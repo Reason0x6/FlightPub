@@ -53,8 +53,8 @@ public class LocationServices {
     }
 
 
-    public List<Location> findAllSortedAscendingExcluding(String locationID) {
-        return locationRepo.findAllSortedAscendingExcluding(locationID);
+    public List<Location> findAllSortedAscendingExcluding(List<String> excludeList) {
+        return locationRepo.findAllSortedAscendingExcluding(excludeList);
     }
 
     public Location mostPopular() {
