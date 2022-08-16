@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -198,6 +197,48 @@ public class RecommendationController {
         }
 
         return currentLocation;
+    }
+
+    /**
+     * This generates adjacent locations for all locations
+     * Unused, just for reference
+     */
+    private void generateAdjacentLocations() {
+        // For all locations
+        for (Location allLocation: locationServices.listAll()) {
+            List<Double> distance = new ArrayList<>();
+            Map<Double, String> locations = new HashMap<>();
+
+            // For all locations excluding the current location
+            for (Location excludeLocation: locationServices.findAllSortedAscendingExcluding(Collections.singletonList(allLocation.getLocationID()))) {
+                // Find the distance from the current location and another location
+                double currentDistance = distance (allLocation.getLatitude(), allLocation.getLongitude(), excludeLocation.getLatitude(), excludeLocation.getLongitude());
+                distance.add(currentDistance);
+                locations.put(currentDistance, excludeLocation.getLocationID());
+            }
+
+            // Sort the distances
+            Collections.sort(distance);
+
+            // Print current location
+            System.out.printf("%s {%n", allLocation.getLocationID());
+            System.out.println("\"adjacentLocations\": [");
+
+            // For top 3 distances return the location id for it
+            int i = 0;
+            for (Object sortedDistance: distance.stream().limit(3).toArray()) {
+                i++;
+                if(i != 3) {
+                    System.out.printf("  \"%s\",%n", locations.get((Double) sortedDistance));
+                } else {
+                    System.out.printf("  \"%s\"", locations.get((Double) sortedDistance));
+                }
+
+            }
+
+            System.out.printf("%n], %n } %n%n");
+
+        }
     }
 
     private Location getRecommendationLocation() {
