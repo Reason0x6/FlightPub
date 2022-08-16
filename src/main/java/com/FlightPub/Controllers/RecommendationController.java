@@ -108,14 +108,10 @@ public class RecommendationController {
         // Get currently popular locations
         List<Location> locations = locationServices.findAllSortedAscendingExcluding(ignoredLocations);
 
-        // TODO add as separate commit
-//        // Limit locations to top 10 most popular
-//        locations = locations.stream().limit(10).collect(Collectors.toList());
-//        // Shuffle top 10
-//        Collections.shuffle(locations);
-
-        // Also ensure that normal recommendations dont have duplicates
-        // Also ensure that current location is skipped
+        // Limit locations to top 10 most popular
+        locations = locations.stream().limit(10).collect(Collectors.toList());
+        // Shuffle top 10
+        Collections.shuffle(locations);
 
         if (user.getLastSearchedDestination() == null) {
             // The final list of recommended locations
