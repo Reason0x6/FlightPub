@@ -67,7 +67,7 @@ public class RecommendationController {
         // Loop though available locations and compare them to provided client lat and lon
         for (Location location: locationServices.listAll()) {
             // Distance between client lat/lon and location lat/lon
-            double tempDistance = distance(lat, lon, location.getLatitude(), location.getLongitude());
+            double tempDistance = HaversineCalculator.distance(lat, lon, location.getLatitude(), location.getLongitude());
 
             // Compare new distance to existing smallest distance
             if(currentNearestCity.equals("") || tempDistance < currentSmallestDistance) {
@@ -208,7 +208,7 @@ public class RecommendationController {
             // For all locations excluding the current location
             for (Location excludeLocation: locationServices.findAllSortedAscendingExcluding(Collections.singletonList(allLocation.getLocationID()))) {
                 // Find the distance from the current location and another location
-                double currentDistance = distance (allLocation.getLatitude(), allLocation.getLongitude(), excludeLocation.getLatitude(), excludeLocation.getLongitude());
+                double currentDistance = HaversineCalculator.distance (allLocation.getLatitude(), allLocation.getLongitude(), excludeLocation.getLatitude(), excludeLocation.getLongitude());
                 distance.add(currentDistance);
                 locations.put(currentDistance, excludeLocation.getLocationID());
             }
@@ -242,28 +242,6 @@ public class RecommendationController {
             recommendationLocation = locationServices.mostPopular();
         }
         return recommendationLocation;
-    }
-
-    // --- Haversine formula for finding distances between two coordinates ---
-    private static final int EARTH_RADIUS = 6371; // Approx Earth radius in KM
-
-    public static double distance(double startLat, double startLong,
-                                  double endLat, double endLong) {
-
-        double dLat  = Math.toRadians((endLat - startLat));
-        double dLong = Math.toRadians((endLong - startLong));
-
-        startLat = Math.toRadians(startLat);
-        endLat   = Math.toRadians(endLat);
-
-        double a = haversine(dLat) + Math.cos(startLat) * Math.cos(endLat) * haversine(dLong);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return EARTH_RADIUS * c; // <-- d
-    }
-
-    private static double haversine(double val) {
-        return Math.pow(Math.sin(val / 2), 2);
     }
 
     private UserSession getSession(HttpSession session){

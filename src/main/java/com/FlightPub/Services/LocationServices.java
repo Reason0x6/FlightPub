@@ -1,12 +1,12 @@
 package com.FlightPub.Services;
 
+import com.FlightPub.Controllers.HaversineCalculator;
 import com.FlightPub.model.Location;
 import com.FlightPub.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service("LocationServices")
 public class LocationServices {
@@ -15,6 +15,8 @@ public class LocationServices {
     @Autowired
     public LocationServices(LocationRepo locationRepository) {
         this.locationRepo = locationRepository;
+
+        updateAdjacency();
     }
 
 
@@ -40,6 +42,9 @@ public class LocationServices {
             location.setCountry(country.substring(0, 1).toUpperCase() + country.substring(1).toLowerCase());
 
             locationRepo.save(location);
+
+            updateAdjacency();
+
             return location;
         } catch(Exception e) {
             System.out.println("Error: "+e);
@@ -99,4 +104,35 @@ public class LocationServices {
         }
     }
 
+
+    public void updateAdjacency() {
+        // For all locations
+        for (Location allLocation: listAll()) {
+            List<Double> distance = new ArrayList<>();
+            Map<Double, String> locations = new HashMap<>();
+
+            // For all locations excluding the current location
+            for (Location excludeLocation: findAllSortedAscendingExcluding(Collections.singletonList(allLocation.getLocationID()))) {
+                // Find the distance from the current location and another location
+                double currentDistance = HaversineCalculator.distance (allLocation.getLatitude(), allLocation.getLongitude(), excludeLocation.getLatitude(), excludeLocation.getLongitude());
+                distance.add(currentDistance);
+                locations.put(currentDistance, excludeLocation.getLocationID());
+            }
+
+            // Sort the distances
+            Collections.sort(distance);
+
+            // For top 3 distances record location id
+            ArrayList<String> adjacentLocations = new ArrayList<>();
+            for (Object sortedDistance: distance.stream().limit(3).toArray()) {
+                adjacentLocations.add(locations.get((Double) sortedDistance));
+            }
+
+            // Update the locations adjacency list
+            allLocation.setAdjacentLocations(adjacentLocations);
+
+            // Update location
+            locationRepo.save(allLocation);
+        }
+    }
 }
