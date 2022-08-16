@@ -38,7 +38,6 @@ public class FlightServices{
     public List<Availability> getAvailability(String flightNumber, Long departureTime) {
 
         if(availCache.containsKey(flightNumber+departureTime.toString()) && availCache.get(flightNumber+departureTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println(flightNumber+departureTime.toString() +" was returned from cache");
             return availCache.get(flightNumber+departureTime.toString()).getValue();
         }else {
             List<Availability> avail = availRepo.findByFlightCodeAndDate(flightNumber, departureTime);
@@ -58,7 +57,6 @@ public class FlightServices{
     public List<Flight> listAll(){
 
         if(flightCache.containsKey("ALL") && flightCache.get("ALL").getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println("* was returned from cache");
             return flightCache.get("ALL").getValue();
         }else {
             List<Flight> flights = new ArrayList<>();
@@ -102,7 +100,6 @@ public class FlightServices{
             flightRepo.save(flight);
             return flight;
         } catch (Exception e) {
-            System.out.println("Error: "+e);
             return null;
         }
     }
@@ -116,7 +113,6 @@ public class FlightServices{
     public List<Flight> getByDestination(String dest) {
 
         if(flightCache.containsKey("DEST" + dest) && flightCache.get("DEST" + dest).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println("DEST" + dest + " was returned from cache");
             return flightCache.get("DEST" + dest).getValue();
         }else {
             List<Flight> flights = flightRepo.findByDestination(dest);
@@ -136,7 +132,6 @@ public class FlightServices{
     public int getAvailableSeats(String id, Long departTime){
         List<Availability> outArr;
         if(availCache.containsKey(id+departTime.toString()) && availCache.get(id+departTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println(id+departTime.toString() + " was returned from cache");
             outArr = availCache.get(id+departTime.toString()).getValue();
         }else {
             outArr = availRepo.findByFlightCodeAndDate(id, departTime);
@@ -159,8 +154,9 @@ public class FlightServices{
         return out;
     }
 
-    public Object getSeatList(String classCode, List<Availability> availableSeats) {
+    public ArrayList<String[]> getSeatList(String classCode, List<Availability> availableSeats) {
         ArrayList<String[]> seatList = new ArrayList<>();
+
         for (Availability ticket : availableSeats) {
             if (ticket.getClassCode().equals(classCode)) {
                 int seatsAvailable = ticket.getNumberAvailableSeatsLeg1() > ticket.getNumberAvailableSeatsLeg2() ? ticket.getNumberAvailableSeatsLeg1() : ticket.getNumberAvailableSeatsLeg2();
@@ -169,10 +165,15 @@ public class FlightServices{
                     String ticketCode = ticket.getTicketCode();
                     String ticketFlightNumber = ticket.getFlightNumber();
                     Date ticketDepartureDate = ticket.getDepartureTime();
-                    seatList.add(getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate));
+                    String[] seat = getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate);
+
+                    if(seat != null){
+                        seatList.add(seat);
                     }
                 }
             }
+        }
+
         return seatList;
     }
 
@@ -206,39 +207,47 @@ public class FlightServices{
                 break;
         }
         if (seatDetails[3].equals("0")) {
-            seatDetails[1] = "0";
-            seatDetails[3] = "Not Available";
+            return null;
         }
         return seatDetails;
     }
 
-    private @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
+    public @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
         List<Price> price = priceRepo.findPriceByClassTicketCode(ticketFlightNumber, classCode, ticketCode);
-        Date startDate;
-        Date endDate;
-        Double pricePerTicket;
-        boolean dateInRange;
         for (int i = 0; i < price.size(); i++) {
-            startDate = price.get(i).getStartDate();
-            endDate = price.get(i).getEndDate();
-            dateInRange = startDate.compareTo(ticketDepartureDate) <= 0 && endDate.compareTo(ticketDepartureDate) >= 0;
-            pricePerTicket = price.get(i).getPrice();
+            Date startDate = price.get(i).getStartDate();
+            Date endDate = price.get(i).getEndDate();
+            boolean dateInRange = startDate.compareTo(new Date()) <= 0 && endDate.compareTo(new Date()) >= 0;
+            Double pricePerTicket = price.get(i).getPrice();
+
             if (dateInRange) {
-                System.out.println("Price Per Ticket: " + pricePerTicket + " Ticket Code: " + ticketCode + " Class Code: " + classCode);
-                return "$" + pricePerTicket;
+                return String.valueOf(pricePerTicket);
             }
-            i++;
         }
         return "0";
     }
 
+    public String findCheapestPrice(String flightID, String flightNumber, long departureDate) {
+        List<Availability> availableSeats = getAvailability(flightNumber, departureDate);
+        double minPrice = Integer.MAX_VALUE + 0.0;
+        for (int i = 0; i < availableSeats.size(); i++) {
+            List<Price> prices = priceRepo.findPriceByClassTicketCode(flightNumber, availableSeats.get(i).getClassCode(), availableSeats.get(i).getTicketCode());
+            for(Price x: prices){
+                if(x.getPrice() < minPrice && (x.getStartDate().compareTo(new Date()) <= 0 ) && x.getEndDate().compareTo(new Date()) >= 0 ) {
+                    minPrice = x.getPrice();
+                }
+            }
+        }
+        return minPrice + "";
+    }
+
+
+
     public List<Flight> getByOrigin(String dep) {
 
         if(flightCache.containsKey("DEP"+dep) && flightCache.get("DEP"+dep).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println("DEP"+dep + " was returned from cache");
             return flightCache.get("DEP"+dep).getValue();
         }else {
-            System.out.println("DEP"+dep + " was returned from cache");
             List<Flight> out = new ArrayList<>();
             flightRepo.findByOrigin(dep).forEach(flight -> {
 
@@ -264,7 +273,7 @@ public class FlightServices{
     public List<Flight> getByOriginAndDestination(String origin, String dest, Long dstart, Long dend) {
         String key = "DEP"+origin+"DEST"+dest+"DEP"+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println(key + " was returned from cache");
+
             return flightCache.get(key).getValue();
         }else {
             List<Flight> out = flightRepo.findByOriginAndDestination(origin, dest, dstart, dend);
@@ -285,10 +294,8 @@ public class FlightServices{
     public List<Flight> getByOrigin(String origin, Long dstart, Long dend){
         String key = "DEP"+origin+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println(key + " was returned from cache");
             return flightCache.get(key).getValue();
         }else {
-            System.out.println(key + " was generated");
             List<Flight> out = flightRepo.findByOrigin(origin, dstart, dend);
 
             Calendar cal = Calendar.getInstance();
@@ -306,7 +313,6 @@ public class FlightServices{
     public List<Flight> getByOriginAndDestinationAndArrivalTimes(String origin, String dep, Long dstart, Long dend) {
         String key = "DEP"+origin+"DEST"+dep+"DEST"+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println(key + " was returned from cache");
             return flightCache.get(key).getValue();
         }else {
             List<Flight> out = flightRepo.findByOriginAndDestinationAndArrivalTimes(origin, dep, dstart, dend);
@@ -328,7 +334,6 @@ public class FlightServices{
 
         String key = "DEP"+origin+"DEST"+dstart.toString()+dend.toString();
         if(flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
-            System.out.println(key + " was returned from cache");
             return flightCache.get(key).getValue();
         }else {
             List<Flight> out = flightRepo.findByOriginAndArrivalTimes(origin, dstart, dend);
@@ -364,5 +369,4 @@ public class FlightServices{
         availCache = new HashMap<>();
 
     }
-
 }

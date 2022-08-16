@@ -1,7 +1,9 @@
 package com.FlightPub.model;
 
+import com.FlightPub.RequestObjects.BasicSearch;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -15,7 +17,6 @@ public class Flight {
 
     @Id
     @Getter
-    @Setter
     @Field("_id")
     private String flightID;
 
@@ -96,8 +97,19 @@ public class Flight {
     @Setter
     private double rating;
 
+    @Getter
+    @Field("CheapestPrice")
+    private String cheapestPrice;
+
     public Flight(){}
 
+    public void setFlightID(ObjectId id){
+        flightID = id.toString();
+    }
+
+    public void setFlightID(String id){
+        flightID = id;
+    }
     // Setters for the time related class variables
     public void setDepartureTime(String time) {
         departureTime = stringToLong(time);
@@ -186,7 +198,7 @@ public class Flight {
 
     public static Date longToDate(Long in) {
         try{
-            return new Date(in.longValue());
+            return new Date(in);
         } catch (Exception e) {
             System.out.println(e);
             return null;
@@ -200,5 +212,13 @@ public class Flight {
             System.out.println(e);
             return null;
         }
+    }
+
+
+    public void setCheapestPrice(String cheapestFlights) {
+        this.cheapestPrice = cheapestFlights;
+    }
+    public String getCheapestPrice(){
+        return cheapestPrice != null ? cheapestPrice : "TBA";
     }
 }

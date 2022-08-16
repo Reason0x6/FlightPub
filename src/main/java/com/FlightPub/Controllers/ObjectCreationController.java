@@ -3,6 +3,7 @@ package com.FlightPub.Controllers;
 import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -145,7 +146,12 @@ public class ObjectCreationController {
     @RequestMapping("/flight/add")
     public String addFlight( @ModelAttribute Flight flight, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
+
+        if(flight.getFlightID() == null){
+            flight.setFlightID(new ObjectId());
+        }
         model.addAttribute("flight", flight);
+
 
         // Validates the input
         boolean invalid = false;
