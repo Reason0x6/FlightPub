@@ -217,6 +217,20 @@ public class IndexController {
 
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
+
+        List<WishListItem> wishListItems = wishListServices.findAllByUserIDs(getSession(session).getUsr().getEmail());
+        List<HolidayPackage> holidayPackages = holidayPackageServices.listAll();
+        List<HolidayPackage> userHolidayPackages = new LinkedList<>();
+        for(WishListItem wli : wishListItems){
+            for(HolidayPackage hp : holidayPackages){
+                if(wli.getDestinationID().equals(hp.getDestinationCode())){
+                    userHolidayPackages.add(hp);
+                }
+            }
+        }
+        model.addAttribute("userHolidayPackages", userHolidayPackages);
+
+
         return "User/Personalised";
     }
 

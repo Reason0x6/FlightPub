@@ -194,6 +194,53 @@
             </div>
         </div>
     </div>
+    <div th:if="${userHolidayPackages.size &gt 0}">
+        <h1>Holiday Packages</h1>
+        <div th:each="holidayPackage : ${userHolidayPackages}" class="border-bottom">
+            <table>
+                <tr>
+                    <td class="col-md-2"><span><b>Airline Code: </b></span></td>
+                    <td><span th:text="${holidayPackage.getAirlineCode()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Airline Name: </b></span></td>
+                    <td><span th:text="${holidayPackage.getAirlineName()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Destination Code: </b></span></td>
+                    <td><span th:text="${holidayPackage.getDestinationCode()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Destination Airport: </b></span></td>
+                    <td><span th:text="${holidayPackage.getAirport()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Discount Percentage: </b></span></td>
+                    <td><span th:text="${holidayPackage.getDiscountPercentage()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Hotel Name: </b></span></td>
+                    <td><span th:text="${holidayPackage.getHotelName()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Hotel Star Rating: </b></span></td>
+                    <td><span th:text="${holidayPackage.getHotelStarRating()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Hotel Description: </b></span></td>
+                    <td><span th:text="${holidayPackage.getHotelDescription()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Package Start Date: </b></span></td>
+                    <td><span th:text="${holidayPackage.getPackageStartDate()}"></span></td>
+                </tr>
+                <tr>
+                    <td class="col-md-2"><span><b>Package End Date: </b></span></td>
+                    <td><span th:text="${holidayPackage.getPackageEndDate()}"></span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
     <div th:if="${reco} == 0">
         <p>There are currently no recommendations</p>
     </div>
