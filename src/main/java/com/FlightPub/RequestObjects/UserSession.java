@@ -31,6 +31,10 @@ public class UserSession {
     @Getter
     Map<String, Integer> sessionCart;
 
+    @Getter
+    @Setter
+    private String lastSearchedDestination;
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
