@@ -239,6 +239,13 @@
                     <td><span th:text="${holidayPackage.getPackageEndDate()}"></span></td>
                 </tr>
             </table>
+            <br>
+            <span><b>Departure Airport: </b></span>
+            <select name="departureAirport" id="departureAirport" class="form-control">
+                <option th:each="Location: ${locs}" th:value="${Location.getLocation()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+            </select>
+            <br>
+            <button th:onclick="findFlight(departureAirport.value, [[${holidayPackage.getAirport()}]], [[${holidayPackage.getPackageStartDateFormatted()}]], [[${holidayPackage.getPackageEndDateFormatted()}]])" type="submit" class="btn btn-primary btn-search">Book Now!</button>
         </div>
     </div>
     <div th:if="${reco} == 0">
@@ -294,5 +301,44 @@
 <!-- Template Main JS File -->
 </main>
 </body>
+
+<script>
+    function findFlight(departureAirport, airport, startDate, endDate) {
+        //post("/search", {originIn: departureAirport, destinationIn: airport, start: new Date(startDate), end: new Date(endDate)})
+        post("/search", {originIn: departureAirport, destinationIn: airport, start: new Date().toLocaleDateString('en-CA'), end: addMonths(new Date(), 3).toLocaleDateString('en-CA')})
+    }
+
+    function post(path, params, method='post') {
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less verbose if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function addMonths(date, months) {
+        const d = date.getDate();
+        date.setMonth(date.getMonth() + +months);
+        if (date.getDate() !== d) {
+            date.setDate(0);
+        }
+        return date;
+    }
+</script>
 
 </html>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -177,7 +178,6 @@ public class IndexController {
                 if(req.getPassword().equals(newAdmin.getPassword())){
                     // Set post flag
                     model.addAttribute("method", "post");
-                    System.out.println("Admin" + newAdmin.getEmail());
                     // Set admin session
                     AdminSession admin = new AdminSession(newAdmin);
                     session.setAttribute("Admin", admin);
@@ -197,7 +197,7 @@ public class IndexController {
     }
 
     @RequestMapping("/account")
-    public String account(Model model, HttpSession session){
+    public String account(Model model, HttpSession session) {
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
@@ -224,6 +224,8 @@ public class IndexController {
         for(WishListItem wli : wishListItems){
             for(HolidayPackage hp : holidayPackages){
                 if(wli.getDestinationID().equals(hp.getDestinationCode())){
+                    hp.setPackageStartDateFormatted(convertDate(hp.getPackageStartDate()));
+                    hp.setPackageEndDateFormatted(convertDate(hp.getPackageEndDate()));
                     userHolidayPackages.add(hp);
                 }
             }
@@ -632,5 +634,11 @@ public class IndexController {
         }
 
         return sessionAdmin;
+    }
+
+    private String convertDate(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
     }
 }
