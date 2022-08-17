@@ -19,6 +19,13 @@ public class StopOver {
         flights.add(flight);
     }
 
+    // copy constructor that adds another flight
+    public StopOver(List<Flight> flights, Flight newFlight) {
+        for(Flight flight : flights)
+            this.flights.add(flight);
+        this.flights.add(newFlight);
+    }
+
     // Adds a Flight to the object
     public void addFlight(Flight flight) {
         flights.add(flight);
@@ -30,9 +37,11 @@ public class StopOver {
     }
 
     // Tests if a provided location has been visited in this stopover chain
-    public boolean locationVisited(String location) {
+    public boolean locationVisited(String destLocation, String stopoverLocation) {
         for(Flight flight : flights) {
-            if(flight.getDepartureCode().equals(location))
+            if(flight.getDepartureCode().equals(destLocation) || flight.getDepartureCode().equals(stopoverLocation))
+                return true;
+            if(flight.getStopoverCode()!=null && (flight.getStopoverCode().equals(destLocation)||flight.getStopoverCode().equals(destLocation)))
                 return true;
         }
         return false;
@@ -56,5 +65,18 @@ public class StopOver {
         return min;
     }
 
+    // Returns the number of flights in the stopover
+    public int getNumberOfStops() {
+        int count = flights.size();
+        for(Flight flight : flights) {
+            if(flight.getStopoverCode() != null)
+                count++;
+        }
+        System.out.print(count);
+        return count;
+    }
+
+    // Returns the size of the list
+    public int size() { return flights.size(); }
     
 }

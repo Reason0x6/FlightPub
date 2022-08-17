@@ -1,8 +1,10 @@
 package com.FlightPub.RequestObjects;
 
 
+import com.FlightPub.Services.AirlineServices;
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
+import com.FlightPub.model.Airlines;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.Location;
 import com.FlightPub.model.UserAccount;
@@ -69,9 +71,14 @@ public class BasicSearch {
     @Setter
     private boolean searchByArrival;
 
+    // Services
     private static FlightServices flightServices;
-
     private LocationServices locService;
+    private AirlineServices airlineServices;
+
+    // Stores the Flights to limit the DB queries for the stopover searches
+    private List<Flight> allFlights;
+    private List<Flight> firstFlights;
 
     BasicSearch(String destination, String origin) {
         this.originIn = origin;
@@ -92,11 +99,18 @@ public class BasicSearch {
         this.locService = locRepo;
     }
 
+    // Links associated location service
+    @Autowired
+    @Qualifier(value = "AirlineServices")
+    public void setAirlineServices(AirlineServices airlineServices) {
+        this.airlineServices = airlineServices;
+    }
+
     // Default constructor
     public BasicSearch() {
     }
-
     // Returns a flight of flights according to the basic search
+
     public List<Flight> runBasicSearch(String start, String end, boolean stopover) {
         Long dstart = null;
         Long dend = null;
@@ -127,56 +141,71 @@ public class BasicSearch {
             destinationIn = "Show All";
 
         // Perform the correct Search
+        List<Flight> output = null;
         if (originObj != null) {
             if (this.isSearchByArrival() == false) {
                 // Performs Search where all parameters are known
                 if (destinationObj != null && stopover == false) {
-                    return flightServices.getByOriginAndDestination(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
+                    output = flightServices.getByOriginAndDestination(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
                 }
                 // Performs Search where destination is not known
                 else if (destinationObj == null || stopover == true)
-                    return flightServices.getByOrigin(originObj.getLocationID(), dstart, dend);
+                    output = flightServices.getByOrigin(originObj.getLocationID(), dstart, dend);
 
             } else if (this.isSearchByArrival() == true) {
                 // Performs Search where all parameters are known
                 if (destinationObj != null && stopover == false) {
-                    return flightServices.getByOriginAndDestinationAndArrivalTimes(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
+                    output = flightServices.getByOriginAndDestinationAndArrivalTimes(originObj.getLocationID(), destinationObj.getLocationID(), dstart, dend);
                 }
                 // Performs Search where destination is not known
                 else if (destinationObj == null || stopover == true)
-                    return flightServices.getByOriginAndArrivalTimes(originObj.getLocationID(), dstart, dend);
+                    output = flightServices.getByOriginAndArrivalTimes(originObj.getLocationID(), dstart, dend);
             }
         }
-        return flightServices.getByOriginAndDestination(originIn, destinationIn, dstart, dend);
+        if(output == null)
+            output = flightServices.getByOriginAndDestination(originIn, destinationIn, dstart, dend);
+
+        if(output != null && stopover == false)
+            output = getDirectFlights(output);
+
+        return output;
     }
 
     // Returns a list of flights with a specified number of stopovers
     public List<StopOver> basicStopOverSearch(int numberOfStops) {
-        List<Flight> firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
-        List<Flight> allFlights = flightServices.listAll();     // returns all flights in the database
-        List<StopOver> flights = new ArrayList<>();   // Stores the singe stop over flights
+        // uses the flights if available to limit the database queries
+        if(firstFlights == null)
+            firstFlights = runBasicSearch(start, end, true);  //Returns the list of flights perform BFS
+        if(allFlights == null)
+            allFlights = flightServices.listAll();     // returns all flights in the database
 
+        List<StopOver> flights = new ArrayList<>();
+        // Places the initial flights into stopover objects
         for (Flight flight : firstFlights) {
             flights.add(new StopOver(flight));
         }
 
+        // Adds a stopover with each iteration
         for (int count = 0; count < numberOfStops; count++) {
             List<StopOver> output = new ArrayList<>();  // Stores the stopovers of each stopover iteration
-            for (StopOver flight : flights) {
+            for (StopOver stopover : flights) {
                 for (Flight newFlight : allFlights) {
-                    if (flight.getFlightAtIndex(count).getDestinationCode().equals(newFlight.getDepartureCode())) {
-                        if (flight.locationVisited(newFlight.getDestinationCode()) == false) {
-                            if (isSuitableTiming(flight.getFlightAtIndex(count), newFlight)) {
-                                flight.addFlight(newFlight);
-                                output.add(flight);
+                    // Tests that the landing is at the correct airport
+                    if (stopover.getFlightAtIndex(stopover.size()-1).getDestinationCode().equals(newFlight.getDepartureCode())) {
+                        // Tests that the location has not yet been visited
+                        if (stopover.locationVisited(newFlight.getDestinationCode(), newFlight.getStopoverCode()) == false) {
+                            // Checks that the timing is correct
+                            if (isSuitableTiming(stopover.getFlightAtIndex(stopover.size()-1), newFlight)) {
+                                output.add(new StopOver(stopover.getFlights(), newFlight));
                             }
                         }
                     }
                 }
-                flights = output;
             }
+            flights.addAll(output);
         }
 
+        // Ensures that the destination is correct (if specified)
         Location finalDestination = locService.findByLocation(destinationIn);
         if (finalDestination != null) {
             List<StopOver> output = new ArrayList<>();
@@ -186,18 +215,39 @@ public class BasicSearch {
             }
             flights = output;
         }
-        return flights;
+
+        // Ensures that the number of stops doesnt exceed the specified number of stopovers
+        List<StopOver> output = new ArrayList<>();
+        for(StopOver stopOver : flights) {
+            if(stopOver.getNumberOfStops() == (numberOfStops+1))
+                output.add(stopOver);
+        }
+        System.out.print("\n");
+
+        return output;
+    }
+    // Returns all of the direct flights
+
+    public List<Flight> getDirectFlights(List<Flight> flights) {
+        List<Flight> directFlights = new ArrayList<>();
+        for(Flight flight : flights){
+            if(flight.getStopoverCode() == null)
+                directFlights.add(flight);
+        }
+        return directFlights;
     }
 
-    //#TODO convert promoted flights to Promoted Airlines
     // Determines which of the flights are promoted
-      public List<Flight> getPromotedFlights(List<Flight> allFlights) {
-        List<Flight> promoted = new ArrayList<>();
+    public List<Flight> getPromotedFlights(List<Flight> allFlights) {
+        List<Airlines> promoted = airlineServices.getSponsoredAirlines();
+        List<Flight> output = new ArrayList<>();
         for (Flight flight : allFlights) {
-            if (false)
-                promoted.add(flight);
+            for(Airlines airline : promoted) {
+                if (flight.getAirlineCode().equals(airline.getAirlineID()))
+                    output.add(flight);
+            }
         }
-        return promoted;
+        return output;
     }
 
     // Determines where a flight would be suitable for a stopover in terms of its timing
@@ -299,4 +349,6 @@ public class BasicSearch {
         }
     }
 }
+
+
 

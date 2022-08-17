@@ -30,11 +30,16 @@ public class IndexController {
     private WishListServices wishListServices;
     private AdminAccountServices adminAccountServices;
     private HolidayPackageServices holidayPackageServices;
+    private AirlineServices airlineServices;
 
+    @Autowired
+    @Qualifier(value = "AirlineServices")
+    public void setAirlineServices(AirlineServices airlineServices) { this.airlineServices = airlineServices;}
 
     @Autowired
     @Qualifier(value = "WishListServices")
     public void setWishListServices(WishListServices wishListServices) {    this.wishListServices = wishListServices;    }
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -357,6 +362,7 @@ public class IndexController {
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
+        search.setAirlineServices(airlineServices);
 
         model.addAttribute("searchLocation", locationServices.listAll());
 
