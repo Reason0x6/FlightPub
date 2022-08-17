@@ -54,7 +54,7 @@
                         <div id="collapseFC" class="accordion-collapse collapse" aria-labelledby="headingFC" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="row">
-                                    <div th:each="availSeats:${firstClass}" class="col-md-4">
+                                    <div id="firSeatsAvail" th:each="availSeats:${firstClass}" class="col-md-4">
                                         <p>
                                             <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                             <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
@@ -79,7 +79,7 @@
                                                 <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                                 <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
                                                 <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
-                                                <form th:replace="Fragments/Forms :: #seatSelection"> </form>
+                                                <form id="busSeatsAvail" th:replace="Fragments/Forms :: #seatSelection"> </form>
                                             </p>
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                                             <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                             <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
                                             <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
-                                            <form th:replace="Fragments/Forms :: #seatSelection"> </form>
+                                            <form id="premSeatsAvail" th:replace="Fragments/Forms :: #seatSelection"> </form>
                                         </p>
                                     </div>
                                 </div>
@@ -120,8 +120,18 @@
                                                 <p>
                                                     <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                                     <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
-                                                    <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span>
-                                                    <form th:replace="Fragments/Forms :: #seatSelection"> </form>
+                                                    <b>Price per Seat: </b><span class="seatPrice" th:text="${availSeats[3]}"></span>
+                                                    <!--<form id="ecoSeatsAvail" th:replace="Fragments/Forms :: #seatSelection"> </form>-->
+                                                    <form id="seatSelection" name="seatSelection">
+                                                        <select id="ecoSeatsAvail" name="seatSelect" >
+                                                            <option value="" selected="true">-- Select --</option>
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                        </select>
+                                                    </form>
                                                 </p>
                                             </div>
                                         </div>
@@ -130,7 +140,7 @@
                             </div>
                         </div>
                 </div>
-                <p><b>Total Seats: </b><span th:text="${totalSeats}"></span></p>
+                <p><b>Total Seats: </b><span id="totalSeats"></span></p>
                 <p id="showTotal"><b>Total Cost:</b> 0</p>
                 <div th:if="${usr.isLoggedIn()} != false">
                     <button type="submit" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
@@ -187,9 +197,18 @@
 </main>
 </body>
 <script th:inline="javascript">
-    function calculateSeats(){}
+    let total = 0;
+    $(document).ready(function (){
+        $('#seatSelection select').change(function (){
+            const seats = parseInt(document.getElementById("totalSeats").innerHTML = document.getElementById('ecoSeatsAvail').value);
+            total += seats;
+            console.log(total);
+        });
+    });
+
     function addToCart(){
-        var seats = document.getElementById("seats").value;
+        const seats = 5;
+        //const seats = document.getElementById("seats").value;
         location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
     }
 

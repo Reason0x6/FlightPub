@@ -294,7 +294,7 @@ public class IndexController {
         return "Admin/LocationManagement";
     }
 
-    @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=1001&seats=2
+    @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=62eb114bb9b3b6470d3560af&seats=2
     public String bookFlight(@RequestParam String id, @RequestParam Integer seats ,Model model, HttpSession session){
 
         Flight f = flightServices.getById(id);
@@ -453,7 +453,16 @@ public class IndexController {
 
     @RequestMapping("/bookingConfirmation")
     public String bookingConfirmation(Model model){
+
+        String confirmationID = generateConfirmationID();
+        System.out.println(confirmationID);
+        model.addAttribute("confirmationID", confirmationID);
+
         return "Confirmations/BookingConfirmation";
+    }
+
+    protected String generateConfirmationID(){
+        return UUID.randomUUID().toString();
     }
 
     @RequestMapping("/bookingalert")
