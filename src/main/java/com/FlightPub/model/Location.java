@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 @Document("Location")
@@ -47,10 +48,13 @@ public class Location {
 
     @Getter
     @Setter
+    @Field("adjacentLocations")
+    private ArrayList<String> adjacentLocations;
+
+    @Getter
+    @Setter
     @Field("covid_restricted")
     private boolean covid_restricted;
-
-
 
     public Location() {}
 
