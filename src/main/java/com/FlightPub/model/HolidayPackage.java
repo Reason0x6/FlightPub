@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+/**
+ * Java Object Representation of Database Object
+ */
 @Document("HolidayPackage")
 public class HolidayPackage {
     @Getter

@@ -7,9 +7,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Implements database interaction for account security
+ */
 public class SecurityService {
 
-    private MessageDigest digest ;
+    private final MessageDigest digest ;
 
     public SecurityService() throws NoSuchAlgorithmException {
         digest = MessageDigest.getInstance("SHA-256");

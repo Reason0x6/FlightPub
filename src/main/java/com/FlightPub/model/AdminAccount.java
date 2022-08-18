@@ -6,6 +6,9 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Java Object Representation of Database Object
+ */
 @Document("AdminAccount")
 public class AdminAccount {
     @Id

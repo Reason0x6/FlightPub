@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
+/**
+ * Java Object Representation of Database Object
+ */
 @Document("Booking")
 public class Booking {
     @Id

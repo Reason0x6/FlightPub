@@ -31,11 +31,16 @@ public class IndexController {
     private WishListServices wishListServices;
     private AdminAccountServices adminAccountServices;
     private HolidayPackageServices holidayPackageServices;
+    private AirlineServices airlineServices;
 
+    @Autowired
+    @Qualifier(value = "AirlineServices")
+    public void setAirlineServices(AirlineServices airlineServices) { this.airlineServices = airlineServices;}
 
     @Autowired
     @Qualifier(value = "WishListServices")
     public void setWishListServices(WishListServices wishListServices) {    this.wishListServices = wishListServices;    }
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -373,22 +378,28 @@ public class IndexController {
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
+        search.setAirlineServices(airlineServices);
 
         model.addAttribute("searchLocation", locationServices.listAll());
 
         // Increase the popularity of destination location
         locationServices.incrementPopularity(search.getDestinationIn());
+        if (locationServices.findByLocation(search.getDestinationIn()) != null) {
+            getSession(session).setLastSearchedDestination(search.getDestinationIn());
+        }
 
-        getSession(session).setLastSearchedDestination(search.getDestinationIn());
 
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
+        search.setCheapestPriceForSearchResults(flights[0]);
         flights[1] = search.getPromotedFlights(flights[0]);
         stopOver[0] = search.basicStopOverSearch(1);
         stopOver[1] = search.basicStopOverSearch(2);
         stopOver[2] = search.basicStopOverSearch(3);
+        search.setCheapestPriceForStopOverResults(stopOver[0]);
+        search.setCheapestPriceForStopOverResults(stopOver[1]);
+        search.setCheapestPriceForStopOverResults(stopOver[2]);
 
-        search.setCheapestPriceForSearchResults(flights[0]);
 
         // Stops unnecessary objects from being added to the response
         if(flights[0] != null || flights[1] != null)
@@ -408,6 +419,7 @@ public class IndexController {
         List<StopOver>[] stopOver = new ArrayList[3];
         search.setFlightServices(flightServices);
         search.setLocationServices(locationServices);
+        search.setAirlineServices(airlineServices);
 
         model.addAttribute("searchLocation", locationServices.listAll());
 
@@ -415,23 +427,29 @@ public class IndexController {
         locationServices.incrementPopularity(search.getDestinationIn());
 
         // Gathers Flights and Stopovers
-        flights[0] =  search.runAdvancedSearch(this.getSession(session).getUsr());
+        flights[0] =  search.runAdvancedSearch();
         flights[1] = search.getPromotedFlights(flights[0]);
         if(!search.isDirectFlight()) {
-            stopOver[0] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 1);
-            stopOver[1] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 2);
-            stopOver[2] = search.advancedStopOverSearch(this.getSession(session).getUsr(), 3);
+            stopOver[0] = search.advancedStopOverSearch(1);
+            stopOver[1] = search.advancedStopOverSearch(2);
+            stopOver[2] = search.advancedStopOverSearch(3);
         }
 
         // Stops unnecessary objects from being added to the response
         if(flights[0] != null || flights[1] != null){
-            search.setCheapestPriceForSearchResults(flights[0]);
+            if(flights[0] != null && !flights[0].isEmpty() && flights[0].get(0).getCheapestPrice() == null)
+                search.setCheapestPriceForSearchResults(flights[0]);
 
             model.addAttribute("flights", flights);
         }
 
-        if(stopOver[0] != null || stopOver[1] != null || stopOver[2] != null)
-            model.addAttribute("stopOver" , stopOver);
+        if(stopOver[0] != null || stopOver[1] != null || stopOver[2] != null) {
+            search.setCheapestPriceForStopOverResults(stopOver[0]);
+            search.setCheapestPriceForStopOverResults(stopOver[1]);
+            search.setCheapestPriceForStopOverResults(stopOver[2]);
+            model.addAttribute("stopOver", stopOver);
+
+        }
 
         model.addAttribute("search", search);
         model.addAttribute("usr", getSession(session));

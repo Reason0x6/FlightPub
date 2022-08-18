@@ -1,11 +1,21 @@
-package com.FlightPub.Controllers;
+package com.FlightPub.model;
 
+
+/**
+ * Haversine formula for finding distances between two coordinates
+ */
 public class HaversineCalculator {
-    // --- Haversine formula for finding distances between two coordinates ---
     private static final int EARTH_RADIUS = 6371; // Approx Earth radius in KM
 
-    public static double distance(double startLat, double startLong,
-                                  double endLat, double endLong) {
+    /**
+     * Calculates distance between two coordinates
+     * @param startLat Latitude of origin location
+     * @param startLong Longitude of origin location
+     * @param endLat Latitude of destination location
+     * @param endLong Longitude of destination location
+     * @return distance between two coordinates
+     */
+    public static double distance(double startLat, double startLong, double endLat, double endLong) {
 
         double dLat  = Math.toRadians((endLat - startLat));
         double dLong = Math.toRadians((endLong - startLong));
@@ -19,6 +29,11 @@ public class HaversineCalculator {
         return EARTH_RADIUS * c; // <-- d
     }
 
+    /**
+     * Haversine Formula
+     * @param val for formula
+     * @return result of formula
+     */
     private static double haversine(double val) {
         return Math.pow(Math.sin(val / 2), 2);
     }
