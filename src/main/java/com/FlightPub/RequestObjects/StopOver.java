@@ -72,7 +72,6 @@ public class StopOver {
             if(flight.getStopoverCode() != null)
                 count++;
         }
-        System.out.print(count);
         return count;
     }
 
@@ -114,7 +113,7 @@ public class StopOver {
 
     public String getArrival() { return flights.get(0).getArrivalString(); }
 
-    public String getAirline() {
+    public String getAirlines() {
         String output = "";
         for(Flight flight : flights) {
             output += ", "+flight.getAirlineCode();

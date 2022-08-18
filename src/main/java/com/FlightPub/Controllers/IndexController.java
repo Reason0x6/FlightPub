@@ -372,9 +372,9 @@ public class IndexController {
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
         flights[1] = search.getPromotedFlights(flights[0]);
-       /* stopOver[0] = search.basicStopOverSearch(1);
+        stopOver[0] = search.basicStopOverSearch(1);
         stopOver[1] = search.basicStopOverSearch(2);
-        stopOver[2] = search.basicStopOverSearch(3);*/
+        stopOver[2] = search.basicStopOverSearch(3);
 
         search.setCheapestPriceForSearchResults(flights[0]);
 
