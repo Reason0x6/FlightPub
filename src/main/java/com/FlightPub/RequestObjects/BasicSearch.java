@@ -224,6 +224,17 @@ public class BasicSearch {
         }
         System.out.print("\n");
 
+        for(StopOver s : output) {
+            List<Flight> f = s.getFlights();
+            for(Flight fl : f) {
+                System.out.print(fl.getAirlineCode()+"->");
+                if(fl.getStopoverCode() != null)
+                    System.out.print(fl.getStopoverCode()+"\n"+fl.getStopoverCode()+"->");
+                System.out.print(fl.getDestinationCode()+"\n");
+            }
+            System.out.println("------------------------------------------");
+        }
+
         return output;
     }
     // Returns all of the direct flights

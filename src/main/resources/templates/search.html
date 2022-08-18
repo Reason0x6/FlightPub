@@ -10,7 +10,7 @@
     </div>
   </div>
   <div th:if="${flights[1].size()} != 0">
-    <h1>Recommended</h1>
+    <h1>Sponsored</h1>
     <p>Select handpicked flights from all your favorite airline vendors</p>
     <div th:each="i:${#numbers.sequence(0, 2)}">
       <div class="card l-1" th:if="${flights[1].size()}-1 >= ${i}">

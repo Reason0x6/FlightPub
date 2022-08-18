@@ -41,7 +41,7 @@ public class StopOver {
         for(Flight flight : flights) {
             if(flight.getDepartureCode().equals(destLocation) || flight.getDepartureCode().equals(stopoverLocation))
                 return true;
-            if(flight.getStopoverCode()!=null && (flight.getStopoverCode().equals(destLocation)||flight.getStopoverCode().equals(destLocation)))
+            if(flight.getStopoverCode()!=null && (flight.getStopoverCode().equals(destLocation)||flight.getStopoverCode().equals(stopoverLocation)))
                 return true;
         }
         return false;
@@ -78,5 +78,48 @@ public class StopOver {
 
     // Returns the size of the list
     public int size() { return flights.size(); }
+
+    // Thymeleaf methods
+    public String getOrigin() {
+        if(flights != null && !flights.isEmpty())
+            return flights.get(0).getDepartureCode();
+        else
+            return null;
+    }
+
+    public String getDestination() {
+        if(flights != null && !flights.isEmpty())
+            return flights.get(flights.size()-1).getDestinationCode();
+        else
+            return null;
+    }
+
+    public String getAllStops() {
+        String output = "";
+        for(int count = 0; count < flights.size(); count++) {
+            String stopover = flights.get(count).getStopoverCode();
+            if(stopover != null)
+                output += ", "+stopover;
+            if(count != flights.size()-1)
+                output += ", "+flights.get(count).getDepartureCode();
+        }
+
+        if(!output.equals(""))
+            return output.substring(2);
+        else
+            return "";
+    }
+
+    public String getDeparture() { return flights.get(0).getDepartureString(); }
+
+    public String getArrival() { return flights.get(0).getArrivalString(); }
+
+    public String getAirline() {
+        String output = "";
+        for(Flight flight : flights) {
+            output += ", "+flight.getAirlineCode();
+        }
+        return output.substring(2);
+    }
     
 }
