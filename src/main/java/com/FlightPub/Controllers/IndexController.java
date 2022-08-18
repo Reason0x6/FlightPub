@@ -378,8 +378,10 @@ public class IndexController {
 
         // Increase the popularity of destination location
         locationServices.incrementPopularity(search.getDestinationIn());
+        if (locationServices.findByLocation(search.getDestinationIn()) != null) {
+            getSession(session).setLastSearchedDestination(search.getDestinationIn());
+        }
 
-        getSession(session).setLastSearchedDestination(search.getDestinationIn());
 
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);

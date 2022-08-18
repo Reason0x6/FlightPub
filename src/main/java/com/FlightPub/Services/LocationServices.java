@@ -86,6 +86,8 @@ public class LocationServices {
         Location popularLocation = findByLocation(location);
 
         if (popularLocation != null) {
+            System.out.println("Increasing popularity for " + popularLocation.getLocationID());
+
             int currentPopularity = popularLocation.getPopularity();
 
             // If current popularity is not already number 1
