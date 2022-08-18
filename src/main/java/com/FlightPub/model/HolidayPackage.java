@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document("HolidayPackage")
 public class HolidayPackage {
     @Getter
@@ -40,14 +42,22 @@ public class HolidayPackage {
 
     @Getter
     @Setter
-    private String packageStartDate;
+    private Date packageStartDate;
 
     @Getter
     @Setter
-    private String packageEndDate;
+    private Date packageEndDate;
+
+    @Getter
+    @Setter
+    private String packageStartDateFormatted;
+
+    @Getter
+    @Setter
+    private String packageEndDateFormatted;
 
     public HolidayPackage(String airlineCode, String airlineName, String destinationCode, String airport, int discountPercentage, String hotelName,
-                          int hotelStarRating, String hotelDescription, String packageStartDate, String packageEndDate){
+                          int hotelStarRating, String hotelDescription, Date packageStartDate, Date packageEndDate){
         super();
         this.airlineCode = airlineCode;
         this.airlineName = airlineName;
