@@ -7,6 +7,9 @@ import com.FlightPub.repository.TicketTypeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implements database interaction for ticketing
+ */
 @Service("TicketServices")
 public class TicketServices {
     private final TicketClassRepo classRepo;

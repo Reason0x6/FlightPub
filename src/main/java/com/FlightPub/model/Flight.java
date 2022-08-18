@@ -1,6 +1,5 @@
 package com.FlightPub.model;
 
-import com.FlightPub.RequestObjects.BasicSearch;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -8,10 +7,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.TimeZone;
 
+/**
+ * Java Object Representation of Database Object
+ */
 @Document("Flights")
 public class Flight {
 
