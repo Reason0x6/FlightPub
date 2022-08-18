@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Implements database interaction for holiday packages
+ */
 @Service("HolidayPackageServices")
 public class HolidayPackageServices {
 

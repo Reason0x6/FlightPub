@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Implements database interaction for flights
+ */
 @Service("FlightServices")
 public class FlightServices{
     private HashMap<String, Map.Entry<Date, List<Flight>>> flightCache;

@@ -1,10 +1,8 @@
 package com.FlightPub.Controllers;
 
-import com.FlightPub.RequestObjects.BasicSearch;
 import com.FlightPub.RequestObjects.UserSession;
-import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
-import com.FlightPub.model.Flight;
+import com.FlightPub.model.HaversineCalculator;
 import com.FlightPub.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,34 +12,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Controller
 public class RecommendationController {
-    private Location recommendationLocation;
-    private FlightServices flightServices;
+    private Location userLocation;                  // Stores user location
+    private List<Location> searchRecommendations;   // Stores recommendations based on users last searched destination
+
+    // Services
     private LocationServices locationServices;
-
-    private List<Location> searchRecommendations;
-
     @Autowired
     @Qualifier(value = "LocationServices")
     public void setLocationsServices(LocationServices locService) {
         this.locationServices = locService;
     }
 
-    @Autowired
-    @Qualifier(value = "FlightServices")
-    public void setFlightServices(FlightServices flightService) {
-        this.flightServices = flightService;
-    }
-
+    /**
+     * Returns a html fragment containing 4 location recommendations
+     * @param city users departure city
+     * @param model interface that defines a holder for model attributes
+     * @param session current session
+     * @return html recommendation fragment
+     */
     @PostMapping("/recommendations")
     public String loadRecommendations(@RequestParam String city, Model model, HttpSession session) {
-        recommendationLocation = locationServices.getById(city);
+        userLocation = locationServices.getById(city);
 
         model.addAttribute("reco", getRecommendation(getSession(session)));
 
@@ -49,7 +48,7 @@ public class RecommendationController {
             model.addAttribute("searchRecommendation", searchRecommendations.toArray());
         }
 
-        model.addAttribute("currentLocation", getRecommendationLocation());
+        model.addAttribute("currentLocation", getCurrentLocation());
         model.addAttribute("recommendationLocation", locationServices.listAll());
 
         model.addAttribute("usr", getSession(session));
@@ -57,7 +56,14 @@ public class RecommendationController {
         return "Fragments/Recommendation :: recommendation_fragment";
     }
 
-
+    /**
+     * Locates the nearest location to a given latitude and longitude
+     * @param lat latitude of location
+     * @param lon longitude of location
+     * @param model interface that defines a holder for model attributes
+     * @param session current session
+     * @return html fragment with the nearest city as departure location
+     */
     @PostMapping("LocateNearestCity")
     public String locateNearestCity(@RequestParam double lat, @RequestParam double lon, Model model, HttpSession session) {
         // Defaults for nearest city comparison
@@ -79,10 +85,12 @@ public class RecommendationController {
         return loadRecommendations(currentNearestCity, model, session);
     }
 
+    /**
+     * Returns a list of recommended locations
+     * @param user current user in session
+     * @return list of recommended locations
+     */
     private List<Location> getRecommendation(UserSession user) {
-        // TODO Remove if not needed
-//        return searchForRecommendedFlights(currentLocation);
-
         if(getCurrentLocation() == null) {
             return null;
         }
@@ -90,13 +98,16 @@ public class RecommendationController {
         ArrayList<String> ignoredLocations = new ArrayList<>();
         ignoredLocations.add(getCurrentLocation().getLocationID());
 
-        // need to get adjacent locations to
+        // If user has a search location
         if (user.getLastSearchedDestination() != null) {
             Location lastSearchedLocation = locationServices.findByLocation(user.getLastSearchedDestination());
 
             List<String> adjacentLocations = lastSearchedLocation.getAdjacentLocations();
             searchRecommendations =  new ArrayList<>();
+
+            // Find two adjacent locations to last search location
             for(String locationString: adjacentLocations) {
+                // If adjacent location matches current user location ignore it
                 if (!locationString.equals(getCurrentLocation().getLocationID())) {
                     ignoredLocations.add(locationString);
                     searchRecommendations.add(locationServices.getById(locationString));
@@ -122,68 +133,17 @@ public class RecommendationController {
         }
     }
 
-    private List<Flight> searchForRecommendedFlights(Location currentLocation) {
-        // Get currently popular locations
-        List<Location> locations = locationServices.findAllSortedAscendingExcluding(Collections.singletonList(currentLocation.getLocationID()));
-
-        // The final list of recommended flights
-        List<Flight> recommendedFlights = new LinkedList<>();
-
-        // Get current date and date in 3 months
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String today = dateFormat.format(date);
-
-        cal.add(Calendar.MONTH, 3);
-        date = cal.getTime();
-        String max = dateFormat.format(date);
-
-        // Create new search
-        BasicSearch search = new BasicSearch();
-        search.setFlightServices(flightServices);
-        search.setLocationServices(locationServices);
-        search.setOriginIn(currentLocation.getLocationID());
-
-        // Get 1 flight from each popular location
-        for (Location popularLocation : locations) {
-
-            // Set search destination to next popular location
-            search.setDestinationIn(popularLocation.getLocationID());
-
-            // Find flights that are going from current location to popular location
-            try {
-                // TODO look into why this doesnt set the destination correctly
-                // List<Flight> recommendSearch = search.runBasicSearch(today, max, false);
-                List<Flight> recommendSearch = flightServices.getByOriginAndDestination(
-                        currentLocation.getLocationID(),
-                        popularLocation.getLocationID(),
-                        Flight.stringToLong(today),
-                        Flight.stringToLong(max));
-                // If at least one flight was found add first flight to recommendation list
-                if(!recommendSearch.isEmpty()) {
-                    recommendedFlights.add(recommendSearch.get(0));
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            // Once 3 recommended flights have been found break for loop
-            if (recommendedFlights.size() == 4) {
-                break;
-            }
-        }
-
-        return recommendedFlights;
-    }
-
+    /**
+     * Get current location of user
+     * @return Location of user
+     */
     private Location getCurrentLocation() {
         // Set current location
         Location currentLocation;
-        if(recommendationLocation == null) {
+        if(userLocation == null) {
             currentLocation = locationServices.mostPopular();
         } else {
-            currentLocation = locationServices.getById(recommendationLocation.getLocationID());
+            currentLocation = locationServices.getById(userLocation.getLocationID());
         }
 
         // If no current location is found in database
@@ -196,54 +156,10 @@ public class RecommendationController {
     }
 
     /**
-     * This generates adjacent locations for all locations
-     * Unused, just for reference
+     * Get current session
+     * @param session current session
+     * @return current user session
      */
-    private void generateAdjacentLocations() {
-        // For all locations
-        for (Location allLocation: locationServices.listAll()) {
-            List<Double> distance = new ArrayList<>();
-            Map<Double, String> locations = new HashMap<>();
-
-            // For all locations excluding the current location
-            for (Location excludeLocation: locationServices.findAllSortedAscendingExcluding(Collections.singletonList(allLocation.getLocationID()))) {
-                // Find the distance from the current location and another location
-                double currentDistance = HaversineCalculator.distance (allLocation.getLatitude(), allLocation.getLongitude(), excludeLocation.getLatitude(), excludeLocation.getLongitude());
-                distance.add(currentDistance);
-                locations.put(currentDistance, excludeLocation.getLocationID());
-            }
-
-            // Sort the distances
-            Collections.sort(distance);
-
-            // Print current location
-            System.out.printf("%s {%n", allLocation.getLocationID());
-            System.out.println("\"adjacentLocations\": [");
-
-            // For top 3 distances return the location id for it
-            int i = 0;
-            for (Object sortedDistance: distance.stream().limit(3).toArray()) {
-                i++;
-                if(i != 3) {
-                    System.out.printf("  \"%s\",%n", locations.get((Double) sortedDistance));
-                } else {
-                    System.out.printf("  \"%s\"", locations.get((Double) sortedDistance));
-                }
-
-            }
-
-            System.out.printf("%n], %n } %n%n");
-
-        }
-    }
-
-    private Location getRecommendationLocation() {
-        if(recommendationLocation == null) {
-            recommendationLocation = locationServices.mostPopular();
-        }
-        return recommendationLocation;
-    }
-
     private UserSession getSession(HttpSession session){
         UserSession sessionUser = null;
         try{

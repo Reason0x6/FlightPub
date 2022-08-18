@@ -66,8 +66,11 @@
         </div>
 
         <script>
-            // Update invite list on submit invite form submit
+            /**
+             * Update invite list on submit invite form submit
+             */
             function updateInviteUserForm() {
+                // Submit form
                 $("#inviteUserForm").one('submit',function(e) {
                     e.preventDefault(); // prevent page refresh
 
@@ -78,8 +81,11 @@
                 });
             }
 
-            // Load current invite list
+            /**
+             * Load current invite list
+             */
             $(document).ready( function loadInviteUserForm() {
+                // Post to receive invite list
                 $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
                     $("#invite_list").replaceWith(fragment);
                 })

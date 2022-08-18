@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Java Object Representation of Database Object
+ */
 @Document("Location")
 public class Location {
     @Id
