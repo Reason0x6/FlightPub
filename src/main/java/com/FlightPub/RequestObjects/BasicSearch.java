@@ -264,7 +264,7 @@ public class BasicSearch {
     }
 
     // Extension of the basic search that incorporates specific search parameters and filters
-    public List<Flight> runAdvancedSearch(UserAccount user) {
+    public List<Flight> runAdvancedSearch() {
         List<Flight> flights = this.runBasicSearch(this.start, this.end, false);
         List<Flight> filteredFlights = new ArrayList<>();
 
@@ -279,6 +279,7 @@ public class BasicSearch {
                 if (destinationObj != null && !flight.getDestinationCode().equals(destinationObj.getLocationID()))
                     continue;
             }
+            // TODO: Revise to work with the pricing
             // Filters by price
             if (minPrice != 0 || maxPrice != 100000) {
                 double price = flight.getTicketPrice();
@@ -291,7 +292,7 @@ public class BasicSearch {
             if (rating != 0 && flight.getRating() < rating)
                 continue;
             // Filter to the number of seats
-            if (seats > flightServices.getAvailableSeats(flight.getFlightNumber(), flight.getDepartureTime()))
+            if (seats > flightServices.getAvailableSeats(flight.getFlightNumber(), flight.getDepartureTime(), flight.getStopoverCode()))
                 continue;
             // Filters flights that are not part of the membership program
             if (this.isMembershipFlights()) {
@@ -304,7 +305,7 @@ public class BasicSearch {
     }
 
     // Extension of the basicStopOverSearch that incorporates specific search parameters and filters
-    public List<StopOver> advancedStopOverSearch(UserAccount user, int numberOfStops) {
+    public List<StopOver> advancedStopOverSearch(int numberOfStops) {
         List<StopOver> flights = this.basicStopOverSearch(numberOfStops);
         List<StopOver> filteredFlights = new ArrayList<>();
 
@@ -325,11 +326,11 @@ public class BasicSearch {
             boolean availableSeats = true;
             // Filter to the number of seats
             for(Flight x: flight.getFlights()){
-                if(flightServices.getAvailableSeats(x.getFlightNumber(), x.getDepartureTime()) <= 0){
+                if(flightServices.getAvailableSeats(x.getFlightNumber(), x.getDepartureTime(), x.getStopoverCode()) <= this.seats){
                     availableSeats = false;
                 }
             }
-            if (availableSeats)
+            if (!availableSeats)
                 continue;
             // Filters flights that are not part of the membership program
             if (this.isMembershipFlights()) {
@@ -342,11 +343,25 @@ public class BasicSearch {
     }
 
     public void setCheapestPriceForSearchResults(List<Flight> flight) {
-        List<String[]> priceList = new ArrayList<>();
+        if(flight == null)
+            return;
         for (Flight f : flight) {
             f.setCheapestPrice(flightServices.findCheapestPrice(f.getFlightID(), f.getFlightNumber(), f.getDepartureTime()));
         }
     }
+
+    public void setCheapestPriceForStopOverResults(List<StopOver> stopovers) {
+        if(stopovers == null)
+            return;
+        for(StopOver stopover : stopovers) {
+            List<Flight> flights = stopover.getFlights();
+            for (Flight f : flights) {
+                f.setCheapestPrice(flightServices.findCheapestPrice(f.getFlightID(), f.getFlightNumber(), f.getDepartureTime()));
+            }
+
+        }
+    }
+
 }
 
 

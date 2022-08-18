@@ -120,5 +120,12 @@ public class StopOver {
         }
         return output.substring(2);
     }
-    
+
+    public double getTotalPrice() {
+        double cost = 0;
+        for(Flight flight : flights) {
+            cost += Double.parseDouble(flight.getCheapestPrice());
+        }
+        return Math.round(cost*100.0)/100.0;
+    }
 }

@@ -129,7 +129,7 @@ public class FlightServices{
 
     }
 
-    public int getAvailableSeats(String id, Long departTime){
+    public int getAvailableSeats(String id, Long departTime, String stopoverCode){
         List<Availability> outArr;
         if(availCache.containsKey(id+departTime.toString()) && availCache.get(id+departTime.toString()).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
             outArr = availCache.get(id+departTime.toString()).getValue();
@@ -149,7 +149,10 @@ public class FlightServices{
 
         int out = 0;
         for (Availability a: outArr) {
-            out += a.getNumberAvailableSeatsLeg1() > a.getNumberAvailableSeatsLeg2() ? a.getNumberAvailableSeatsLeg2() : a.getNumberAvailableSeatsLeg1();
+            if(stopoverCode != null)
+                out += a.getNumberAvailableSeatsLeg1() > a.getNumberAvailableSeatsLeg2() ? a.getNumberAvailableSeatsLeg2() : a.getNumberAvailableSeatsLeg1();
+            else
+                out += a.getNumberAvailableSeatsLeg1();
         }
         return out;
     }

@@ -21,7 +21,7 @@
           </div>
           <div class="col-sm-4">
             <p><b>Airline: </b><span th:text="${flights[1].get(i).getAirlineCode()}"></span></p>
-            <p><b>Tickets Start At:</b><span th:text="' $' + ${flights[1].get(i).getTicketPrice()}"></span></p>
+            <p><b>Tickets Start At:</b><span th:text="' $' + ${flights[1].get(i).getCheapestPrice()}"></span></p>
           </div>
           <div class="col-sm-4"  style="padding-top: 10px;"><br>
             <a th:href="'/flight?id=' + ${flights[1].get(i).getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
@@ -96,7 +96,7 @@
                     <th id="departstop">Departure</th>
                     <th id="arrivesstop">Arrival</th>
                     <th id="airlinesstop">Airlines</th>
-                    <th id="infostop">Information</th>
+                    <th id="infostop">Prices From</th>
                     </thead>
                     <tbody>
 
@@ -111,7 +111,9 @@
                       </td>
 
                       <td th:data="${flight.getAirlines()}"><b>Airline: </b><span th:text="${flight.getAirlines}"></span></td>
-                      <!-- <td><span th:text="' $' + ${flight.getTicketPrice()}"></span></td> -->
+
+                      <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
+
                       <td>
                         <!--
                         <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
@@ -146,7 +148,7 @@
                       <th id="departstop1">Departure</th>
                       <th id="arrivesstop1">Arrival</th>
                       <th id="airlinesstop1">Airlines</th>
-                      <th id="infostop1">Information</th>
+                      <th id="infostop1">Prices From</th>
                       </thead>
                       <tbody>
 
@@ -161,7 +163,9 @@
                         </td>
 
                         <td th:data="${flight.getAirlines()}"><b>Airline: </b><span th:text="${flight.getAirlines}"></span></td>
-                        <!-- <td><span th:text="' $' + ${flight.getTicketPrice()}"></span></td> -->
+
+                        <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
+
                         <td>
                           <!--
                           <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
@@ -196,7 +200,7 @@
                         <th id="departstop2">Departure</th>
                         <th id="arrivesstop2">Arrival</th>
                         <th id="airlinesstop2">Airlines</th>
-                        <th id="infostop2">Information</th>
+                        <th id="infostop2">Prices From</th>
                         </thead>
                         <tbody>
 
@@ -211,7 +215,9 @@
                           </td>
 
                           <td th:data="${flight.getAirlines()}"><b>Airline: </b><span th:text="${flight.getAirlines}"></span></td>
-                          <!-- <td><span th:text="' $' + ${flight.getTicketPrice()}"></span></td> -->
+
+                          <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
+
                           <td>
                             <!--
                             <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
