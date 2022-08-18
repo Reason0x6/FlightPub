@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:fragment="invite_section">
+    <p th:if="${Error == 'Not a valid user'}">Sorry, Not a valid user.</p></br>
+    <p th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</p>
     <div class="section-title" data-aos="zoom-out" >
         <h2>Sharing is Caring</h2>
         <p>Get The Gang Together</p>
@@ -24,10 +26,10 @@
                     <div class="col-md-3">
                         <button type="submit" class="btn btn-primary" onclick="updateInviteUserForm()">Invite User!</button>
                     </div>
-
                 </div>
             </form>
         </div>
+
         <div class="card l-1" data-aos="zoom-in-left" th:fragment="invite_list_fragment" id="invite_list">
             <table class="table">
                 <thead>

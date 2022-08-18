@@ -130,8 +130,8 @@ public class GroupsController {
         if (groupServices.isUserInGroup(inviteUser)) {
             // TODO send to this front end
             model.addAttribute("Error", "User is already in group");
-            System.out.println("User is already in group");
-            return "redirect:/Error/404";
+           // System.out.println("User is already in group");
+            return "Fragments/Groups/InviteList";
         }
         // If valid user
         else if (usrServices.getById(inviteUser) != null) {
@@ -145,8 +145,8 @@ public class GroupsController {
         else {
             // TODO send this to the front end instead
             model.addAttribute("Error", "Not a valid user");
-            System.out.println("Not a valid user");
-            return "redirect:Fragments/Groups/InviteList";
+            return "Fragments/Groups/InviteList";
+            //System.out.println("Not a valid user");
         }
 
         // Get list of all invited pending and declined users
