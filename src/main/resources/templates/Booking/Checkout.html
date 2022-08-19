@@ -125,10 +125,9 @@
                                     <!-- Traveller Info [Input]-->
                                     <!-- FF Details [Input]-->
                                     <!-- Save Traveller to Account [Checkbox]
-                                    </div>
-                    -->
-                                </tbody>
-                            </table>
+                                    </div>-->
+                            </tbody>
+                        </table>
                     <!--</div>-->
                 </div>
             </div>
@@ -139,6 +138,7 @@
                         <thead>
                         <tr>
                             <h2>Flights to be Booked</h2>
+                            <th scope="col">Flight Number</th>
                             <th scope="col">Departure Date</th>
                             <th scope="col">Flight</th>
                             <th scope="col">Seats</th>
@@ -146,9 +146,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <div th:each="br : ${cart}">
+                        <div th:each="br : ${checkout}">
                             <tr >
-                                <th scope="row" th:text="${br.getDepartureDate()}"></th>
+                                <th scope="row" th:text="${br.getFlight().getFlightNumber()}"></th>
+                                <th th:text="${br.getDepartureDate()}"></th>
                                 <th th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></th>
                                 <th th:text="${br.getTotalSeats()}"></th>
                                 <th th:text="'$' + ${br.getPrice()}"></th>

@@ -451,6 +451,60 @@ public class IndexController {
 
         for (BookingRequest br : getSession(session).getCart()) {
             double price = 0;
+            for (String[] seat : br.getFirSeats()) {
+                switch (seat[0]) {
+                    case "Standby":
+                        if(br.getFirStandby().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getFirStandby());
+                        }
+                        break;
+                    case "Premium Discounted":
+                        if(br.getFirPremDisc().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getFirPremDisc());
+                        }
+                        break;
+                    case "Discounted":
+                        if(br.getFirDiscounted().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getFirDiscounted());
+                        }
+                        break;
+                    case "Standard":
+                        if(br.getFirStandard().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getFirStandard());
+                        }
+                        break;
+                    case "Premium":
+                        if(br.getFirPremium().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getFirPremium());
+                        }
+                        break;
+                    case "Long Distance":
+                        if(br.getFirLongDistance().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getFirLongDistance());
+                        }
+                        break;
+                    case "Platinum":
+                        if(br.getFirPlatinum().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getFirPlatinum());
+                        }
+                        break;
+                }
+                //System.out.println("First Class Tickets Price " + price);
+            }
             for (String[] seat : br.getBusSeats()) {
                 switch (seat[0]) {
                     case "Standby":
@@ -503,7 +557,115 @@ public class IndexController {
                         }
                         break;
                 }
-                System.out.println("Price " + price);
+                //System.out.println("Business Class Tickets Price " + price);
+            }
+            for (String[] seat : br.getPmeSeats()) {
+                switch (seat[0]) {
+                    case "Standby":
+                        if(br.getPmeStandby().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getPmeStandby());
+                        }
+                        break;
+                    case "Premium Discounted":
+                        if(br.getPmePremDisc().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getPmePremDisc());
+                        }
+                        break;
+                    case "Discounted":
+                        if(br.getPmeDiscounted().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getPmeDiscounted());
+                        }
+                        break;
+                    case "Standard":
+                        if(br.getPmeStandard().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getPmeStandard());
+                        }
+                        break;
+                    case "Premium":
+                        if(br.getPmePremium().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getPmePremium());
+                        }
+                        break;
+                    case "Long Distance":
+                        if(br.getPmeLongDistance().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getPmeLongDistance());
+                        }
+                        break;
+                    case "Platinum":
+                        if(br.getPmePlatinum().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getPmePlatinum());
+                        }
+                        break;
+                }
+                //System.out.println("Premium Economy Class Tickets Price " + price);
+            }
+            for (String[] seat : br.getEcoSeats()) {
+                switch (seat[0]) {
+                    case "Standby":
+                        if(br.getEcoStandby().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getEcoStandby());
+                        }
+                        break;
+                    case "Premium Discounted":
+                        if(br.getEcoPremDisc().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getEcoPremDisc());
+                        }
+                        break;
+                    case "Discounted":
+                        if(br.getEcoDiscounted().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getEcoDiscounted());
+                        }
+                        break;
+                    case "Standard":
+                        if(br.getEcoStandard().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getEcoStandard());
+                        }
+                        break;
+                    case "Premium":
+                        if(br.getEcoPremium().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getEcoPremium());
+                        }
+                        break;
+                    case "Long Distance":
+                        if(br.getEcoLongDistance().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getEcoLongDistance());
+                        }
+                        break;
+                    case "Platinum":
+                        if(br.getEcoPlatinum().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getEcoPlatinum());
+                        }
+                        break;
+                }
+                //System.out.println("Eco Class Tickets Price " + price);
             }
             br.setPrice(price);
         }
@@ -552,7 +714,8 @@ public class IndexController {
             return "redirect:login";
         }
 
-        model.addAttribute("cart", getSession(session).getCart());
+        model.addAttribute("checkout", getSession(session).getCart());
+        // model.addAttribute("seats", getSession(session).getCart().get(0).getTotalSeats());
         model.addAttribute("usr", getSession(session));
 
         return "Booking/Checkout";
