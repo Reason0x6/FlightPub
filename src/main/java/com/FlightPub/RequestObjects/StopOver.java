@@ -19,6 +19,13 @@ public class StopOver {
         flights.add(flight);
     }
 
+    // copy constructor that adds another flight
+    public StopOver(List<Flight> flights, Flight newFlight) {
+        for(Flight flight : flights)
+            this.flights.add(flight);
+        this.flights.add(newFlight);
+    }
+
     // Adds a Flight to the object
     public void addFlight(Flight flight) {
         flights.add(flight);
@@ -30,9 +37,11 @@ public class StopOver {
     }
 
     // Tests if a provided location has been visited in this stopover chain
-    public boolean locationVisited(String location) {
+    public boolean locationVisited(String destLocation, String stopoverLocation) {
         for(Flight flight : flights) {
-            if(flight.getDepartureCode().equals(location))
+            if(flight.getDepartureCode().equals(destLocation) || flight.getDepartureCode().equals(stopoverLocation))
+                return true;
+            if(flight.getStopoverCode()!=null && (flight.getStopoverCode().equals(destLocation)||flight.getStopoverCode().equals(stopoverLocation)))
                 return true;
         }
         return false;
@@ -56,5 +65,67 @@ public class StopOver {
         return min;
     }
 
-    
+    // Returns the number of flights in the stopover
+    public int getNumberOfStops() {
+        int count = flights.size();
+        for(Flight flight : flights) {
+            if(flight.getStopoverCode() != null)
+                count++;
+        }
+        return count;
+    }
+
+    // Returns the size of the list
+    public int size() { return flights.size(); }
+
+    // Thymeleaf methods
+    public String getOrigin() {
+        if(flights != null && !flights.isEmpty())
+            return flights.get(0).getDepartureCode();
+        else
+            return null;
+    }
+
+    public String getDestination() {
+        if(flights != null && !flights.isEmpty())
+            return flights.get(flights.size()-1).getDestinationCode();
+        else
+            return null;
+    }
+
+    public String getAllStops() {
+        String output = "";
+        for(int count = 0; count < flights.size(); count++) {
+            String stopover = flights.get(count).getStopoverCode();
+            if(stopover != null)
+                output += ", "+stopover;
+            if(count != flights.size()-1)
+                output += ", "+flights.get(count).getDepartureCode();
+        }
+
+        if(!output.equals(""))
+            return output.substring(2);
+        else
+            return "";
+    }
+
+    public String getDeparture() { return flights.get(0).getDepartureString(); }
+
+    public String getArrival() { return flights.get(0).getArrivalString(); }
+
+    public String getAirlines() {
+        String output = "";
+        for(Flight flight : flights) {
+            output += ", "+flight.getAirlineCode();
+        }
+        return output.substring(2);
+    }
+
+    public double getTotalPrice() {
+        double cost = 0;
+        for(Flight flight : flights) {
+            cost += Double.parseDouble(flight.getCheapestPrice());
+        }
+        return Math.round(cost*100.0)/100.0;
+    }
 }

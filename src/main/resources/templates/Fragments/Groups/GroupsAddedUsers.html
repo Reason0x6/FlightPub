@@ -37,11 +37,17 @@
     </div>
 
     <script>
+        /**
+         * On document ready
+         */
         $(document).ready(function () {
             loadAddedUsers()
         })
 
-        // Remove user id
+        /**
+         * Removes a user from group
+         * @param removeUser user to remove
+         */
         function removeUser(removeUser) {
                 // if (confirm('Removing user ' + removeUser)) {
                     // Post entered email to be added to invite list
@@ -54,8 +60,11 @@
                 // }
         }
 
-        // Load current added user list
+        /**
+         * Load current added user list
+         */
         function loadAddedUsers() {
+            // Post to receive added user fragment
             $.post("/added_users", {groupId: $("#groupId").val()}).done(function (fragment) {
                 $("#added_users").replaceWith(fragment);
             })

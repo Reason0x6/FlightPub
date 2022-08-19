@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+/**
+ * Java Object Representation of Database Object
+ */
 @Document("Availability")
 public class Availability {
     @Id

@@ -153,41 +153,41 @@
                     <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Book</a><Br><Br>
                 </div>
             </div>
-        </div>
-        <hr />
-        <Br><Br>
-        <div class="row">
-            <div class="col-md-6" style="padding-left: 20px; ">
-                <div class="section-title" data-aos="zoom-out" >
-                    <h2>Premium Experience</h2>
-                    <p>What To Expect With QANTAS</p>
-                </div>
-                <p>
-                    Qantas' Fly Well program brings together a number of wellbeing measures to give you peace-of-mind from takeoff to touchdown.
-                    <br><br>
-                    Fly away knowing the safety, health and wellbeing of customers and people is and always will be, the highest priority. Thanks for respecting each other and our team, and helping to create a positive environment for everyone.
-                    <br><br>
-                    Note: products and services featured may vary at airport locations.
-                </p>
-            </div>
-            <div class="col-md-6" style="padding-left: 20px;">
-                <div class="section-title" data-aos="zoom-out" >
-                    <h2>Sharing is Caring</h2>
-                    <p>Get The Gang Together</p>
-                </div>
-                <div class="card l-1" data-aos="zoom-in-left" style="margin-left: 30px;">
-                    <p>Did you know that Flight Hub allows multiple accounts to join together as a group?!</p>
-                    <p>Create memories together, with an easy to use group booking feature, where you can collaborate and decide on what suits you, then, once you're all set, allocate seating together  but pay separately!</p>
-                    <div th:if="${usr.isLoggedIn()} == false">
-                        <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Create a Group</a><Br><Br>
+
+            <hr />
+            <Br><Br>
+            <div class="row">
+                <div class="col-md-6" style="padding-left: 20px; ">
+                    <div class="section-title" data-aos="zoom-out" >
+                        <h2>Premium Experience</h2>
+                        <p>What To Expect With QANTAS</p>
                     </div>
-                    <div th:if="${usr.isLoggedIn()} == true">
-                        <form th:replace="Fragments/Forms :: #createGroupForm"> </form>
+                    <p>
+                        Qantas' Fly Well program brings together a number of wellbeing measures to give you peace-of-mind from takeoff to touchdown.
+                        <br><br>
+                        Fly away knowing the safety, health and wellbeing of customers and people is and always will be, the highest priority. Thanks for respecting each other and our team, and helping to create a positive environment for everyone.
+                        <br><br>
+                        Note: products and services featured may vary at airport locations.
+                    </p>
+                </div>
+                <div class="col-md-6" style="padding-left: 20px;">
+                    <div class="section-title" data-aos="zoom-out" >
+                        <h2>Sharing is Caring</h2>
+                        <p>Get The Gang Together</p>
+                    </div>
+                    <div class="card l-1" data-aos="zoom-in-left" style="margin-left: 30px;">
+                        <p>Did you know that Flight Hub allows multiple accounts to join together as a group?!</p>
+                        <p>Create memories together, with an easy to use group booking feature, where you can collaborate and decide on what suits you, then, once you're all set, allocate seating together  but pay separately!</p>
+                        <div th:if="${usr.isLoggedIn()} == false">
+                            <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Create a Group</a><Br><Br>
+                        </div>
+                        <div th:if="${usr.isLoggedIn()} == true">
+                            <form th:replace="Fragments/Forms :: #createGroupForm"> </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <hr />
+            <hr />
         </div>
     </section>
     <!-- End Cta Section -->

@@ -36,6 +36,7 @@
         <div id="recommendationRow" class="row" style="padding-top: 10px;">
             <div class="col-sm-3" th:each="location : ${reco}"  >
                 <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
+                    <h3 style="font-size: 1em">&#128293; Popular Location &#128293;</h3>
                     <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
                     <h2 style="font-size: 1.5em" th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
                     <h3 style="font-size: 1em"  th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
@@ -47,6 +48,20 @@
                 </div>
 
             </div>
+            <div th:if="${usr.getLastSearchedDestination()} != null" class="col-sm-3" th:each="location : ${searchRecommendation}"  >
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
+                    <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
+                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em" th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
+                    <h3 style="font-size: 1em"  th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
+                    <p>
+
+                        TODO maybe add weather stats or similar if time
+                    <p>
+                        <button th:onclick="findFlight([[${currentLocation.location}]], [[${location.location}]])" type="button" class="btn btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                </div>
+
+            </div>
         </div>
         <div th:if="${reco} == null">
             <p>There are currently no recommendations</p>
@@ -55,27 +70,21 @@
 </div>
 
 <script>
-    // // Load current invite list
-    // $(document).ready(
-    //         fetch("https://ipinfo.io/json?token=b7ed283b1c2771").then(
-    //                 (response) => response.json()
-    //         ).then(
-    //                 (jsonResponse) => {
-    //                     loadRecommendation(jsonResponse.city);
-    //                 }
-    //         )
-    // )
-
-    // On document ready
+    /**
+     * On document ready
+     */
     $(document).ready(function () {
         getLocation()
     })
 
-    // Get location based on HTML geolocation api
+    /**
+     * Get location based on HTML geolocation api
+     */
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                     function (position) {
+                        // Post lon and lat of for current position
                         $.post("/LocateNearestCity", {
                             lat: position.coords.latitude,
                             lon: position.coords.longitude
@@ -83,7 +92,9 @@
                             $("#recommendation_fragment").replaceWith(fragment);
                         })
                     }, function error(msg) {
+                        // If location permission is denied in browser
                         if (msg.PERMISSION_DENIED) {
+                            // Load ADL as default
                             loadRecommendation("ADL");
                         } else {
                             console.log("Error getting position. Error code: " + msg.code)
@@ -95,25 +106,44 @@
         }
     }
 
+    /**
+     * Loads recommendations for a city
+     * @param cityIn input city
+     */
     function loadRecommendation(cityIn) {
+        // Post city as departure for recommendations
         $.post("/recommendations", {city: cityIn}).done(function (fragment) {
             $("#recommendation_fragment").replaceWith(fragment);
         });
     }
 
-    // Search for flights for a specific location
+    /**
+     * Search for flights for a specific location
+     * @param currentLocation current location of user
+     * @param destinationLocation desired destination
+     */
     function findFlight(currentLocation, destinationLocation) {
-        post("/search", {originIn: currentLocation, destinationIn: destinationLocation, start: new Date().toLocaleDateString('en-CA'), end: addMonths(new Date(), 3).toLocaleDateString('en-CA')})
+        // post to search controller
+        postRecommendationSearch("/search", {
+            originIn: currentLocation,
+            destinationIn: destinationLocation,
+            start: new Date().toLocaleDateString('en-CA'),
+            end: addMonths(new Date(), 3).toLocaleDateString('en-CA')
+        })
     }
 
-    function post(path, params, method='post') {
-
-        // The rest of this code assumes you are not using a library.
-        // It can be made less verbose if you use one.
+    /**
+     * Creates a temp form then posts it
+     * This ensures browser correctly redirects to posted location
+     * @param path Path to post and redirect to
+     * @param params Parameters of post
+     */
+    function postForm(path, params) {
         const form = document.createElement('form');
-        form.method = method;
+        form.method = 'post';
         form.action = path;
 
+        // For each parameter create a temp form element
         for (const key in params) {
             if (params.hasOwnProperty(key)) {
                 const hiddenField = document.createElement('input');
@@ -129,6 +159,12 @@
         form.submit();
     }
 
+    /**
+     * Add amount of months to a date
+     * @param date original date to update
+     * @param months number of months to increase date by
+     * @returns updated date
+     */
     function addMonths(date, months) {
         const d = date.getDate();
         date.setMonth(date.getMonth() + +months);

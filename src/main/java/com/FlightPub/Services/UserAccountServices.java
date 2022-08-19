@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Implements database interaction for locations
+ */
 @Service("UserAccountServices")
 public class UserAccountServices{
     private UserAccountRepo userRepo;
