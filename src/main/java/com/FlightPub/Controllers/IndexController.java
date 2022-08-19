@@ -503,7 +503,7 @@ public class IndexController {
                         }
                         break;
                 }
-                System.out.println("First Class Tickets Price " + price);
+                //System.out.println("First Class Tickets Price " + price);
             }
             for (String[] seat : br.getBusSeats()) {
                 switch (seat[0]) {
@@ -557,7 +557,7 @@ public class IndexController {
                         }
                         break;
                 }
-                System.out.println("Business Class Tickets Price " + price);
+                //System.out.println("Business Class Tickets Price " + price);
             }
             for (String[] seat : br.getPmeSeats()) {
                 switch (seat[0]) {
@@ -611,7 +611,7 @@ public class IndexController {
                         }
                         break;
                 }
-                System.out.println("Premium Economy Class Tickets Price " + price);
+                //System.out.println("Premium Economy Class Tickets Price " + price);
             }
             for (String[] seat : br.getEcoSeats()) {
                 switch (seat[0]) {
@@ -665,7 +665,7 @@ public class IndexController {
                         }
                         break;
                 }
-                System.out.println("Eco Class Tickets Price " + price);
+                //System.out.println("Eco Class Tickets Price " + price);
             }
             br.setPrice(price);
         }
