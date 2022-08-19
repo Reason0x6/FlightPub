@@ -74,10 +74,7 @@
           </div>
         </div>
       </div>
-
-
-
-      <div th:if="${stopOver[0].size()} != 0">
+        <div th:if="${stopOver[0].size()} != 0">
         <hr />
         <div class="accordion" id="accordionExample2">
           <div class="accordion-item">
@@ -128,7 +125,7 @@
             </div>
           </div>
         </div>
-
+      </div>
         <div th:if="${stopOver[1].size()} != 0">
           <hr />
           <div class="accordion" id="accordionExample3">
@@ -180,8 +177,8 @@
               </div>
             </div>
           </div>
-
-          <div th:if="${stopOver[2].size()} != 0">
+        </div>
+        <div th:if="${stopOver[2].size()} != 0">
             <hr />
             <div class="accordion" id="accordionExample4">
               <div class="accordion-item">
@@ -233,91 +230,9 @@
               </div>
             </div>
       </div>
-<br><Br>
 
-
-<!--
-      <div th:if="${stopOver[0].size()} != 0">
-        <hr>
-        <div class="card l-1" th:each="flight : ${stopOver[0]}" style="padding: 10px 0 0 20px;">
-          <div class="row" style="padding-top: 10px;">
-            <div class="col-sm-4">
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(0).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(0).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getArrivalTime()}"></span></p>
-              <hr>
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(1).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(1).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(1).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(1).getArrivalTime()}"></span></p>
-            </div>
-            <div class="col-sm-4">
-              <p><b>Airline: </b><span th:text="${flight.getFlightAtIndex(0).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(1).getAirline()}"></span></p>
-              <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice() + flight.getFlightAtIndex(1).getTicketPrice()}"></span></p>
-            </div>
-            <div class="col-sm-4"  style="padding-top: 10px;">
-              <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
-              <button type="submit" class="btn btn-link">Bookmark</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div th:if="${stopOver[1].size()} != 0">
-        <hr>
-        <div class="card l-1" th:each="flight : ${stopOver[1]}" style="padding: 10px 0 0 20px;">
-          <div class="row" style="padding-top: 10px;">
-            <div class="col-sm-4">
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(0).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(0).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getArrivalTime()}"></span></p>
-              <hr>
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(1).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(1).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(1).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(1).getArrivalTime()}"></span></p>
-              <hr>
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(2).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(2).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(2).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(2).getArrivalTime()}"></span></p>
-            </div>
-            <div class="col-sm-4">
-              <p><b>Airline: </b><span th:text="${flight.getFlightAtIndex(0).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(1).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(2).getAirline()}"></span></p>
-             <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice()+flight.getFlightAtIndex(1).getTicketPrice()+flight.getFlightAtIndex(2).getTicketPrice()}"></span></p>
-            </div>
-            <div class="col-sm-4"  style="padding-top: 10px;">
-              <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
-              <button type="submit" class="btn btn-link">Bookmark</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div th:if="${stopOver[2].size()} != 0">
-        <hr>
-        <div class="card l-1" th:each="flight : ${stopOver[2]}" style="padding: 10px 0 0 20px;">
-          <div class="row" style="padding-top: 10px;">
-            <div class="col-sm-4">
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(0).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(0).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(0).getArrivalTime()}"></span></p>
-              <hr>
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(1).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(1).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(1).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(1).getArrivalTime()}"></span></p>
-              <hr>
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(2).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(2).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(2).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(2).getArrivalTime()}"></span></p>
-              <hr>
-              <p><b><span th:text="'Departs ' + ${flight.getFlightAtIndex(3).DepartureCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(3).getDepartureTime()}"></span></p>
-              <p><b><span th:text="'Arrives in ' + ${flight.getFlightAtIndex(3).getDestinationCode()} + ': '"></span></b><span th:text="${flight.getFlightAtIndex(3).getArrivalTime()}"></span></p>
-            </div>
-            <div class="col-sm-4">
-              <p><b>Airline: </b><span th:text="${flight.getFlightAtIndex(0).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(1).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(2).getAirline()}"></span>, <span th:text="${flight.getFlightAtIndex(3).getAirline()}"></span></p>
-              <p><b>Tickets Start At:</b><span th:text="' $' + ${flight.getFlightAtIndex(0).getTicketPrice()+flight.getFlightAtIndex(1).getTicketPrice()+flight.getFlightAtIndex(2).getTicketPrice()+flight.getFlightAtIndex(3).getTicketPrice()}"></span></p>
-            </div>
-            <div class="col-sm-4"  style="padding-top: 10px;">
-              <button type="submit" class="btn btn-primary">Book Now</button>&nbsp;&nbsp;
-              <button type="submit" class="btn btn-link">Bookmark</button>
-            </div>
-          </div>
-        </div>
-      </div>-->
-
-      <div th:if="${flights[0].size()} == 0">
-        <p>There are currently no flights that match this search</p>
+      <div th:if="${count} == 0">
+        <p>There are currently no flights that match this search... Give us a call and we will see how we can get your dream destination on our list!</p>
       </div>
     </div>
   </div>

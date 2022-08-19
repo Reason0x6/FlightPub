@@ -386,6 +386,12 @@ public class IndexController {
         search.setCheapestPriceForStopOverResults(stopOver[1]);
         search.setCheapestPriceForStopOverResults(stopOver[2]);
 
+        System.out.println( flights[0].size());
+        System.out.println( flights[1].size());
+        System.out.println( stopOver[0].size());
+        System.out.println( stopOver[1].size());
+        System.out.println( stopOver[2].size());
+        model.addAttribute("count", flights[0].size()+flights[1].size()+stopOver[0].size()+stopOver[1].size()+stopOver[2].size());
 
         // Stops unnecessary objects from being added to the response
         if(flights[0] != null || flights[1] != null)
