@@ -13,6 +13,7 @@
     <div>
         <div class="card l-1" data-aos="zoom-in-left">
             <form id="inviteUserForm">
+                    <!-- Old form for reference TODO remove -->
 <!--                <div class="row">-->
 <!--                    <div class="col-md-3">-->
 <!--                        <label for="inviteUser" class="col-form-label" ></label>-->
@@ -27,9 +28,10 @@
 
 <!--                </div>-->
 
+                <!-- New form -->
                 <div class="row g-2">
                     <div class="form-floating col-md-8">
-                        <input style="max-width: 100%" type="text" id="inviteUser" class="form-control" placeholder="">
+                        <input style="max-width: 100%" type="text" id="inviteUser" name="inviteUser" class="form-control" placeholder="">
                         <label for="inviteUser" class="col-form-label" >Enter User Email To Invite </label>
 
                         <input type="hidden" id="groupId" name="groupId" th:value="${groupId}">
