@@ -43,7 +43,7 @@
                         <div id="chartdiv"></div>
                     </div>
                 </div>
-                <form id="seatSelection" name="seatSelection">
+                <form id="seatSelection" name="seatSelection" th:action="@{/cart}" th:object="${BookingRequest}" method="post">
                     <p><b>Available Seats on <span th:text="${Flight.getFlightNumber()}"></span></b></p>
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
@@ -148,7 +148,7 @@
                                                 <p>
                                                     <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                                     <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
-                                                    <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span></br>
+                                                    <b>Price per Seat: </b><span th:text="'$' + ${availSeats[3]}"></span></br>
                                                 </p>
                                                 <span th:if="${availSeats[0] == 'Standard'}">
                                                 <select id="busStandard" name="busStandard">
@@ -238,7 +238,7 @@
                                             <p>
                                                 <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                                 <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
-                                                <b>Price per Seat: </b><span th:text="${availSeats[3]}"></span></br>
+                                                <b>Price per Seat: </b><span th:text="'$' + ${availSeats[3]}"></span></br>
                                             </p>
                                             <span th:if="${availSeats[0] == 'Standard'}">
                                                 <select id="pmeStandard" name="pmeStandard">
@@ -328,7 +328,7 @@
                                                 <p>
                                                     <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
                                                     <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
-                                                    <b>Price per Seat: </b><span class="seatPrice" th:text="${availSeats[3]}"></span></br>
+                                                    <b>Price per Seat: </b><span id="ecoSeatPrice" th:text="${availSeats[3]}"></span></br>
                                                 </p>
                                                 <span th:if="${availSeats[0] == 'Standard'}">
                                                 <select id="ecoStandard" name="ecoStandard">
@@ -407,7 +407,6 @@
                             </div>
                         </div>
                     </div>
-                </form>
                 <p><b>Total Seats: </b><span id="totalSeats"></span></p>
                 <p id="showTotal"><b>Total Cost:</b> 0</p>
                 <div th:if="${usr.isLoggedIn()} != false">
@@ -420,6 +419,7 @@
                 <div th:if="${usr.isLoggedIn()} == false">
                     <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Book</a><Br><Br>
                 </div>
+                </form>
             </div>
 
             <hr />
@@ -468,16 +468,19 @@
     let total = 0;
     $(document).ready(function (){
         $('#seatSelection select').change(function (){
-            const seats = parseInt(document.getElementById("totalSeats").innerHTML = document.getElementById('ecoSeatsAvail').value);
-            total += seats;
-            console.log(total);
+            const ecoStdSeats = parseInt($('#ecoStandard').val());
+            const ecoStdPrice = parseInt($('#ecoSeatPrice').val());
+            const ecoPremDiscSeats = parseInt($('#ecoPremDisc').val());
+            const ecoSeats = ecoStdSeats + ecoPremDiscSeats;
+            console.log(ecoSeats);
+            console.log(ecoStdPrice);
         });
     });
 
     function addToCart(){
-        const seats = 5;
+        //const seats;
         //const seats = document.getElementById("seats").value;
-        location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
+        //location.href = '/flight/book?id=' + [[${Flight.getFlightID()}]] + '&seats=' + seats;
     }
 
 </script>

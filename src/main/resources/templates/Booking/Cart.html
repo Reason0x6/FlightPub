@@ -46,26 +46,18 @@
                                     <th scope="col">Departure Date</th>
                                     <th scope="col">Flight</th>
                                     <th scope="col">Seats</th>
+                                    <th scope="col">Price</th>
                                     <th scope="col">Update</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <div th:each="map : ${usr.getSessionCart().keySet()}" th:with="flight = ${usr.getFlight(map)}"  >
+                            <div th:each="br : ${cart}">
                                 <tr >
-                                    <th scope="row" th:text="${flight.getDeparture()}"></th>
-                                    <th th:text="${flight.getDepartureCode()} + ' -> ' + ${flight.getDestinationCode()}"></th>
-                                    <th th:text="${usr.getSessionCart().get(map)}"></th>
-
-                                     <th><a href="" class="btn btn-danger">Remove Flight</a></th>
-                                </tr>
-                                 <tr th:each="seats : ${#numbers.sequence(1, usr.getSessionCart().get((map)))}">
-                                     <td scope="row">
-                                         <form id="seats" th:action="@{/checkout}" th:object="${Cart}" method="post">
-                                         Seat: <select class="form-select" th:name="'seat' + ${seats}" >
-                                         <option th:each="seat: ${flight.getAllSeats()}" th:value="${seat}" th:text="${seat}"> </option></select>
-                                         </form>
-                                     </td>
-                                     <td>remove</td>
+                                    <th scope="row" th:text="${br.getDepartureDate()}"></th>
+                                    <th th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></th>
+                                    <th th:text="${br.getTotalSeats()}"></th>
+                                    <th th:text="'$' + ${br.getPrice()}"></th>
+                                    <th><a th:href="@{'/cart/remove?id=' + ${br.getId()}}" class="btn btn-danger">Remove Flight</a></th>
                                 </tr>
                             </div>
 

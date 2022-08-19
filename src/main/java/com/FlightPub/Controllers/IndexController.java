@@ -269,6 +269,12 @@ public class IndexController {
         model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
         model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
 
+        getSession(session).setLastViewedFlight(f);
+        getSession(session).setBusClassSeatList((List<String[]>) model.getAttribute("businessClass"));
+        getSession(session).setEcoClassSeatList((List<String[]>) model.getAttribute("economyClass"));
+        getSession(session).setFirClassSeatList((List<String[]>) model.getAttribute("firstClass"));
+        getSession(session).setPmeClassSeatList((List<String[]>) model.getAttribute("premiumEconomy"));
+
         return "Flight";
     }
 
@@ -309,22 +315,6 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         return "Admin/LocationManagement";
-    }
-
-    @RequestMapping("/flight/book") //e.g localhost:8080/flight/book?id=62eb114bb9b3b6470d3560af&seats=2
-    public String bookFlight(@RequestParam String id, @RequestParam Integer seats ,Model model, HttpSession session){
-
-        Flight f = flightServices.getById(id);
-
-        getSession(session).addToCart(seats, id);
-
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
-        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
-
-        model.addAttribute("Flight", f);
-        model.addAttribute("usr", getSession(session));
-
-        return "Flight";
     }
 
     @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
@@ -453,24 +443,106 @@ public class IndexController {
     }
 
     @RequestMapping("/cart")
-    public String cart(Model model, HttpSession session){
-         if(!getSession(session).isLoggedIn()){
+    public String cart(Model model, HttpSession session) {
+        if (!getSession(session).isLoggedIn()) {
             return "redirect:login";
         }
+        model.addAttribute("usr", getSession(session));
+
+        for (BookingRequest br : getSession(session).getCart()) {
+            double price = 0;
+            for (String[] seat : br.getBusSeats()) {
+                switch (seat[0]) {
+                    case "Standby":
+                        if(br.getBusStandby().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getBusStandby());
+                        }
+                        break;
+                    case "Premium Discounted":
+                        if(br.getBusPremDisc().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getBusPremDisc());
+                        }
+                        break;
+                    case "Discounted":
+                        if(br.getBusDiscounted().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getBusDiscounted());
+                        }
+                        break;
+                    case "Standard":
+                        if(br.getBusStandard().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getBusStandard());
+                        }
+                        break;
+                    case "Premium":
+                        if(br.getBusPremium().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getBusPremium());
+                        }
+                        break;
+                    case "Long Distance":
+                        if(br.getBusLongDistance().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getBusLongDistance());
+                        }
+                        break;
+                    case "Platinum":
+                        if(br.getBusPlatinum().equals("")){
+                            price += Double.parseDouble(seat[3]) * 0;
+                        }else{
+                            price += Double.parseDouble(seat[3]) * Integer.parseInt(br.getBusPlatinum());
+                        }
+                        break;
+                }
+                System.out.println("Price " + price);
+            }
+            br.setPrice(price);
+        }
+
 
         getSession(session).setFlightServices(flightServices);
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("cart", getSession(session).getCart());
+
+
         return "Booking/Cart";
     }
 
     @PostMapping("/cart")
-    public String updateCart(Model model, HttpSession session){
-      if(!getSession(session).isLoggedIn()){
+    public String updateCart(@ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
 
+        model.addAttribute("Flight", getSession(session).getLastViewedFlight());
+        bookingRequest.setFlight((Flight) model.getAttribute("Flight"));
+        bookingRequest.setBusSeats(getSession(session).getBusClassSeatList());
+        bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList());
+        bookingRequest.setFirSeats(getSession(session).getFirClassSeatList());
+        bookingRequest.setPmeSeats(getSession(session).getPmeClassSeatList());
+        getSession(session).addToCart(bookingRequest);
+
         model.addAttribute("usr", getSession(session));
-        return "Booking/Cart";
+
+        return "redirect:/cart";
+    }
+
+    @RequestMapping("/cart/remove") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
+    public String removeFlightFromCart(@RequestParam String id, Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        getSession(session).removeFromCart(id);
+        return "redirect:/cart";
     }
 
     @RequestMapping("/checkout")
@@ -480,15 +552,16 @@ public class IndexController {
             return "redirect:login";
         }
 
+        model.addAttribute("cart", getSession(session).getCart());
+        model.addAttribute("usr", getSession(session));
+
         return "Booking/Checkout";
     }
 
     @RequestMapping("/bookingConfirmation")
     public String bookingConfirmation(Model model){
 
-        String confirmationID = generateConfirmationID();
-        System.out.println(confirmationID);
-        model.addAttribute("confirmationID", confirmationID);
+        model.addAttribute("confirmationID", generateConfirmationID());
 
         return "Confirmations/BookingConfirmation";
     }
