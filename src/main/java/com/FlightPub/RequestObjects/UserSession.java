@@ -35,6 +35,30 @@ public class UserSession {
     @Setter
     private String lastSearchedDestination;
 
+    @Getter
+    @Setter
+    private Flight lastViewedFlight;
+
+    @Getter
+    @Setter
+    private List<String[]> firClassSeatList;
+
+    @Getter
+    @Setter
+    private List<String[]> busClassSeatList;
+
+    @Getter
+    @Setter
+    private List<String[]> pmeClassSeatList;
+
+    @Getter
+    @Setter
+    private List<String[]> ecoClassSeatList;
+
+    @Getter
+    @Setter
+    private List<BookingRequest> cart;
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -68,29 +92,25 @@ public class UserSession {
         return usr.getPassword();
     }
 
-    public void addToCart(int numSeats, String flightID){
-        if(sessionCart.containsKey(flightID)){
-            if (numSeats <= 0 ) {
-                removeFromCart(flightID);
-                return;
-            }
+    public void addToCart(BookingRequest bookingRequest){
+        if(cart == null){
+            cart = new ArrayList<>();
         }
-        sessionCart.put(flightID, numSeats);
-        System.out.println(flightID + ", " + numSeats);
-        return;
+        cart.add(bookingRequest);
     }
 
-    public void removeFromCart(String flightID){
-        sessionCart.remove(flightID);
+
+    public void removeFromCart(String id){
+        for(BookingRequest br : cart){
+            if(br.getId().equals(id)){
+                cart.remove(br);
+                break;
+            }
+        }
     }
 
     public int getSeatsFor(String id){
         return sessionCart.get(id);
-    }
-
-    public Map<String, Integer> getCart(){
-
-        return sessionCart;
     }
 
     public boolean addToWishList(String id){
