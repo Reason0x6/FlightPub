@@ -43,6 +43,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th scope="col">Flight Number</th>
                                     <th scope="col">Departure Date</th>
                                     <th scope="col">Flight</th>
                                     <th scope="col">Seats</th>
@@ -53,7 +54,8 @@
                             <tbody>
                             <div th:each="br : ${cart}">
                                 <tr >
-                                    <th scope="row" th:text="${br.getDepartureDate()}"></th>
+                                    <th scope="row" th:text="${br.getFlight().getFlightNumber()}"></th>
+                                    <th th:text="${br.getDepartureDate()}"></th>
                                     <th th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></th>
                                     <th th:text="${br.getTotalSeats()}"></th>
                                     <th th:text="'$' + ${br.getPrice()}"></th>

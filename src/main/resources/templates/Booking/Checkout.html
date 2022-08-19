@@ -146,7 +146,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <div th:each="br : ${cart}">
+                        <div th:each="br : ${checkout}">
                             <tr >
                                 <th scope="row" th:text="${br.getDepartureDate()}"></th>
                                 <th th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></th>
