@@ -5,8 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<p th:if="${Error == 'Not a valid user'}">Sorry, Not a valid user.</p></br>
-<p th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</p>
+
 <div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:fragment="invite_section">
 
     <div class="section-title" data-aos="zoom-out" >
@@ -14,8 +13,11 @@
         <p>Get The Gang Together</p>
     </div>
     <div>
+
         <div class="card l-1" data-aos="zoom-in-left">
             <form id="inviteUserForm">
+                <div th:if="${Error == 'Not a valid user'}"><p>Sorry, Not a valid user.</p></div>
+                <div th:if="${Error == 'User is already in group'}"><p>Sorry, User is already in the group.</p></div>
                     <!-- Old form for reference TODO remove -->
 <!--                <div class="row">-->
 <!--                    <div class="col-md-3">-->
@@ -46,7 +48,6 @@
 
             </form>
         </div>
-
         <div class="card l-1" data-aos="zoom-in-left" th:fragment="invite_list_fragment" id="invite_list">
             <table class="table">
                 <thead>
@@ -71,6 +72,8 @@
             </table>
         </div>
 
+        <!--<p th:if="${Error == 'Not a valid user'}">Sorry, Not a valid user.</p></br>
+        <p th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</p>-->
         <script>
             /**
              * Update invite list on submit invite form submit
