@@ -287,6 +287,7 @@ public class IndexController {
         model.addAttribute("firstClass", firstClass);
         model.addAttribute("premiumEconomy", premiumEconomy);
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("ID", id);
 
         // Updates the session
         getSession(session).setLastViewedFlight(flight.get(0));
