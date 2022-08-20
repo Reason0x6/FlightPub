@@ -100,7 +100,7 @@ public class StopOver {
             if(stopover != null)
                 output += ", "+stopover;
             if(count != flights.size()-1)
-                output += ", "+flights.get(count).getDepartureCode();
+                output += ", "+flights.get(count).getDestinationCode();
         }
 
         if(!output.equals(""))
@@ -127,5 +127,16 @@ public class StopOver {
             cost += Double.parseDouble(flight.getCheapestPrice());
         }
         return Math.round(cost*100.0)/100.0;
+    }
+
+    public String getConcatFlightID() {
+        String output = "";
+        for(Flight flight : flights) {
+            output += "-"+flight.getFlightID();
+        }
+        if(!output.equals(""))
+            return output.substring(1);
+        else
+            return output;
     }
 }
