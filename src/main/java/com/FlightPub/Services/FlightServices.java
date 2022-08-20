@@ -238,7 +238,7 @@ public class FlightServices{
         return seatDetails;
     }
 
-    public List<Price> getFlightCachePrice(String  ticketFlightNumber, String classCode, String ticketCode) {
+    public List<Price> getFlightCachePrice(String ticketFlightNumber, String classCode, String ticketCode) {
 
         String key = ticketFlightNumber;
         if(priceCache.containsKey(key) && priceCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
