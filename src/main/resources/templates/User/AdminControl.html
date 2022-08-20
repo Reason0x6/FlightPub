@@ -3,29 +3,71 @@
 
 <head th:replace="Fragments/Head"> </head>
 <head th:replace="Fragments/Header"> </head>
+<style>
+    .fluid{
+        margin: -30px -75vw 20px -75vw;
+        padding:  20px 75vw;
+        overflow-x: hidden;
+        background-color: rgba(0,0,0,0.1);
+    }
+    .fluid h1 {
+        color: #fd7e14;
+    }
+</style>
 <div class="container">
     <main id="main" style="margin-top: 100px" >
-        <h1 th:text="'Welcome back ' + ${admin.getFirstName()}"></h1>
+        <div class="fluid" >
+            <h1>Admin Control Panel</h1>
+            <p>Take control of how Flightpub operates. Below you will find a series of tools that allow you to control who uses the site, what they see, and most importantly, how we can make their dream holiday a reality!</p>
+        </div>
+
         <div th:if="${admin.getCompany()} == 'Flightpub'">
-            <h2>Restrict/Unrestrict Covid Location</h2>
-            <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"> </form>
-            <br>
-            <h2>User Modification</h2>
-            <br>
-            <h5>Update User Account</h5>
-            <form th:replace="Fragments/Forms :: #userModificationForm"> </form>
-            <br>
-            <h5>Delete User Account</h5>
-            <form th:replace="Fragments/Forms :: #userDeleteForm"> </form>
-            <br>
-            <h5>Create User Account</h5>
-            <form th:replace="Fragments/Forms :: #addUser"> </form>
+            <div class="row">
+                <h3>COVID Controls</h3>
+                <hr />
+                <div class="col-md-6">
+                    <div class="card l-1">
+                        <h2>Restrict/Unrestrict Covid Location</h2>
+                        <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"> </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h3>User Administration</h3>
+                <hr />
+                <div class="col-md-6">
+                    <div class="card l-1">
+                        <h2>User Modification</h2>
+                        <h5>Update User Account</h5>
+                        <form th:replace="Fragments/Forms :: #userModificationForm"> </form>
+                        <br>
+                    </div>
+                    <div class="card l-1">
+                        <h5>Delete User Account</h5>
+                        <form th:replace="Fragments/Forms :: #userDeleteForm"> </form>
+                        <br>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card l-1">
+                        <h5>Create User Account</h5>
+                        <form th:replace="Fragments/Forms :: #addUser"> </form>
+                        <br>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
         </div>
         <br>
         <h2>Most Popular Wish List Destinations</h2>
         <div style="overflow:scroll; height:300px;">
             <div th:each="wli : ${wish}">
-                <p th:text="${wli.getDestinationID()}"></p>
+                <p th:text=" - ${wli.getDestinationID()}"></p>
                 <p th:text="${wli.getUserID()}"></p>
                 <p th:text="${wli.getWLID()}"></p>
             </div>

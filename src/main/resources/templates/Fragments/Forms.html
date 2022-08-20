@@ -52,7 +52,7 @@
         </div>
 
         <div class="col-md d-grid">
-            <button type="submit" class="btn btn-primary btn-search" >Find Flights!</button>
+            <button type="submit" class="btn btn-primary start-loading btn-search" >Find Flights!</button>
         </div>
     </div>
     <div>
@@ -168,8 +168,9 @@
             <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
         </div>
         <div class="col-md-4">
-            <label id="passwordlbl" class="form-label" name="airportlbl" >Password</label><br>
+            <label id="passwordlbl" class="form-label" name="passlbl" >Password</label><br>
             <input type="password" id="password" class="form-control" name="password" placeholder="Password"  ><br>
+            <label id="confirmpasswordlbl" class="form-label" name="conpasslbl" >Confirm Password</label><br>
             <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" ><br>
         </div>
         <div class="col-md-4">
@@ -272,7 +273,7 @@
 
         </div>
         <div class="col-md-4">
-            <button style="margin-top: -5px" type="submit" class="btn btn-primary btn-search">Find Flights!</button>
+            <button style="margin-top: -5px" type="submit" class="btn btn-primary start-loading btn-search">Find Flights!</button>
         </div>
         <br>
     </div>
@@ -392,7 +393,7 @@
     <label for="description" id="descriptionLabel" >Description: </label>
     <textarea id="description" name="description" rows="4" cols="50" th:text="${location.getDescription()}"></textarea>
     <label for="covid_restricted" id="covid_restrictedLabel">Covid Restricted: </label>
-    <input type="checkbox" id="covid_restricted" name="covid_restricted">
+    <input  type="checkbox" id="covid_restricted" name="covid_restricted">
     <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
 </form>
 
@@ -502,7 +503,7 @@
     <select name="covidRestrictedLocation" id="covidRestrictedLocation" class="form-select">
         <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
     </select><br>
-    <select name="covidRestriction" id="covidRestriction">
+    <select name="covidRestriction" id="covidRestriction" class="form-control">
         <option value="restrict">Restricted</option>
         <option value="unrestrict">Unrestricted</option>
     </select><br>

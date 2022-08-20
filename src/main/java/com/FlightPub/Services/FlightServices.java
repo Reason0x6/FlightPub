@@ -20,6 +20,7 @@ import java.util.*;
 public class FlightServices{
     private HashMap<String, Map.Entry<Date, List<Flight>>> flightCache;
     private HashMap<String, Map.Entry<Date, List<Availability>>> availCache;
+    private HashMap<String, Map.Entry<Date, List<Price>>> priceCache;
     private FlightRepo flightRepo;
     private AvailabilityRepo availRepo;
     private PriceRepo priceRepo;
@@ -36,6 +37,7 @@ public class FlightServices{
         this.priceRepo = priceRepo;
         flightCache = new HashMap<>();
         availCache = new HashMap<>();
+        priceCache = new HashMap<>();
     }
 
     public List<Availability> getAvailability(String flightNumber, Long departureTime) {
@@ -108,7 +110,25 @@ public class FlightServices{
     }
 
     public List<Price> getPrices(Flight flight){
-        return priceRepo.findPrices(flight.getFlightNumber(), flight.getDepartureTime());
+
+        String key = flight.getFlightNumber() +  flight.getDepartureTime().toString();
+        if(flightCache.containsKey(key) && priceCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            System.out.println("Price by Flight Cache Used");
+            return priceCache.get(key).getValue();
+        }else {
+            System.out.println("Price by Flight Cache Not Used");
+            List<Price> out = priceRepo.findPrices(flight.getFlightNumber(), flight.getDepartureTime());
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Price>> input = new AbstractMap.SimpleEntry<>(time, out);
+
+            priceCache.put(key, input);
+            return out;
+        }
     }
 
     public void delete(String id){}
@@ -218,8 +238,44 @@ public class FlightServices{
         return seatDetails;
     }
 
+    public List<Price> getFlightCachePrice(String ticketFlightNumber, String classCode, String ticketCode) {
+
+        String key = ticketFlightNumber;
+        if(priceCache.containsKey(key) && priceCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            List<Price> out = priceCache.get(key).getValue();
+            List<Price> filter = new ArrayList<>();
+
+            for(Price p: out){
+                if(p.getClassCode().equals(classCode) && p.getTicketCode().equals(ticketCode)){
+                    filter.add(p);
+                }
+            }
+            return filter;
+        }else {
+            List<Price> out = priceRepo.findFLight(ticketFlightNumber);
+            List<Price> filter = new ArrayList<>();
+
+            for(Price p: out){
+                if(p.getClassCode().equals(classCode) && p.getTicketCode().equals(ticketCode)){
+                    filter.add(p);
+                }
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+            Map.Entry<Date, List<Price>> input = new AbstractMap.SimpleEntry<>(time, out);
+
+            priceCache.put(key, input);
+            return filter;
+        }
+
+    }
+
+
     public @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
-        List<Price> price = priceRepo.findPriceByClassTicketCode(ticketFlightNumber, classCode, ticketCode);
+        List<Price> price = getFlightCachePrice(ticketFlightNumber, classCode, ticketCode);
         for (int i = 0; i < price.size(); i++) {
             Date startDate = price.get(i).getStartDate();
             Date endDate = price.get(i).getEndDate();
@@ -237,7 +293,7 @@ public class FlightServices{
         List<Availability> availableSeats = getAvailability(flightNumber, departureDate);
         double minPrice = Integer.MAX_VALUE + 0.0;
         for (int i = 0; i < availableSeats.size(); i++) {
-            List<Price> prices = priceRepo.findPriceByClassTicketCode(flightNumber, availableSeats.get(i).getClassCode(), availableSeats.get(i).getTicketCode());
+            List<Price> prices = getFlightCachePrice(flightNumber, availableSeats.get(i).getClassCode(), availableSeats.get(i).getTicketCode());
             for(Price x: prices){
                 if(x.getPrice() < minPrice && (x.getStartDate().compareTo(new Date()) <= 0 ) && x.getEndDate().compareTo(new Date()) >= 0 ) {
                     minPrice = x.getPrice();
