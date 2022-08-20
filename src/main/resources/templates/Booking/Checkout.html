@@ -32,7 +32,7 @@
                         + ${flight.getFlight().getDepartureCode()} + ' to ' + ${flight.getFlight().getDestinationCode()}
                         + ' departing ' + ${flight.getDepartureDate()}"></span></h2>
                         <Br>
-                        <div th:each="br : ${checkout.get(0).getAllSeatsList()}">
+                        <div th:each="br : ${flight.getAllSeatsList()}">
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -132,6 +132,7 @@
                         </div>
                     </div>
                 </div>
+                <Br>
             </div>
                 <Br><hr /><Br>
             <div>
@@ -157,6 +158,13 @@
                                 <th th:text="'$' + ${br.getPrice()}"></th>
                             </tr>
                         </div>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Total:</th>
+                            <th th:text="'$'"></th>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
