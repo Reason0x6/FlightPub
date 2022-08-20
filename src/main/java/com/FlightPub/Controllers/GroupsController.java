@@ -131,7 +131,9 @@ public class GroupsController {
             // TODO send to this front end
             model.addAttribute("Error", "User is already in group");
            // System.out.println("User is already in group");
-            return "Fragments/Groups/InviteList";
+
+            // Fetch the th:fragment="invite_user_form_error_fragment" and return it
+            return "Fragments/Groups/InviteList :: invite_user_form_error_fragment";
         }
         // If valid user
         else if (usrServices.getById(inviteUser) != null) {
@@ -145,7 +147,9 @@ public class GroupsController {
         else {
             // TODO send this to the front end instead
             model.addAttribute("Error", "Not a valid user");
-            return "Fragments/Groups/InviteList";
+
+            // Fetch the th:fragment="invite_user_form_error_fragment" and return it
+            return "Fragments/Groups/InviteList :: invite_user_form_error_fragment";
             //System.out.println("Not a valid user");
         }
 

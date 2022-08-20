@@ -16,8 +16,10 @@
 
         <div class="card l-1" data-aos="zoom-in-left">
             <form id="inviteUserForm">
-                <div th:if="${Error == 'Not a valid user'}"><p>Sorry, Not a valid user.</p></div>
-                <div th:if="${Error == 'User is already in group'}"><p>Sorry, User is already in the group.</p></div>
+                <div id="invite_user_form_error" th:fragment="invite_user_form_error_fragment">
+                    <div th:if="${Error == 'Not a valid user'}"><p>Sorry, Not a valid user.</p></div>
+                    <div th:if="${Error == 'User is already in group'}"><p>Sorry, User is already in the group.</p></div>
+                </div>
                     <!-- Old form for reference TODO remove -->
 <!--                <div class="row">-->
 <!--                    <div class="col-md-3">-->
@@ -85,7 +87,15 @@
 
                     // Post entered email to be added to invite list
                     $.post("/invite_list", $(this).serialize()).always(function (fragment) {
-                        $("#invite_list").replaceWith(fragment);
+                        // Check if the returned fragment contains invite list id
+                        if (fragment.includes("invite_list")) {
+                            $("#invite_list").replaceWith(fragment);
+                        }
+                        // Check if the returned fragment contains invite user form error id
+                        else if (fragment.includes("invite_user_form_error")) {
+                            $("#invite_user_form_error").replaceWith(fragment);
+                        }
+
                     })
                 });
             }
