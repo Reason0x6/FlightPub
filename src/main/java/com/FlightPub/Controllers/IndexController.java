@@ -468,13 +468,14 @@ public class IndexController {
         return "Booking/Cart";
     }
 
-    @PostMapping("/cart")
+    @PostMapping("/cart/direct")
     public String updateCart(@ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
 
         model.addAttribute("Flight", getSession(session).getLastViewedFlight());
+
         bookingRequest.setFlight((Flight) model.getAttribute("Flight"));
         bookingRequest.setBusSeats(getSession(session).getBusClassSeatList());
         bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList());
@@ -486,6 +487,8 @@ public class IndexController {
 
         return "redirect:/cart";
     }
+
+
 
     @RequestMapping("/cart/remove") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String removeFlightFromCart(@RequestParam String id, Model model, HttpSession session){
