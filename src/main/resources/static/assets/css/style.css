@@ -351,6 +351,9 @@ font-size: 0.9em;
 .navbar-mobile .dropdown > .dropdown-active {
   display: block;
 }
+.bx.bxs-cart {
+  margin: 10px;
+}
 
 /*--------------------------------------------------------------
 # Hero Section
@@ -359,7 +362,7 @@ font-size: 0.9em;
   width: 100%;
   overflow: hidden;
   position: relative;
-  background-image: url("../img/Miami.png");
+  background-image: url("../img/header.jpg");
   background-repeat: no-repeat;
   background-size: 110%;
   padding: 0;

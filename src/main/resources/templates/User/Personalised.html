@@ -32,10 +32,19 @@
             <h2>Hey There</h2>
             <p th:text="'Welcome back ' + ${usr.getFirstname()}"></p>
         </div>
-        <div class="row icon-box" data-aos="zoom-in-right" >
-            <h2>Update Your Account!</h2>
-            <form th:replace="Fragments/Forms :: #updateUser"> </form>
-        </div>
+        <section id = "recommendation" class = "services">
+            <div class="container">
+
+                <div class="section-title" data-aos="zoom-out">
+                    <h2>Plan</h2>
+                    <p>Recommended Destinations</p>
+                </div>
+
+                <div th:replace="Fragments/Recommendation"></div>
+            </div>
+        </section>
+
+
         <div th:if="${bookings != null}">
             <hr>
             <div class="row icon-box" data-aos="zoom-in-left" >
@@ -178,6 +187,7 @@
     <h2>Discover</h2>
     <p>Just For You</p>
 </div>
+
 <div class="row icon-box" data-aos="zoom-in-left">
 
     <div class="row" style="padding-top: 10px;">
@@ -245,20 +255,25 @@
                 <option th:each="Location: ${locs}" th:value="${Location.getLocation()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
             </select>
             <br>
-            <button th:onclick="findFlight(departureAirport.value, [[${holidayPackage.getAirport()}]], [[${holidayPackage.getPackageStartDateFormatted()}]], [[${holidayPackage.getPackageEndDateFormatted()}]])" type="submit" class="btn btn-primary btn-search">Book Now!</button>
+            <button th:onclick="findFlight(departureAirport.value, [[${holidayPackage.getAirport()}]], [[${holidayPackage.getPackageStartDateFormatted()}]], [[${holidayPackage.getPackageEndDateFormatted()}]])" type="submit" class="btn btn-primary btn-search">Book Now!</button><br/> <br/>
         </div>
     </div>
     <div th:if="${reco} == 0">
         <p>There are currently no recommendations</p>
     </div>
-    <div>
-        <br>
-        <em style="font-size: 0.7em">What is 'Quick Book'? Flights that are similar to your regular bookings can be booked & paid for in one click, when you are using your regular device.</em>
-    </div>
 
-        <hr />
+
+    <br/> <br/>
 </div>
 </div>
+
+<div class="container"> <hr />
+    <div class="row icon-box" data-aos="zoom-in-right" >
+        <h2>Update Your Account!</h2>
+        <form th:replace="Fragments/Forms :: #updateUser"> </form>
+    </div>
+</div>
+
 </section><!-- End Cta Section -->
 
 <!-- ======= Contact Section ======= -->
@@ -295,7 +310,10 @@
             </div>
         </div>
     </div>
-</section><!-- End Contact Section -->
+</section>
+
+
+    <!-- End Contact Section -->
 <!-- ======= Footer ======= -->
 <lower th:replace="Fragments/Footer"> </lower>
 <!-- Template Main JS File -->

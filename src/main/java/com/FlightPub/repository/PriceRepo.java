@@ -13,6 +13,9 @@ public interface PriceRepo extends MongoRepository<Price, String> {
     @Query(value="{ 'FlightNumber' : { '$regex' : ?0 , $options: 'i'},  'StartDate' : ?1 }", fields="{ 'destination' : 1 }")
     List<Price> findPrices(String FlightNumber, Long StartDate);
 
+    @Query(value="{ 'FlightNumber' : { '$regex' : ?0 , $options: 'i'}}")
+    List<Price> findFLight(String FlightNumber);
+
     @Query(value="{ 'FlightNumber' : { '$regex' : ?0 , $options: 'i'}, 'ClassCode' : { '$regex' : ?1 , $options: 'i'}, 'TicketCode' : { '$regex' : ?2 , $options: 'i'} }")
     List<Price> findPriceByClassTicketCode(String FlightNumber, String ClassCode, String TicketCode);
 
