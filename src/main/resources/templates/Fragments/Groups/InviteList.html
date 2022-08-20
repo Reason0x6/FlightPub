@@ -5,7 +5,10 @@
     <title>Title</title>
 </head>
 <body>
+<p th:if="${Error == 'Not a valid user'}">Sorry, Not a valid user.</p></br>
+<p th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</p>
 <div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:fragment="invite_section">
+
     <div class="section-title" data-aos="zoom-out" >
         <h2>Sharing is Caring</h2>
         <p>Get The Gang Together</p>
@@ -43,6 +46,7 @@
 
             </form>
         </div>
+
         <div class="card l-1" data-aos="zoom-in-left" th:fragment="invite_list_fragment" id="invite_list">
             <table class="table">
                 <thead>
