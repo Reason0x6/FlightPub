@@ -486,18 +486,17 @@
   }
 
   $('select').on('change', function() {
-    let seats = 0;
-    let price = 0;
-    $('select').each( function(){
-      price += ($(this).val() *1) * ($(this).attr('data')*1);
-      seats += ($(this).val() *1);
-    })
-    price = Math.round((price + Number.EPSILON) * 100) / 100
+      let seats = 0;
+      let price = 0;
+      $('select').each( function(){
+          price += ($(this).val() *1) * ($(this).attr('data')*1);
+          seats += ($(this).val() *1);
+      })
+      price = Math.round((price + Number.EPSILON) * 100) / 100
 
-    $('#cost').html(price);
-    $('#totalSeats').html(seats);
+      $('#cost').html(price);
+      $('#totalSeats').html(seats);
   });
-
 
   $( document ).ready(updatePrice());
 

@@ -266,7 +266,7 @@ public class IndexController {
         // Collects all stopover flight details
         for(int count = 0; count < flightID.length; count++) {
             Flight f = flightServices.getById(flightID[count]);
-            System.out.println(id);
+            System.out.println(flightID[count]);
             List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
 
             dest.add(locationServices.getById(f.getDestinationCode()));
