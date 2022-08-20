@@ -250,8 +250,8 @@ public class IndexController {
         return "User/AdminControl";
     }
 
-    @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
-    public String viewFlight(@RequestParam String id, Model model, HttpSession session){
+    @RequestMapping("/stopoverFlight")
+    public String viewStopoverFlight(@RequestParam String id, Model model, HttpSession session){
         String[] flightID = id.split("-");  // Breaks up the flight ID's if there are multiple
 
         // Collection variables for the flight details of each leg
@@ -294,6 +294,33 @@ public class IndexController {
         getSession(session).setEcoClassSeatList(economyClass.get(0));
         getSession(session).setFirClassSeatList(firstClass.get(0));
         getSession(session).setPmeClassSeatList(premiumEconomy.get(0));
+
+        return "Flight";
+    }
+
+    @RequestMapping("/flight")
+    public String viewFlight(@RequestParam String id, Model model, HttpSession session){
+        Flight f = flightServices.getById(id);
+
+        System.out.println(id);
+        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
+
+        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
+        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
+
+        model.addAttribute("Flight", f);
+        model.addAttribute("usr", getSession(session));
+
+        model.addAttribute("businessClass", flightServices.getSeatList("BUS", availableSeats));
+        model.addAttribute("economyClass", flightServices.getSeatList("ECO", availableSeats));
+        model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
+        model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
+
+        getSession(session).setLastViewedFlight(f);
+        getSession(session).setBusClassSeatList((List<String[]>) model.getAttribute("businessClass"));
+        getSession(session).setEcoClassSeatList((List<String[]>) model.getAttribute("economyClass"));
+        getSession(session).setFirClassSeatList((List<String[]>) model.getAttribute("firstClass"));
+        getSession(session).setPmeClassSeatList((List<String[]>) model.getAttribute("premiumEconomy"));
 
         return "Flight";
     }
