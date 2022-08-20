@@ -26,42 +26,43 @@
 
             <!-- List each flight in session to be booked -->
             <div class="card l-1" style="padding: 10px 0 0 20px;">
-                <div>
+                <div th:each="flight : ${checkout}">
                     <div class="row icon-box" data-aos="zoom-in-left" >
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th><h2>Traveller #1</h2></th>
-                            </tr>
-                            </thead>
-                            <!-- For Each Seat Requested -->
-                            <tbody>
-                                <!-- Traveller 1 -->
+                        <h2><span th:text="'Selected seats for ' + ${flight.getFlight().getFlightNumber()} + ' : '
+                        + ${flight.getFlight().getDepartureCode()} + ' to ' + ${flight.getFlight().getDestinationCode()}
+                        + ' departing ' + ${flight.getDepartureDate()}"></span></h2>
+                        <Br>
+                        <div th:each="br : ${checkout.get(0).getAllSeatsList()}">
+                            <table class="table">
+                                <thead>
                                 <tr>
-                                    <th>Select Traveller from Account:</th>
+                                    <h3 style="font-size: 1.2em"><span th:text="'Traveller #' + ${brStat.index + 1} + ' : '
+                                    + ${br.toString()}"></span></h3>
                                 </tr>
-                                <!-- Select Traveller from Account [Dropdown]-->
-                                <tr>
-                                    <td>
-                                        <label for="account-users">Family Member</label>
-                                        <select class="form-select" name="account-users" id="account-users">
-                                            <option value="default"></option>
-                                            <option value="user">Miss Isabella Andrews</option>
-                                            <option value="user">Mr Mathew Ayre</option>
-                                            <option value="user">Master Dexter Ayre</option>
-                                        </select><br>
-                                    </td>
-                                </tr>
-                                <!-- OR -->
-                                <th>OR add new Traveller details:</th>
-
-                                <!--
-                                <div th:each="map : ${usr.getSessionCart().values()}" th:with="flight = ${usr.getFlight(map)}">
-                                    <tr th:each="seats : ${#numbers.sequence(1, usr.getSessionCart().get((map)))}">
-                                    -->
+                                </thead>
+                                <!-- For Each Seat Requested -->
+                                <tbody>
+                                    <!-- Traveller -->
                                     <tr>
-                                <!-- Add new Traveller Details -->
-                                <!-- Traveller Info [Input]-->
+                                        <th>Select Traveller from Account:</th>
+                                    </tr>
+                                    <!-- Select Traveller from Account [Dropdown]-->
+                                    <tr>
+                                        <td>
+                                            <label for="account-users">Family Member</label>
+                                            <select class="form-select" name="account-users" id="account-users">
+                                                <option value="default"></option>
+                                                <option value="user">Miss Isabella Andrews</option>
+                                                <option value="user">Mr Mathew Ayre</option>
+                                                <option value="user">Master Dexter Ayre</option>
+                                            </select><br>
+                                        </td>
+                                    </tr>
+                                    <!-- OR -->
+                                    <th>OR add new Traveller details:</th>
+                                    <tr>
+                                    <!-- Add new Traveller Details -->
+                                    <!-- Traveller Info [Input]-->
                                         <td>
                                             <label for="title">Title</label>
                                             <select class="form-select" name="title" id="title">
@@ -124,11 +125,12 @@
                                     <!-- Use Traveller 1's Contact Details [Checkbox + Autofill?]-->
                                     <!-- Traveller Info [Input]-->
                                     <!-- FF Details [Input]-->
-                                    <!-- Save Traveller to Account [Checkbox]
-                                    </div>-->
-                            </tbody>
-                        </table>
-                    <!--</div>-->
+                                    <!-- Save Traveller to Account [Checkbox]-->
+                                </tbody>
+                            </table>
+                            <Br>
+                        </div>
+                    </div>
                 </div>
             </div>
                 <Br><hr /><Br>
@@ -137,7 +139,7 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <h2>Flights to be Booked</h2>
+                            <h2>Booking Summary</h2>
                             <th scope="col">Flight Number</th>
                             <th scope="col">Departure Date</th>
                             <th scope="col">Flight</th>

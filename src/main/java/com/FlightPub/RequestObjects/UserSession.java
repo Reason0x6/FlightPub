@@ -59,6 +59,10 @@ public class UserSession {
     @Setter
     private List<BookingRequest> cart;
 
+    @Getter
+    @Setter
+    private List<BookingRequest> checkedOutCart;
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -103,6 +107,7 @@ public class UserSession {
     public void removeFromCart(String id){
         for(BookingRequest br : cart){
             if(br.getId().equals(id)){
+                cart.get(cart.indexOf(br)).setAllSeatsList(null);
                 cart.remove(br);
                 break;
             }
@@ -132,6 +137,7 @@ public class UserSession {
     public Flight getFlight(String id){
         return flightServices.getById(id);
    }
+
     /*
     for (String key: map.keySet()) {
         System.out.println("key : " + key);

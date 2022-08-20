@@ -507,16 +507,27 @@ public class IndexController {
         }
 
         model.addAttribute("checkout", getSession(session).getCart());
-        // model.addAttribute("seats", getSession(session).getCart().get(0).getTotalSeats());
         model.addAttribute("usr", getSession(session));
 
         return "Booking/Checkout";
     }
 
+    @PostMapping("/checkout")
+    public String updateCheckout(@ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+        getSession(session).setCheckedOutCart(getSession(session).getCart());
+        model.addAttribute("checkout", getSession(session).getCheckedOutCart());
+
+        model.addAttribute("usr", getSession(session));
+        return "redirect:/checkout";
+    }
+
     @RequestMapping("/bookingConfirmation")
     public String bookingConfirmation(Model model){
 
-        model.addAttribute("confirmationID", generateConfirmationID());
+        // model.addAttribute("confirmationID", generateConfirmationID());
 
         return "Confirmations/BookingConfirmation";
     }
