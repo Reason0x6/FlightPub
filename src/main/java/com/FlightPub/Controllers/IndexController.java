@@ -252,28 +252,48 @@ public class IndexController {
 
     @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String viewFlight(@RequestParam String id, Model model, HttpSession session){
+        String[] flightID = id.split("-");  // Breaks up the flight ID's if there are multiple
 
-        Flight f = flightServices.getById(id);
+        // Collection variables for the flight details of each leg
+        List<Location> dest = new ArrayList<>();
+        List<Location> dep = new ArrayList<>();
+        List<Flight> flight = new ArrayList<>();
+        List<List<String[]>> businessClass = new ArrayList<>();
+        List<List<String[]>> economyClass = new ArrayList<>();
+        List<List<String[]>> firstClass = new ArrayList<>();
+        List<List<String[]>> premiumEconomy = new ArrayList<>();
 
-        System.out.println(id);
-        List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
+        // Collects all stopover flight details
+        for(int count = 0; count < flightID.length; count++) {
+            Flight f = flightServices.getById(flightID[count]);
+            System.out.println(id);
+            List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
 
-        model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
-        model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
+            dest.add(locationServices.getById(f.getDestinationCode()));
+            dep.add(locationServices.getById(f.getDepartureCode()));
+            flight.add(f);
+            businessClass.add(flightServices.getSeatList("BUS", availableSeats));
+            economyClass.add(flightServices.getSeatList("ECO", availableSeats));
+            firstClass.add(flightServices.getSeatList("FIR", availableSeats));
+            premiumEconomy.add(flightServices.getSeatList("PME", availableSeats));
+        }
 
-        model.addAttribute("Flight", f);
+        // Updates the model
+        model.addAttribute("Dest", dest);
+        model.addAttribute("Dep", dep);
+        model.addAttribute("Flight", flight);
+        model.addAttribute("businessClass", businessClass);
+        model.addAttribute("economyClass", economyClass);
+        model.addAttribute("firstClass", firstClass);
+        model.addAttribute("premiumEconomy", premiumEconomy);
         model.addAttribute("usr", getSession(session));
 
-        model.addAttribute("businessClass", flightServices.getSeatList("BUS", availableSeats));
-        model.addAttribute("economyClass", flightServices.getSeatList("ECO", availableSeats));
-        model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
-        model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
-
+        // Updates the session
         getSession(session).setLastViewedFlight(f);
-        getSession(session).setBusClassSeatList((List<String[]>) model.getAttribute("businessClass"));
-        getSession(session).setEcoClassSeatList((List<String[]>) model.getAttribute("economyClass"));
-        getSession(session).setFirClassSeatList((List<String[]>) model.getAttribute("firstClass"));
-        getSession(session).setPmeClassSeatList((List<String[]>) model.getAttribute("premiumEconomy"));
+        getSession(session).setBusClassSeatList(businessClass.get(0));
+        getSession(session).setEcoClassSeatList(economyClass.get(0));
+        getSession(session).setFirClassSeatList(firstClass.get(0));
+        getSession(session).setPmeClassSeatList(premiumEconomy.get(0));
 
         return "Flight";
     }
