@@ -16,30 +16,16 @@
 
         <div class="card l-1" data-aos="zoom-in-left">
             <form id="inviteUserForm">
-                <div id="invite_user_form_error" th:fragment="invite_user_form_error_fragment">
-                    <div th:if="${Error == 'Not a valid user'}"><p>Sorry, Not a valid user.</p></div>
-                    <div th:if="${Error == 'User is already in group'}"><p>Sorry, User is already in the group.</p></div>
-                </div>
-                    <!-- Old form for reference TODO remove -->
-<!--                <div class="row">-->
-<!--                    <div class="col-md-3">-->
-<!--                        <label for="inviteUser" class="col-form-label" ></label>-->
-<!--                        <input type="hidden" id="groupId" name="groupId" th:value="${groupId}">-->
-<!--                    </div>-->
-<!--                    <div class="col-md-5">-->
-<!--                        <input type="text" id="inviteUser" class="form-control" name="inviteUser" placeholder="Enter User Email">-->
-<!--                    </div>-->
-<!--                    <div class="col-md-3">-->
-<!--                        <button type="submit" class="btn btn-primary" onclick="updateInviteUserForm()">Invite User!</button>-->
-<!--                    </div>-->
-
-<!--                </div>-->
-
                 <!-- New form -->
                 <div class="row g-2">
                     <div class="form-floating col-md-8">
                         <input style="max-width: 100%" type="text" id="inviteUser" name="inviteUser" class="form-control" placeholder="">
                         <label for="inviteUser" class="col-form-label" >Enter User Email To Invite </label>
+
+                        <div class="invalid-feedback" id="invite_user_form_error" th:fragment="invite_user_form_error_fragment">
+                            <span th:if="${Error == 'Not a valid user'}">Sorry, Not a valid user.</span>
+                            <span th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</span>
+                        </div>
 
                         <input type="hidden" id="groupId" name="groupId" th:value="${groupId}">
                     </div>
@@ -78,6 +64,13 @@
         <p th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</p>-->
         <script>
             /**
+             * If input has is-invalid remove on text box change
+             */
+            $("#inviteUser").on('change keydown paste input', function(){
+                document.getElementById("inviteUser").classList.remove("is-invalid")
+            });
+
+            /**
              * Update invite list on submit invite form submit
              */
             function updateInviteUserForm() {
@@ -93,6 +86,7 @@
                         }
                         // Check if the returned fragment contains invite user form error id
                         else if (fragment.includes("invite_user_form_error")) {
+                            document.getElementById("inviteUser").classList.add("is-invalid")
                             $("#invite_user_form_error").replaceWith(fragment);
                         }
 
