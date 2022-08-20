@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:fragment="invite_section">
-    <p th:if="${Error == 'Not a valid user'}">Sorry, Not a valid user.</p></br>
-    <p th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</p>
     <div class="section-title" data-aos="zoom-out" >
         <h2>Sharing is Caring</h2>
         <p>Get The Gang Together</p>
@@ -15,21 +13,36 @@
     <div>
         <div class="card l-1" data-aos="zoom-in-left">
             <form id="inviteUserForm">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="inviteUser" class="col-form-label" >Invite User </label>
+                    <!-- Old form for reference TODO remove -->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label for="inviteUser" class="col-form-label" ></label>-->
+<!--                        <input type="hidden" id="groupId" name="groupId" th:value="${groupId}">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-5">-->
+<!--                        <input type="text" id="inviteUser" class="form-control" name="inviteUser" placeholder="Enter User Email">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                        <button type="submit" class="btn btn-primary" onclick="updateInviteUserForm()">Invite User!</button>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+
+                <!-- New form -->
+                <div class="row g-2">
+                    <div class="form-floating col-md-8">
+                        <input style="max-width: 100%" type="text" id="inviteUser" name="inviteUser" class="form-control" placeholder="">
+                        <label for="inviteUser" class="col-form-label" >Enter User Email To Invite </label>
+
                         <input type="hidden" id="groupId" name="groupId" th:value="${groupId}">
                     </div>
-                    <div class="col-md-5">
-                        <input type="text" id="inviteUser" class="form-control" name="inviteUser" placeholder="Enter User Email">
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md d-grid">
                         <button type="submit" class="btn btn-primary" onclick="updateInviteUserForm()">Invite User!</button>
                     </div>
                 </div>
+
             </form>
         </div>
-
         <div class="card l-1" data-aos="zoom-in-left" th:fragment="invite_list_fragment" id="invite_list">
             <table class="table">
                 <thead>
@@ -55,8 +68,11 @@
         </div>
 
         <script>
-            // Update invite list on submit invite form submit
+            /**
+             * Update invite list on submit invite form submit
+             */
             function updateInviteUserForm() {
+                // Submit form
                 $("#inviteUserForm").one('submit',function(e) {
                     e.preventDefault(); // prevent page refresh
 
@@ -67,8 +83,11 @@
                 });
             }
 
-            // Load current invite list
+            /**
+             * Load current invite list
+             */
             $(document).ready( function loadInviteUserForm() {
+                // Post to receive invite list
                 $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
                     $("#invite_list").replaceWith(fragment);
                 })

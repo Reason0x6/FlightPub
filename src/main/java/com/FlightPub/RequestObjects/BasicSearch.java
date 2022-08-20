@@ -210,7 +210,7 @@ public class BasicSearch {
         if (finalDestination != null) {
             List<StopOver> output = new ArrayList<>();
             for (StopOver flight : flights) {
-                if (flight.getFlightAtIndex(numberOfStops - 1).getDestinationCode().equals(finalDestination))
+                if (flight.getFlightAtIndex(flight.size() - 1).getDestinationCode().equals(finalDestination.getLocationID()))
                     output.add(flight);
             }
             flights = output;

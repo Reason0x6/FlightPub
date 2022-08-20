@@ -1,6 +1,6 @@
 <lower xmlns:th="http://www.w3.org/1999/xhtml">
   <!-- ======= Footer ======= -->
-  <footer id="footer">
+  <footer id="footer" style="margin-top: 20px">
     <div class="container">
       <h3>Flight Pub</h3>
       <div class="social-links">
@@ -26,5 +26,10 @@
   <script th:src="@{/assets/vendor/swiper/swiper-bundle.min.js}"></script>
   <script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
   <script th:src="@{/assets/js/main.js}"></script>
+  <script>
+    $("button[type=submit]").on("click", function() {
+      $("#loader").css("display","block");
+    });
+  </script>
 </lower>
 
