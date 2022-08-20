@@ -49,14 +49,18 @@
          * @param removeUser user to remove
          */
         function removeUser(removeUser) {
+            var result = confirm("Do you want to remove the user?");
+            if (result) {
+                $.post("/remove_group_user", {
+                    userId: removeUser,
+                    groupId: $("#groupId").val()
+                }).done(function (fragment) {
+                    $("#added_users").replaceWith(fragment);
+                })
+            }
                 // if (confirm('Removing user ' + removeUser)) {
                     // Post entered email to be added to invite list
-                    $.post("/remove_group_user", {
-                        userId: removeUser,
-                        groupId: $("#groupId").val()
-                    }).done(function (fragment) {
-                        $("#added_users").replaceWith(fragment);
-                    })
+
                 // }
         }
 
