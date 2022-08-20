@@ -289,13 +289,13 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         // Updates the session
-        getSession(session).setLastViewedFlight(f);
+        getSession(session).setLastViewedFlight(flight.get(0));
         getSession(session).setBusClassSeatList(businessClass.get(0));
         getSession(session).setEcoClassSeatList(economyClass.get(0));
         getSession(session).setFirClassSeatList(firstClass.get(0));
         getSession(session).setPmeClassSeatList(premiumEconomy.get(0));
 
-        return "Flight";
+        return "StopoverFlight";
     }
 
     @RequestMapping("/flight")
