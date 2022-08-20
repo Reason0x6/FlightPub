@@ -27,6 +27,7 @@
                 <h2>Explore Together</h2>
                 <p>Your Selected Flight</p>
             </div>
+
             <div class="card l-1" style="padding: 10px 0 0 20px;">
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-4">
@@ -43,7 +44,7 @@
                         <div id="chartdiv"></div>
                     </div>
                 </div>
-                <form id="seatSelection" name="seatSelection" th:action="@{/cart}" th:object="${BookingRequest}" method="post">
+                <form id="seatSelection" name="seatSelection" th:action="@{/cart/direct}" th:object="${BookingRequest}" method="post">
                     <p><b>Available Seats on <span th:text="${Flight.getFlightNumber()}"></span></b></p>
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
