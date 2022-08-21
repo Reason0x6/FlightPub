@@ -51,9 +51,8 @@
             const urlParams = new URLSearchParams(queryString);
             const flight = urlParams.get('id')
 
-
             // Check if list is loading on a flight page or user page
-            if (flight !== '') {
+            if (flight != null) {
                 // Post to receive added user fragment
                 $.post("/admin_group_list", {flightId: flight}).done(function (fragment) {
                     $("#group_list_fragment").replaceWith(fragment);
