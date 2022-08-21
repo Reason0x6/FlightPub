@@ -524,14 +524,14 @@ public class IndexController {
         Booking newBooking = new Booking();
         bookingServices.save(newBooking);
 
-        Traveller traveller = new Traveller(title, firstname, lastname, dob, saveTraveller, seat);
-
         for (BookingRequest br : getSession(session).getCheckedOutCart()) {
-            //BookingRequest newBR = new BookingRequest(br.getFlight(), br.getBusSeats(), br.getEcoSeats(), br.getFirSeats(), br.getPmeSeats(), br.getPrice(), newBooking);
-            bookingServices.addTraveller(traveller);
+            for (int i = 0; i < br.getAllSeatsList().size(); i++) {
+                Traveller traveller = new Traveller(title, firstname, lastname, dob, saveTraveller, seat);
+                bookingServices.addTraveller(traveller);
+            }
         }
 
-        model.addAttribute("traveller", traveller);
+        //model.addAttribute("traveller", traveller);
 
         return "redirect:/checkout";
     }
