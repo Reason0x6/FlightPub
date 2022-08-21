@@ -11,25 +11,34 @@
 
       </div>
 
-      <nav id="navbar" class="navbar" th:if="${usr} != null">
-        <ul th:if="${usr.isLoggedIn()} == false">
-          <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
-          <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
-            <li><a class="nav-link scrollto" href="/#recommendation">Recommendations</a></li>
-          <li><a class="nav-link scrollto " href="/login">Login/Signup</a></li>
-        </ul>
-        <ul th:if="${usr.isLoggedIn()} != false">
-          <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
-            <li><a class="nav-link scrollto" href="/#recommendation">Recommendations</a></li>
-          <li><a class="nav-link scrollto" href="/account#groups">Groups</a></li>
-          <li><a class="nav-link scrollto" href="/#contact">Contact Us</a></li>
-          <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span>'s Account</a></li>
-          <li><a class="nav-link scrollto" href="/cart"><i class="bx bxs-cart" style="font-size: 1.75em"></i></a></li>
-          <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+      <div th:switch="${admin} != null ? ${admin.isLoggedIn()} : ${false}" >
+        <nav id="navbar" class="navbar" th:case="${true}">
+          <ul>
+            <li><a class="nav-link scrollto" href="/adminAccount">Control Center</a></li>
+            <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
+          </ul>
 
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+        <nav id="navbar" class="navbar" th:case="${false}">
+          <ul th:if="${usr.isLoggedIn()} == false">
+            <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
+            <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
+            <li><a class="nav-link scrollto" href="/#recommendation">Recommendations</a></li>
+            <li><a class="nav-link scrollto " href="/login">Login/Signup</a></li>
+          </ul>
+          <ul th:if="${usr.isLoggedIn()} != false">
+            <li><a class="nav-link scrollto " href="/#search">Flights</a></li>
+            <li><a class="nav-link scrollto" href="/#recommendation">Recommendations</a></li>
+            <li><a class="nav-link scrollto" href="/account#groups">Groups</a></li>
+            <li><a class="nav-link scrollto" href="/#contact">Contact Us</a></li>
+            <li><a class="nav-link scrollto " href="/account"><span th:text="${usr.getFirstname()}"></span>'s Account</a></li>
+            <li><a class="nav-link scrollto" href="/cart"><i class="bx bxs-cart" style="font-size: 1.75em"></i></a></li>
+            <li><a class="nav-link scrollto " href="/logout">Logout</a></li>
+          </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+      </div>
     </div>
     <div id="loader">
       <svg class="svg-calLoader" xmlns="http://www.w3.org/2000/svg" width="230" height="230">

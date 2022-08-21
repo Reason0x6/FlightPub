@@ -92,7 +92,7 @@ public class IndexController {
 
         model.addAttribute("searchLocation", locationServices.listAll());
         model.addAttribute("LoadingRecommendation", true);
-
+        model.addAttribute("MostPop", locationServices.topTen());
         return "index";
     }
 
@@ -137,6 +137,7 @@ public class IndexController {
 
     @RequestMapping("/logout")
     public String loadLogout(Model model, HttpSession session){
+        session.setAttribute("Admin", new AdminSession(null));
         session.setAttribute("User", new UserSession(null));
         model.addAttribute("usr", getSession(session));
         return "redirect:login";
@@ -329,6 +330,12 @@ public class IndexController {
     @RequestMapping("/admin/flight/management")
     @PostMapping("/admin/flight/management")
     public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        model.addAttribute("admin", getAdminSession(session));
+
         if(flight != null)
             flight = flightServices.getByFlightNumberAndDeparture(flight.getFlightNumber(), flight.getDepartureTime());
 
@@ -344,6 +351,12 @@ public class IndexController {
     @RequestMapping("/admin/location/management")
     @PostMapping("/admin/location/management")
     public String modifyLocation(@ModelAttribute Location location, Model model, HttpSession session) {
+        if(!getAdminSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        model.addAttribute("admin", getAdminSession(session));
+
         if(location != null) {
             if(location.getLocationID() != null) {
                 String id = location.getLocationID();
@@ -434,11 +447,7 @@ public class IndexController {
         search.setCheapestPriceForStopOverResults(stopOver[1]);
         search.setCheapestPriceForStopOverResults(stopOver[2]);
 
-        System.out.println( flights[0].size());
-        System.out.println( flights[1].size());
-        System.out.println( stopOver[0].size());
-        System.out.println( stopOver[1].size());
-        System.out.println( stopOver[2].size());
+
         model.addAttribute("count", flights[0].size()+flights[1].size()+stopOver[0].size()+stopOver[1].size()+stopOver[2].size());
 
         // Stops unnecessary objects from being added to the response
