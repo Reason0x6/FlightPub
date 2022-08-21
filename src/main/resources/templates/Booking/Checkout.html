@@ -68,12 +68,12 @@
                                                     <label for="title">Title</label>
                                                     <select class="form-select" name="title" id="title" th:id="'title' + ${i}">
                                                         <option value="default">Title</option>
-                                                        <option value="master">Master</option>
-                                                        <option value="miss">Miss</option>
-                                                        <option value="mr">Mr</option>
-                                                        <option value="mrs">Mrs</option>
-                                                        <option value="ms">Ms</option>
-                                                        <option value="doctor">Dr</option>
+                                                        <option value="Master">Master</option>
+                                                        <option value="Miss">Miss</option>
+                                                        <option value="Mr">Mr</option>
+                                                        <option value="Mrs">Mrs</option>
+                                                        <option value="Ms">Ms</option>
+                                                        <option value="Doctor">Dr</option>
                                                     </select>
                                                 </td>
                                                 <td><label for="firstName">First Name</label>
@@ -82,13 +82,15 @@
                                                     <input type="text" id="lastName" th:id="'lastName' + ${i}" class="form-control" name="lastName" placeholder="Smith"></td>
                                             </tr>
                                             <tr>
-                                                <td><label for="dob">Phone Number</label>
+                                                <td><label for="dob">Date of Birth</label>
                                                     <input type="date" id="dob" th:id="'dob' + ${i}" class="form-control" name="dob"></td>
                                             </tr>
                                             <tr>
                                                 <!-- Save Traveller to Account [Checkbox]-->
                                                 <th><label for="saveTraveller">Save new Traveller to Account?</label></th>
-                                                <td><input type="checkbox" name="savTraveller" id="saveTraveller" th:id="'saveTraveller' + ${i}" style="width: 50px;"></td>
+                                                <td><input type="checkbox" name="saveTraveller" id="saveTraveller" th:id="'saveTraveller' + ${i}" style="width: 50px;"></td>
+                                                <td><input type="hidden" class="form-control" id="seat" th:id="'seat' + ${i}" name="seat" th:value="${flight.getAllSeatsList()[i]}">
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -160,7 +162,7 @@
                                     <!-- Card Number [Input] -->
                                     <td>
                                         <label for="card-number">Card Number</label>
-                                        <input type="text" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"><br>
+                                        <input type="number" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"><br>
                                     </td>
                                     <td>
                                         <label for="card-name">Name on card</label>
@@ -169,7 +171,7 @@
                                     <!-- Card Expiry [Input] -->
                                     <td>
                                         <label for="card-expiry">Card Expiry</label>
-                                        <input type="number" id="card-expiry" class="form-control" name="card-number" placeholder="02/22" maxlength="4"><br>
+                                        <input type="month" id="card-expiry" class="form-control" name="card-number"><br><br>
                                     </td>
                                     <!-- Card Security Code [Input] -->
                                     <td>
@@ -180,7 +182,7 @@
                                 <tr>
                                     <!-- Submit Payment Request -->
                                     <td>
-                                        <a href="/bookingConfirmation" class="btn btn-success" onclick="validateCreditCard()" style="max-width: 200px">Pay Now</a>
+                                        <button href="/bookingConfirmation" class="btn btn-success" type="submit" style="max-width: 200px">Pay Now</button>
                                     </td>
                                 </tr>
                                 </tbody>

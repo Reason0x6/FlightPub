@@ -171,11 +171,6 @@ public class BookingRequest {
         return Double.parseDouble(df.format(price));
     }
 
-    public List<String> getAllSeatsList() {
-        System.out.println("allSeatsList: " +  allSeatsList + " : " + allSeatsList.size());
-        return allSeatsList;
-    }
-
     public int getTotalSeats(){
         int seats = 0;
         allSeatsList = new ArrayList<>();

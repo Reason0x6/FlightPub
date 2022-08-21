@@ -2,6 +2,7 @@ package com.FlightPub.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -14,14 +15,9 @@ import java.util.List;
 @Document("Booking")
 public class Booking {
     @Id
-    @Setter
     @Getter
-    private String bookingID;
-
-    @Setter
-    @Getter
-    @Field("userID")
-    private String userID;
+    @Field("_id")
+    private String id;
 
     @Setter
     @Getter
@@ -30,16 +26,30 @@ public class Booking {
 
     @Getter
     @Setter
-    @Field("travellers")
-    private List<Traveller> travellers;
+    @Field("travellerID")
+    private String travellerID;
+
+    @Getter
+    @Setter
+    @Field("seat")
+    private String seat;
 
 
     public Booking() {}
 
-    public Booking(String bookingID, String userID, String flightID, List<String> bookedSeats, String bookingStatus){
+    public Booking(String flightID, String travellerID, String bookedSeat){
 
-        this.bookingID = bookingID;
-        this.userID = userID;
         this.flightID = flightID;
+        this.travellerID = travellerID;
+        this.seat = bookedSeat;
+    }
+
+
+    public void setBookingID(ObjectId id){
+        this.id = id.toString();
+    }
+
+    public void setBookingID(String id){
+        this.id = id;
     }
 }

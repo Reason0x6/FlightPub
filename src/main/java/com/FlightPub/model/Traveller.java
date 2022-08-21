@@ -2,6 +2,8 @@ package com.FlightPub.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -9,6 +11,11 @@ import java.util.Date;
 
 @Document("Traveller")
 public class Traveller {
+
+    @Id
+    @Getter
+    @Field("_id")
+    private String id;
 
     @Getter
     @Setter
@@ -28,7 +35,7 @@ public class Traveller {
     @Getter
     @Setter
     @Field("dob")
-    private Date dob;
+    private String dob;
 
     @Getter
     @Setter
@@ -44,17 +51,24 @@ public class Traveller {
         this.title = "";
         this.firstName = "";
         this.lastName = "";
-        this.dob = new Date();
+        this.dob = "";
         this.saveTraveller = false;
     }
 
-    public Traveller(String title, String firstname, String lastname, Date dob, boolean saveTraveller, String seat) {
+    public Traveller(String title, String firstName, String lastName, String dob, boolean saveTraveller) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
         this.saveTraveller = saveTraveller;
-        this.seat = seat;
+    }
+
+    public void setTravellerID(ObjectId id){
+        this.id = id.toString();
+    }
+
+    public void setTravellerID(String id){
+        this.id = id;
     }
 
 }

@@ -1,7 +1,6 @@
 package com.FlightPub.Services;
 
 import com.FlightPub.model.Booking;
-import com.FlightPub.model.Flight;
 import com.FlightPub.model.Traveller;
 import com.FlightPub.repository.BookingRepo;
 import com.FlightPub.repository.TravellerRepo;
@@ -59,7 +58,7 @@ public class BookingServices {
         travellerRepo.save(addTraveller);
     }
 
-    public void save(Booking newBooking) {
-        bookingRepo.save(newBooking);
+    public void addBooking(Booking booking) {
+        bookingRepo.save(booking);
     }
 }

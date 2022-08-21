@@ -2,6 +2,7 @@ package com.FlightPub.RequestObjects;
 
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.model.Booking;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.model.WishListItem;
@@ -62,6 +63,10 @@ public class UserSession {
     @Getter
     @Setter
     private List<BookingRequest> checkedOutCart;
+
+    @Getter
+    @Setter
+    private Booking booking;
 
     @Autowired
     @Qualifier(value = "FlightServices")
