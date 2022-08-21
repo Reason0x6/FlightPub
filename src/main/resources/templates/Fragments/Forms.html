@@ -436,6 +436,12 @@
             <div class="form-floating col-md-8">
                 <input style="max-width: 100%" type="text" id="groupName" class="form-control" name="groupName" placeholder="">
                 <label for="groupName" id="nameLabel" class="col-form-label" >Enter Group Name</label>
+
+                <div th:if="${Flight != null}">
+                    <input type="hidden" name="flightId" th:value="${Flight.FlightID}">
+                </div>
+
+
             </div>
             <div class="col-md d-grid">
                 <button type="submit" class="btn btn-primary btn-search">Create Group!</button>

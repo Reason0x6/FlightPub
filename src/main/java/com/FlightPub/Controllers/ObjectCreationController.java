@@ -234,13 +234,21 @@ public class ObjectCreationController {
         }
     }
 
+    /**
+     * Add a new group to the database
+     * @param group contains new group name and optionally flight id
+     * @param session current session
+     * @return redirect to new group
+     */
     @PostMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1
     public String addGroup(@ModelAttribute NewGroup group, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:/login";
         }
 
+        // Create a new group
         UserGroup newGroup = new UserGroup(getSession(session).getEmail(), group.getGroupName());
+        newGroup.addFlight(group.getFlightId());
         groupServices.saveUsers(newGroup);
 
         return "redirect:/Group?groupId=" + newGroup.getId();

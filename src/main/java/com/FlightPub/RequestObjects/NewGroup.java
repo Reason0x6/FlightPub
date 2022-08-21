@@ -10,4 +10,8 @@ public class NewGroup {
     @Getter
     @Setter
     private String groupName;
+
+    @Getter
+    @Setter
+    private String flightId;
 }
