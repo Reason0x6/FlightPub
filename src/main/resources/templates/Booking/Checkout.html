@@ -180,6 +180,9 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <input type="hidden" class="form-control" id="accountEmail" name="accountEmail" th:value="${usr.getUsr().getEmail()}">
+                                </tr>
+                                <tr>
                                     <!-- Submit Payment Request -->
                                     <td>
                                         <button href="/bookingConfirmation" class="btn btn-success" type="submit" style="max-width: 200px">Pay Now</button>
