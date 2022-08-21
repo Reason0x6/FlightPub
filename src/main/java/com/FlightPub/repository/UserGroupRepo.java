@@ -13,4 +13,7 @@ public interface UserGroupRepo extends MongoRepository<UserGroup, String> {
 
     @Query(value="{ 'InvitedIds' : ?0 }")
     List<UserGroup> findAllByInvitedIds(String userIDs);
+
+    @Query
+    List<UserGroup> findAllByAdminID(String adminID);
 }

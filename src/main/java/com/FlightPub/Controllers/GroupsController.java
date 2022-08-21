@@ -1,9 +1,12 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.UserSession;
+import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.Services.UserGroupServices;
+import com.FlightPub.model.Flight;
+import com.FlightPub.model.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -39,6 +42,13 @@ public class GroupsController {
     @Qualifier(value = "LocationServices")
     public void setLocationsServices(LocationServices locService) {
         this.locationServices = locService;
+    }
+
+    private FlightServices flightServices;
+    @Autowired
+    @Qualifier(value = "FlightServices")
+    public void setLocationsServices(FlightServices flightServices) {
+        this.flightServices = flightServices;
     }
     // End of Database services
 
@@ -99,13 +109,58 @@ public class GroupsController {
             }
         }
 
+        // Retrieve flight attached to group
+        Flight flight = flightServices.getById(groupServices.getFlight());
+        if (flight != null) {
+            model.addAttribute("Flight", flight);
+
+            model.addAttribute("Dest", locationServices.getById(flight.getDestinationCode()));
+            model.addAttribute("Dep", locationServices.getById(flight.getDepartureCode()));
+        }
+
+        // Used for invite and remove user buttons
         model.addAttribute("groupId", groupId);
+
+        model.addAttribute("groupName", groupServices.getGroupName());
 
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Group";
     }
-    /*To Do: Making separate branch for the time being. */
+
+    /**
+     * Add a flight to a group
+     * @param flightId id of flight to add
+     * @param groupId id of group to add flight to
+     * @param model interface that defines a holder for model attributes
+     * @param session current session
+     * @return group page or redirect to log in
+     */
+    @RequestMapping("Group/AddFlight")
+    public String addFlight(@RequestParam String flightId, @RequestParam String groupId, Model model, HttpSession session) {
+        // Load group from database
+        groupServices.loadUserGroup(groupId);
+        UserSession userSession = getSession(session);
+
+        // Check if user is logged in
+        if (userSession.isLoggedIn()) {
+            // Check if user is admin
+            if(groupServices.isAdmin(userSession.getEmail())) {
+                System.out.println("Adding flight: " + flightId);
+
+                // TODO Add flight lock once booking started
+
+                // Add flight to group in db
+                groupServices.addFlight(flightId);
+
+                // Return group page
+                // Bypass invite accepted/decline string
+                return groupInvite(groupId, "bypass", model, session);
+            }
+        }
+
+        return "redirect:login";
+    }
 
     /**
      * Checks if a user can be added to a group. Then returns a html fragment of all invited users
@@ -208,6 +263,34 @@ public class GroupsController {
         return loadAddedUsers(groupId, model, session);
     }
 
+    /**
+     * Loads a list of groups with current session user as a member
+     * @param model interface that defines a holder for model attributes
+     * @param session current session
+     * @return html fragment containing list of groups with current user as a member
+     */
+    @PostMapping("/group_list")
+    public String loadGroupList(Model model, HttpSession session) {
+
+        model.addAttribute("groups", groupServices.findGroupsContaining(getSession(session).getEmail()));
+
+        return "Fragments/Groups/GroupList :: group_list_fragment";
+    }
+
+    /**
+     * Loads a list of groups with current session user at admin
+     * @param flightId flight id for add flight to group button
+     * @param model interface that defines a holder for model attributes
+     * @param session current session
+     * @return html fragment containing list of groups with current user as admin
+     */
+    @PostMapping("/admin_group_list")
+    public String loadAdminGroupList(@RequestParam String flightId, Model model, HttpSession session) {
+        model.addAttribute("Flight", flightServices.getById(flightId));
+        model.addAttribute("groups", groupServices.findGroupsByAdmin(getSession(session).getEmail()));
+
+        return "Fragments/Groups/GroupList :: group_list_fragment";
+    }
 
     /**
      * returns a html fragment list of current group users

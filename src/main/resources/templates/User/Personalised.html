@@ -125,29 +125,8 @@
                     <form th:replace="Fragments/Forms :: #createGroupForm"> </form>
                 </div>
 
-                <div class="container card l-1" data-aos="zoom-in-left">
-                    <div class="text-center">
-                        <h2> Joined Groups </h2>
-                    </div>
-                    <table class="table">
-                        <thead>
-                        <tr th:if="${!groups.isEmpty()}">
-                            <th scope="col">Members</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">View</th>
-                        </tr>
-                        <tr th:if="${groups.isEmpty()}">
-                            <th class="text-center" >No groups found</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="group : ${groups}">
-                            <th scope="row" th:text="${group.getUserIDs().size()}" ></th>
-                            <td th:text="${group.getGroupName}"></td>
-                            <td><a th:href="@{/Group(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div th:replace="Fragments/Groups/GroupList">
+                    To Be Replaced
                 </div>
 
                 <div class="container card l-1" data-aos="zoom-in-left">
