@@ -121,6 +121,10 @@ public class GroupsController {
         // Used for invite and remove user buttons
         model.addAttribute("groupId", groupId);
 
+        if(groupServices.isAdmin(userId)) {
+            model.addAttribute("isAdmin", true);
+        }
+
         model.addAttribute("groupName", groupServices.getGroupName());
 
         model.addAttribute("locs", locationServices.listAll());
@@ -261,6 +265,31 @@ public class GroupsController {
         groupServices.removeUser(userId);
 
         return loadAddedUsers(groupId, model, session);
+    }
+
+    /**
+     * Remove a group
+     * @param groupId id to remove
+     * @param model interface that defines a holder for model attributes
+     * @param session current session
+     * @return updated list of current group users
+     */
+    @PostMapping("/remove_group")
+    public String removeGroup(@RequestParam("groupId") String groupId, Model model, HttpSession session) {
+        System.out.printf("Attempting to remove group: %s %n", groupId);
+
+        // Ensure that correct group is selected when loading page
+        groupServices.loadUserGroup(groupId);
+
+        // Ensure that the user sending post request is actually a member of the group
+        if (!groupServices.isAdmin(getSession(session).getEmail())) {
+            return "redirect:login";
+        }
+
+        // Remove user from group
+        groupServices.deleteGroup();
+
+        return "redirect:account";
     }
 
     /**
