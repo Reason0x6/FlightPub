@@ -178,6 +178,7 @@ public class BookingRequest {
 
     public int getTotalSeats(){
         int seats = 0;
+        allSeatsList = new ArrayList<>();
         if (!firStandard.equals("")){
             seats += Integer.parseInt(firStandard);
             String seatSelected = "First Class - Standard";

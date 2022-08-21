@@ -459,7 +459,6 @@ public class IndexController {
             br.setPrice(getBookingPrice(br));
         }
 
-
         getSession(session).setFlightServices(flightServices);
         model.addAttribute("usr", getSession(session));
         model.addAttribute("cart", getSession(session).getCart());
@@ -506,21 +505,34 @@ public class IndexController {
             return "redirect:login";
         }
 
-        model.addAttribute("checkout", getSession(session).getCart());
+        getSession(session).setCheckedOutCart(getSession(session).getCart());
+        model.addAttribute("checkout", getSession(session).getCheckedOutCart());
         model.addAttribute("usr", getSession(session));
 
         return "Booking/Checkout";
     }
 
     @PostMapping("/checkout")
-    public String updateCheckout(@ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
+    public String updateCheckout(@RequestParam String title, @RequestParam String firstname, @RequestParam String lastname,@RequestParam Date dob, @RequestParam boolean saveTraveller, @RequestParam String seat, @ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
-        getSession(session).setCheckedOutCart(getSession(session).getCart());
         model.addAttribute("checkout", getSession(session).getCheckedOutCart());
 
         model.addAttribute("usr", getSession(session));
+
+        Booking newBooking = new Booking();
+        bookingServices.save(newBooking);
+
+        Traveller traveller = new Traveller(title, firstname, lastname, dob, saveTraveller, seat);
+
+        for (BookingRequest br : getSession(session).getCheckedOutCart()) {
+            //BookingRequest newBR = new BookingRequest(br.getFlight(), br.getBusSeats(), br.getEcoSeats(), br.getFirSeats(), br.getPmeSeats(), br.getPrice(), newBooking);
+            bookingServices.addTraveller(traveller);
+        }
+
+        model.addAttribute("traveller", traveller);
+
         return "redirect:/checkout";
     }
 

@@ -2,7 +2,9 @@ package com.FlightPub.Services;
 
 import com.FlightPub.model.Booking;
 import com.FlightPub.model.Flight;
+import com.FlightPub.model.Traveller;
 import com.FlightPub.repository.BookingRepo;
+import com.FlightPub.repository.TravellerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,24 @@ public class BookingServices {
 
     private BookingRepo bookingRepo;
 
+    private TravellerRepo travellerRepo;
+
     @Autowired
-    public BookingServices(BookingRepo bookingRepository) {
+    public BookingServices(BookingRepo bookingRepository, TravellerRepo travellerRepository) {
         this.bookingRepo = bookingRepository;
+        this.travellerRepo = travellerRepository;
     }
 
     public List<Booking> listAll(){
         List<Booking> bookings = new ArrayList<>();
         bookingRepo.findAll().forEach(bookings::add);
         return bookings;
+    }
+
+    public List<Traveller> travellerListAll(){
+        List<Traveller> travellers = new ArrayList<>();
+        travellerRepo.findAll().forEach(travellers::add);
+        return travellers;
     }
 
     public List<Booking> getUserBookings(String userID){
@@ -40,5 +51,15 @@ public class BookingServices {
         bookingRepo.save(toUpdate);
     }
 
+
+
     public void delete(String id){}
+
+    public void addTraveller(Traveller addTraveller) {
+        travellerRepo.save(addTraveller);
+    }
+
+    public void save(Booking newBooking) {
+        bookingRepo.save(newBooking);
+    }
 }

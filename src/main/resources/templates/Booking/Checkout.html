@@ -32,6 +32,7 @@
                         + ${flight.getFlight().getDepartureCode()} + ' to ' + ${flight.getFlight().getDestinationCode()}
                         + ' departing ' + ${flight.getDepartureDate()}"></span></h2>
                         <Br>
+                        <form id="seatBooking" name="seatBooking" th:action="@{/checkout}" th:object="${Traveller}" method="post">
                         <div th:each="br : ${flight.getAllSeatsList()}">
                             <table class="table">
                                 <thead>
@@ -75,10 +76,10 @@
                                                 <option value="doctor">Dr</option>
                                             </select>
                                         </td>
-                                        <td><label for="firstname">First Name</label>
-                                            <input type="text" id="firstname" class="form-control" name="firstname" placeholder="John"></td>
-                                        <td><label for="lastname">Surname</label>
-                                            <input type="text" id="lastname" class="form-control" name="lastname" placeholder="Smith"></td>
+                                        <td><label for="firstName">First Name</label>
+                                            <input type="text" id="firstName" class="form-control" name="firstName" placeholder="John"></td>
+                                        <td><label for="lastName">Surname</label>
+                                            <input type="text" id="lastName" class="form-control" name="lastName" placeholder="Smith"></td>
                                     </tr>
                                     <tr>
                                         <td><label for="phone">Phone Number</label>
@@ -87,8 +88,8 @@
                                             <input type="email" id="email" class="form-control" name="email" placeholder="johnsmith@email.com"></td>
                                     </tr>
                                     <tr>
-                                        <td><label for="street-number">Street Number</label>
-                                            <input type="text" id="street-number" class="form-control" name="street-number" placeholder="123"></td>
+                                        <td><label for="streetNumber">Street Number</label>
+                                            <input type="text" id="streetNumber" class="form-control" name="streetNumber" placeholder="123"></td>
                                         <td><label for="street">Street</label>
                                             <input type="text" id="street" class="form-control" name="street" placeholder="Ronald Street"></td>
                                         <td><label for="suburb">Suburb</label>
@@ -115,21 +116,14 @@
                                     </tr>
                                     <tr>
                                         <!-- Save Traveller to Account [Checkbox]-->
-                                        <th><label for="save-traveller">Save new Traveller to Account?</label></th>
-                                        <td><input type="checkbox" name="save-traveller" id="save-traveller" style="width: 50px;"></td>
+                                        <th><label for="saveTraveller">Save new Traveller to Account?</label></th>
+                                        <td><input type="checkbox" name="savTraveller" id="saveTraveller" style="width: 50px;"></td>
                                     </tr>
-                                    <!-- Traveller 2++ -->
-                                    <!-- Select Traveller from Account [Dropdown]-->
-                                    <!-- OR -->
-                                    <!-- Add new Traveller Details -->
-                                    <!-- Use Traveller 1's Contact Details [Checkbox + Autofill?]-->
-                                    <!-- Traveller Info [Input]-->
-                                    <!-- FF Details [Input]-->
-                                    <!-- Save Traveller to Account [Checkbox]-->
                                 </tbody>
                             </table>
                             <Br>
                         </div>
+                        </form>
                     </div>
                 </div>
                 <Br>
@@ -163,7 +157,7 @@
                             <th></th>
                             <th></th>
                             <th>Total:</th>
-                            <th th:text="'$'"></th>
+                            <th id="showTotal"> $<span id="cost">0</span></th>
                         </tr>
                         </tbody>
                     </table>
@@ -216,5 +210,17 @@
         }
         return (check % 10) === 0;
     }
+
+    function updatePrice(){
+        let price = 0;
+        $('select').each( function(){
+        price += ($(this).val() *1) * ($(this).attr('data')*1);
+    })
+        price = Math.round((price + Number.EPSILON) * 100) / 100
+
+        $('#cost').html(price);
+    }
+
+    $( document ).ready(updatePrice());
 </script>
 </html>

@@ -28,6 +28,10 @@ public class Booking {
     @Field("flightID")
     private String flightID;
 
+    @Getter
+    @Setter
+    @Field("travellers")
+    private List<Traveller> travellers;
 
 
     public Booking() {}
