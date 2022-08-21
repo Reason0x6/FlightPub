@@ -536,7 +536,25 @@ public class IndexController {
         return "redirect:/cart";
     }
 
+    @PostMapping("/cart/indirect")
+    public String updateCartWithIndirect(@ModelAttribute BookingRequestContainer bookingRequest, Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
 
+        model.addAttribute("Flight", getSession(session).getLastViewedFlight());
+
+       /* bookingRequest.setFlight((Flight) model.getAttribute("Flight"));
+        bookingRequest.setBusSeats(getSession(session).getBusClassSeatList());
+        bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList());
+        bookingRequest.setFirSeats(getSession(session).getFirClassSeatList());
+        bookingRequest.setPmeSeats(getSession(session).getPmeClassSeatList());
+        getSession(session).addToCart(bookingRequest);*/
+
+        model.addAttribute("usr", getSession(session));
+
+        return "redirect:/cart";
+    }
 
     @RequestMapping("/cart/remove") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String removeFlightFromCart(@RequestParam String id, Model model, HttpSession session){
