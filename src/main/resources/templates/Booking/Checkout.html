@@ -120,7 +120,7 @@
                                         <td th:text="${br.getDepartureDate()}"></td>
                                         <td th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></td>
                                         <td th:text="${br.getTotalSeats()}"></td>
-                                        <td th:text="'$' + ${br.getPrice()}"></td>
+                                        <td class="price" th:data="${br.getPrice()}" th:text="'$' + ${br.getPrice()}"></td>
                                     </tr>
                                 </div>
                                 <tr>
@@ -230,8 +230,8 @@
 
     function updatePrice(){
         let price = 0;
-        $('select').each( function(){
-        price += ($(this).val() *1) * ($(this).attr('data')*1);
+        $('.price').each( function(){
+        price += ($(this).attr('data')*1);
     })
         price = Math.round((price + Number.EPSILON) * 100) / 100
 
