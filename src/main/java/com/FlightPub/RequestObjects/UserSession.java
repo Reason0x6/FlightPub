@@ -37,7 +37,7 @@ public class UserSession {
 
     @Getter
     @Setter
-    private Flight lastViewedFlight;
+    private List<Flight> lastViewedFlight;
 
     @Getter
     @Setter
@@ -159,5 +159,10 @@ public class UserSession {
     public void setPmeClassSeatListDirect(List<String[]> in) {
         pmeClassSeatList = new ArrayList<>();
         pmeClassSeatList.add(in);
+    }
+
+    public void setLastViewedFlightDirect(Flight in) {
+        lastViewedFlight = new ArrayList<>();
+        lastViewedFlight.add(in);
     }
 }

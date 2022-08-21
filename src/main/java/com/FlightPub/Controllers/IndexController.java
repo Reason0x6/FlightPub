@@ -290,7 +290,7 @@ public class IndexController {
         model.addAttribute("ID", id);
 
         // Updates the session
-        getSession(session).setLastViewedFlight(flight.get(0));
+        getSession(session).setLastViewedFlight(flight);
         getSession(session).setBusClassSeatList(businessClass);
         getSession(session).setEcoClassSeatList(economyClass);
         getSession(session).setFirClassSeatList(firstClass);
@@ -317,7 +317,7 @@ public class IndexController {
         model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
         model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
 
-        getSession(session).setLastViewedFlight(f);
+        getSession(session).setLastViewedFlightDirect(f);
         getSession(session).setBusClassSeatListDirect((List<String[]>) model.getAttribute("businessClass"));
         getSession(session).setEcoClassSeatListDirect((List<String[]>) model.getAttribute("economyClass"));
         getSession(session).setFirClassSeatListDirect((List<String[]>) model.getAttribute("firstClass"));
@@ -501,12 +501,21 @@ public class IndexController {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:login";
         }
+
         model.addAttribute("usr", getSession(session));
 
-        for (BookingRequest br : getSession(session).getCart()) {
-            br.setPrice(getBookingPrice(br));
-        }
+        List<BookingRequest> cart = getSession(session).getCart();
 
+        if(cart != null) {
+            for (int count = 0; count < cart.size();) {
+                if(cart.get(count).getTotalSeats() <= 0)
+                    getSession(session).removeFromCart(cart.get(count).getId());
+                else {
+                    cart.get(count).setPrice(getBookingPrice(cart.get(count)));
+                    count++;
+                }
+            }
+        }
 
         getSession(session).setFlightServices(flightServices);
         model.addAttribute("usr", getSession(session));
@@ -524,7 +533,7 @@ public class IndexController {
 
         model.addAttribute("Flight", getSession(session).getLastViewedFlight());
 
-        bookingRequest.setFlight((Flight) model.getAttribute("Flight"));
+        bookingRequest.setFlight(getSession(session).getLastViewedFlight().get(0));
         bookingRequest.setBusSeats(getSession(session).getBusClassSeatList().get(0));
         bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList().get(0));
         bookingRequest.setFirSeats(getSession(session).getFirClassSeatList().get(0));
@@ -542,11 +551,11 @@ public class IndexController {
             return "redirect:login";
         }
 
-        model.addAttribute("Flight", getSession(session).getLastViewedFlight());
+        List<Flight> flights = getSession(session).getLastViewedFlight();
         BookingRequest[] requests = bookingRequest.getBookingRequest();
-        List<Flight> flights = (List<Flight>) model.getAttribute("Flight");
+        model.addAttribute("Flight", flights);
 
-        for(int count = 0; count < requests.length; count++) {
+        for(int count = 0; count < bookingRequest.size(); count++) {
             requests[count].setFlight(flights.get(count));
             requests[count].setBusSeats(getSession(session).getBusClassSeatList().get(count));
             requests[count].setEcoSeats(getSession(session).getEcoClassSeatList().get(count));
@@ -554,7 +563,6 @@ public class IndexController {
             requests[count].setPmeSeats(getSession(session).getPmeClassSeatList().get(count));
             getSession(session).addToCart(requests[count]);
         }
-
 
         model.addAttribute("usr", getSession(session));
 

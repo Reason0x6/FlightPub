@@ -422,7 +422,7 @@
 
                   </div>
                   <div th:if="${usr.isLoggedIn()} == false">
-                      <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${Flight.get(i).getFlightID()}}" class="btn btn-success">Login to Book</a><Br><Br>
+                      <a type="submit" th:href="@{'/login?redirect=stopoverFlight?id=' + ${ID}}" class="btn btn-success">Login to Book</a><Br><Br>
                   </div>
 
                   <br><br>
