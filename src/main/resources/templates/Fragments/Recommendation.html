@@ -2,6 +2,7 @@
 <html lang="en"></html>
 
 <div class="row icon-box" data-aos="zoom-in-left" th:fragment="recommendation_fragment" id="recommendation_fragment">
+
     <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
     <div>
         <div class="form-floating">
@@ -20,19 +21,6 @@
     </div>
 
     <div>
-<!--        <div id="recommendationRow" class="row" style="padding-top: 10px;">-->
-<!--            <div class="col-sm-3" th:each="flight : ${reco}"  >-->
-<!--                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${flight.getDestinationCode()} + '.jpg'">-->
-<!--                    <img th:src="@{/assets/img/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>-->
-<!--                    <h2 style="font-size: 1.5em" th:text="${flight.getDepartureCode()} + ' to ' + ${flight.getDestinationCode()}"></h2>-->
-<!--                    <p><em><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span><span th:text="${flight.getDepartureString()}"></span><br>-->
-<!--                        <span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span><span th:text="${flight.getArrivalString()}"></span><br>-->
-<!--                        Airline: <span th:text="${flight.getAirlineCode()}"></span></em></p>-->
-<!--                    <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>-->
-<!--                </div>-->
-
-<!--            </div>-->
-<!--        </div>-->
         <div id="recommendationRow" class="row" style="padding-top: 10px;">
             <div class="col-sm-3" th:each="location : ${reco}"  >
                 <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
@@ -63,8 +51,55 @@
 
             </div>
         </div>
-        <div th:if="${reco} == null">
-            <p>There are currently no recommendations</p>
+        <div th:if="${reco} == null" class="row loading-skeleton">
+            <div class="col-sm-3">
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                    <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
+                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
+                    <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
+                    <p>
+                        TODO maybe add weather stats or similar if time
+                    <p>
+                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                    <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
+                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
+                    <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
+                    <p>
+                        TODO maybe add weather stats or similar if time
+                    <p>
+                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                    <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
+                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
+                    <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
+                    <p>
+                        TODO maybe add weather stats or similar if time
+                    <p>
+                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                    <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
+                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
+                    <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
+                    <p>
+                        TODO maybe add weather stats or similar if time
+                    <p>
+                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                </div>
+            </div>
         </div>
     </div>
 </div>
