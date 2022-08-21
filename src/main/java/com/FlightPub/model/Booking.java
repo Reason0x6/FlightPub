@@ -19,6 +19,10 @@ public class Booking {
     @Field("_id")
     private String id;
 
+    @Getter
+    @Field("accountEmail")
+    private String accountEmail;
+
     @Setter
     @Getter
     @Field("flightID")
@@ -37,8 +41,9 @@ public class Booking {
 
     public Booking() {}
 
-    public Booking(String flightID, String travellerID, String bookedSeat){
+    public Booking(String accountEmail, String flightID, String travellerID, String bookedSeat) {
 
+        this.accountEmail = accountEmail;
         this.flightID = flightID;
         this.travellerID = travellerID;
         this.seat = bookedSeat;

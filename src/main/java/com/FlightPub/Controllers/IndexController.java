@@ -600,7 +600,7 @@ public class IndexController {
     }
 
     @PostMapping("/checkout")
-    public String updateCheckout(@RequestParam String title, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String dob, @RequestParam(required = false) boolean saveTraveller, @RequestParam String seat ,@ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
+    public String updateCheckout(@RequestParam String title, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String dob, @RequestParam(required = false) boolean saveTraveller, @RequestParam String seat, @RequestParam String accountEmail, @ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
         if(!getSession(session).isLoggedIn()){
             return "redirect:login";
         }
@@ -615,11 +615,11 @@ public class IndexController {
             Booking booking;
             Traveller traveller;
             for (int i = 0; i < br.getAllSeatsList().size(); i++) {
-                traveller = new Traveller(title, firstName, lastName, dob, saveTraveller);
+                traveller = new Traveller(title, firstName, lastName, dob, saveTraveller, accountEmail);
                 if(traveller.getId() == null){
                     traveller.setTravellerID(new ObjectId());
                 }
-                booking = new Booking(br.getFlight().getFlightID(), traveller.getId(), seat);
+                booking = new Booking(accountEmail, br.getFlight().getFlightID(), traveller.getId(), seat);
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
                 }

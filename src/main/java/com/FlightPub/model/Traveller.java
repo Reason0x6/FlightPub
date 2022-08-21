@@ -44,8 +44,8 @@ public class Traveller {
 
     @Getter
     @Setter
-    @Field("seat")
-    private String seat;
+    @Field("accountEmail")
+    private String accountEmail;
 
     public Traveller() {
         this.title = "";
@@ -53,14 +53,16 @@ public class Traveller {
         this.lastName = "";
         this.dob = "";
         this.saveTraveller = false;
+        this.accountEmail = "";
     }
 
-    public Traveller(String title, String firstName, String lastName, String dob, boolean saveTraveller) {
+    public Traveller(String title, String firstName, String lastName, String dob, boolean saveTraveller, String accountEmail) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
         this.saveTraveller = saveTraveller;
+        this.accountEmail = accountEmail;
     }
 
     public void setTravellerID(ObjectId id){
