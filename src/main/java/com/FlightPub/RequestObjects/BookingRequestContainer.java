@@ -6,17 +6,7 @@ import lombok.Setter;
 public class BookingRequestContainer {
     @Getter
     @Setter
-    private BookingRequest bookingRequest0;
+    private BookingRequest[] bookingRequest = new BookingRequest[4];
 
-    @Getter
-    @Setter
-    private BookingRequest bookingRequest1;
-
-    @Getter
-    @Setter
-    private BookingRequest bookingRequest2;
-
-    @Getter
-    @Setter
-    private BookingRequest bookingRequest3;
+    public BookingRequestContainer() {}
 }

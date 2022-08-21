@@ -291,10 +291,10 @@ public class IndexController {
 
         // Updates the session
         getSession(session).setLastViewedFlight(flight.get(0));
-        getSession(session).setBusClassSeatList(businessClass.get(0));
-        getSession(session).setEcoClassSeatList(economyClass.get(0));
-        getSession(session).setFirClassSeatList(firstClass.get(0));
-        getSession(session).setPmeClassSeatList(premiumEconomy.get(0));
+        getSession(session).setBusClassSeatList(businessClass);
+        getSession(session).setEcoClassSeatList(economyClass);
+        getSession(session).setFirClassSeatList(firstClass);
+        getSession(session).setPmeClassSeatList(premiumEconomy);
 
         return "StopoverFlight";
     }
@@ -318,10 +318,10 @@ public class IndexController {
         model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
 
         getSession(session).setLastViewedFlight(f);
-        getSession(session).setBusClassSeatList((List<String[]>) model.getAttribute("businessClass"));
-        getSession(session).setEcoClassSeatList((List<String[]>) model.getAttribute("economyClass"));
-        getSession(session).setFirClassSeatList((List<String[]>) model.getAttribute("firstClass"));
-        getSession(session).setPmeClassSeatList((List<String[]>) model.getAttribute("premiumEconomy"));
+        getSession(session).setBusClassSeatListDirect((List<String[]>) model.getAttribute("businessClass"));
+        getSession(session).setEcoClassSeatListDirect((List<String[]>) model.getAttribute("economyClass"));
+        getSession(session).setFirClassSeatListDirect((List<String[]>) model.getAttribute("firstClass"));
+        getSession(session).setPmeClassSeatListDirect((List<String[]>) model.getAttribute("premiumEconomy"));
 
         return "Flight";
     }
@@ -525,10 +525,10 @@ public class IndexController {
         model.addAttribute("Flight", getSession(session).getLastViewedFlight());
 
         bookingRequest.setFlight((Flight) model.getAttribute("Flight"));
-        bookingRequest.setBusSeats(getSession(session).getBusClassSeatList());
-        bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList());
-        bookingRequest.setFirSeats(getSession(session).getFirClassSeatList());
-        bookingRequest.setPmeSeats(getSession(session).getPmeClassSeatList());
+        bookingRequest.setBusSeats(getSession(session).getBusClassSeatList().get(0));
+        bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList().get(0));
+        bookingRequest.setFirSeats(getSession(session).getFirClassSeatList().get(0));
+        bookingRequest.setPmeSeats(getSession(session).getPmeClassSeatList().get(0));
         getSession(session).addToCart(bookingRequest);
 
         model.addAttribute("usr", getSession(session));
@@ -543,13 +543,18 @@ public class IndexController {
         }
 
         model.addAttribute("Flight", getSession(session).getLastViewedFlight());
+        BookingRequest[] requests = bookingRequest.getBookingRequest();
+        List<Flight> flights = (List<Flight>) model.getAttribute("Flight");
 
-       /* bookingRequest.setFlight((Flight) model.getAttribute("Flight"));
-        bookingRequest.setBusSeats(getSession(session).getBusClassSeatList());
-        bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList());
-        bookingRequest.setFirSeats(getSession(session).getFirClassSeatList());
-        bookingRequest.setPmeSeats(getSession(session).getPmeClassSeatList());
-        getSession(session).addToCart(bookingRequest);*/
+        for(int count = 0; count < requests.length; count++) {
+            requests[count].setFlight(flights.get(count));
+            requests[count].setBusSeats(getSession(session).getBusClassSeatList().get(count));
+            requests[count].setEcoSeats(getSession(session).getEcoClassSeatList().get(count));
+            requests[count].setFirSeats(getSession(session).getFirClassSeatList().get(count));
+            requests[count].setPmeSeats(getSession(session).getPmeClassSeatList().get(count));
+            getSession(session).addToCart(requests[count]);
+        }
+
 
         model.addAttribute("usr", getSession(session));
 
