@@ -92,7 +92,7 @@ public class IndexController {
 
         model.addAttribute("searchLocation", locationServices.listAll());
         model.addAttribute("LoadingRecommendation", true);
-
+        model.addAttribute("MostPop", locationServices.topTen());
         return "index";
     }
 

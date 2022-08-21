@@ -91,6 +91,11 @@
 }						</style>
     <div class="row content" data-aos="fade-up">
       <div class="col-md-12">
+        <style>#chartdiv {
+          width: 100%;
+          height: 600px;
+        }
+        </style>
         <div id="chartdiv"></div>
       </div>
       <!-- <div class="col-md-12">
@@ -172,251 +177,140 @@
 <lower th:replace="Fragments/Footer"> </lower>
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
+
+<script th:inline="javascript">
+    am4core.useTheme(am4themes_animated);
+
+    // Create map instance
+    var chart = am4core.create("chartdiv", am4maps.MapChart);
+
+    // Set map definition
+    chart.geodata = am4geodata_worldHigh;
+
+    // Set projection
+    chart.projection = new am4maps.projections.Miller();
+
+    // Create map polygon series
+    var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+
+    // Exclude Antartica
+    polygonSeries.exclude = ["AQ"];
+
+    // Make map load polygon (like country names) data from GeoJSON
+    polygonSeries.useGeodata = true;
+
+    // Use series data to set custom zoom points for countries
+    polygonSeries.data = [];
+
+    polygonSeries.dataFields.zoomLevel = "zoomLevel";
+    polygonSeries.dataFields.zoomGeoPoint = "zoomGeoPoint";
+
+
+    // Configure series
+    var polygonTemplate = polygonSeries.mapPolygons.template;
+    polygonTemplate.tooltipText = "{name}";
+    polygonTemplate.fill = am4core.color("#74B266");
+
+    // Create hover state and set alternative fill color
+    var hs = polygonTemplate.states.create("hover");
+    hs.properties.fill = am4core.color("#367B25");
+
+
+
+
+    var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+
+    var imageSeriesTemplate = imageSeries.mapImages.template;
+    var circle = imageSeriesTemplate.createChild(am4core.Circle);
+    circle.radius = 8;
+    circle.fill = am4core.color("#e03e96");
+    circle.stroke = am4core.color("#FFFFFF");
+    circle.strokeWidth = 2;
+    circle.nonScaling = true;
+    circle.tooltipText = "{title}";
+
+
+    // Set property fields
+    imageSeriesTemplate.propertyFields.latitude = "latitude";
+    imageSeriesTemplate.propertyFields.longitude = "longitude";
+
+    // Add data for the three cities
+    imageSeries.data = [
+      /*[# th:each="Location : ${MostPop}"]*/
+
+      {
+        "latitude": [[${Location.getLatitude()}]],
+        "longitude": [[${Location.getLongitude()}]],
+        "title": [[${Location.getLocation()}]]
+      },
+
+      /*[/]*/
+    ];
+
+    // Add line series
+    var lineSeries = chart.series.push(new am4maps.MapLineSeries());
+    lineSeries.mapLines.template.strokeWidth = 3;
+    lineSeries.mapLines.template.stroke = am4core.color("#e03e96");
+
+    locations = [
+      /*[# th:each="Location : ${MostPop}"]*/
+      {latitude: [[${Location.getLatitude()}]], longitude: [[${Location.getLongitude()}]]},
+
+      /*[/]*/
+    ];
+
+    ldata = []
+
+    for (var i = 0; i < locations.length; i++) {
+      if (i === (locations.length - 1)) {
+        locations.push({latitude: locations[i].latitude, longitude: locations[i].longitude});
+        d = [
+          {latitude: locations[i].latitude, longitude: locations[i].longitude},
+          {latitude: locations[i + 1].latitude, longitude: locations[i + 1].longitude},
+        ];
+        ldata.push(d);
+        break;
+      } else {
+        d = [
+          {latitude: locations[i].latitude, longitude: locations[i].longitude},
+          {latitude: locations[i + 1].latitude, longitude: locations[i + 1].longitude},
+        ];
+        ldata.push(d);
+      }
+
+    }
+
+
+    lineSeries.data = [{
+      "multiGeoLine": ldata
+    }];
+
+
+</script>
 <script>
-	/**
- * SVG path for target icon
- */
-var targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
 
-/**
- * SVG path for plane icon
- */
-var planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
+  var polygonTemplate = imageSeries.mapImages.template;
+  polygonTemplate.events.on("hit", function(ev) {
+    // zoom to an object
 
-/**
- * Create the map
- */
-var map = AmCharts.makeChart( "chartdiv", {
-  "type": "map",
-"theme": "light",
+    // get object info
+    $('#destination').val(ev.target.dataItem.dataContext.title);
+    $('html, body').animate({
+      scrollTop: $("#search").offset().top
+    }, 1000);
 
-  "projection": "winkel3",
-  "dataProvider": {
-    "map": "worldLow",
+    $('#destination').css( "border", "1px solid rgb(0,128,0)" );
+    $('#origin').focus().select();
 
-    "lines": [ {
-      "id": "line",
-      "arc": -0.35,
-      "alpha": 0.3,
-      "latitudes": [ 23, 43.8163 ],
-      "longitudes": [ -82, -79.4287 ]
-    },{
-      "id": "line0",
-      "arc": -0.35,
-      "alpha": 0.3,
-      "latitudes": [ 52, 43.8163 ],
-      "longitudes": [ 4, -79.4287 ]
-    },{
-      "id": "line1",
-      "arc": -0.85,
-      "alpha": 0.3,
-      "latitudes": [ 52,41 ],
-      "longitudes": [ 4, 28 ]
-    }, {
-      "id": "line2",
-      "arc": 0.45,
-      "alpha": 0.3,
-      "latitudes": [ 41, 23 ],
-      "longitudes": [ 28, -82 ]
-    }, {
-      "id": "line3",
-      "arc": 0.45,
-      "alpha": 0.3,
-      "latitudes": [ 41, 34 ],
-      "longitudes": [ 28, -118 ]
-    }, {
-      "id": "line4",
-      "arc": 0.45,
-      "alpha": 0.3,
-      "latitudes": [ 23, 34 ],
-      "longitudes": [ -82, -118 ]
-    },{
-      "id": "line6",
-      "arc": 0.79,
-      "alpha": 0.3,
-      "latitudes": [ -33, 34 ],
-      "longitudes": [ 151, -118 ]
-    }, {
-      "id": "line5",
-      "arc": -0.45,
-      "alpha": 0.3,
-      "latitudes": [ 43.8163, 34 ],
-      "longitudes": [ -79.4287, -118 ]
-    }, {
-      "id": "line7",
-      "arc": 0.45,
-      "alpha": 0.3,
-      "latitudes": [ 23, 13.7 ],
-      "longitudes": [ -82, 100.5 ]
-    }, {
-      "id": "line8",
-      "arc": -0.75,
-      "alpha": 0.3,
-      "latitudes": [ 52, 13.7 ],
-      "longitudes": [ 4, 100.5 ]
-    }],
-    "images": [ {
-      "svgPath": targetSVG,
-      "title": "Toronto",
-      "latitude": 43.8163,
-      "longitude": -79.4287
-    }, {
-      "svgPath": targetSVG,
-      "title": "Los Angeles",
-      "latitude": 34.3,
-      "longitude": -118.15
-    }, {
-      "svgPath": targetSVG,
-      "title": "Havana",
-      "latitude": 23,
-      "longitude": -82
-    }, {
-      "svgPath": targetSVG,
-      "title": "Bangkok",
-      "latitude": 13.7,
-      "longitude": 100.5
-    }, {
-      "svgPath": targetSVG,
-      "title": "Sydney",
-      "latitude": -33.86,
-      "longitude": 151
-    },{
-      "svgPath": targetSVG,
-      "title": "Istanbul",
-      "latitude": 41,
-      "longitude": 28
-    },{
-      "svgPath": targetSVG,
-      "title": "Amsterdam",
-      "latitude": 52,
-      "longitude": 4
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 0,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line2",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.03,
-      "positionScale": 1.3
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 0,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line4",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.03,
-      "positionScale": 1.3
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 0,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line3",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.03,
-      "positionScale": 1.3
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 0,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line1",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.03,
-      "positionScale": 1.8
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 1,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line5",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.02,
-      "positionScale": 1.8
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 1,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line0",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.02,
-      "positionScale": 1.8
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 1,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.02,
-      "positionScale": 1.8
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 1,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line6",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.04,
-      "positionScale": 2
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 1,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line7",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.04,
-      "positionScale": 2
-    }, {
-      "svgPath": planeSVG,
-      "positionOnLine": 1,
-      "color": "#585869",
-      "animateAlongLine": true,
-      "lineId": "line8",
-      "flipDirection": true,
-      "loop": true,
-      "scale": 0.03,
-      "positionScale": 2
-    } ]
-  },
+  });
 
-  "areasSettings": {
-    "unlistedAreasColor": "#8dd9ef"
-  },
 
-  "imagesSettings": {
-    "color": "#585869",
-    "rollOverColor": "#585869",
-    "selectedColor": "#585869",
-    "pauseDuration": 0.2,
-    "animationDuration": 5,
-    "adjustAnimationSpeed": true
-  },
+  $('circle').on('click', function(){
+   console.log($(this));
+  });
+</script>
 
-  "linesSettings": {
-    "color": "#585869",
-    "alpha": 0.4
-  },
 
-  "export": {
-    "enabled": false
-  }
-
-} );
-	</script>
 </body>
 
 </html>
