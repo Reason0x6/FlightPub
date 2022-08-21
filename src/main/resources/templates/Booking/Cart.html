@@ -54,12 +54,12 @@
                             <tbody>
                             <div th:each="br : ${cart}">
                                 <tr >
-                                    <th scope="row" th:text="${br.getFlight().getFlightNumber()}"></th>
-                                    <th th:text="${br.getDepartureDate()}"></th>
-                                    <th th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></th>
-                                    <th th:text="${br.getTotalSeats()}"></th>
-                                    <th th:text="'$' + ${br.getPrice()}"></th>
-                                    <th><a th:href="@{'/cart/remove?id=' + ${br.getId()}}" class="btn btn-danger">Remove Flight</a></th>
+                                    <td scope="row" th:text="${br.getFlight().getFlightNumber()}"></td>
+                                    <td th:text="${br.getDepartureDate()}"></td>
+                                    <td th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></td>
+                                    <td th:text="${br.getTotalSeats()}"></td>
+                                    <td th:text="'$' + ${br.getPrice()}"></td>
+                                    <td><a th:href="@{'/cart/remove?id=' + ${br.getId()}}" class="btn btn-danger">Remove Flight</a></td>
                                 </tr>
                             </div>
 

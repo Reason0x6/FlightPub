@@ -411,21 +411,20 @@
 <!-- Credit Card Form -->
 <!-- <form id="payment" th:action="@{/bookingConfirmation}" method="post"> -->
 <form id="payment" th:action="@{/checkout}">
-    <div>
-    <!-- Card Number [Input] -->
-    <label for="card-number">Card Number</label>
-    <input type="text" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"><br>
-    <label for="card-name">Name on card</label>
-    <input type="text" class="form-control" id="card-name" placeholder="John J Smith" required><br>
+    <div id="payment">
+        <!-- Card Number [Input] -->
+        <label for="card-number">Card Number</label>
+        <input type="text" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"><br>
+        <label for="card-name">Name on card</label>
+        <input type="text" class="form-control" id="card-name" placeholder="John J Smith" required><br>
     </div>
-
     <div>
-    <!-- Card Expiry [Input] -->
-    <label for="card-expiry">Card Expiry</label>
-    <input type="number" id="card-expiry" class="form-control" name="card-number" placeholder="02/22" maxlength="4"><br>
-    <!-- Card Security Code [Input] -->
-    <label for="card-security">3-digit Security Code</label>
-    <input type="number" id="card-security" class="form-control" name="card-security" placeholder="XXX" maxlength="3"><br>
+        <!-- Card Expiry [Input] -->
+        <label for="card-expiry">Card Expiry</label>
+        <input type="number" id="card-expiry" class="form-control" name="card-number" placeholder="02/22" maxlength="4"><br>
+        <!-- Card Security Code [Input] -->
+        <label for="card-security">3-digit Security Code</label>
+        <input type="number" id="card-security" class="form-control" name="card-security" placeholder="XXX" maxlength="3"><br>
     </div>
     <!-- Submit Payment Request -->
     <a href="/bookingConfirmation" class="btn btn-success" onclick="validateCreditCard()" style="max-width: 200px">Pay Now</a>
