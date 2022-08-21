@@ -81,14 +81,14 @@ public class StopOver {
     // Thymeleaf methods
     public String getOrigin() {
         if(flights != null && !flights.isEmpty())
-            return flights.get(0).getDepartureCode();
+            return flights.get(0).getDepartureName();
         else
             return null;
     }
 
     public String getDestination() {
         if(flights != null && !flights.isEmpty())
-            return flights.get(flights.size()-1).getDestinationCode();
+            return flights.get(flights.size()-1).getDestinationName();
         else
             return null;
     }
@@ -96,11 +96,11 @@ public class StopOver {
     public String getAllStops() {
         String output = "";
         for(int count = 0; count < flights.size(); count++) {
-            String stopover = flights.get(count).getStopoverCode();
+            String stopover = flights.get(count).getStopoverName();
             if(stopover != null)
                 output += ", "+stopover;
             if(count != flights.size()-1)
-                output += ", "+flights.get(count).getDepartureCode();
+                output += ", "+flights.get(count).getDepartureName();
         }
 
         if(!output.equals(""))

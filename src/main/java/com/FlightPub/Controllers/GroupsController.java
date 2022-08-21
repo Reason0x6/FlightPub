@@ -105,6 +105,7 @@ public class GroupsController {
         model.addAttribute("usr", getSession(session));
         return "User/Group";
     }
+    /*To Do: Making separate branch for the time being. */
 
     /**
      * Checks if a user can be added to a group. Then returns a html fragment of all invited users
@@ -128,7 +129,11 @@ public class GroupsController {
         // If invited user is already in group
         if (groupServices.isUserInGroup(inviteUser)) {
             // TODO send to this front end
-            System.out.println("User is already in group");
+            model.addAttribute("Error", "User is already in group");
+           // System.out.println("User is already in group");
+
+            // Fetch the th:fragment="invite_user_form_error_fragment" and return it
+            return "Fragments/Groups/InviteList :: invite_user_form_error_fragment";
         }
         // If valid user
         else if (usrServices.getById(inviteUser) != null) {
@@ -141,7 +146,11 @@ public class GroupsController {
         // If these checks fail not a valid user
         else {
             // TODO send this to the front end instead
-            System.out.println("Not a valid user");
+            model.addAttribute("Error", "Not a valid user");
+
+            // Fetch the th:fragment="invite_user_form_error_fragment" and return it
+            return "Fragments/Groups/InviteList :: invite_user_form_error_fragment";
+            //System.out.println("Not a valid user");
         }
 
         // Get list of all invited pending and declined users

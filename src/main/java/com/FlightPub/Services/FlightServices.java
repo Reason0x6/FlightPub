@@ -70,7 +70,17 @@ public class FlightServices{
             cal.setTime(new Date(System.currentTimeMillis()));
             cal.add(Calendar.MINUTE, 5);
             Date time = cal.getTime();
-
+            for(Flight x: flights){
+                if(x.getStopoverCode() != null){
+                    x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            locationServices.getById(x.getStopoverCode()).getLocation());
+                }else{
+                   x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            "");
+                }
+            }
             Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, flights);
 
             flightCache.put("ALL", input);
@@ -82,8 +92,16 @@ public class FlightServices{
     public Flight getById(String id){
         if(id == null)
             return null;
-        else
-            return flightRepo.findById(id).orElse(null);
+        else{
+            Flight f =  flightRepo.findById(id).orElse(null);
+            if(f != null){
+                f.loadNames(locationServices.getById(f.getDepartureCode()).getLocation(),
+                        locationServices.getById(f.getDestinationCode()).getLocation(),
+                        "");
+            }
+            return f;
+        }
+
     }
 
     public Flight saveOrUpdate(Flight flight){
@@ -143,6 +161,17 @@ public class FlightServices{
             cal.setTime(new Date(System.currentTimeMillis()));
             cal.add(Calendar.MINUTE, 5);
             Date time = cal.getTime();
+            for(Flight x: flights){
+                if(x.getStopoverCode() != null){
+                    x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            locationServices.getById(x.getStopoverCode()).getLocation());
+                }else{
+                   x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            "");
+                }
+            }
 
             Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, flights);
 
@@ -324,6 +353,17 @@ public class FlightServices{
             cal.setTime(new Date(System.currentTimeMillis()));
             cal.add(Calendar.MINUTE, 5);
             Date time = cal.getTime();
+            for(Flight x: out){
+                if(x.getStopoverCode() != null){
+                    x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            locationServices.getById(x.getStopoverCode()).getLocation());
+                }else{
+                   x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            "");
+                }
+            }
 
             Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
 
@@ -344,6 +384,17 @@ public class FlightServices{
             cal.setTime(new Date(System.currentTimeMillis()));
             cal.add(Calendar.MINUTE, 5);
             Date time = cal.getTime();
+            for(Flight x: out){
+                if(x.getStopoverCode() != null){
+                    x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            locationServices.getById(x.getStopoverCode()).getLocation());
+                }else{
+                   x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            "");
+                }
+            }
 
             Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
 
@@ -364,6 +415,18 @@ public class FlightServices{
             cal.setTime(new Date(System.currentTimeMillis()));
             cal.add(Calendar.MINUTE, 5);
             Date time = cal.getTime();
+            for(Flight x: out){
+                if(x.getStopoverCode() != null){
+                    x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            locationServices.getById(x.getStopoverCode()).getLocation());
+                }else{
+                   x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            "");
+                }
+
+            }
 
             Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
 
@@ -383,6 +446,17 @@ public class FlightServices{
             cal.setTime(new Date(System.currentTimeMillis()));
             cal.add(Calendar.MINUTE, 5);
             Date time = cal.getTime();
+            for(Flight x: out){
+                if(x.getStopoverCode() != null){
+                    x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            locationServices.getById(x.getStopoverCode()).getLocation());
+                }else{
+                   x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            "");
+                }
+            }
 
             Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
 
@@ -404,6 +478,17 @@ public class FlightServices{
             cal.setTime(new Date(System.currentTimeMillis()));
             cal.add(Calendar.MINUTE, 5);
             Date time = cal.getTime();
+            for(Flight x: out){
+                if(x.getStopoverCode() != null){
+                    x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            locationServices.getById(x.getStopoverCode()).getLocation());
+                }else{
+                   x.loadNames(locationServices.getById(x.getDepartureCode()).getLocation(),
+                            locationServices.getById(x.getDestinationCode()).getLocation(),
+                            "");
+                }
+            }
 
             Map.Entry<Date, List<Flight>> input = new AbstractMap.SimpleEntry<>(time, out);
 
@@ -419,16 +504,21 @@ public class FlightServices{
 
         List<Flight> out = flightRepo.findByFlightNumberAndDeparture(flightNumber, departure);
 
-        if(!out.isEmpty())
+        if(!out.isEmpty()){
+            out.get(0).loadNames(locationServices.getById(out.get(0).getDepartureCode()).getLocation(),
+                    locationServices.getById(out.get(0).getDestinationCode()).getLocation(),
+                    locationServices.getById(out.get(0).getStopoverCode()).getLocation());
             return out.get(0);
-        else
+        }
+        else{
             return null;
+        }
     }
 
     public void invalidate(){
-
         flightCache = new HashMap<>();
         availCache = new HashMap<>();
+        priceCache = new HashMap<>();
 
     }
 }
