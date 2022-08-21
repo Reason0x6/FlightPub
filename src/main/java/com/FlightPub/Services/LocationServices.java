@@ -113,6 +113,17 @@ public class LocationServices {
         return null;
     }
 
+    public List<Location> topTen() {
+        List<Location> out = locationRepo.findAllByOrderByPopularityAsc();
+        System.out.println(out);
+        if (!out.isEmpty()) {
+            return out.subList(0, 10);
+        }else{
+           out = locationRepo.findAll().subList(0, 10);
+        }
+        return null;
+    }
+
     /**
      * Finds a location
      * @param locationName name of location to find

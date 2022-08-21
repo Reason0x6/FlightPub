@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="Fragments/Head"> </head>
+<header th:replace="Fragments/Header"> </header>
+<body>
+<!-- ======= Hero Section ======= -->
+<main id="main">
+  <!-- ======= Services Section ======= -->
+  <section id = "flight" class = "services">
+    <div class="container">
+      <style>
+        input, select{
+          width: 45%;
+          max-width: 250px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 10px;
+        }
+        .btn-search{
+          margin-top: -3px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 10px;
+        }
+      </style>
+      <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+        <h2>Explore Together</h2>
+        <p>Your Selected Flight</p>
+      </div>
+
+      <form th="seatSelection" name="seatSelection" th:action="@{/cart/indirect}" th:object="${BookingRequestContainer}" method="post">
+          <div th:each="i: ${#numbers.sequence(0, Flight.size()-1)}">
+              <div class="card l-1" style="padding: 10px 0 0 20px;" >
+                  <div class="row" style="padding-top: 10px;">
+                      <div class="col-sm-4">
+                          <h3 th:text="'Leg ' + ${i+1}"></h3>
+                          <p><b>Departs: </b><span th:text="${Flight.get(i).getDepartureName()}"></span> @ <span th:text="${Flight.get(i).getDepartureString()}"></span></p>
+                          <p><b>Arrives: </b><span th:text="${Flight.get(i).getDestinationName()}"></span>  @  <span th:text="${Flight.get(i).getArrivalString()}"></span></p>
+                          <p><b>Airline: </b><span th:text="${Flight.get(i).getAirlineCode()}"></span></p>
+                          <div th:if="${Flight.get(i).getStopoverCode() != null}">
+                              <p><b>Via: </b><span th:text="${Flight.get(i).getStopoverCode()}"></span></p>
+                          </div>
+                      </div>
+                      <div class="col-sm-8">
+                          <style>#chartdiv {
+                              width: 100%;
+                              height: 200px;
+                          }
+                          </style>
+                          <div th:id="'chartdiv'+${i}"></div>
+                      </div>
+                  </div>
+
+                  <p><b>Available Seats on <span th:text="${Flight.get(i).getFlightNumber()}"></span></b></p>
+                  <div class="accordion" th:id="'accordionExample'+${i}">
+                      <div class="accordion-item">
+                          <h2 class="accordion-header" th:id="'headingFC'+${i}">
+                              <button class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapseFC'+${i}" aria-expanded="false" th:aria-controls="'collapseFC'+${i}">
+                                  First Class
+                              </button>
+                          </h2>
+                          <div th:id="'collapseFC'+${i}" class="accordion-collapse collapse" th:aria-labelledby="'headingFC'+${i}" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                  <div class="row">
+                                      <div th:id="'firSeatsAvail'+${i}" th:each="availSeats:${firstClass.get(i)}" class="col-md-4">
+                                          <p>
+                                              <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                              <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                              <b>Price per Seat: </b><span th:text="'$' + ${availSeats[3]}"></span></br>
+                                          </p>
+                                          <span th:if="${availSeats[0] == 'Standard'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'firStandard'+${i}" th:name="'bookingRequest['+${i}+'].firStandard'">
+                                                    <option value="" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          <span th:if="${availSeats[0] == 'Platinum'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'firPlatinum'+${i}" th:name="'bookingRequest['+${i}+'].firPlatinum'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          <span th:if="${availSeats[0] == 'Long Distance'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'firLongDistance'+${i}" th:name="'bookingRequest['+${i}+'].firLongDistance'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          <span th:if="${availSeats[0] == 'Standby'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'firStandby'+${i}" th:name="'bookingRequest['+${i}+'].firStandby'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          <span th:if="${availSeats[0] == 'Premium Discounted'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'firPremDisc'+${i}" th:name="'bookingRequest['+${i}+'].firPremDisc'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          <span th:if="${availSeats[0] == 'Discounted'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'firDiscounted'+${i}" th:name="'bookingRequest['+${i}+'].firDiscounted'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          <span th:if="${availSeats[0] == 'Premium'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'firPremium'+${i}" th:name="'bookingRequest['+${i}+'].firPremium'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="accordion-item">
+                              <h2 class="accordion-header" th:id="'headingBC'+${i}">
+                                  <button class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapseBC'+${i}" aria-expanded="false" th:aria-controls="'collapseBC'+${i}">
+                                      Business Class
+                                  </button>
+                              </h2>
+                              <div th:id="'collapseBC'+${i}" class="accordion-collapse collapse" th:aria-labelledby="'headingBC'+${i}" data-bs-parent="#accordionExample">
+                                  <div class="accordion-body">
+                                      <div class="row">
+                                          <div th:each="availSeats:${businessClass.get(i)}" class="col-md-4">
+                                              <p>
+                                                  <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                                  <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                                  <b>Price per Seat: </b><span th:text="'$' + ${availSeats[3]}"></span></br>
+                                              </p>
+                                              <span th:if="${availSeats[0] == 'Standard'}">
+                                                <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'busStandard'+${i}" th:name="'bookingRequest['+${i}+'].busStandard'">
+                                                    <option value="" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Platinum'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'busPlatinum'+${i}" th:name="'bookingRequest['+${i}+'].busPlatinum'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Long Distance'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'busLongDistance'+${i}" th:name="'bookingRequest['+${i}+'].busLongDistance'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Standby'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'busStandby'+${i}" th:name="'bookingRequest['+${i}+'].busStandby'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Premium Discounted'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'busPremDisc'+${i}" th:name="'bookingRequest['+${i}+'].busPremDisc'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Discounted'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'busDiscounted'+${i}" th:name="'bookingRequest['+${i}+'].busDiscounted'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Premium'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'busPremium'+${i}" th:name="'bookingRequest['+${i}+'].busPremium'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="accordion-item">
+                              <h2 class="accordion-header" th:id="'headingOne'+${i}">
+                                  <button class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapseOne'+${i}" aria-expanded="false" th:aria-controls="'collapseOne'+${i}">
+                                      Premium Economy
+                                  </button>
+                              </h2>
+                              <div th:id="'collapseOne'+${i}" class="accordion-collapse collapse" th:aria-labelledby="'headingOne'+${i}" data-bs-parent="#accordionExample">
+                                  <div class="accordion-body">
+                                      <div class="row">
+                                          <div th:each="availSeats:${premiumEconomy.get(i)}" class="col-md-4">
+                                              <p>
+
+                                                  <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                                  <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                                  <b>Price per Seat: </b><span th:text="'$' + ${availSeats[3]}"></span></br>
+                                              </p>
+                                              <span th:if="${availSeats[0] == 'Standard'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'pmeStandard'+${i}" th:name="'bookingRequest['+${i}+'].pmeStandard'">
+                                                    <option value="" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Platinum'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'pmePlatinum'+${i}" th:name="'bookingRequest['+${i}+'].pmePlatinum'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Long Distance'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'pmeLongDistance'+${i}" th:name="'bookingRequest['+${i}+'].pmeLongDistance'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Standby'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'pmeStandby'+${i}" th:name="'bookingRequest['+${i}+'].pmeStandby'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Premium Discounted'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'pmePremDisc'+${i}" th:name="'bookingRequest['+${i}+'].pmePremDisc'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Discounted'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'pmeDiscounted'+${i}" th:name="'bookingRequest['+${i}+'].pmeDiscounted'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Premium'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'pmePremium'+${i}" th:name="'bookingRequest['+${i}+'].pmePremium'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="accordion-item">
+                              <h2 class="accordion-header" th:id="'headingEconomy'+${i}">
+                                  <button class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapseEconomy'+${i}" aria-expanded="false" th:aria-controls="'collapseEconomy'+${i}">
+                                      Economy
+                                  </button>
+                              </h2>
+                              <div th:id="'collapseEconomy'+${i}" class="accordion-collapse collapse" th:aria-labelledby="'headingEconomy'+${i}" data-bs-parent="#accordionExample">
+                                  <div class="accordion-body">
+                                      <div class="row">
+                                          <div th:each="availSeats:${economyClass.get(i)}" class="col-md-4">
+                                              <p>
+                                                  <b>Ticket Type: </b><span th:text="${availSeats[0]}"></span></br>
+                                                  <b>Number of Seats Available: </b><span th:text="${availSeats[1]}"></span></br>
+                                                  <b>Price per Seat: </b><span th:id="'ecoSeatPrice'+${i}" th:text="${availSeats[3]}"></span></br>
+                                              </p>
+                                              <span th:if="${availSeats[0] == 'Standard'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'ecoStandard'+${i}" th:name="'bookingRequest['+${i}+'].ecoStandard'">
+                                                    <option value="" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Platinum'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'ecoPlatinum'+${i}" th:name="'bookingRequest['+${i}+'].ecoPlatinum'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Long Distance'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'ecoLongDistance'+${i}" th:name="'bookingRequest['+${i}+'].ecoLongDistance'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Standby'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'ecoStandby'+${i}" th:name="'bookingRequest['+${i}+'].ecoStandby'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Premium Discounted'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'ecoPremDisc'+${i}" th:name="'bookingRequest['+${i}+'].ecoPremDisc'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Discounted'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'ecoDiscounted'+${i}" th:name="'bookingRequest['+${i}+'].ecoDiscounted'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                              <span th:if="${availSeats[0] == 'Premium'}">
+                                                 <select th:class="${i}"  th:data="${availSeats[3]}" th:id="'ecoPremium'+${i}" th:name="'bookingRequest['+${i}+'].ecoPremium'">
+                                                    <option value="0" selected>-- Select --</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+<br><br>
+              </div>
+          </div>
+
+          <p><b>Total Seats: </b><span th:id="'totalSeats'">0</span></p>
+          <p th:id="'showTotal'"><b>Total Cost:</b> $<span th:id="'cost'">0</span></p>
+          <p id="error" style="display: none; color: red">Please select the same number of tickets on each leg. <br/><br/></p>
+          <div th:if="${usr.isLoggedIn()} != false">
+              <button id="submitter" type="submit" class="btn btn-primary" >Add to Cart</button>
+          </div>
+          <div th:if="${usr.isLoggedIn()} == false">
+              <a type="submit"  th:href="@{'/login?redirect=stopoverFlight?id=' + ${ID}}" class="btn btn-success">Login to Book</a><Br><Br>
+          </div>
+
+          <br><br>
+      </form>
+
+      <hr />
+      <Br><Br>
+      <div class="row">
+        <div class="col-md-6" style="padding-left: 20px; ">
+          <div class="section-title" data-aos="zoom-out" >
+            <h2>Premium Experience</h2>
+            <p>What To Expect With QANTAS</p>
+          </div>
+          <p>
+            Qantas' Fly Well program brings together a number of wellbeing measures to give you peace-of-mind from takeoff to touchdown.
+            <br><br>
+            Fly away knowing the safety, health and wellbeing of customers and people is and always will be, the highest priority. Thanks for respecting each other and our team, and helping to create a positive environment for everyone.
+            <br><br>
+            Note: products and services featured may vary at airport locations.
+          </p>
+        </div>
+        <div class="col-md-6" style="padding-left: 20px;">
+          <div class="section-title" data-aos="zoom-out" >
+            <h2>Sharing is Caring</h2>
+            <p>Get The Gang Together</p>
+          </div>
+          <div class="card l-1" data-aos="zoom-in-left" style="margin-left: 30px;">
+            <p>Did you know that Flight Hub allows multiple accounts to join together as a group?!</p>
+            <p>Create memories together, with an easy to use group booking feature, where you can collaborate and decide on what suits you, then, once you're all set, allocate seating together  but pay separately!</p>
+            <div th:if="${usr.isLoggedIn()} == false">
+              <a type="submit" th:href="@{'/login?redirect=flight?id=' + ${ID}}" class="btn btn-success">Login to Create a Group</a><Br><Br>
+            </div>
+            <div th:if="${usr.isLoggedIn()} == true">
+              <form th:replace="Fragments/Forms :: #createGroupForm"> </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </div>
+  </section>
+  <!-- End Cta Section -->
+  <!-- ======= Footer ======= -->
+  <lower th:replace="Fragments/Footer"> </lower>
+  <!-- Template Main JS File -->
+</main>
+</body>
+<script th:inline="javascript">
+
+  function updatePrice(){
+    let seats = 0;
+    let price = 0;
+    $('select').each( function(){
+      price += ($(this).val() *1) * ($(this).attr('data')*1);
+      seats += ($(this).val() *1);
+    })
+    price = Math.round((price + Number.EPSILON) * 100) / 100
+
+    $('#cost').html(price);
+    $('#totalSeats').html(seats);
+  }
+
+  $('select').on('change', function() {
+      let seats = 0;
+      let price = 0;
+      $('select').each( function(){
+          price += ($(this).val() *1) * ($(this).attr('data')*1);
+          seats += ($(this).val() *1);
+      })
+      price = Math.round((price + Number.EPSILON) * 100) / 100
+
+      $('#cost').html(price);
+      $('#totalSeats').html(seats);
+  });
+
+  $('#submitter').on('click', function(){
+      seats = [];
+      for(var i = 0; i < 5; i++){
+          if($('.' + i).length == 0){
+              continue;
+          }
+          seats[i] = 0;
+          $('.' + i).each( function(){
+              seats[i] += ($(this).val() *1);
+          });
+      }
+
+      const result = seats.every(element => {
+          if (element === seats[0] && seats[0] > 0) {
+              return true;
+          }
+      });
+
+      if(!result){
+          $('#error').css('display', 'inline');
+      }
+      return result;
+  });
+
+
+  $( document ).ready(updatePrice());
+
+</script>
+
+</html>
+

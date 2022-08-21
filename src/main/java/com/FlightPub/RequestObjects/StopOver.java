@@ -128,4 +128,15 @@ public class StopOver {
         }
         return Math.round(cost*100.0)/100.0;
     }
+
+    public String getConcatFlightID() {
+        String output = "";
+        for(Flight flight : flights) {
+            output += "-"+flight.getFlightID();
+        }
+        if(!output.equals(""))
+            return output.substring(1);
+        else
+            return output;
+    }
 }
