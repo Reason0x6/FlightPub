@@ -75,6 +75,13 @@ public class ObjectCreationController {
         else if(location.getLatitude() > 90 || location.getLatitude() < -90 || location.getLongitude() > 180 || location.getLongitude() < -180)
             invalid = true;
 
+        // Gets the popularity of existing locations
+        Location current = locationServices.getById(location.getLocationID());
+        if(current != null)
+            location.setPopularity(current.getPopularity());
+        else
+            location.setPopularity(locationServices.getLocationCount()+1);
+
 
         // Checks whether the supplied input is valid then tries to performs database interaction
         if(invalid || locationServices.saveOrUpdate(location) == null)
