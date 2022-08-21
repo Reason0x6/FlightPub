@@ -55,7 +55,7 @@
                             <tbody>
                             <div th:each="br : ${cart}">
                                 <tr>
-                                    <td scope="row" th:text="${br.getFlight().getFlightNumber()}"></td>
+                                    <th scope="row" th:text="${br.getFlight().getFlightNumber()}"></th>
                                     <td th:text="${br.getDepartureDate()}"></td>
                                     <td th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></td>
                                     <td th:text="${br.getTotalSeats()}"></td>
@@ -63,8 +63,21 @@
                                     <td><a class="btn btn-danger" th:href="@{'/cart/remove?id=' + ${br.getId()}}">Remove
                                         Flight</a></td>
                                 </tr>
+                                <div th:each="i : ${#numbers.sequence(0, br.getAllSeatsList().size()-1)}">
+                                    <div th:if="${i == 0}">
+                                        <tr>
+                                            <th scope="row" th:text="'Seats Select :'"></th>
+                                            <td th:text="${br.getAllSeatsList().get(i)}"></td>
+                                        </tr>
+                                    </div>
+                                    <div th:if="${i != 0}">
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td th:text="${br.getAllSeatsList().get(i)}"></td>
+                                        </tr>
+                                    </div>
+                                </div>
                             </div>
-
                             </tbody>
                         </table>
                         <a class="btn btn-success" href="/checkout" style="max-width: 200px">Proceed to Checkout</a>
