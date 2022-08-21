@@ -201,4 +201,8 @@ public class LocationServices {
             locationRepo.save(allLocation);
         }
     }
+
+    public int getLocationCount() {
+        return locationRepo.countLocations();
+    }
 }
