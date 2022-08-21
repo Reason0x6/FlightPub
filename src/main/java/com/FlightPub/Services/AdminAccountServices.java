@@ -4,13 +4,14 @@ import com.FlightPub.model.AdminAccount;
 import com.FlightPub.repository.AdminAccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 /**
  * Implements database interaction for admin accounts
  */
 @Service("AdminAccountServices")
 public class AdminAccountServices {
 
-    private AdminAccountRepo adminRepo;
+    private final AdminAccountRepo adminRepo;
 
     @Autowired
     public AdminAccountServices(AdminAccountRepo adminAccountRepository) {

@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<div class="col-md-6" style="padding-left: 20px;" id="invite_section" th:fragment="invite_section">
+<div class="col-md-6" id="invite_section" style="padding-left: 20px;" th:fragment="invite_section">
 
-    <div class="section-title" data-aos="zoom-out" >
+    <div class="section-title" data-aos="zoom-out">
         <h2>Sharing is Caring</h2>
         <p>Get The Gang Together</p>
     </div>
@@ -19,24 +19,27 @@
                 <!-- New form -->
                 <div class="row g-2">
                     <div class="form-floating col-md-8">
-                        <input style="max-width: 100%" type="text" id="inviteUser" name="inviteUser" class="form-control" placeholder="">
-                        <label for="inviteUser" class="col-form-label" >Enter User Email To Invite </label>
+                        <input class="form-control" id="inviteUser" name="inviteUser" placeholder=""
+                               style="max-width: 100%" type="text">
+                        <label class="col-form-label" for="inviteUser">Enter User Email To Invite </label>
 
-                        <div class="invalid-feedback" id="invite_user_form_error" th:fragment="invite_user_form_error_fragment">
+                        <div class="invalid-feedback" id="invite_user_form_error"
+                             th:fragment="invite_user_form_error_fragment">
                             <span th:if="${Error == 'Not a valid user'}">Sorry, Not a valid user.</span>
                             <span th:if="${Error == 'User is already in group'}">Sorry, User is already in the group.</span>
                         </div>
 
-                        <input type="hidden" id="groupId" name="groupId" th:value="${groupId}">
+                        <input id="groupId" name="groupId" th:value="${groupId}" type="hidden">
                     </div>
                     <div class="col-md d-grid">
-                        <button type="submit" class="btn btn-primary" onclick="updateInviteUserForm()">Invite User!</button>
+                        <button class="btn btn-primary" onclick="updateInviteUserForm()" type="submit">Invite User!
+                        </button>
                     </div>
                 </div>
 
             </form>
         </div>
-        <div class="card l-1" data-aos="zoom-in-left" th:fragment="invite_list_fragment" id="invite_list">
+        <div class="card l-1" data-aos="zoom-in-left" id="invite_list" th:fragment="invite_list_fragment">
             <table class="table">
                 <thead>
                 <tr>
@@ -49,12 +52,12 @@
                 <tr th:each="user : ${inviteUsers}">
                     <th scope="row" th:text="${user.firstname}"></th>
                     <td th:text="${user.email}"></td>
-                    <td> Invited </td>
+                    <td> Invited</td>
                 </tr>
                 <tr th:each="user : ${declinedUsers}">
                     <th scope="row" th:text="${user.firstname}"></th>
                     <td th:text="${user.email}"></td>
-                    <td> Declined </td>
+                    <td> Declined</td>
                 </tr>
                 </tbody>
             </table>
@@ -66,7 +69,7 @@
             /**
              * If input has is-invalid remove on text box change
              */
-            $("#inviteUser").on('change keydown paste input', function(){
+            $("#inviteUser").on('change keydown paste input', function () {
                 document.getElementById("inviteUser").classList.remove("is-invalid")
             });
 
@@ -75,7 +78,7 @@
              */
             function updateInviteUserForm() {
                 // Submit form
-                $("#inviteUserForm").one('submit',function(e) {
+                $("#inviteUserForm").one('submit', function (e) {
                     e.preventDefault(); // prevent page refresh
 
                     // Post entered email to be added to invite list
@@ -97,7 +100,7 @@
             /**
              * Load current invite list
              */
-            $(document).ready( function loadInviteUserForm() {
+            $(document).ready(function loadInviteUserForm() {
                 // Post to receive invite list
                 $.post("/invite_list", {inviteUser: "loading", groupId: $("#groupId").val()}).done(function (fragment) {
                     $("#invite_list").replaceWith(fragment);

@@ -1,178 +1,176 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragments/Head"> </head>
-<header th:replace="Fragments/Header"> </header>
+<head th:replace="Fragments/Head"></head>
+<header th:replace="Fragments/Header"></header>
 <body>
 
 
-
 <!-- ======= Hero Section ======= -->
-<section id="hero" >
+<section id="hero">
 
 
+    <!-- Slide 1 -->
 
-  <!-- Slide 1 -->
-
-  <div class="container" style="margin-top: 250px;margin-bottom: 100px; text-align: left;">
-    <h2>Welcome to <span>a world of easy flight</span></h2>
-    <p>Explore the world on your terms. 100's of airlines, 100's of destinations, 1 Flight Pub</p>
-    <a href="/account#discover" class="btn-get-started animate__animated animate__fadeInUp scrollto">Find Your Way</a>
-  </div>
-
-
+    <div class="container" style="margin-top: 250px;margin-bottom: 100px; text-align: left;">
+        <h2>Welcome to <span>a world of easy flight</span></h2>
+        <p>Explore the world on your terms. 100's of airlines, 100's of destinations, 1 Flight Pub</p>
+        <a class="btn-get-started animate__animated animate__fadeInUp scrollto" href="/account#discover">Find Your
+            Way</a>
+    </div>
 
 
-
-  <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
-    <defs>
-      <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
-    </defs>
-    <g class="wave1">
-      <use xlink:href="#wave-path" x="50" y="3" fill="rgba(255,255,255, .1)">
-    </g>
-    <g class="wave2">
-      <use xlink:href="#wave-path" x="50" y="0" fill="rgba(255,255,255, .2)">
-    </g>
-    <g class="wave3">
-      <use xlink:href="#wave-path" x="50" y="9" fill="#fff">
-    </g>
-  </svg>
+    <svg class="hero-waves" preserveAspectRatio="none" viewBox="0 24 150 28 "
+         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+            <path d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" id="wave-path">
+        </defs>
+        <g class="wave1">
+            <use fill="rgba(255,255,255, .1)" x="50" xlink:href="#wave-path" y="3">
+        </g>
+        <g class="wave2">
+            <use fill="rgba(255,255,255, .2)" x="50" xlink:href="#wave-path" y="0">
+        </g>
+        <g class="wave3">
+            <use fill="#fff" x="50" xlink:href="#wave-path" y="9">
+        </g>
+    </svg>
 
 </section><!-- End Hero -->
 
 <main id="main">
-  <!-- ======= Services Section ======= -->
-  <section id="search" class="services">
-    <div class="container">
+    <!-- ======= Services Section ======= -->
+    <section class="services" id="search">
+        <div class="container">
 
-      <div class="section-title" data-aos="zoom-out">
-        <h2>Plan</h2>
-        <p>Search Destinations</p>
-      </div>
+            <div class="section-title" data-aos="zoom-out">
+                <h2>Plan</h2>
+                <p>Search Destinations</p>
+            </div>
 
-      <div class="row icon-box" data-aos="zoom-in-left">
-        <div class="col-lg-12">
+            <div class="row icon-box" data-aos="zoom-in-left">
+                <div class="col-lg-12">
 
-          <p class="description" style="margin-top: 10px" >
-          <form th:replace="Fragments/Forms :: #search"> </form>
-          </p>
+                    <p class="description" style="margin-top: 10px">
+                    <form th:replace="Fragments/Forms :: #search"></form>
+                    </p>
+                </div>
+
+            </div>
+    </section><!-- End Services Section -->
+
+    <section class="services" id="recommendation">
+        <div class="container">
+
+            <div class="section-title" data-aos="zoom-out">
+                <h2>Plan</h2>
+                <p>Recommended Destinations</p>
+            </div>
+
+            <div th:replace="Fragments/Recommendation"></div>
         </div>
-
-      </div>
-  </section><!-- End Services Section -->
-
-  <section id = "recommendation" class = "services">
-    <div class="container">
-
-      <div class="section-title" data-aos="zoom-out">
-        <h2>Plan</h2>
-        <p>Recommended Destinations</p>
-      </div>
-
-      <div th:replace="Fragments/Recommendation"></div>
-    </div>
-  </section>
+    </section>
 
 
 </main><!-- End #main -->
 
 <!-- ======= About Section ======= -->
-<section id="about" class="about">
-  <div class="container">
+<section class="about" id="about">
+    <div class="container">
 
-    <div class="section-title" data-aos="zoom-out">
-      <h2>Explore</h2>
-      <p>Find your dream getaway! Select one of our top destinations to get started!</p>
-    </div>
-    <style>#chartdiv {
-  width: 100%;
-  height: 500px;
-}						</style>
-    <div class="row content" data-aos="fade-up">
-      <div class="col-md-12">
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Explore</h2>
+            <p>Find your dream getaway! Select one of our top destinations to get started!</p>
+        </div>
         <style>#chartdiv {
-          width: 100%;
-          height: 600px;
-        }
-        </style>
-        <div id="chartdiv"></div>
-      </div>
-      <!-- <div class="col-md-12">
-      <div class="icon-box" data-aos="zoom-in-left" style="border: 1px solid #ccc; padding: 15px; border-radius: 6px; box-shadow: 0 2px 29px 0 rgba(68, 88, 144, 0.12);">
-      <h3>Istanbul</h3>
-      <p class="description">Istanbul formerly known as Constantinople, is the largest city in Turkey, serving as the country's economic, cultural and historic hub.</p>
+            width: 100%;
+            height: 500px;
+        }                        </style>
+        <div class="row content" data-aos="fade-up">
+            <div class="col-md-12">
+                <style>#chartdiv {
+                    width: 100%;
+                    height: 600px;
+                }
+                </style>
+                <div id="chartdiv"></div>
+            </div>
+            <!-- <div class="col-md-12">
+            <div class="icon-box" data-aos="zoom-in-left" style="border: 1px solid #ccc; padding: 15px; border-radius: 6px; box-shadow: 0 2px 29px 0 rgba(68, 88, 144, 0.12);">
+            <h3>Istanbul</h3>
+            <p class="description">Istanbul formerly known as Constantinople, is the largest city in Turkey, serving as the country's economic, cultural and historic hub.</p>
 
-        <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Show me Flights!!</a>
-      </div>
-      <div class="icon-box" data-aos="zoom-in-left" style="margin-top: 15px;border: 1px solid #ccc; padding: 15px; border-radius: 6px; box-shadow: 0 2px 29px 0 rgba(68, 88, 144, 0.12);">
-      <h3>Istanbul</h3>
-      <p class="description">Istanbul formerly known as Constantinople, is the largest city in Turkey, serving as the country's economic, cultural and historic hub.</p>
+              <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Show me Flights!!</a>
+            </div>
+            <div class="icon-box" data-aos="zoom-in-left" style="margin-top: 15px;border: 1px solid #ccc; padding: 15px; border-radius: 6px; box-shadow: 0 2px 29px 0 rgba(68, 88, 144, 0.12);">
+            <h3>Istanbul</h3>
+            <p class="description">Istanbul formerly known as Constantinople, is the largest city in Turkey, serving as the country's economic, cultural and historic hub.</p>
 
-        <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Show me Flights!!</a>
-      </div> -->
+              <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Show me Flights!!</a>
+            </div> -->
+        </div>
+
     </div>
-
-  </div>
 </section><!-- End About Section -->
-<section id="cta" class="cta">
-  <div class="container">
+<section class="cta" id="cta">
+    <div class="container">
 
-    <div class="row" data-aos="zoom-out">
-      <div class="col-lg-9 text-center text-lg-start">
-        <h3>Want to book?</h3>
-        <p>Creating an account allows you to easily book, re-book, and explore! Get tailored location suggestions, and create group plans with ease!</p>
-      </div>
-      <div class="col-lg-3 cta-btn-container text-center">
-        <a class="cta-btn align-middle" href="#">Signup Now</a>
-      </div>
+        <div class="row" data-aos="zoom-out">
+            <div class="col-lg-9 text-center text-lg-start">
+                <h3>Want to book?</h3>
+                <p>Creating an account allows you to easily book, re-book, and explore! Get tailored location
+                    suggestions, and create group plans with ease!</p>
+            </div>
+            <div class="col-lg-3 cta-btn-container text-center">
+                <a class="cta-btn align-middle" href="#">Signup Now</a>
+            </div>
+        </div>
+
     </div>
-
-  </div>
 </section><!-- End Cta Section -->
 
 <!-- ======= Contact Section ======= -->
-<section id="contact" class="contact">
-  <div class="container">
+<section class="contact" id="contact">
+    <div class="container">
 
-    <div class="section-title" data-aos="zoom-out">
-      <h2>Contact</h2>
-      <p>Contact Us</p>
-    </div>
-
-    <div class="row mt-5">
-
-      <div class="col-lg-4" data-aos="fade-right">
-        <div class="info">
-          <div class="address">
-            <i class="bi bi-geo-alt"></i>
-            <h4>Location:</h4>
-            <p>123 Newcastle Street, Newcastle 2300</p>
-          </div>
-
-          <div class="email">
-            <i class="bi bi-envelope"></i>
-            <h4>Email:</h4>
-            <p>info@example.com</p>
-          </div>
-
-          <div class="phone">
-            <i class="bi bi-phone"></i>
-            <h4>Call:</h4>
-            <p>+61 2 123 456 78</p>
-          </div>
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Contact</h2>
+            <p>Contact Us</p>
         </div>
-      </div>
 
+        <div class="row mt-5">
+
+            <div class="col-lg-4" data-aos="fade-right">
+                <div class="info">
+                    <div class="address">
+                        <i class="bi bi-geo-alt"></i>
+                        <h4>Location:</h4>
+                        <p>123 Newcastle Street, Newcastle 2300</p>
+                    </div>
+
+                    <div class="email">
+                        <i class="bi bi-envelope"></i>
+                        <h4>Email:</h4>
+                        <p>info@example.com</p>
+                    </div>
+
+                    <div class="phone">
+                        <i class="bi bi-phone"></i>
+                        <h4>Call:</h4>
+                        <p>+61 2 123 456 78</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
 
     </div>
 
-  </div>
-
-  </div>
+    </div>
 </section><!-- End Contact Section -->
 <!-- ======= Footer ======= -->
-<lower th:replace="Fragments/Footer"> </lower>
+<lower th:replace="Fragments/Footer"></lower>
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
 
@@ -214,8 +212,6 @@
     hs.properties.fill = am4core.color("#367B25");
 
 
-
-
     var imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
     var imageSeriesTemplate = imageSeries.mapImages.template;
@@ -234,15 +230,15 @@
 
     // Add data for the three cities
     imageSeries.data = [
-      /*[# th:each="Location : ${MostPop}"]*/
+        /*[# th:each="Location : ${MostPop}"]*/
 
-      {
-        "latitude": [[${Location.getLatitude()}]],
-        "longitude": [[${Location.getLongitude()}]],
-        "title": [[${Location.getLocation()}]]
-      },
+        {
+            "latitude": [[${Location.getLatitude()}]],
+            "longitude": [[${Location.getLongitude()}]],
+            "title": [[${Location.getLocation()}]]
+        },
 
-      /*[/]*/
+        /*[/]*/
     ];
 
     // Add line series
@@ -251,61 +247,61 @@
     lineSeries.mapLines.template.stroke = am4core.color("#e03e96");
 
     locations = [
-      /*[# th:each="Location : ${MostPop}"]*/
-      {latitude: [[${Location.getLatitude()}]], longitude: [[${Location.getLongitude()}]]},
+        /*[# th:each="Location : ${MostPop}"]*/
+        {latitude: [[${Location.getLatitude()}]], longitude: [[${Location.getLongitude()}]]},
 
-      /*[/]*/
+        /*[/]*/
     ];
 
     ldata = []
 
     for (var i = 0; i < locations.length; i++) {
-      if (i === (locations.length - 1)) {
-        locations.push({latitude: locations[i].latitude, longitude: locations[i].longitude});
-        d = [
-          {latitude: locations[i].latitude, longitude: locations[i].longitude},
-          {latitude: locations[i + 1].latitude, longitude: locations[i + 1].longitude},
-        ];
-        ldata.push(d);
-        break;
-      } else {
-        d = [
-          {latitude: locations[i].latitude, longitude: locations[i].longitude},
-          {latitude: locations[i + 1].latitude, longitude: locations[i + 1].longitude},
-        ];
-        ldata.push(d);
-      }
+        if (i === (locations.length - 1)) {
+            locations.push({latitude: locations[i].latitude, longitude: locations[i].longitude});
+            d = [
+                {latitude: locations[i].latitude, longitude: locations[i].longitude},
+                {latitude: locations[i + 1].latitude, longitude: locations[i + 1].longitude},
+            ];
+            ldata.push(d);
+            break;
+        } else {
+            d = [
+                {latitude: locations[i].latitude, longitude: locations[i].longitude},
+                {latitude: locations[i + 1].latitude, longitude: locations[i + 1].longitude},
+            ];
+            ldata.push(d);
+        }
 
     }
 
 
     lineSeries.data = [{
-      "multiGeoLine": ldata
+        "multiGeoLine": ldata
     }];
 
 
 </script>
 <script>
 
-  var polygonTemplate = imageSeries.mapImages.template;
-  polygonTemplate.events.on("hit", function(ev) {
-    // zoom to an object
+    var polygonTemplate = imageSeries.mapImages.template;
+    polygonTemplate.events.on("hit", function (ev) {
+        // zoom to an object
 
-    // get object info
-    $('#destination').val(ev.target.dataItem.dataContext.title);
-    $('html, body').animate({
-      scrollTop: $("#search").offset().top
-    }, 1000);
+        // get object info
+        $('#destination').val(ev.target.dataItem.dataContext.title);
+        $('html, body').animate({
+            scrollTop: $("#search").offset().top
+        }, 1000);
 
-    $('#destination').css( "border", "1px solid rgb(0,128,0)" );
-    $('#origin').focus().select();
+        $('#destination').css("border", "1px solid rgb(0,128,0)");
+        $('#origin').focus().select();
 
-  });
+    });
 
 
-  $('circle').on('click', function(){
-   console.log($(this));
-  });
+    $('circle').on('click', function () {
+        console.log($(this));
+    });
 </script>
 
 

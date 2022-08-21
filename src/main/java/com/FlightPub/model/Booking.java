@@ -7,8 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.List;
-
 /**
  * Java Object Representation of Database Object
  */
@@ -39,7 +37,8 @@ public class Booking {
     private String seat;
 
 
-    public Booking() {}
+    public Booking() {
+    }
 
     public Booking(String accountEmail, String flightID, String travellerID, String bookedSeat) {
 
@@ -50,11 +49,11 @@ public class Booking {
     }
 
 
-    public void setBookingID(ObjectId id){
+    public void setBookingID(ObjectId id) {
         this.id = id.toString();
     }
 
-    public void setBookingID(String id){
+    public void setBookingID(String id) {
         this.id = id;
     }
 }

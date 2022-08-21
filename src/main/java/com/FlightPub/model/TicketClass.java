@@ -22,9 +22,10 @@ public class TicketClass {
     private String details;
 
 
-    public TicketClass() {}
+    public TicketClass() {
+    }
 
-    public TicketClass(String id, String details){
+    public TicketClass(String id, String details) {
         this.ticketClass = id;
         this.details = details;
     }

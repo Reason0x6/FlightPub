@@ -2,17 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- ======= Head ======= -->
-<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Head"></head>
 <!-- ======= Header ======= -->
-<header th:replace="Fragments/Header"> </header>
+<header th:replace="Fragments/Header"></header>
 <body>
 <!-- ======= Hero Section ======= -->
 <main id="main">
     <!-- ======= Services Section ======= -->
-    <section id = "" class = "services">
+    <section class="services" id="">
         <div class="container">
             <style>
-                input, select{
+                input, select {
                     border: 1px solid #ccc;
                     border-radius: 5px;
                     padding: 10px;
@@ -25,73 +25,84 @@
             </div>
 
             <div>
-                <form id="seatBooking" name="seatBooking" th:action="@{/checkout}" th:object="${TravellerContainer}" method="post">
+                <form id="seatBooking" method="post" name="seatBooking" th:action="@{/checkout}"
+                      th:object="${TravellerContainer}">
                     <!-- List each flight in session to be booked -->
                     <div class="card l-1" style="padding: 10px 0 0 20px;">
                         <div th:each="flight : ${checkout}">
-                            <div class="row icon-box" data-aos="zoom-in-left" >
+                            <div class="row icon-box" data-aos="zoom-in-left">
                                 <h2><span th:text="'Selected seats for ' + ${flight.getFlight().getFlightNumber()} + ' : '
                                 + ${flight.getFlight().getDepartureCode()} + ' to ' + ${flight.getFlight().getDestinationCode()}
                                 + ' departing ' + ${flight.getDepartureDate()}"></span></h2>
                                 <Br>
                                 <div th:each="i : ${#numbers.sequence(0, flight.getAllSeatsList().size()-1)}">
-                                    <table class="table" th:id="${flight.getFlight().getFlightID()} + 'traveller' + ${i}">
+                                    <table class="table"
+                                           th:id="${flight.getFlight().getFlightID()} + 'traveller' + ${i}">
                                         <thead>
                                         <tr>
-                                            <h3 style="font-size: 1.2em"><span th:text="'Traveller #' + ${i + 1} + ' : ' + ${flight.getAllSeatsList()[i]}"></span></h3>
+                                            <h3 style="font-size: 1.2em"><span
+                                                    th:text="'Traveller #' + ${i + 1} + ' : ' + ${flight.getAllSeatsList()[i]}"></span>
+                                            </h3>
                                         </tr>
                                         </thead>
                                         <!-- For Each Seat Requested -->
                                         <tbody>
-                                            <!-- Traveller -->
-                                            <tr>
-                                                <th>Select Traveller from Account:</th>
-                                            </tr>
-                                            <!-- Select Traveller from Account [Dropdown]-->
-                                            <tr>
-                                                <td>
-                                                    <label for="account-users">Family Member</label>
-                                                    <select class="form-select" name="account-users" id="account-users">
-                                                        <option value="default"></option>
-                                                        <option value="user">Miss Isabella Andrews</option>
-                                                        <option value="user">Mr Mathew Ayre</option>
-                                                        <option value="user">Master Dexter Ayre</option>
-                                                    </select><br>
-                                                </td>
-                                            </tr>
-                                            <!-- OR -->
-                                            <th>OR add new Traveller details:</th>
-                                            <tr>
+                                        <!-- Traveller -->
+                                        <tr>
+                                            <th>Select Traveller from Account:</th>
+                                        </tr>
+                                        <!-- Select Traveller from Account [Dropdown]-->
+                                        <tr>
+                                            <td>
+                                                <label for="account-users">Family Member</label>
+                                                <select class="form-select" id="account-users" name="account-users">
+                                                    <option value="default"></option>
+                                                    <option value="user">Miss Isabella Andrews</option>
+                                                    <option value="user">Mr Mathew Ayre</option>
+                                                    <option value="user">Master Dexter Ayre</option>
+                                                </select><br>
+                                            </td>
+                                        </tr>
+                                        <!-- OR -->
+                                        <th>OR add new Traveller details:</th>
+                                        <tr>
                                             <!-- Add new Traveller Details -->
                                             <!-- Traveller Info [Input]-->
-                                                <td>
-                                                    <label for="title">Title</label>
-                                                    <select class="form-select" name="title" id="title" th:id="'title' + ${i}">
-                                                        <option value="default">Title</option>
-                                                        <option value="Master">Master</option>
-                                                        <option value="Miss">Miss</option>
-                                                        <option value="Mr">Mr</option>
-                                                        <option value="Mrs">Mrs</option>
-                                                        <option value="Ms">Ms</option>
-                                                        <option value="Doctor">Dr</option>
-                                                    </select>
-                                                </td>
-                                                <td><label for="firstName">First Name</label>
-                                                    <input type="text" id="firstName" th:id="'firstName' + ${i}" class="form-control" name="firstName" placeholder="John"></td>
-                                                <td><label for="lastName">Surname</label>
-                                                    <input type="text" id="lastName" th:id="'lastName' + ${i}" class="form-control" name="lastName" placeholder="Smith"></td>
-                                            </tr>
-                                            <tr>
-                                                <td><label for="dob">Date of Birth</label>
-                                                    <input type="date" id="dob" th:id="'dob' + ${i}" class="form-control" name="dob"></td>
-                                            </tr>
-                                            <tr>
-                                                <!-- Save Traveller to Account [Checkbox]-->
-                                                <th><label for="saveTraveller">Save new Traveller to Account?</label></th>
-                                                <td><input type="checkbox" name="saveTraveller" id="saveTraveller" th:id="'saveTraveller' + ${i}" style="width: 50px;"></td>
-                                                <td><input type="hidden" class="form-control" id="seat" th:id="'seat' + ${i}" name="seat" th:value="${flight.getAllSeatsList()[i]}">
-                                                </td>
-                                            </tr>
+                                            <td>
+                                                <label for="title">Title</label>
+                                                <select class="form-select" id="title" name="title"
+                                                        th:id="'title' + ${i}">
+                                                    <option value="default">Title</option>
+                                                    <option value="Master">Master</option>
+                                                    <option value="Miss">Miss</option>
+                                                    <option value="Mr">Mr</option>
+                                                    <option value="Mrs">Mrs</option>
+                                                    <option value="Ms">Ms</option>
+                                                    <option value="Doctor">Dr</option>
+                                                </select>
+                                            </td>
+                                            <td><label for="firstName">First Name</label>
+                                                <input class="form-control" id="firstName" name="firstName"
+                                                       placeholder="John" th:id="'firstName' + ${i}" type="text"></td>
+                                            <td><label for="lastName">Surname</label>
+                                                <input class="form-control" id="lastName" name="lastName"
+                                                       placeholder="Smith" th:id="'lastName' + ${i}" type="text"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="dob">Date of Birth</label>
+                                                <input class="form-control" id="dob" name="dob" th:id="'dob' + ${i}"
+                                                       type="date"></td>
+                                        </tr>
+                                        <tr>
+                                            <!-- Save Traveller to Account [Checkbox]-->
+                                            <th><label for="saveTraveller">Save new Traveller to Account?</label></th>
+                                            <td><input id="saveTraveller" name="saveTraveller" style="width: 50px;"
+                                                       th:id="'saveTraveller' + ${i}" type="checkbox"></td>
+                                            <td><input class="form-control" id="seat" name="seat"
+                                                       th:id="'seat' + ${i}" th:value="${flight.getAllSeatsList()[i]}"
+                                                       type="hidden">
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                     <Br>
@@ -99,9 +110,11 @@
                             </div>
                         </div>
                     </div>
-                    <Br><hr /><Br>
+                    <Br>
+                    <hr/>
+                    <Br>
                     <div>
-                        <div class="row icon-box" data-aos="zoom-in-left" >
+                        <div class="row icon-box" data-aos="zoom-in-left">
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -115,12 +128,13 @@
                                 </thead>
                                 <tbody>
                                 <div th:each="br : ${checkout}">
-                                    <tr >
+                                    <tr>
                                         <td scope="row" th:text="${br.getFlight().getFlightNumber()}"></td>
                                         <td th:text="${br.getDepartureDate()}"></td>
                                         <td th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></td>
                                         <td th:text="${br.getTotalSeats()}"></td>
-                                        <td class="price" th:data="${br.getPrice()}" th:text="'$' + ${br.getPrice()}"></td>
+                                        <td class="price" th:data="${br.getPrice()}"
+                                            th:text="'$' + ${br.getPrice()}"></td>
                                     </tr>
                                 </div>
                                 <tr>
@@ -134,9 +148,11 @@
                             </table>
                         </div>
                     </div>
-                    <Br><hr /><Br>
+                    <Br>
+                    <hr/>
+                    <Br>
                     <div>
-                        <div class="row icon-box" data-aos="zoom-in-left" >
+                        <div class="row icon-box" data-aos="zoom-in-left">
                             <table class="table">
                                 <tbody>
                                 <tr>
@@ -144,16 +160,19 @@
                                     <!-- FF Details [Input]-->
                                     <td>
                                         <label for="membership">Frequent Flyer Number</label>
-                                        <input type="text" id="membership" class="form-control" name="membership" placeholder="XXX XXX XXXX">
+                                        <input class="form-control" id="membership" name="membership" placeholder="XXX XXX XXXX"
+                                               type="text">
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <Br><hr /><Br>
+                    <Br>
+                    <hr/>
+                    <Br>
                     <div>
-                        <div class="row icon-box" data-aos="zoom-in-left" >
+                        <div class="row icon-box" data-aos="zoom-in-left">
                             <table class="table" id="payment">
                                 <tbody>
                                 <!-- Enter Payment Information -->
@@ -162,30 +181,38 @@
                                     <!-- Card Number [Input] -->
                                     <td>
                                         <label for="card-number">Card Number</label>
-                                        <input type="number" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"><br>
+                                        <input class="form-control" id="card-number" maxlength="19" name="card-number"
+                                               pattern="[0-9\s] {13,19}" placeholder="XXXX XXXX XXXX XXXX"
+                                               type="number"><br>
                                     </td>
                                     <td>
                                         <label for="card-name">Name on card</label>
-                                        <input type="text" class="form-control" id="card-name" placeholder="John J Smith" required><br>
+                                        <input class="form-control" id="card-name" placeholder="John J Smith"
+                                               required type="text"><br>
                                     </td>
                                     <!-- Card Expiry [Input] -->
                                     <td>
                                         <label for="card-expiry">Card Expiry</label>
-                                        <input type="month" id="card-expiry" class="form-control" name="card-number"><br><br>
+                                        <input class="form-control" id="card-expiry" name="card-number"
+                                               type="month"><br><br>
                                     </td>
                                     <!-- Card Security Code [Input] -->
                                     <td>
                                         <label for="card-security">3-digit Security Code</label>
-                                        <input type="number" id="card-security" class="form-control" name="card-security" placeholder="XXX" maxlength="3"><br>
+                                        <input class="form-control" id="card-security" maxlength="3"
+                                               name="card-security" placeholder="XXX" type="number"><br>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <input type="hidden" class="form-control" id="accountEmail" name="accountEmail" th:value="${usr.getUsr().getEmail()}">
+                                    <input class="form-control" id="accountEmail" name="accountEmail" th:value="${usr.getUsr().getEmail()}"
+                                           type="hidden">
                                 </tr>
                                 <tr>
                                     <!-- Submit Payment Request -->
                                     <td>
-                                        <button href="/bookingConfirmation" class="btn btn-success" type="submit" style="max-width: 200px">Pay Now</button>
+                                        <button class="btn btn-success" href="/bookingConfirmation" style="max-width: 200px"
+                                                type="submit">Pay Now
+                                        </button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -199,7 +226,7 @@
     <!-- End CTA Section -->
 </main>
 <!-- ======= Footer ======= -->
-<lower th:replace="Fragments/Footer"> </lower>
+<lower th:replace="Fragments/Footer"></lower>
 </body>
 <!-- Validate CC Payment >> Confirmation page upon success -->
 <script th:inline="javascript">
@@ -221,23 +248,23 @@
             check += digit;
             even = !even;
         }
-        if ((check % 10) !== 0){
+        if ((check % 10) !== 0) {
             alert("Please enter a valid credit card number.");
             return false;
         }
         return (check % 10) === 0;
     }
 
-    function updatePrice(){
+    function updatePrice() {
         let price = 0;
-        $('.price').each( function(){
-        price += ($(this).attr('data')*1);
-    })
+        $('.price').each(function () {
+            price += ($(this).attr('data') * 1);
+        })
         price = Math.round((price + Number.EPSILON) * 100) / 100
 
         $('#cost').html(price);
     }
 
-    $( document ).ready(updatePrice());
+    $(document).ready(updatePrice());
 </script>
 </html>

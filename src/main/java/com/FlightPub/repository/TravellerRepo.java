@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TravellerRepo extends MongoRepository<Traveller, String> {
 
-    @Query(value="{ 'travellerID' :?0 }")
+    @Query(value = "{ 'travellerID' :?0 }")
     List<Traveller> findByTraveller(String in);
 
 }

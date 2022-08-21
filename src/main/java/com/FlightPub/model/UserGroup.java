@@ -13,7 +13,7 @@ import java.util.LinkedList;
  * Java Object Representation of Database Object
  */
 @Document("Group")
-public class UserGroup{
+public class UserGroup {
     @Id
     @Getter
     private String id;
@@ -59,24 +59,24 @@ public class UserGroup{
         declinedIds = new LinkedList<>();
     }
 
-    public void addUser(String id){
-        if (! userIDs.contains(id)){
+    public void addUser(String id) {
+        if (!userIDs.contains(id)) {
             userIDs.add(id);
         }
     }
 
-    public void removeUser(String id){
+    public void removeUser(String id) {
         userIDs.remove(id);
     }
 
-    public void addInvite(String id){
-        if (! invitedIds.contains(id)){
+    public void addInvite(String id) {
+        if (!invitedIds.contains(id)) {
             invitedIds.add(id);
         }
     }
 
-    public void addDecline(String id){
-        if (! declinedIds.contains(id)){
+    public void addDecline(String id) {
+        if (!declinedIds.contains(id)) {
             declinedIds.add(id);
         }
     }

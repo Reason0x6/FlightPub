@@ -37,9 +37,12 @@ public class AdminAccount {
         try {
             SecurityService sec = new SecurityService();
 
-            if(api == 1){this.password = sec.hash(password);}
-            else{ this.password = password;}
-        }catch(Exception r){
+            if (api == 1) {
+                this.password = sec.hash(password);
+            } else {
+                this.password = password;
+            }
+        } catch (Exception r) {
             r.printStackTrace();
         }
 
@@ -49,7 +52,7 @@ public class AdminAccount {
         this.company = company;
     }
 
-    public AdminAccount(String email, String firstName, String lastName, String company, String password){
+    public AdminAccount(String email, String firstName, String lastName, String company, String password) {
         super();
         this.email = email;
         this.firstName = firstName;
@@ -58,6 +61,7 @@ public class AdminAccount {
         this.password = password;
     }
 
-    public AdminAccount(){}
+    public AdminAccount() {
+    }
 
 }

@@ -2,25 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- ======= Head ======= -->
-<head th:replace="Fragments/Head"> </head>
+<head th:replace="Fragments/Head"></head>
 <!-- ======= Header ======= -->
-<header th:replace="Fragments/Header"> </header>
+<header th:replace="Fragments/Header"></header>
 <body>
 <!-- ======= Hero Section ======= -->
 <main id="main">
     <!-- ======= Services Section ======= -->
-    <section id = "" class = "services">
+    <section class="services" id="">
         <div class="container">
 
             <style>
-                input, select{
+                input, select {
                     width: 45%;
                     max-width: 250px;
                     border: 1px solid #ccc;
                     border-radius: 5px;
                     padding: 10px;
                 }
-                .btn-search{
+
+                .btn-search {
                     margin-top: -3px;
                     border: 1px solid #ccc;
                     border-radius: 5px;
@@ -37,45 +38,47 @@
             <div class="card l-1" style="padding: 10px 0 0 20px;">
                 <div>
                     <hr>
-                    <div class="row icon-box" data-aos="zoom-in-left" >
+                    <div class="row icon-box" data-aos="zoom-in-left">
 
                         <h2>Selected Flights</h2>
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th scope="col">Flight Number</th>
-                                    <th scope="col">Departure Date</th>
-                                    <th scope="col">Flight</th>
-                                    <th scope="col">Seats</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Update</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">Flight Number</th>
+                                <th scope="col">Departure Date</th>
+                                <th scope="col">Flight</th>
+                                <th scope="col">Seats</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Update</th>
+                            </tr>
                             </thead>
                             <tbody>
                             <div th:each="br : ${cart}">
-                                <tr >
+                                <tr>
                                     <td scope="row" th:text="${br.getFlight().getFlightNumber()}"></td>
                                     <td th:text="${br.getDepartureDate()}"></td>
                                     <td th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></td>
                                     <td th:text="${br.getTotalSeats()}"></td>
                                     <td th:text="'$' + ${br.getPrice()}"></td>
-                                    <td><a th:href="@{'/cart/remove?id=' + ${br.getId()}}" class="btn btn-danger">Remove Flight</a></td>
+                                    <td><a class="btn btn-danger" th:href="@{'/cart/remove?id=' + ${br.getId()}}">Remove
+                                        Flight</a></td>
                                 </tr>
                             </div>
 
                             </tbody>
                         </table>
-                        <a href="/checkout" class="btn btn-success" style="max-width: 200px">Proceed to Checkout</a>
+                        <a class="btn btn-success" href="/checkout" style="max-width: 200px">Proceed to Checkout</a>
                     </div>
                 </div>
             </div>
-            <hr /><Br><Br>
+            <hr/>
+            <Br><Br>
             <!-- Submit Booking Request >> Checkout page to process payment -->
         </div>
     </section><!-- End CTA Section -->
 </main>
 <!-- ======= Footer ======= -->
-<lower th:replace="Fragments/Footer"> </lower>
+<lower th:replace="Fragments/Footer"></lower>
 </body>
 <script th:inline="javascript"></script>
 </html>

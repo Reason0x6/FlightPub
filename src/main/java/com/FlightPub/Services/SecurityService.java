@@ -12,13 +12,13 @@ import java.security.NoSuchAlgorithmException;
  */
 public class SecurityService {
 
-    private final MessageDigest digest ;
+    private final MessageDigest digest;
 
     public SecurityService() throws NoSuchAlgorithmException {
         digest = MessageDigest.getInstance("SHA-256");
     }
 
-    public String hash(String text){
+    public String hash(String text) {
         byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
 
         return new String(Base64Utils.encode(hash));

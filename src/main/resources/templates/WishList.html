@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragments/Head"> </head>
-<header th:replace="Fragments/Header"> </header>
+<head th:replace="Fragments/Head"></head>
+<header th:replace="Fragments/Header"></header>
 <body>
 
 <!-- ======= Hero Section ======= -->
@@ -10,7 +10,7 @@
 <main id="main">
     <!-- ======= Services Section ======= -->
 
-    <section id = "flight" class = "services">
+    <section class="services" id="flight">
         <div class="container">
 
 
@@ -23,32 +23,39 @@
                     <div class="col-sm-12">
                         <div th:if="${usr.isLoggedIn()} == false">
                             <p>Oh No! You have to be logged in to create a wishlist!</p>
-                            <a type="submit" th:href="@{'/login?redirect=wishlist?id=' + ${Flight.getFlightID()}}" class="btn btn-success">Login to Create A Dream Destination</a><Br><Br>
+                            <a class="btn btn-success" th:href="@{'/login?redirect=wishlist?id=' + ${Flight.getFlightID()}}"
+                               type="submit">Login to Create A Dream Destination</a><Br><Br>
                         </div>
                         <div th:if="${usr.isLoggedIn()} != false">
                             <div th:if="${WishL.size()} != 0">
-                            <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                                <thead>
+                                <table cellspacing="0" class="table table-striped table-bordered table-sm"
+                                       id="dtBasicExample" width="100%">
+                                    <thead>
 
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
 
 
-                                <tr class="" th:each="wlItem : ${WishL}" style="padding: 10px 0 0 20px;">
-                                    <td><b><span>Destination: </span></b><span th:text="${wlItem.getValue()}"></span></td>
-                                    <td><button type="submit" class="btn btn-link">Find Flights</button></td>
-                                    <td><a th:href="@{'/wishlist?remove=' + ${wlItem.getKey()}}" type="submit" class="btn btn-warning">Remove</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                    <tr class="" style="padding: 10px 0 0 20px;" th:each="wlItem : ${WishL}">
+                                        <td><b><span>Destination: </span></b><span
+                                                th:text="${wlItem.getValue()}"></span></td>
+                                        <td>
+                                            <button class="btn btn-link" type="submit">Find Flights</button>
+                                        </td>
+                                        <td><a class="btn btn-warning" th:href="@{'/wishlist?remove=' + ${wlItem.getKey()}}"
+                                               type="submit">Remove</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div th:if="${WishL.size()} == 0">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <p>No Locations found in your wishlist! Search for a dream flight today!</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <a href="/#search" class="btn btn-info" style="margin-top: -10px;">Explore Our Flights</a>
+                                        <a class="btn btn-info" href="/#search" style="margin-top: -10px;">Explore Our
+                                            Flights</a>
                                     </div>
                                 </div>
                             </div>
@@ -59,13 +66,13 @@
             </div>
 
 
-            <hr />
+            <hr/>
 
         </div>
     </section><!-- End Cta Section -->
 
     <!-- ======= Footer ======= -->
-    <lower th:replace="Fragments/Footer"> </lower>
+    <lower th:replace="Fragments/Footer"></lower>
     <!-- Template Main JS File -->
 
 </body>

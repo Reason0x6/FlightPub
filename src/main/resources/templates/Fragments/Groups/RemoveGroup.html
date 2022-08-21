@@ -8,12 +8,12 @@
 
 <div id="Remove_Group" th:fragment="Remove_Group">
     <!-- This will show a popup to the user to ensure they want to remove group-->
-    <div class="modal" id="removeModal" data-bs-backdrop="static">
+    <div class="modal" data-bs-backdrop="static" id="removeModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Remove this group?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
                 <div class="modal-body">
                     <p>Are you sure you want to remove this group?
@@ -21,15 +21,17 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="removeGroup()">Delete Group</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" onclick="removeGroup()" type="button">Delete Group</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal" type="button">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="text-center">
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeModal">Delete Group?</button>
+        <button class="btn btn-danger" data-bs-target="#removeModal" data-bs-toggle="modal" type="button">Delete
+            Group?
+        </button>
     </div>
 
     <script>

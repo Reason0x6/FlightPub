@@ -5,7 +5,6 @@ import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.Booking;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
-import com.FlightPub.model.WishListItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,25 +12,24 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @SessionScope
 public class UserSession {
     @Getter
     UserAccount usr;
-
-
+    @Getter
+    Map<String, Integer> sessionCart;
     @Getter
     @Setter
     private FlightServices flightServices;
-
     @Getter
     @Setter
     private UserAccountServices usrService;
-    @Getter
-    Map<String, Integer> sessionCart;
-
     @Getter
     @Setter
     private String lastSearchedDestination;
@@ -68,6 +66,11 @@ public class UserSession {
     @Setter
     private Booking booking;
 
+    public UserSession(UserAccount usr) {
+        this.usr = usr;
+        this.sessionCart = new HashMap<>();
+    }
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -80,38 +83,33 @@ public class UserSession {
         this.usrService = usrService;
     }
 
-
-    public UserSession(UserAccount usr){
-        this.usr = usr;
-        this.sessionCart = new HashMap<>();
+    public boolean isLoggedIn() {
+        return usr != null;
     }
 
-    public boolean isLoggedIn(){
-        return usr != null ? true : false;
-    }
-
-    public String getFirstname(){
+    public String getFirstname() {
         return usr.getFirstname();
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return usr.getEmail();
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return usr.getPassword();
     }
 
-    public void addToCart(BookingRequest bookingRequest){
-        if(cart == null){
+    public void addToCart(BookingRequest bookingRequest) {
+        if (cart == null) {
             cart = new ArrayList<>();
         }
         cart.add(bookingRequest);
     }
 
 
-    public void removeFromCart(String id){
-        for(BookingRequest br : cart){
-            if(br.getId().equals(id)){
+    public void removeFromCart(String id) {
+        for (BookingRequest br : cart) {
+            if (br.getId().equals(id)) {
                 cart.get(cart.indexOf(br)).setAllSeatsList(null);
                 cart.remove(br);
                 break;
@@ -119,29 +117,29 @@ public class UserSession {
         }
     }
 
-    public int getSeatsFor(String id){
+    public int getSeatsFor(String id) {
         return sessionCart.get(id);
     }
 
-    public boolean addToWishList(String id){
+    public boolean addToWishList(String id) {
 
-            Flight tempF = flightServices.getById(id);
-            return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
+        Flight tempF = flightServices.getById(id);
+        return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
 
     }
 
-    public void removeFromWishList(String id){
+    public void removeFromWishList(String id) {
         usrService.removeWIL(id, usr.getEmail());
     }
 
-    public List<Map.Entry<String, String>> getWishList(){
+    public List<Map.Entry<String, String>> getWishList() {
 
         return usrService.getWishList(usr);
     }
 
-    public Flight getFlight(String id){
+    public Flight getFlight(String id) {
         return flightServices.getById(id);
-   }
+    }
 
     /*
     for (String key: map.keySet()) {

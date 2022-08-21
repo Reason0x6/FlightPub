@@ -9,19 +9,20 @@ public class HaversineCalculator {
 
     /**
      * Calculates distance between two coordinates
-     * @param startLat Latitude of origin location
+     *
+     * @param startLat  Latitude of origin location
      * @param startLong Longitude of origin location
-     * @param endLat Latitude of destination location
-     * @param endLong Longitude of destination location
+     * @param endLat    Latitude of destination location
+     * @param endLong   Longitude of destination location
      * @return distance between two coordinates
      */
     public static double distance(double startLat, double startLong, double endLat, double endLong) {
 
-        double dLat  = Math.toRadians((endLat - startLat));
+        double dLat = Math.toRadians((endLat - startLat));
         double dLong = Math.toRadians((endLong - startLong));
 
         startLat = Math.toRadians(startLat);
-        endLat   = Math.toRadians(endLat);
+        endLat = Math.toRadians(endLat);
 
         double a = haversine(dLat) + Math.cos(startLat) * Math.cos(endLat) * haversine(dLong);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
@@ -31,6 +32,7 @@ public class HaversineCalculator {
 
     /**
      * Haversine Formula
+     *
      * @param val for formula
      * @return result of formula
      */

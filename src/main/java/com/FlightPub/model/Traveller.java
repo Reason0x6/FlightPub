@@ -7,8 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.Date;
-
 @Document("Traveller")
 public class Traveller {
 
@@ -65,11 +63,11 @@ public class Traveller {
         this.accountEmail = accountEmail;
     }
 
-    public void setTravellerID(ObjectId id){
+    public void setTravellerID(ObjectId id) {
         this.id = id.toString();
     }
 
-    public void setTravellerID(String id){
+    public void setTravellerID(String id) {
         this.id = id;
     }
 

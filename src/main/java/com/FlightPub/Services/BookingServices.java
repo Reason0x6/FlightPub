@@ -16,9 +16,9 @@ import java.util.List;
 @Service("BookingServices")
 public class BookingServices {
 
-    private BookingRepo bookingRepo;
+    private final BookingRepo bookingRepo;
 
-    private TravellerRepo travellerRepo;
+    private final TravellerRepo travellerRepo;
 
     @Autowired
     public BookingServices(BookingRepo bookingRepository, TravellerRepo travellerRepository) {
@@ -26,33 +26,33 @@ public class BookingServices {
         this.travellerRepo = travellerRepository;
     }
 
-    public List<Booking> listAll(){
+    public List<Booking> listAll() {
         List<Booking> bookings = new ArrayList<>();
         bookingRepo.findAll().forEach(bookings::add);
         return bookings;
     }
 
-    public List<Traveller> travellerListAll(){
+    public List<Traveller> travellerListAll() {
         List<Traveller> travellers = new ArrayList<>();
         travellerRepo.findAll().forEach(travellers::add);
         return travellers;
     }
 
-    public List<Booking> getUserBookings(String userID){
+    public List<Booking> getUserBookings(String userID) {
         return bookingRepo.findByUser(userID);
     }
 
-    public Booking getById(String id){
+    public Booking getById(String id) {
         return bookingRepo.findById(id).orElse(null);
     }
 
-    public void saveOrUpdate(Booking toUpdate){
+    public void saveOrUpdate(Booking toUpdate) {
         bookingRepo.save(toUpdate);
     }
 
 
-
-    public void delete(String id){}
+    public void delete(String id) {
+    }
 
     public void addTraveller(Traveller addTraveller) {
         travellerRepo.save(addTraveller);

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service("AirlineServices")
 public class AirlineServices {
-    private AirlineRepo airlineRepo;
+    private final AirlineRepo airlineRepo;
 
     @Autowired
     public AirlineServices(AirlineRepo airlineRepo) {
@@ -18,7 +18,7 @@ public class AirlineServices {
 
     public List<Airlines> getSponsoredAirlines() {
         List<Airlines> airlines = airlineRepo.findBySponsoredIsTrue();
-        if(!airlines.isEmpty())
+        if (!airlines.isEmpty())
             return airlines;
         else
             return null;

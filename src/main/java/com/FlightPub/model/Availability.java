@@ -54,7 +54,8 @@ public class Availability {
     private String ticketCode;
 
 
-    public Availability() {}
+    public Availability() {
+    }
 
 
 }

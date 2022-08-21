@@ -2,107 +2,111 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="Fragments/Head"><title>Group</title></head>
-<header th:replace="Fragments/Header"> </header>
+<header th:replace="Fragments/Header"></header>
 
 <body>
 
 <!-- ======= Hero Section ======= -->
 
 <main id="main">
-  <!-- ======= Services Section ======= -->
+    <!-- ======= Services Section ======= -->
 
-  <section id = "group" class = "services">
-      <div class="container" >
-          <div id="popup" th:if="${accepted}">
-              <!-- This will show a popup to the user to show that they have been accepted to the group-->
-              <div class="modal" id="myModal">
-                  <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <h5 class="modal-title">Invite Accepted</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                              <p>You have joined a group!</p>
-                          </div>
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+    <section class="services" id="group">
+        <div class="container">
+            <div id="popup" th:if="${accepted}">
+                <!-- This will show a popup to the user to show that they have been accepted to the group-->
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Invite Accepted</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                        type="button"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>You have joined a group!</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" data-bs-dismiss="modal" type="button">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-              <script>
-                  $(document).ready(function () {
-                      const myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
-                      myModal.toggle()
-                  })
-              </script>
-          </div>
+                <script>
+                    $(document).ready(function () {
+                        const myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
+                        myModal.toggle()
+                    })
+                </script>
+            </div>
 
-          <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
-              <h2 th:text="${groupName}"></h2>
-              <p>Welcome to your Group</p>
-          </div>
+            <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+                <h2 th:text="${groupName}"></h2>
+                <p>Welcome to your Group</p>
+            </div>
 
-          <hr />
+            <hr/>
 
-          <div th:if="${Flight} != null" >
-              <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
-                  <h2>Explore Together</h2>
-                  <p>Your Selected Flight</p>
-              </div>
+            <div th:if="${Flight} != null">
+                <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+                    <h2>Explore Together</h2>
+                    <p>Your Selected Flight</p>
+                </div>
 
-              <div  class="card l-1" style="padding: 10px 0 0 20px;">
-                  <div class="row" style="padding-top: 10px;">
-                      <div class="col-sm-4">
-                          <p><b>Departs: </b><span th:text="${Flight.getDepartureName()}"></span> @ <span th:text="${Flight.longToDate(Flight.getDepartureTime())}"></span></p>
-                          <p><b>Arrives: </b><span th:text="${Flight.getDestinationName()}"></span>  @  <span th:text="${Flight.longToDate(Flight.getArrivalTime())}"></span></p>
-                          <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
-                      </div>
-                      <div class="col-sm-8">
-                          <style>#chartdiv {
-                              width: 100%;
-                              height: 200px;
-                          }
-                          </style>
-                          <div id="chartdiv"></div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+                <div class="card l-1" style="padding: 10px 0 0 20px;">
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-sm-4">
+                            <p><b>Departs: </b><span th:text="${Flight.getDepartureName()}"></span> @ <span
+                                    th:text="${Flight.longToDate(Flight.getDepartureTime())}"></span></p>
+                            <p><b>Arrives: </b><span th:text="${Flight.getDestinationName()}"></span> @ <span
+                                    th:text="${Flight.longToDate(Flight.getArrivalTime())}"></span></p>
+                            <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <style>#chartdiv {
+                                width: 100%;
+                                height: 200px;
+                            }
+                            </style>
+                            <div id="chartdiv"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <div th:if="${Flight} == null" >
-              <section id = "recommendation" class = "services">
-                  <div class="container">
+            <div th:if="${Flight} == null">
+                <section class="services" id="recommendation">
+                    <div class="container">
 
-                      <div class="section-title" data-aos="zoom-out">
-                          <h2>Plan</h2>
-                          <p>Recommended Destinations</p>
-                      </div>
+                        <div class="section-title" data-aos="zoom-out">
+                            <h2>Plan</h2>
+                            <p>Recommended Destinations</p>
+                        </div>
 
-                      <div th:replace="Fragments/Recommendation"></div>
-                  </div>
-              </section>
-          </div>
+                        <div th:replace="Fragments/Recommendation"></div>
+                    </div>
+                </section>
+            </div>
 
-          <hr /><Br><Br>
-          <div class="row">
-              <div th:replace="Fragments/Groups/GroupsAddedUsers"></div>
-              <div th:replace="Fragments/Groups/InviteList"> </div>
-          </div>
-          <hr />
+            <hr/>
+            <Br><Br>
+            <div class="row">
+                <div th:replace="Fragments/Groups/GroupsAddedUsers"></div>
+                <div th:replace="Fragments/Groups/InviteList"></div>
+            </div>
+            <hr/>
 
-          <div th:if="${isAdmin}">
-              <div th:replace="Fragments/Groups/RemoveGroup"> </div>
-          </div>
+            <div th:if="${isAdmin}">
+                <div th:replace="Fragments/Groups/RemoveGroup"></div>
+            </div>
 
-      </div>
-  </section><!-- End Cta Section -->
+        </div>
+    </section><!-- End Cta Section -->
 </main>
-  <!-- ======= Footer ======= -->
-  <lower th:replace="Fragments/Footer"> </lower>
-  <!-- Template Main JS File -->
+<!-- ======= Footer ======= -->
+<lower th:replace="Fragments/Footer"></lower>
+<!-- Template Main JS File -->
 </body>
 
 <script th:if="${Flight} != null" th:inline="javascript">
@@ -150,14 +154,14 @@
     hs.properties.fill = am4core.color("#367B25");
 
 
-    chart.events.on("ready", function(ev) {
+    chart.events.on("ready", function (ev) {
         var target = polygonSeries.getPolygonById("FLIGHT");
 
         // Pre-zoom
         chart.zoomToMapObject(target);
 
         // Set active state
-        setTimeout(function() {
+        setTimeout(function () {
             target.isActive = true;
         }, 1000);
     });
@@ -195,8 +199,8 @@
     lineSeries.data = [{
         "multiGeoLine": [
             [
-                { "latitude": [[${Dep.getLatitude()}]],    "longitude": [[${Dep.getLongitude()}]] },
-                { "latitude": [[${Dest.getLatitude()}]],  "longitude": [[${Dest.getLongitude()}]], }
+                {"latitude": [[${Dep.getLatitude()}]], "longitude": [[${Dep.getLongitude()}]]},
+                {"latitude": [[${Dest.getLatitude()}]], "longitude": [[${Dest.getLongitude()}]],}
             ]
         ]
     }];

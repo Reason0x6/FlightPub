@@ -25,6 +25,7 @@ public class RecommendationController {
 
     // Services
     private LocationServices locationServices;
+
     @Autowired
     @Qualifier(value = "LocationServices")
     public void setLocationsServices(LocationServices locService) {
@@ -33,8 +34,9 @@ public class RecommendationController {
 
     /**
      * Returns a html fragment containing 4 location recommendations
-     * @param city users departure city
-     * @param model interface that defines a holder for model attributes
+     *
+     * @param city    users departure city
+     * @param model   interface that defines a holder for model attributes
      * @param session current session
      * @return html recommendation fragment
      */
@@ -58,9 +60,10 @@ public class RecommendationController {
 
     /**
      * Locates the nearest location to a given latitude and longitude
-     * @param lat latitude of location
-     * @param lon longitude of location
-     * @param model interface that defines a holder for model attributes
+     *
+     * @param lat     latitude of location
+     * @param lon     longitude of location
+     * @param model   interface that defines a holder for model attributes
      * @param session current session
      * @return html fragment with the nearest city as departure location
      */
@@ -71,12 +74,12 @@ public class RecommendationController {
         double currentSmallestDistance = 0;
 
         // Loop though available locations and compare them to provided client lat and lon
-        for (Location location: locationServices.listAll()) {
+        for (Location location : locationServices.listAll()) {
             // Distance between client lat/lon and location lat/lon
             double tempDistance = HaversineCalculator.distance(lat, lon, location.getLatitude(), location.getLongitude());
 
             // Compare new distance to existing smallest distance
-            if(currentNearestCity.equals("") || tempDistance < currentSmallestDistance) {
+            if (currentNearestCity.equals("") || tempDistance < currentSmallestDistance) {
                 currentNearestCity = location.getLocationID();
                 currentSmallestDistance = tempDistance;
             }
@@ -87,11 +90,12 @@ public class RecommendationController {
 
     /**
      * Returns a list of recommended locations
+     *
      * @param user current user in session
      * @return list of recommended locations
      */
     private List<Location> getRecommendation(UserSession user) {
-        if(getCurrentLocation() == null) {
+        if (getCurrentLocation() == null) {
             return null;
         }
 
@@ -103,10 +107,10 @@ public class RecommendationController {
             Location lastSearchedLocation = locationServices.findByLocation(user.getLastSearchedDestination());
 
             List<String> adjacentLocations = lastSearchedLocation.getAdjacentLocations();
-            searchRecommendations =  new ArrayList<>();
+            searchRecommendations = new ArrayList<>();
 
             // Find two adjacent locations to last search location
-            for(String locationString: adjacentLocations) {
+            for (String locationString : adjacentLocations) {
                 // If adjacent location matches current user location ignore it
                 if (!locationString.equals(getCurrentLocation().getLocationID())) {
                     ignoredLocations.add(locationString);
@@ -135,12 +139,13 @@ public class RecommendationController {
 
     /**
      * Get current location of user
+     *
      * @return Location of user
      */
     private Location getCurrentLocation() {
         // Set current location
         Location currentLocation;
-        if(userLocation == null) {
+        if (userLocation == null) {
             currentLocation = locationServices.mostPopular();
         } else {
             currentLocation = locationServices.getById(userLocation.getLocationID());
@@ -157,17 +162,19 @@ public class RecommendationController {
 
     /**
      * Get current session
+     *
      * @param session current session
      * @return current user session
      */
-    private UserSession getSession(HttpSession session){
+    private UserSession getSession(HttpSession session) {
         UserSession sessionUser = null;
-        try{
+        try {
             sessionUser = (UserSession) session.getAttribute("User");
-        } catch(Exception e){}
+        } catch (Exception e) {
+        }
 
-        if(sessionUser == null){
-            sessionUser =  new UserSession(null);
+        if (sessionUser == null) {
+            sessionUser = new UserSession(null);
             session.setAttribute("User", sessionUser);
         }
 

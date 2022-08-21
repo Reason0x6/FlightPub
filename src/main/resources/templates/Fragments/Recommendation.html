@@ -1,103 +1,120 @@
 <!DOCTYPE html>
 <html lang="en"></html>
 
-<div class="row icon-box" data-aos="zoom-in-left" th:fragment="recommendation_fragment" id="recommendation_fragment">
+<div class="row icon-box" data-aos="zoom-in-left" id="recommendation_fragment" th:fragment="recommendation_fragment">
 
     <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
     <div>
         <div class="form-floating">
-            <select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="loadRecommendation(this.value)" style="max-width: 300px">
+            <select class="form-select" id="recommendationLocation" name="recommendationLocation"
+                    onchange="loadRecommendation(this.value)" style="max-width: 300px">
                 <option
                         th:each="location : ${recommendationLocation}"
                         th:id="city"
-                        th:value="${location.locationID}"
-                        th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation.locationID})">
+                        th:selected="(${location.locationID} == ${currentLocation.locationID})"
+                        th:text="${location.locationID} + ' - ' + ${location.location}"
+                        th:value="${location.locationID}">
 
                 </option>
-                <option th:if="${LoadingRecommendation} == true"> RECOMMENDATION LOADING... </option>
+                <option th:if="${LoadingRecommendation} == true"> RECOMMENDATION LOADING...</option>
             </select>
-            <label for="recommendationLocation" class="form-label"> Departure Location: </label>
+            <label class="form-label" for="recommendationLocation"> Departure Location: </label>
         </div>
     </div>
 
     <div>
-        <div id="recommendationRow" class="row" style="padding-top: 10px;">
-            <div class="col-sm-3" th:each="location : ${reco}"  >
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
+        <div class="row" id="recommendationRow" style="padding-top: 10px;">
+            <div class="col-sm-3" th:each="location : ${reco}">
+                <div class="card l-1" style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
                     <h3 style="font-size: 1em">&#128293; Popular Location &#128293;</h3>
-                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
-                    <h2 style="font-size: 1.5em" th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
-                    <h3 style="font-size: 1em"  th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
+                    <img style="width: 95%;margin-bottom:10px; border-radius: 10px"
+                         th:src="@{/assets/img/recommendation/{image}(image=${img})}"/>
+                    <h2 style="font-size: 1.5em"
+                        th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
+                    <h3 style="font-size: 1em"
+                        th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
                     <p>
 
                         TODO maybe add weather stats or similar if time
                     <p>
-                    <button th:onclick="findFlight([[${currentLocation.location}]], [[${location.location}]])" type="button" class="btn btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                        <button class="btn btn-primary"
+                                th:onclick="findFlight([[${currentLocation.location}]], [[${location.location}]])" type="button">Find Flights
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
 
             </div>
-            <div th:if="${usr.getLastSearchedDestination()} != null" class="col-sm-3" th:each="location : ${searchRecommendation}"  >
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
+            <div class="col-sm-3" th:each="location : ${searchRecommendation}"
+                 th:if="${usr.getLastSearchedDestination()} != null">
+                <div class="card l-1" style="padding: 10px 0 0 20px;" th:with="img=${location.locationID} + '.jpg'">
                     <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
-                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
-                    <h2 style="font-size: 1.5em" th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
-                    <h3 style="font-size: 1em"  th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
+                    <img style="width: 95%;margin-bottom:10px; border-radius: 10px"
+                         th:src="@{/assets/img/recommendation/{image}(image=${img})}"/>
+                    <h2 style="font-size: 1.5em"
+                        th:text="${currentLocation.locationID  } + ' to ' + ${location.locationID}"></h2>
+                    <h3 style="font-size: 1em"
+                        th:text="${currentLocation.location} + ' to ' + ${location.location}"></h3>
                     <p>
 
                         TODO maybe add weather stats or similar if time
                     <p>
-                        <button th:onclick="findFlight([[${currentLocation.location}]], [[${location.location}]])" type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                        <button class="btn start-loading btn-primary"
+                                th:onclick="findFlight([[${currentLocation.location}]], [[${location.location}]])" type="button">Find Flights
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
 
             </div>
         </div>
-        <div th:if="${reco} == null" class="row loading-skeleton">
+        <div class="row loading-skeleton" th:if="${reco} == null">
             <div class="col-sm-3">
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                <div class="card l-1" style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
                     <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
-                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <img style="width: 95%;margin-bottom:10px; border-radius: 10px"
+                         th:src="@{/assets/img/recommendation/{image}(image=${img})}"/>
                     <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
                     <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
                     <p>
                         TODO maybe add weather stats or similar if time
                     <p>
-                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                        <button class="btn start-loading btn-primary" type="button">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
             </div>
             <div class="col-sm-3">
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                <div class="card l-1" style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
                     <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
-                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <img style="width: 95%;margin-bottom:10px; border-radius: 10px"
+                         th:src="@{/assets/img/recommendation/{image}(image=${img})}"/>
                     <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
                     <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
                     <p>
                         TODO maybe add weather stats or similar if time
                     <p>
-                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                        <button class="btn start-loading btn-primary" type="button">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
             </div>
             <div class="col-sm-3">
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                <div class="card l-1" style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
                     <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
-                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <img style="width: 95%;margin-bottom:10px; border-radius: 10px"
+                         th:src="@{/assets/img/recommendation/{image}(image=${img})}"/>
                     <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
                     <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
                     <p>
                         TODO maybe add weather stats or similar if time
                     <p>
-                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                        <button class="btn start-loading btn-primary" type="button">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
             </div>
             <div class="col-sm-3">
-                <div class="card l-1"  style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
+                <div class="card l-1" style="padding: 10px 0 0 20px;" th:with="img='ADL.jpg'">
                     <h3 style="font-size: 1em">&#129488; Similar to Recent Search &#129488;</h3>
-                    <img th:src="@{/assets/img/recommendation/{image}(image=${img})}" style="width: 95%;margin-bottom:10px; border-radius: 10px"/>
+                    <img style="width: 95%;margin-bottom:10px; border-radius: 10px"
+                         th:src="@{/assets/img/recommendation/{image}(image=${img})}"/>
                     <h2 style="font-size: 1.5em">LOCATION to LOCATION</h2>
                     <h3 style="font-size: 1em">LOCATION to LOCATION</h3>
                     <p>
                         TODO maybe add weather stats or similar if time
                     <p>
-                        <button type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                        <button class="btn start-loading btn-primary" type="button">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
             </div>
         </div>
@@ -118,23 +135,23 @@
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        // Post lon and lat of for current position
-                        $.post("/LocateNearestCity", {
-                            lat: position.coords.latitude,
-                            lon: position.coords.longitude
-                        }).done(function (fragment) {
-                            $("#recommendation_fragment").replaceWith(fragment);
-                        })
-                    }, function error(msg) {
-                        // If location permission is denied in browser
-                        if (msg.PERMISSION_DENIED) {
-                            // Load ADL as default
-                            loadRecommendation("ADL");
-                        } else {
-                            console.log("Error getting position. Error code: " + msg.code)
-                        }
-                    }, {maximumAge:10000, timeout:5000, enableHighAccuracy: true}
+                function (position) {
+                    // Post lon and lat of for current position
+                    $.post("/LocateNearestCity", {
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    }).done(function (fragment) {
+                        $("#recommendation_fragment").replaceWith(fragment);
+                    })
+                }, function error(msg) {
+                    // If location permission is denied in browser
+                    if (msg.PERMISSION_DENIED) {
+                        // Load ADL as default
+                        loadRecommendation("ADL");
+                    } else {
+                        console.log("Error getting position. Error code: " + msg.code)
+                    }
+                }, {maximumAge: 10000, timeout: 5000, enableHighAccuracy: true}
             );
         } else {
             alert("Geolocation is not supported by this browser.");
@@ -193,7 +210,7 @@
         document.body.appendChild(form);
         form.submit();
 
-        $("#loader").css("display","block");
+        $("#loader").css("display", "block");
     }
 
     /**

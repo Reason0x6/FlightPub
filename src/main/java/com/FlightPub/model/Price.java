@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Java Object Representation of Database Object
@@ -65,6 +64,7 @@ public class Price {
     private Double priceLeg2;
 
 
-    public Price() {}
+    public Price() {
+    }
 
 }
