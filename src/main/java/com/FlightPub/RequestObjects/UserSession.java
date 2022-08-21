@@ -2,6 +2,7 @@ package com.FlightPub.RequestObjects;
 
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.model.Booking;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.model.WishListItem;
@@ -59,6 +60,14 @@ public class UserSession {
     @Setter
     private List<BookingRequest> cart;
 
+    @Getter
+    @Setter
+    private List<BookingRequest> checkedOutCart;
+
+    @Getter
+    @Setter
+    private Booking booking;
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -103,6 +112,7 @@ public class UserSession {
     public void removeFromCart(String id){
         for(BookingRequest br : cart){
             if(br.getId().equals(id)){
+                cart.get(cart.indexOf(br)).setAllSeatsList(null);
                 cart.remove(br);
                 break;
             }
@@ -132,6 +142,7 @@ public class UserSession {
     public Flight getFlight(String id){
         return flightServices.getById(id);
    }
+
     /*
     for (String key: map.keySet()) {
         System.out.println("key : " + key);

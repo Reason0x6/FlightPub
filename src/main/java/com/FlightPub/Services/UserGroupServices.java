@@ -89,7 +89,7 @@ public class UserGroupServices {
 
         /**
          * Save user group to database
-         * @param usrGroupObj user group to save
+         * @param usrGroupObj user group to newBooking
          */
         public void saveUsers(UserGroup usrGroupObj) {
                 userGroupRepo.save(usrGroupObj);

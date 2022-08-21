@@ -4,6 +4,7 @@ import com.FlightPub.RequestObjects.*;
 import com.FlightPub.Services.*;
 import com.FlightPub.model.*;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -592,17 +592,57 @@ public class IndexController {
             return "redirect:login";
         }
 
-        model.addAttribute("checkout", getSession(session).getCart());
-        // model.addAttribute("seats", getSession(session).getCart().get(0).getTotalSeats());
+        getSession(session).setCheckedOutCart(getSession(session).getCart());
+        model.addAttribute("checkout", getSession(session).getCheckedOutCart());
         model.addAttribute("usr", getSession(session));
 
         return "Booking/Checkout";
     }
 
-    @RequestMapping("/bookingConfirmation")
-    public String bookingConfirmation(Model model){
+    @PostMapping("/checkout")
+    public String updateCheckout(@RequestParam String title, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String dob, @RequestParam(required = false) boolean saveTraveller, @RequestParam String seat ,@ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
 
-        model.addAttribute("confirmationID", generateConfirmationID());
+        model.addAttribute("usr", getSession(session));
+
+        if (!saveTraveller){
+            saveTraveller = false;
+        }
+
+        for (BookingRequest br : getSession(session).getCheckedOutCart()) {
+            Booking booking;
+            Traveller traveller;
+            for (int i = 0; i < br.getAllSeatsList().size(); i++) {
+                traveller = new Traveller(title, firstName, lastName, dob, saveTraveller);
+                if(traveller.getId() == null){
+                    traveller.setTravellerID(new ObjectId());
+                }
+                booking = new Booking(br.getFlight().getFlightID(), traveller.getId(), seat);
+                if (booking.getId() == null) {
+                    booking.setBookingID(new ObjectId());
+                }
+                bookingServices.addTraveller(traveller);
+                bookingServices.addBooking(booking);
+            }
+        }
+
+        //model.addAttribute("traveller", traveller);
+
+        return "redirect:/bookingConfirmation";
+    }
+
+    @RequestMapping("/bookingConfirmation")
+    public String bookingConfirmation(Booking booking, TravellerContainer travellerContainer ,Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
+
+        model.addAttribute("usr", getSession(session));
+
+        model.addAttribute("travellerContainer", travellerContainer.getTravellers());
+        model.addAttribute("booking", booking);
 
         return "Confirmations/BookingConfirmation";
     }
