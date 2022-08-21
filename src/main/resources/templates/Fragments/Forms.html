@@ -387,8 +387,6 @@
     <input type="number" id="latitude" name="latitude" th:value="${location.getLatitude()}">
     <label for="longitude" id="longitudeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Longitude: </label>
     <input type="number" id="longitude" name="longitude" th:value="${location.getLongitude()}">
-    <label for="popularity" id="popularityLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Popularity: </label>
-    <input type="number" id="popularity" name="popularity" th:value="${location.getPopularity()}">
 
     <label for="description" id="descriptionLabel" >Description: </label>
     <textarea id="description" name="description" rows="4" cols="50" th:text="${location.getDescription()}"></textarea>
@@ -415,6 +413,12 @@
             <div class="form-floating col-md-8">
                 <input style="max-width: 100%" type="text" id="groupName" class="form-control" name="groupName" placeholder="">
                 <label for="groupName" id="nameLabel" class="col-form-label" >Enter Group Name</label>
+
+                <div th:if="${Flight != null}">
+                    <input type="hidden" name="flightId" th:value="${Flight.FlightID}">
+                </div>
+
+
             </div>
             <div class="col-md d-grid">
                 <button type="submit" class="btn btn-primary btn-search">Create Group!</button>

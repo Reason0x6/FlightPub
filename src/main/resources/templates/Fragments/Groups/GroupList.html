@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="group_list_section" th:fragment="group_list_section">
+
+    <div th:fragment="group_list_fragment" id="group_list_fragment" class="container card l-1" data-aos="zoom-in-left">
+        <div class="text-center">
+            <h2> Joined Groups </h2>
+        </div>
+        <table class="table" th:if="${groups != null}">
+            <thead>
+            <tr th:if="${!groups.isEmpty()}">
+                <th scope="col">Members</th>
+                <th scope="col">Name</th>
+                <th scope="col">View</th>
+            </tr>
+            <tr th:if="${groups.isEmpty()}">
+                <th class="text-center" >No groups found</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="group : ${groups}">
+                <th scope="row" th:text="${group.getUserIDs().size()}" ></th>
+                <td th:text="${group.getGroupName}"></td>
+
+                <td th:if="${Flight} == null"><a th:href="@{/Group(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
+                <td th:if="${Flight} != null"><a th:href="@{/Group/AddFlight(flightId=${Flight.flightID}, groupId=${group.getId()})}" class="btn btn-link">Add Flight To Group</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        /**
+         * On document ready
+         */
+        $(document).ready(function () {
+            loadGroupList()
+        })
+
+        /**
+         * Load current added user list
+         */
+        function loadGroupList() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const flight = urlParams.get('id')
+
+
+            // Check if list is loading on a flight page or user page
+            if (flight !== '') {
+                // Post to receive added user fragment
+                $.post("/admin_group_list", {flightId: flight}).done(function (fragment) {
+                    $("#group_list_fragment").replaceWith(fragment);
+                })
+            } else {
+                // Post to receive added user fragment
+                $.post("/group_list").done(function (fragment) {
+                    $("#group_list_fragment").replaceWith(fragment);
+                })
+            }
+        }
+    </script>
+
+</div>
+
+
+</body>
+</html>

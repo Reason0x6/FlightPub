@@ -125,29 +125,8 @@
                     <form th:replace="Fragments/Forms :: #createGroupForm"> </form>
                 </div>
 
-                <div class="container card l-1" data-aos="zoom-in-left">
-                    <div class="text-center">
-                        <h2> Joined Groups </h2>
-                    </div>
-                    <table class="table">
-                        <thead>
-                        <tr th:if="${!groups.isEmpty()}">
-                            <th scope="col">Members</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">View</th>
-                        </tr>
-                        <tr th:if="${groups.isEmpty()}">
-                            <th class="text-center" >No groups found</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="group : ${groups}">
-                            <th scope="row" th:text="${group.getUserIDs().size()}" ></th>
-                            <td th:text="${group.getGroupName}"></td>
-                            <td><a th:href="@{/Group(groupId=${group.getId()})}" class="btn btn-link">Manage</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div th:replace="Fragments/Groups/GroupList">
+                    To Be Replaced
                 </div>
 
                 <div class="container card l-1" data-aos="zoom-in-left">
@@ -319,44 +298,4 @@
 <!-- Template Main JS File -->
 </main>
 </body>
-
-<script>
-    function findFlight(departureAirport, airport, startDate, endDate) {
-        //post("/search", {originIn: departureAirport, destinationIn: airport, start: new Date(startDate), end: new Date(endDate)})
-        post("/search", {originIn: departureAirport, destinationIn: airport, start: new Date().toLocaleDateString('en-CA'), end: addMonths(new Date(), 3).toLocaleDateString('en-CA')})
-    }
-
-    function post(path, params, method='post') {
-
-        // The rest of this code assumes you are not using a library.
-        // It can be made less verbose if you use one.
-        const form = document.createElement('form');
-        form.method = method;
-        form.action = path;
-
-        for (const key in params) {
-            if (params.hasOwnProperty(key)) {
-                const hiddenField = document.createElement('input');
-                hiddenField.type = 'hidden';
-                hiddenField.name = key;
-                hiddenField.value = params[key];
-
-                form.appendChild(hiddenField);
-            }
-        }
-
-        document.body.appendChild(form);
-        form.submit();
-    }
-
-    function addMonths(date, months) {
-        const d = date.getDate();
-        date.setMonth(date.getMonth() + +months);
-        if (date.getDate() !== d) {
-            date.setDate(0);
-        }
-        return date;
-    }
-</script>
-
 </html>

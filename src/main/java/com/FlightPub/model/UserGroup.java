@@ -44,7 +44,7 @@ public class UserGroup{
 
     @Getter
     @Setter
-    private LinkedList<Flight> suggestedFlights;
+    private String flight;
 
     public UserGroup(String adminID, String groupName) {
         this.adminID = adminID;
@@ -83,5 +83,9 @@ public class UserGroup{
 
     public void removeInvite(String id) {
         invitedIds.remove(id);
+    }
+
+    public void addFlight(String flightId) {
+        flight = flightId;
     }
 }

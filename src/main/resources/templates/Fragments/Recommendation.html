@@ -58,7 +58,7 @@
 
                         TODO maybe add weather stats or similar if time
                     <p>
-                        <button th:onclick="findFlight([[${currentLocation.location}]], [[${location.location}]])" type="button" class="btn btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                        <button th:onclick="findFlight([[${currentLocation.location}]], [[${location.location}]])" type="button" class="btn start-loading btn-primary">Find Flights</button>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
                 </div>
 
             </div>
@@ -138,7 +138,7 @@
      * @param path Path to post and redirect to
      * @param params Parameters of post
      */
-    function postForm(path, params) {
+    function postRecommendationSearch(path, params) {
         const form = document.createElement('form');
         form.method = 'post';
         form.action = path;
@@ -157,6 +157,8 @@
 
         document.body.appendChild(form);
         form.submit();
+
+        $("#loader").css("display","block");
     }
 
     /**
@@ -174,3 +176,4 @@
         return date;
     }
 </script>
+

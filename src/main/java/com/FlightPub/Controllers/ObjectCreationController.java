@@ -75,6 +75,13 @@ public class ObjectCreationController {
         else if(location.getLatitude() > 90 || location.getLatitude() < -90 || location.getLongitude() > 180 || location.getLongitude() < -180)
             invalid = true;
 
+        // Gets the popularity of existing locations
+        Location current = locationServices.getById(location.getLocationID());
+        if(current != null)
+            location.setPopularity(current.getPopularity());
+        else
+            location.setPopularity(locationServices.getLocationCount()+1);
+
 
         // Checks whether the supplied input is valid then tries to performs database interaction
         if(invalid || locationServices.saveOrUpdate(location) == null)
@@ -227,13 +234,21 @@ public class ObjectCreationController {
         }
     }
 
+    /**
+     * Add a new group to the database
+     * @param group contains new group name and optionally flight id
+     * @param session current session
+     * @return redirect to new group
+     */
     @PostMapping("/group/add") //e.g localhost:8080/group/add?groupName=group1
     public String addGroup(@ModelAttribute NewGroup group, HttpSession session){
         if(!getSession(session).isLoggedIn()){
             return "redirect:/login";
         }
 
+        // Create a new group
         UserGroup newGroup = new UserGroup(getSession(session).getEmail(), group.getGroupName());
+        newGroup.addFlight(group.getFlightId());
         groupServices.saveUsers(newGroup);
 
         return "redirect:/Group?groupId=" + newGroup.getId();

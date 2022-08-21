@@ -16,4 +16,7 @@ public interface LocationRepo extends MongoRepository<Location, String> {
     List<Location> findAllByOrderByPopularityAsc();
 
     Location findFirstByPopularity(int popularity);
+
+    @Query(value = "{}", count = true)
+    int countLocations();
 }

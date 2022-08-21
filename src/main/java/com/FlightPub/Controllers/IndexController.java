@@ -212,9 +212,7 @@ public class IndexController {
             model.addAttribute("bookings", null);
         }
 
-        List<UserGroup> groups = groupServices.findGroupsContaining(getSession(session).getEmail());
         List<UserGroup> invitedGroups = groupServices.findInvitedGroupsContaining(getSession(session).getEmail());
-        model.addAttribute("groups", groups);
         model.addAttribute("invitedGroups", invitedGroups);
 
         model.addAttribute("locs", locationServices.listAll());

@@ -439,12 +439,12 @@
                         Note: products and services featured may vary at airport locations.
                     </p>
                 </div>
-                <div class="col-md-6" style="padding-left: 20px;">
+                <div class="col-md-6">
                     <div class="section-title" data-aos="zoom-out" >
                         <h2>Sharing is Caring</h2>
                         <p>Get The Gang Together</p>
                     </div>
-                    <div class="card l-1" data-aos="zoom-in-left" style="margin-left: 30px;">
+                    <div class="card l-1" data-aos="zoom-in-left">
                         <p>Did you know that Flight Hub allows multiple accounts to join together as a group?!</p>
                         <p>Create memories together, with an easy to use group booking feature, where you can collaborate and decide on what suits you, then, once you're all set, allocate seating together  but pay separately!</p>
                         <div th:if="${usr.isLoggedIn()} == false">
@@ -454,6 +454,13 @@
                             <form th:replace="Fragments/Forms :: #createGroupForm"> </form>
                         </div>
                     </div>
+
+                    <div th:if="${usr.isLoggedIn()} == true" >
+                        <div th:replace="Fragments/Groups/GroupList">
+                            To Be Replaced
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <hr />

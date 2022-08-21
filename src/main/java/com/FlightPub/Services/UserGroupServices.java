@@ -15,23 +15,27 @@ import java.util.List;
 @Service("UserGroupServices")
 public class UserGroupServices {
         private final UserGroupRepo userGroupRepo;
-
-        @Autowired
-        private UserAccountServices accData;
-
-        private UserGroup usrGroup;
         @Autowired
         public UserGroupServices(UserGroupRepo userGroupRepository) {
                 this.userGroupRepo = userGroupRepository;
         }
+
+        private UserAccountServices accData;
+        @Autowired
+        private void UserAccountServices(UserAccountServices userAccountServices) {
+                this.accData = userAccountServices;
+        }
+
+        private UserGroup usrGroup;
+
 
         /**
          * @return List of all users in group
          */
         public LinkedList<UserAccount> listAllUsers() {
                 LinkedList<UserAccount> accounts = new LinkedList<>();
-                LinkedList<String> usrs = usrGroup.getUserIDs();
-                for(String usr : usrs){
+                LinkedList<String> userIDs = usrGroup.getUserIDs();
+                for(String usr : userIDs){
                         accounts.add(accData.getById(usr));
                 }
                 return accounts;
@@ -42,8 +46,8 @@ public class UserGroupServices {
          */
         public LinkedList<UserAccount> listAllInvitedUsers() {
                 LinkedList<UserAccount> accounts = new LinkedList<>();
-                LinkedList<String> usrs = usrGroup.getInvitedIds();
-                for(String usr : usrs){
+                LinkedList<String> userIDs = usrGroup.getInvitedIds();
+                for(String usr : userIDs){
                         accounts.add(accData.getById(usr));
                 }
                 return accounts;
@@ -54,8 +58,8 @@ public class UserGroupServices {
          */
         public LinkedList<UserAccount> listAllDeclinedUsers() {
                 LinkedList<UserAccount> accounts = new LinkedList<>();
-                LinkedList<String> usrs = usrGroup.getDeclinedIds();
-                for(String usr : usrs){
+                LinkedList<String> userIDs = usrGroup.getDeclinedIds();
+                for(String usr : userIDs){
                         accounts.add(accData.getById(usr));
                 }
                 return accounts;
@@ -67,6 +71,20 @@ public class UserGroupServices {
         public UserAccount getAdmin() {
                String adminID = usrGroup.getAdminID();
                return accData.getById(adminID);
+        }
+
+        /**
+         * @return Current flight ID in group
+         */
+        public String getFlight() {
+                return usrGroup.getFlight();
+        }
+
+        /**
+         * @return Group name
+         */
+        public String getGroupName() {
+                return usrGroup.getGroupName();
         }
 
         /**
@@ -123,6 +141,15 @@ public class UserGroupServices {
         }
 
         /**
+         * Adds a flight to group
+         * @param flightId flight id to add to group
+         */
+        public void addFlight(String flightId) {
+                usrGroup.addFlight(flightId);
+                saveUsers(usrGroup);
+        }
+
+        /**
          * Load user group
          * @param id group id to load
          */
@@ -148,6 +175,15 @@ public class UserGroupServices {
          */
         public List<UserGroup> findInvitedGroupsContaining(String userId) {
                 return userGroupRepo.findAllByInvitedIds(userId);
+        }
+
+        /**
+         * Find list of groups containing admin id
+         * @param adminId find group containing this invited id
+         * @return List of groups
+         */
+        public List<UserGroup> findGroupsByAdmin(String adminId) {
+                return userGroupRepo.findAllByAdminID(adminId);
         }
 
         /**
