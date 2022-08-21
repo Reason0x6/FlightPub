@@ -96,6 +96,13 @@ public class UserGroupServices {
         }
 
         /**
+         * Delete user group from database
+         */
+        public void deleteGroup() {
+                userGroupRepo.delete(usrGroup);
+        }
+
+        /**
          * Add a user to group
          * @param id user id to add
          */

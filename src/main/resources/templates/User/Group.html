@@ -92,6 +92,11 @@
               <div th:replace="Fragments/Groups/InviteList"> </div>
           </div>
           <hr />
+
+          <div th:if="${isAdmin}">
+              <div th:replace="Fragments/Groups/RemoveGroup"> </div>
+          </div>
+
       </div>
   </section><!-- End Cta Section -->
 </main>
