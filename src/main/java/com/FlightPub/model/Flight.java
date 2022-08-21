@@ -79,6 +79,14 @@ public class Flight {
     @Field("StopOverCode")
     private String stopoverCode;
 
+    @Getter
+    private String DepartureName;
+
+    @Getter
+    private String DestinationName;
+
+    @Getter
+    private String StopoverName;
 
 
     //ADDITIONAL VARIABLES
@@ -105,6 +113,16 @@ public class Flight {
     private String cheapestPrice;
 
     public Flight(){}
+
+    public void loadNames(String dep, String dest, String stop){
+
+      this.DepartureName = dep;
+
+      this.DestinationName = dest;
+
+      this.StopoverName = stop;
+
+    }
 
     public void setFlightID(ObjectId id){
         flightID = id.toString();
@@ -224,4 +242,6 @@ public class Flight {
     public String getCheapestPrice(){
         return cheapestPrice != null ? cheapestPrice : "TBA";
     }
+
+
 }

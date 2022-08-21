@@ -1,7 +1,9 @@
 package com.FlightPub.Services;
 
+import com.FlightPub.model.Availability;
 import com.FlightPub.model.HaversineCalculator;
 import com.FlightPub.model.Location;
+import com.FlightPub.model.Price;
 import com.FlightPub.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,12 @@ import java.util.*;
 @Service("LocationServices")
 public class LocationServices {
     private final LocationRepo locationRepo;
+    private HashMap<String, Map.Entry<Date, Location>> locCache;
     @Autowired
     public LocationServices(LocationRepo locationRepository) {
         this.locationRepo = locationRepository;
 
+        locCache = new HashMap<>();
         // Updates location adjacency on startup
         updateAdjacency();
     }
@@ -37,7 +41,22 @@ public class LocationServices {
      * @return Location
      */
     public Location getById(String id) {
-        return locationRepo.findById(id).orElse(null);
+
+        if(locCache.containsKey(id) && locCache.get(id).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+            return locCache.get(id).getValue();
+        }else {
+            Location loc = locationRepo.findById(id).orElse(null);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+            cal.add(Calendar.MINUTE, 5);
+            Date time = cal.getTime();
+
+
+            Map.Entry<Date, Location> input = new AbstractMap.SimpleEntry<>(time, loc);
+
+            locCache.put(id, input);
+            return loc;
+        }
     }
 
     /**

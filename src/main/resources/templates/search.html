@@ -16,8 +16,8 @@
       <div class="card l-1" th:if="${flights[1].size()}-1 >= ${i}">
         <div class="row" style="padding-top: 10px;">
           <div class="col-sm-4">
-            <p><b><span th:text="'Departs ' + ${flights[1].get(i).getDepartureCode()} + ': '"></span></b><span th:text="${flights[1].get(i).getDepartureString()}"></span></p>
-            <p><b><span th:text="'Arrives in ' + ${flights[1].get(i).getDestinationCode()} + ': '"></span></b><span th:text="${flights[1].get(i).getArrivalString()}"></span></p>
+            <p><b><span th:text="'Departs ' + ${flights[1].get(i).getDepartureName()} + ': '"></span></b><span th:text="${flights[1].get(i).getDepartureString()}"></span></p>
+            <p><b><span th:text="'Arrives in ' + ${flights[1].get(i).getDestinationName()} + ': '"></span></b><span th:text="${flights[1].get(i).getArrivalString()}"></span></p>
           </div>
           <div class="col-sm-4">
             <p><b>Airline: </b><span th:text="${flights[1].get(i).getAirlineCode()}"></span></p>
@@ -59,8 +59,8 @@
                     <tbody>
 
                     <tr class="" th:each="flight : ${flights[0]}" style="padding: 10px 0 0 20px;">
-                      <td th:data="${flight.getDepartureString()}" ><b><span th:text="'Departs ' + ${flight.getDepartureCode()} + ': '"></span></b><span th:text="${flight.getDepartureString()}"></span></td>
-                      <td th:data="${flight.getArrivalString()}"> <b><span th:text="'Arrives in ' + ${flight.getDestinationCode()} + ': '"></span></b><span th:text="${flight.getArrivalString()}"></span></td>
+                      <td th:data="${flight.getDepartureString()}" ><b><span th:text="'Departs ' + ${flight.getDepartureName()} + ': '"></span></b><span th:text="${flight.getDepartureString()}"></span></td>
+                      <td th:data="${flight.getArrivalString()}"> <b><span th:text="'Arrives in ' + ${flight.getDestinationName()} + ': '"></span></b><span th:text="${flight.getArrivalString()}"></span></td>
                       <td th:data="${flight.getAirlineCode()}"><span th:text="${flight.getAirlineCode()}"></span></td>
                       <td><span th:text="' $' + ${flight.getCheapestPrice()}"></span></td>
                       <td><a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
