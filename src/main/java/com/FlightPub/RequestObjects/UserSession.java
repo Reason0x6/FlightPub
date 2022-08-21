@@ -37,23 +37,23 @@ public class UserSession {
 
     @Getter
     @Setter
-    private Flight lastViewedFlight;
+    private List<Flight> lastViewedFlight;
 
     @Getter
     @Setter
-    private List<String[]> firClassSeatList;
+    private List<List<String[]>> firClassSeatList;
 
     @Getter
     @Setter
-    private List<String[]> busClassSeatList;
+    private List<List<String[]>> busClassSeatList;
 
     @Getter
     @Setter
-    private List<String[]> pmeClassSeatList;
+    private List<List<String[]>> pmeClassSeatList;
 
     @Getter
     @Setter
-    private List<String[]> ecoClassSeatList;
+    private List<List<String[]>> ecoClassSeatList;
 
     @Getter
     @Setter
@@ -140,5 +140,29 @@ public class UserSession {
 
     */
 
+    // Setters for single flight data
+    public void setBusClassSeatListDirect(List<String[]> in) {
+        busClassSeatList = new ArrayList<>();
+        busClassSeatList.add(in);
+    }
 
+    public void setEcoClassSeatListDirect(List<String[]> in) {
+        ecoClassSeatList = new ArrayList<>();
+        ecoClassSeatList.add(in);
+    }
+
+    public void setFirClassSeatListDirect(List<String[]> in) {
+        firClassSeatList = new ArrayList<>();
+        firClassSeatList.add(in);
+    }
+
+    public void setPmeClassSeatListDirect(List<String[]> in) {
+        pmeClassSeatList = new ArrayList<>();
+        pmeClassSeatList.add(in);
+    }
+
+    public void setLastViewedFlightDirect(Flight in) {
+        lastViewedFlight = new ArrayList<>();
+        lastViewedFlight.add(in);
+    }
 }

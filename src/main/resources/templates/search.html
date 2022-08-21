@@ -112,10 +112,8 @@
                       <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
 
                       <td>
-                        <!--
-                        <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
+                        <a th:href="'/stopoverFlight?id=' + ${flight.getConcatFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
                         <button type="submit" class="btn btn-link">Bookmark</button>
-                        -->
                       </td>
                     </tr>
                     </tbody>
@@ -164,10 +162,8 @@
                         <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
 
                         <td>
-                          <!--
-                          <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
+                          <a th:href="'/stopoverFlight?id=' + ${flight.getConcatFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
                           <button type="submit" class="btn btn-link">Bookmark</button>
-                          -->
                         </td>
                       </tr>
                       </tbody>
@@ -216,10 +212,8 @@
                           <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
 
                           <td>
-                            <!--
-                            <a th:href="'/flight?id=' + ${flight.getFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
+                            <a th:href="'/stopoverFlight?id=' + ${flight.getConcatFlightID()}" class="btn btn-primary">View Flight</a>&nbsp;&nbsp;
                             <button type="submit" class="btn btn-link">Bookmark</button>
-                            -->
                           </td>
                         </tr>
                         </tbody>

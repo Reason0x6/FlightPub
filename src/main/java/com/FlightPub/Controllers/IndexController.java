@@ -251,9 +251,57 @@ public class IndexController {
         return "User/AdminControl";
     }
 
-    @RequestMapping("/flight") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
-    public String viewFlight(@RequestParam String id, Model model, HttpSession session){
+    @RequestMapping("/stopoverFlight")
+    public String viewStopoverFlight(@RequestParam String id, Model model, HttpSession session){
+        String[] flightID = id.split("-");  // Breaks up the flight ID's if there are multiple
 
+        // Collection variables for the flight details of each leg
+        List<Location> dest = new ArrayList<>();
+        List<Location> dep = new ArrayList<>();
+        List<Flight> flight = new ArrayList<>();
+        List<List<String[]>> businessClass = new ArrayList<>();
+        List<List<String[]>> economyClass = new ArrayList<>();
+        List<List<String[]>> firstClass = new ArrayList<>();
+        List<List<String[]>> premiumEconomy = new ArrayList<>();
+
+        // Collects all stopover flight details
+        for(int count = 0; count < flightID.length; count++) {
+            Flight f = flightServices.getById(flightID[count]);
+            System.out.println(flightID[count]);
+            List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
+
+            dest.add(locationServices.getById(f.getDestinationCode()));
+            dep.add(locationServices.getById(f.getDepartureCode()));
+            flight.add(f);
+            businessClass.add(flightServices.getSeatList("BUS", availableSeats));
+            economyClass.add(flightServices.getSeatList("ECO", availableSeats));
+            firstClass.add(flightServices.getSeatList("FIR", availableSeats));
+            premiumEconomy.add(flightServices.getSeatList("PME", availableSeats));
+        }
+
+        // Updates the model
+        model.addAttribute("Dest", dest);
+        model.addAttribute("Dep", dep);
+        model.addAttribute("Flight", flight);
+        model.addAttribute("businessClass", businessClass);
+        model.addAttribute("economyClass", economyClass);
+        model.addAttribute("firstClass", firstClass);
+        model.addAttribute("premiumEconomy", premiumEconomy);
+        model.addAttribute("usr", getSession(session));
+        model.addAttribute("ID", id);
+
+        // Updates the session
+        getSession(session).setLastViewedFlight(flight);
+        getSession(session).setBusClassSeatList(businessClass);
+        getSession(session).setEcoClassSeatList(economyClass);
+        getSession(session).setFirClassSeatList(firstClass);
+        getSession(session).setPmeClassSeatList(premiumEconomy);
+
+        return "StopoverFlight";
+    }
+
+    @RequestMapping("/flight")
+    public String viewFlight(@RequestParam String id, Model model, HttpSession session){
         Flight f = flightServices.getById(id);
 
         System.out.println(id);
@@ -270,11 +318,11 @@ public class IndexController {
         model.addAttribute("firstClass", flightServices.getSeatList("FIR", availableSeats));
         model.addAttribute("premiumEconomy", flightServices.getSeatList("PME", availableSeats));
 
-        getSession(session).setLastViewedFlight(f);
-        getSession(session).setBusClassSeatList((List<String[]>) model.getAttribute("businessClass"));
-        getSession(session).setEcoClassSeatList((List<String[]>) model.getAttribute("economyClass"));
-        getSession(session).setFirClassSeatList((List<String[]>) model.getAttribute("firstClass"));
-        getSession(session).setPmeClassSeatList((List<String[]>) model.getAttribute("premiumEconomy"));
+        getSession(session).setLastViewedFlightDirect(f);
+        getSession(session).setBusClassSeatListDirect((List<String[]>) model.getAttribute("businessClass"));
+        getSession(session).setEcoClassSeatListDirect((List<String[]>) model.getAttribute("economyClass"));
+        getSession(session).setFirClassSeatListDirect((List<String[]>) model.getAttribute("firstClass"));
+        getSession(session).setPmeClassSeatListDirect((List<String[]>) model.getAttribute("premiumEconomy"));
 
         return "Flight";
     }
@@ -462,12 +510,21 @@ public class IndexController {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:login";
         }
+
         model.addAttribute("usr", getSession(session));
 
-        for (BookingRequest br : getSession(session).getCart()) {
-            br.setPrice(getBookingPrice(br));
-        }
+        List<BookingRequest> cart = getSession(session).getCart();
 
+        if(cart != null) {
+            for (int count = 0; count < cart.size();) {
+                if(cart.get(count).getTotalSeats() <= 0)
+                    getSession(session).removeFromCart(cart.get(count).getId());
+                else {
+                    cart.get(count).setPrice(getBookingPrice(cart.get(count)));
+                    count++;
+                }
+            }
+        }
 
         getSession(session).setFlightServices(flightServices);
         model.addAttribute("usr", getSession(session));
@@ -485,11 +542,11 @@ public class IndexController {
 
         model.addAttribute("Flight", getSession(session).getLastViewedFlight());
 
-        bookingRequest.setFlight((Flight) model.getAttribute("Flight"));
-        bookingRequest.setBusSeats(getSession(session).getBusClassSeatList());
-        bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList());
-        bookingRequest.setFirSeats(getSession(session).getFirClassSeatList());
-        bookingRequest.setPmeSeats(getSession(session).getPmeClassSeatList());
+        bookingRequest.setFlight(getSession(session).getLastViewedFlight().get(0));
+        bookingRequest.setBusSeats(getSession(session).getBusClassSeatList().get(0));
+        bookingRequest.setEcoSeats(getSession(session).getEcoClassSeatList().get(0));
+        bookingRequest.setFirSeats(getSession(session).getFirClassSeatList().get(0));
+        bookingRequest.setPmeSeats(getSession(session).getPmeClassSeatList().get(0));
         getSession(session).addToCart(bookingRequest);
 
         model.addAttribute("usr", getSession(session));
@@ -497,7 +554,29 @@ public class IndexController {
         return "redirect:/cart";
     }
 
+    @PostMapping("/cart/indirect")
+    public String updateCartWithIndirect(@ModelAttribute BookingRequestContainer bookingRequest, Model model, HttpSession session){
+        if(!getSession(session).isLoggedIn()){
+            return "redirect:login";
+        }
 
+        List<Flight> flights = getSession(session).getLastViewedFlight();
+        BookingRequest[] requests = bookingRequest.getBookingRequest();
+        model.addAttribute("Flight", flights);
+
+        for(int count = 0; count < bookingRequest.size(); count++) {
+            requests[count].setFlight(flights.get(count));
+            requests[count].setBusSeats(getSession(session).getBusClassSeatList().get(count));
+            requests[count].setEcoSeats(getSession(session).getEcoClassSeatList().get(count));
+            requests[count].setFirSeats(getSession(session).getFirClassSeatList().get(count));
+            requests[count].setPmeSeats(getSession(session).getPmeClassSeatList().get(count));
+            getSession(session).addToCart(requests[count]);
+        }
+
+        model.addAttribute("usr", getSession(session));
+
+        return "redirect:/cart";
+    }
 
     @RequestMapping("/cart/remove") //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String removeFlightFromCart(@RequestParam String id, Model model, HttpSession session){
