@@ -176,11 +176,11 @@
 
 <!--REGISTER USER--------------------------------------------------------------------------------------------------------------------------------------->
 <form id="updateUser" method="post" name="registerUser" onsubmit="return validateRegister()"
-      th:action="@{/RegisterUser}" th:object="${UserRegister}">
+      th:action="@{/UpdateUser}" th:object="${UserRegister}">
     <div class="row">
         <div class="col-md-4">
             <label class="form-label" id="emaillbl" name="airportlbl">Email</label><br>
-            <input class="form-control" id="email" name="email" th:value="${usr.getEmail()}" type="email"><br>
+            <input class="form-control" disabled id="email" name="email" th:value="${usr.getEmail()}" type="email"><br>
             <label class="form-label" id="namelbl" name="airportlbl">First Name</label><br>
             <input class="form-control" id="firstname" name="firstname" th:value="${usr.getFirstname()}"
                    type="text"><br>
