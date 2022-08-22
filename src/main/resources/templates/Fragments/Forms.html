@@ -374,61 +374,120 @@
                    type="datetime-local">
         </div>
     </div>
-    <button class="btn btn-primary btn-search" style="margin-top: 10px" type="submit">Find Flight</button>
+    <button class="btn btn-primary btn-search" type="submit">Find Flight</button>
 </form>
 
 <!-- Flight management form for creating/editing flights -------------------------------------------------------------------------------->
 <form id="EditFlight" method="post" th:action="@{/flight/add}" th:object="${Flight}">
-    <label for="departureCode" id="departureCodeLabel"
+    <style>
+        input {
+            margin-bottom: 20px;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="planeCode" id="planeCodeLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Plane Code: </label>
+            <input class="form-control" id="planeCode" name="planeCode" th:value="${flight.getPlaneCode()}" type="text">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="departureCode" id="departureCodeLabel"
            style="font-size: 0.65em; margin-left: 10px; position: absolute;">Origin: </label>
-    <input id="departureCode" name="departureCode" th:value="${flight.getDepartureCode()}" type="text">
-    <label for="destinationCode" id="destinationCodeLabel"
-           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
-    <input id="destinationCode" name="destinationCode" th:value="${flight.getDestinationCode()}" type="text">
-    <label for="planeCode" id="planeCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Plane
-        Code: </label>
-    <input id="planeCode" name="planeCode" th:value="${flight.getPlaneCode()}" type="text">
+            <input class="form-control" id="departureCode" name="departureCode" th:value="${flight.getDepartureCode()}" type="text">
+        </div>
+        <div class="col-md-4">
+            <label for="departureTime" id="departureTimeLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure: </label>
+            <input class="form-control" id="departureTime" name="departureTime" th:value="${flight.getDepartureString()}" type="datetime-local">
+        </div>
 
-    <label for="departureTime" id="departureTimeLabel"
-           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure: </label>
-    <input id="departureTime" name="departureTime" th:value="${flight.getDepartureString()}" type="datetime-local">
-    <label for="arrivalTime" id="arrivalTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival: </label>
-    <input id="arrivalTime" name="arrivalTime" th:value="${flight.getArrivalString()}" type="datetime-local">
-    <label for="departureTimeStopOver" id="departureTimeStopOverLabel"
-           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Departure: </label>
-    <input id="departureTimeStopOver" name="departureTimeStopOver" th:value="${flight.getDepartureStopOverString()}"
-           type="datetime-local">
-    <label for="arrivalTimeStopOver" id="arrivalTimeStopOverLabel"
-           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Arrival: </label>
-    <input id="arrivalTimeStopOver" name="arrivalTimeStopOver" th:value="${flight.getArrivalStopOverString()}"
-           type="datetime-local">
-    <label for="stopoverCode" id="stopoverCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover
-        Code: </label>
-    <input id="stopoverCode" name="stopoverCode" th:value="${flight.getStopoverCode()}" type="text">
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="destinationCode" id="destinationCodeLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
+            <input class="form-control" id="destinationCode" name="destinationCode" th:value="${flight.getDestinationCode()}" type="text">
+        </div>
+        <div class="col-md-4">
+            <label for="arrivalTime" id="arrivalTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival: </label>
+            <input class="form-control" id="arrivalTime" name="arrivalTime" th:value="${flight.getArrivalString()}" type="datetime-local">
+        </div>
+    </div>
+<hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="stopoverCode" id="stopoverCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover
+                Code: </label>
+            <input class="form-control"  id="stopoverCode" name="stopoverCode" th:value="${flight.getStopoverCode()}" type="text">
+        </div>
+        <div class="col-md-4">
+            <label for="departureTimeStopOver" id="departureTimeStopOverLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Departure: </label>
+            <input class="form-control"  id="departureTimeStopOver" name="departureTimeStopOver" th:value="${flight.getDepartureStopOverString()}"
+                   type="datetime-local">
+        </div>
+        <div class="col-md-4">
+            <label for="arrivalTimeStopOver" id="arrivalTimeStopOverLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Arrival: </label>
+            <input class="form-control"  id="arrivalTimeStopOver" name="arrivalTimeStopOver" th:value="${flight.getArrivalStopOverString()}"
+                   type="datetime-local">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight
+                Number: </label>
+            <input class="form-control" id="flightNumber" name="flightNumber" th:value="${flight.getFlightNumber()}" type="text">
+        </div>
+        <div class="col-md-4">
+            <label for="airlineCode" id="airlineCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline
+                Code: </label>
+            <input class="form-control" id="airlineCode" name="airlineCode" th:value="${flight.getAirlineCode()}" type="text">
+        </div>
 
-    <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight
-        Number: </label>
-    <input id="flightNumber" name="flightNumber" th:value="${flight.getFlightNumber()}" type="text">
-    <label for="airlineCode" id="airlineCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline
-        Code: </label>
-    <input id="airlineCode" name="airlineCode" th:value="${flight.getAirlineCode()}" type="text">
-    <label for="duration" id="durationLabel"
-           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration: </label>
-    <input id="duration" name="duration" th:value="${flight.getDuration()}" type="number">
-    <label for="durationSecondLeg" id="durationSecondLegLabel"
-           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration - Second Leg: </label>
-    <input id="durationSecondLeg" name="durationSecondLeg" th:value="${flight.getDurationSecondLeg()}" type="number">
-
-    <label for="ticketPrice" id="ticketPriceLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Ticket
-        Price: </label>
-    <input id="ticketPrice" name="ticketPrice" th:value="${flight.getTicketPrice()}" type="number">
-    <label for="maxSeats" id="maxSeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Max
-        Seats: </label>
-    <input id="maxSeats" name="maxSeats" th:value="${flight.getMaxSeats()}" type="number">
-    <label for="rating" id="ratingLabel"
-           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
-    <input id="rating" name="rating" th:value="${flight.getRating()}" type="number">
-    <button class="btn btn-primary btn-search" type="submit">Save Flight</button>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="duration" id="durationLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration: </label>
+            <input class="form-control" id="duration" name="duration" th:value="${flight.getDuration()}" type="number">
+        </div>
+        <div class="col-md-4">
+            <label for="durationSecondLeg" id="durationSecondLegLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration - Second Leg: </label>
+            <input class="form-control" id="durationSecondLeg" name="durationSecondLeg" th:value="${flight.getDurationSecondLeg()}" type="number">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="ticketPrice" id="ticketPriceLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Ticket
+                Price: </label>
+            <input class="form-control" id="ticketPrice" name="ticketPrice" th:value="${flight.getTicketPrice()}" type="number">
+        </div>
+        <div class="col-md-4">
+            <label for="maxSeats" id="maxSeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Max
+                Seats: </label>
+            <input class="form-control" id="maxSeats" name="maxSeats" th:value="${flight.getMaxSeats()}" type="number">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="rating" id="ratingLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
+            <input class="form-control" id="rating" name="rating" th:value="${flight.getRating()}" type="number">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+             <button class="btn btn-primary btn-search" type="submit">Save Flight</button>
+        </div>
+    </div>
 </form>
 
 <!-- Location management form for finding existing Locations --------------------------------------------------------------------------------->
