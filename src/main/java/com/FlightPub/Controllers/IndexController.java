@@ -608,6 +608,9 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
 
+        TravellerContainer travellerContainer = new TravellerContainer();
+        List<Traveller> travellers = new ArrayList<>();
+
         if (!saveTraveller) {
             saveTraveller = false;
         }
@@ -620,16 +623,20 @@ public class IndexController {
                 if (traveller.getId() == null) {
                     traveller.setTravellerID(new ObjectId());
                 }
+                travellers.add(traveller);
                 booking = new Booking(accountEmail, br.getFlight().getFlightID(), traveller.getId(), seat);
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
                 }
-                bookingServices.addTraveller(traveller);
                 bookingServices.addBooking(booking);
             }
         }
 
-        //model.addAttribute("traveller", traveller);
+        travellerContainer.setTravellers(travellers);
+
+        for (Traveller t : travellerContainer.getTravellers()) {
+            bookingServices.addTraveller(t);
+        }
 
         return "redirect:/bookingConfirmation";
     }
