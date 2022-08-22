@@ -364,6 +364,25 @@
     <input type="number" id="maxSeats" name="maxSeats" th:value="${flight.getMaxSeats()}">
     <label for="rating" id="ratingLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
     <input type="number" id="rating" name="rating" th:value="${flight.getRating()}">
+
+    <div th:each="class : ${Class}">
+        <hr>
+        <h4><span th:text="${class.getDetails()}"></h4>
+        <div th:each="type : ${Type}">
+            <p><span th:text="${type.getName()}"></span></p>
+            <label for="leg1Seats" id="leg1SeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 1 Seats: </label>
+            <input type="number" id="leg1Seats" name="leg1Seats">
+            <label for="leg1Cost" id="leg1CostLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 1 Cost: </label>
+            <input type="number" id="leg1Cost" name="priceLeg1" th:value="${class.getTicketClass()}+'_'+${type.getTicketCode()}+'.getpriceLeg1'">
+            <p><span th:text="${class.getTicketClass().getPriceLeg1()}"></span></p>
+
+            <label for="leg2Seats" id="leg2SeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 2 Seats: </label>
+            <input type="number" id="leg2Seats" name="leg2Seats">
+            <label for="leg2Cost" id="leg2CostLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 2 Cost: </label>
+            <input type="number" id="leg2Cost" name="priceLeg2" th:value="${class.getTicketClass()}+'_'+${type.getTicketCode()}+'.priceLeg2'">
+        </div>
+    </div>
+
     <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
 </form>
 

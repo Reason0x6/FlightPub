@@ -57,12 +57,12 @@ public class Price {
     @Setter
     @Getter
     @Field("PriceLeg1")
-    private Double priceLeg1;
+    private Double priceLeg1 = 0.0;
 
     @Setter
     @Getter
     @Field("PriceLeg2")
-    private Double priceLeg2;
+    private Double priceLeg2 = 0.0;
 
 
     public Price() {}

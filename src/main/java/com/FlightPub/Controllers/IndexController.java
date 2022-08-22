@@ -28,6 +28,7 @@ public class IndexController {
     private AdminAccountServices adminAccountServices;
     private HolidayPackageServices holidayPackageServices;
     private AirlineServices airlineServices;
+    private TicketServices ticketServices;
 
     @Autowired
     @Qualifier(value = "AirlineServices")
@@ -74,6 +75,10 @@ public class IndexController {
     @Autowired
     @Qualifier(value = "HolidayPackageServices")
     public void setHolidayPackageServices(HolidayPackageServices holidayPackageServices){ this.holidayPackageServices = holidayPackageServices; }
+
+    @Autowired
+    @Qualifier(value = "TicketServices")
+    public void setTicketServices(TicketServices ticketServices){ this.ticketServices = ticketServices; }
 
     @RequestMapping("/invalidatecache")
     public String cache(){
@@ -339,9 +344,30 @@ public class IndexController {
         if(flight != null)
             flight = flightServices.getByFlightNumberAndDeparture(flight.getFlightNumber(), flight.getDepartureTime());
 
-        if(flight == null)
-            flight = new Flight();
+        // Generates all of the ID values for availability and price
+        List<TicketClass> ticketClasses = ticketServices.getAllTicketClass();
+        List<TicketType> ticketTypes = ticketServices.getAllTicketType();
+        List<String> modelIDs = new ArrayList<>();
 
+        for(TicketClass ticketClass : ticketClasses) {
+            for(TicketType ticketType : ticketTypes) {
+
+            }
+        }
+
+        if(flight == null) {
+            flight = new Flight();
+        }
+        else {
+            List<Price> prices = flightServices.getFlightPrices(flight);
+            for(Price price : prices) {
+                String modelName = price.getClassCode()+"_"+price.getTicketCode();
+                model.addAttribute(price.getClassCode(), price);
+            }
+        }
+
+        model.addAttribute("Class", ticketClasses);
+        model.addAttribute("Type", ticketTypes);
         model.addAttribute("flight", flight);
         model.addAttribute("usr", getSession(session));
 

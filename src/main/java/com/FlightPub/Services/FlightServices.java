@@ -151,6 +151,10 @@ public class FlightServices{
 
     public void delete(String id){}
 
+    public List<Price> getFlightPrices(Flight flight){
+        return priceRepo.findPricesOfaDateRange(flight.getFlightNumber(), flight.getDepartureTime());
+    }
+
     public List<Flight> getByDestination(String dest) {
 
         if(flightCache.containsKey("DEST" + dest) && flightCache.get("DEST" + dest).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
