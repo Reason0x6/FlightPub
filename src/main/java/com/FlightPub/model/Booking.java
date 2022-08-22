@@ -36,6 +36,9 @@ public class Booking {
     @Field("seat")
     private String seat;
 
+    @Getter
+    @Setter
+    private Flight flight;
 
     public Booking() {
     }
@@ -56,4 +59,6 @@ public class Booking {
     public void setBookingID(String id) {
         this.id = id;
     }
+
+
 }

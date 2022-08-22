@@ -137,6 +137,7 @@ public class IndexController {
     @RequestMapping("/AdminRegister")
     public String loadAdminRegister(Model model, HttpSession session) {
 
+        model.addAttribute("usr", getSession(session));
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("admin", getAdminSession(session));
         return "User/AdminRegister";
@@ -212,17 +213,46 @@ public class IndexController {
 
         List<Booking> bookings = bookingServices.getUserBookings(getSession(session).getEmail());
         if (bookings.size() > 0) {
-            model.addAttribute("bookings", bookings);
-            model.addAttribute("flights", flightServices);
+            for(Booking b: bookings){
+                b.setFlight(flightServices.getById(b.getFlightID()));
+            }
+            List<Booking> previous = new ArrayList<>();
+            List<Booking> upcoming = new ArrayList<>();
+            for(Booking b: bookings){
+                System.out.println( b.getFlight().getDepartureTime() + " | " + (new Date().getTime () / 1000L));
+               if(b.getFlight().getDepartureTime() > (new Date().getTime () / 1000L)){
+                   upcoming.add(b);
+               }else{
+                   previous.add(b);
+               }
+            }
+            if(upcoming.size() > 0){
+                model.addAttribute("bookings", upcoming);
+            }else{
+
+                model.addAttribute("bookings", null);
+            }
+
+            if(previous.size() > 0){
+                model.addAttribute("history", previous);
+            }else{
+
+                model.addAttribute("history", null);
+            }
         } else {
             model.addAttribute("bookings", null);
+            model.addAttribute("history", null);
         }
+
 
         List<UserGroup> invitedGroups = groupServices.findInvitedGroupsContaining(getSession(session).getEmail());
         model.addAttribute("invitedGroups", invitedGroups);
 
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
+
+
+
 
         List<WishListItem> wishListItems = wishListServices.findAllByUserIDs(getSession(session).getUsr().getEmail());
         List<HolidayPackage> holidayPackages = holidayPackageServices.listAll();

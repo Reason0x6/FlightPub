@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookingRepo extends MongoRepository<Booking, String> {
 
-    @Query(value = "{ 'userID' :?0 }")
+    @Query(value = "{ 'accountEmail' :?0 }")
     List<Booking> findByUser(String in);
 
 }
