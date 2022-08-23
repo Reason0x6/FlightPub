@@ -16,7 +16,7 @@
                 <h3>Booking Confirmation</h3>
             </div>
             <div class="row">
-                <h2>Your flight booking has been confirmed. Your booking number is: <b><span th:text="${booking.getId()}"></span></b></h2>
+                <h2>Your flight booking has been confirmed. Your booking number is: <b><span th:text="${confirmationID}"></span></b></h2>
                 <br>
                 <br>
                 <br>
@@ -34,7 +34,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <div th:each="bd : ${bookingDetails}">
+                        <div th:each="bd : ${booking}">
                             <tr>
                                 <th scope="row" th:text="${bd.getFlight().getFlightNumber()}"></th>
                                 <td th:text="${bd.getDepartureDate()}"></td>
@@ -42,19 +42,19 @@
                                 <td th:text="${bd.getTotalSeats()}"></td>
                                 <td th:text="'$' + ${bd.getPrice()}"></td>
                             </tr>
-                            <div th:each="i : ${#numbers.sequence(0, bd.getAllSeatsList().size()-1)}">
+                            <div th:each="i : ${#numbers.sequence(0, travellers.size()-1)}">
                                 <div th:if="${i == 0}">
                                     <tr>
                                         <th scope="row" th:text="'Passengers :'"></th>
-                                        <td th:text="${bd.getAllSeatsList().get(i)}"></td>
-                                        <td th:text="${travellers.get(i).getFirstName() + travellers.get(i).getLastName()}"></td>
+                                        <td th:text="${travellers.get(i).getSeat()}"></td>
+                                        <td th:text="${travellers.get(i).getFirstName() + ' ' + travellers.get(i).getLastName()}"></td>
                                     </tr>
                                 </div>
                                 <div th:if="${i != 0}">
                                     <tr>
                                         <th scope="row"></th>
-                                        <td th:text="${bd.getAllSeatsList().get(i)}"></td>
-                                        <td th:text="${travellers.get(i).getFirstName() + travellers.get(i).getLastName()}"></td>
+                                        <td th:text="${travellers.get(i).getSeat()}"></td>
+                                        <td th:text="${travellers.get(i).getFirstName() + ' ' + travellers.get(i).getLastName()}"></td>
                                     </tr>
                                 </div>
                             </div>

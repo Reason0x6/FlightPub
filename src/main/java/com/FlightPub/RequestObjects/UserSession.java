@@ -74,7 +74,7 @@ public class UserSession {
 
     @Getter
     @Setter
-    private Booking booking;
+    private String confirmationID;
 
     @Autowired
     @Qualifier(value = "FlightServices")
@@ -185,4 +185,5 @@ public class UserSession {
         lastViewedFlight = new ArrayList<>();
         lastViewedFlight.add(in);
     }
+
 }

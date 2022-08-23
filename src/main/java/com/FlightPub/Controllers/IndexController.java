@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Strings;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
@@ -32,7 +34,6 @@ public class IndexController {
     private HolidayPackageServices holidayPackageServices;
     private AirlineServices airlineServices;
     private TicketServices ticketServices;
-
     private EmailServices emailServices;
 
     @Autowired
@@ -685,6 +686,8 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
 
+        String confirmationID = generateConfirmationID();
+
         Traveller[] travellers = travellerContainer.getTravellers();
 
         for (BookingRequest br : getSession(session).getCheckedOutCart()) {
@@ -697,44 +700,59 @@ public class IndexController {
                 if (travellers[i].getId() == null) {
                     travellers[i].setTravellerID(new ObjectId());
                 }
-                booking = new Booking(travellers[i].getAccountEmail(), br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat());
+                booking = new Booking(travellers[i].getAccountEmail(), br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat(), confirmationID);
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
                 }
 
                 bookingServices.addTraveller(travellers[i]);
+                bookingServices.getTravellers().add(travellers[i]);
                 bookingServices.addBooking(booking);
+                bookingServices.getBookings().add(booking);
             }
         }
+
+        getSession(session).setConfirmationID(confirmationID);
 
         return "redirect:/bookingConfirmation";
     }
 
     @RequestMapping("/bookingConfirmation")
-    public String bookingConfirmation(Booking booking, Model model, HttpSession session) {
+    public String bookingConfirmation(Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
 
         model.addAttribute("usr", getSession(session));
+
+        getSession(session).setBookedCart(getSession(session).getCheckedOutCart());
+        model.addAttribute("booking", getSession(session).getBookedCart());
+
         String accountEmail = getSession(session).getEmail();
+        String confirmationID = getSession(session).getConfirmationID();
 
-        List<Booking> bookingDetails = bookingServices.getBookingDetails(accountEmail, booking.getFlightID());
-        //List<Traveller> travellers = bookingServices.getTravellers(bookingDetails.get(0).getId());
-        List<Traveller> travellers = new ArrayList<>();
+        List<Booking> bookingDetails = bookingServices.getBookings();
+        List<Traveller> travellers = bookingServices.getTravellers();
 
-        for (Booking traveller : bookingDetails) {
-            travellers.add(bookingServices.getTravellers(traveller.getTravellerID()));
+
+        for (int i = 0; i < bookingDetails.size(); i++) {
+            System.out.println(bookingDetails.get(i).getId());
+            System.out.println(bookingDetails.get(i).getConfirmationID());
+            System.out.println(bookingDetails.get(i).getTravellerID());
+            System.out.println(bookingDetails.get(i).getFlightID());
+            System.out.println(bookingDetails.get(i).getSeat());
+            System.out.println(bookingDetails.get(i).getAccountEmail() + "\n\n");
         }
 
         model.addAttribute("bookingDetails", bookingDetails);
         model.addAttribute("travellers", travellers);
+        model.addAttribute("confirmationID", confirmationID);
 
         Email email = new Email();
 
         email.setEmailRecipient(accountEmail);
-        email.setEmailSubject("Booking Confirmation");
-        email.setEmailBody("Thank you for booking with us. Your booking reference is " + bookingDetails.get(0).getId());
+        email.setEmailSubject("FlightPub Booking Confirmation : " + confirmationID);
+        email.setEmailBody("Thank you for booking with FlightPub. Your booking reference is " + confirmationID);
 
         try {
             emailServices.sendSimpleMail(email);
@@ -746,7 +764,7 @@ public class IndexController {
     }
 
     protected String generateConfirmationID() {
-        return UUID.randomUUID().toString();
+        return RandomStringUtils.randomAlphanumeric(8).toUpperCase();
     }
 
     @RequestMapping("/bookingalert")

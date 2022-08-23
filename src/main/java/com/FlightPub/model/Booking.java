@@ -18,6 +18,11 @@ public class Booking {
     private String id;
 
     @Getter
+    @Setter
+    @Field("confirmationID")
+    private String confirmationID;
+
+    @Getter
     @Field("accountEmail")
     private String accountEmail;
 
@@ -40,15 +45,15 @@ public class Booking {
     @Setter
     private Flight flight;
 
-    public Booking() {
-    }
+    public Booking() {}
 
-    public Booking(String accountEmail, String flightID, String travellerID, String bookedSeat) {
+    public Booking(String accountEmail, String flightID, String travellerID, String bookedSeat, String confirmationID) {
 
         this.accountEmail = accountEmail;
         this.flightID = flightID;
         this.travellerID = travellerID;
         this.seat = bookedSeat;
+        this.confirmationID = confirmationID;
     }
 
 
