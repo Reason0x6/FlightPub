@@ -622,45 +622,54 @@ public class IndexController {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
-
+        List<BookingRequest> check = getSession(session).getCart();
+        int totalSeats = 0;
+        for(BookingRequest b: check){
+            totalSeats += b.getTotalSeats();
+        }
+        if(totalSeats > 100){
+            return "redirect:/cart?error=maxseats";
+        }
 
         getSession(session).setCheckedOutCart(getSession(session).getCart());
         model.addAttribute("checkout", getSession(session).getCheckedOutCart());
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("traveller", new Traveller());
 
         return "Booking/Checkout";
     }
 
     @PostMapping("/checkout")
-    public String updateCheckout(@RequestParam String title, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String dob, @RequestParam(required = false) boolean saveTraveller, @RequestParam String seat, @RequestParam String accountEmail, @ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
+    public String updateCheckout(@ModelAttribute TravellerContainer travellerContainer, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
 
+
         model.addAttribute("usr", getSession(session));
 
-        if (!saveTraveller) {
-            saveTraveller = false;
-        }
+        Traveller traveller;
+        Traveller[] travellers = travellerContainer.getTravellers();
 
         for (BookingRequest br : getSession(session).getCheckedOutCart()) {
             Booking booking;
-            Traveller traveller;
-            for (int i = 0; i < br.getAllSeatsList().size(); i++) {
-                traveller = new Traveller(title, firstName, lastName, dob, saveTraveller, accountEmail);
-                if (traveller.getId() == null) {
-                    traveller.setTravellerID(new ObjectId());
+            for (int i = 0; i < travellers.length; i++) {
+                if(travellers[i] == null){
+                    continue;
                 }
-                booking = new Booking(accountEmail, br.getFlight().getFlightID(), traveller.getId(), seat);
+
+                if (travellers[i].getId() == null) {
+                    travellers[i].setTravellerID(new ObjectId());
+                }
+                booking = new Booking(travellers[i].getAccountEmail(), br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat());
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
                 }
-                bookingServices.addTraveller(traveller);
+
+                bookingServices.addTraveller(travellers[i]);
                 bookingServices.addBooking(booking);
             }
         }
-
-        //model.addAttribute("traveller", traveller);
 
         return "redirect:/bookingConfirmation";
     }

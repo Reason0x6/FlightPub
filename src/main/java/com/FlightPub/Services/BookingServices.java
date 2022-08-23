@@ -4,6 +4,7 @@ import com.FlightPub.model.Booking;
 import com.FlightPub.model.Traveller;
 import com.FlightPub.repository.BookingRepo;
 import com.FlightPub.repository.TravellerRepo;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class BookingServices {
     private final BookingRepo bookingRepo;
 
     private final TravellerRepo travellerRepo;
+
+    private List<Traveller> travellers;
 
     @Autowired
     public BookingServices(BookingRepo bookingRepository, TravellerRepo travellerRepository) {
@@ -60,5 +63,10 @@ public class BookingServices {
 
     public void addBooking(Booking booking) {
         bookingRepo.save(booking);
+    }
+
+    public void addToTravellerList(Traveller traveller) {
+        travellers = new ArrayList<>();
+        travellers.add(traveller);
     }
 }

@@ -1,5 +1,4 @@
 package com.FlightPub.RequestObjects;
-
 import com.FlightPub.model.Traveller;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,5 +10,7 @@ public class TravellerContainer {
 
     @Getter
     @Setter
-    private List<Traveller> travellers = new ArrayList<>();
+    private Traveller[] travellers = new Traveller[100];
+
+    public TravellerContainer(){}
 }

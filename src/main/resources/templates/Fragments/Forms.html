@@ -548,7 +548,7 @@
                 <label class="col-form-label" for="groupName" id="nameLabel">Enter Group Name</label>
 
                 <div th:if="${Flight != null}">
-                    <input name="flightId" th:value="${Flight.FlightID}" type="hidden">
+                    <input name="flightId" th:value="${Flight.getFlightID()}" type="hidden">
                 </div>
 
 
