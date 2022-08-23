@@ -100,6 +100,8 @@ public class IndexController {
         model.addAttribute("searchLocation", locationServices.listAll());
         model.addAttribute("LoadingRecommendation", true);
         model.addAttribute("MostPop", locationServices.topTen());
+        model.addAttribute("travelPackages", getTravelPackages());
+
         return "index";
     }
 
@@ -250,23 +252,8 @@ public class IndexController {
 
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
-
-
-
-
-        List<WishListItem> wishListItems = wishListServices.findAllByUserIDs(getSession(session).getUsr().getEmail());
-        List<HolidayPackage> holidayPackages = holidayPackageServices.listAll();
-        List<HolidayPackage> userHolidayPackages = new LinkedList<>();
-        for (WishListItem wli : wishListItems) {
-            for (HolidayPackage hp : holidayPackages) {
-                if (wli.getDestinationID().equals(hp.getDestinationCode())) {
-                    hp.setPackageStartDateFormatted(convertDate(hp.getPackageStartDate()));
-                    hp.setPackageEndDateFormatted(convertDate(hp.getPackageEndDate()));
-                    userHolidayPackages.add(hp);
-                }
-            }
-        }
-        model.addAttribute("userHolidayPackages", userHolidayPackages);
+        model.addAttribute("userHolidayPackages", getUserHolidayPackages(session));
+        model.addAttribute("travelPackages", getTravelPackages());
 
 
         return "User/Personalised";
@@ -850,12 +837,6 @@ public class IndexController {
         return sessionAdmin;
     }
 
-    private String convertDate(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        return cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
-    }
-
     private double getBookingPrice(BookingRequest br) {
         double price = 0;
         for (String[] seat : br.getFirSeats()) {
@@ -1075,5 +1056,33 @@ public class IndexController {
             //System.out.println("Eco Class Tickets Price " + price);
         }
         return price;
+    }
+
+    public List<HolidayPackage> getTravelPackages(){
+        List<Airlines> sponsoredAirlines = airlineServices.getSponsoredAirlines();
+        List<HolidayPackage> holidayPackages = holidayPackageServices.listAll();
+        List<HolidayPackage> travelPackages = new LinkedList<>();
+        for (Airlines airline : sponsoredAirlines) {
+            for (HolidayPackage hp : holidayPackages) {
+                if (airline.getAirlineName().equals(hp.getAirlineName())) {
+                    travelPackages.add(hp);
+                }
+            }
+        }
+        return travelPackages;
+    }
+
+    public List<HolidayPackage> getUserHolidayPackages(HttpSession session){
+        List<WishListItem> wishListItems = wishListServices.findAllByUserIDs(getSession(session).getUsr().getEmail());
+        List<HolidayPackage> holidayPackages = holidayPackageServices.listAll();
+        List<HolidayPackage> userHolidayPackages = new LinkedList<>();
+        for (WishListItem wli : wishListItems) {
+            for (HolidayPackage hp : holidayPackages) {
+                if (wli.getDestinationID().equals(hp.getDestinationCode())) {
+                    userHolidayPackages.add(hp);
+                }
+            }
+        }
+        return userHolidayPackages;
     }
 }
