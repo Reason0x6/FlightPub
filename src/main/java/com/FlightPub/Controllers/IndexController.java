@@ -6,6 +6,7 @@ import com.FlightPub.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,8 @@ public class IndexController {
     private AdminAccountServices adminAccountServices;
     private HolidayPackageServices holidayPackageServices;
     private AirlineServices airlineServices;
+
+    private EmailService emailService;
 
     @Autowired
     @Qualifier(value = "AirlineServices")
@@ -675,6 +678,22 @@ public class IndexController {
 
         model.addAttribute("travellerContainer", travellerContainer.getTravellers());
         model.addAttribute("booking", booking);
+
+        return "Confirmations/BookingConfirmation";
+    }
+
+    @PostMapping("/bookingConfirmation")
+    public String bookingConfirmationEmail(@RequestBody Email email, Model model, HttpSession session) {
+        if (!getSession(session).isLoggedIn()) {
+            return "redirect:/login";
+        }
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo("bella_andrews@me.com");
+        message.setSubject("Booking Confirmation");
+        message.setText("Thank you for booking with us. We will be in contact with you shortly.");
+        emailService.sendEmail(message);
+
 
         return "Confirmations/BookingConfirmation";
     }
