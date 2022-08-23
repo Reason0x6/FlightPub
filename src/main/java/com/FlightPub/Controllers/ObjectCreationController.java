@@ -22,8 +22,8 @@ public class ObjectCreationController {
     private FlightServices flightServices;
     private LocationServices locationServices;
     private BookingServices bookingServices;
-
     private UserGroupServices groupServices;
+    private TicketServices ticketServices;
     private UserAccount SessionUser;
 
     private AdminAccountServices adminAccountServices;
@@ -34,6 +34,9 @@ public class ObjectCreationController {
         this.usrServices = usrService;
     }
 
+    @Autowired
+    @Qualifier(value = "TicketServices")
+    public void setTicketServices(TicketServices ticketServices) { this.ticketServices = ticketServices; }
 
     @Autowired
     @Qualifier(value = "FlightServices")
@@ -63,6 +66,71 @@ public class ObjectCreationController {
     @Qualifier(value = "AdminAccountServices")
     public void setAdminServices(AdminAccountServices adminAccountServices) {
         this.adminAccountServices = adminAccountServices;
+    }
+
+    @RequestMapping("/price/add")
+    public String addPrice(@ModelAttribute Price price, Model model, HttpSession session) {
+        model.addAttribute("usr", getSession(session));
+        model.addAttribute("Price", price);
+        List<TicketClass> classes = ticketServices.getAllTicketClass();
+        List<TicketType> types = ticketServices.getAllTicketType();
+
+        boolean invalid = false;
+
+        // Changes the full Class name to its code
+        for(TicketClass ticketClass : classes) {
+            if(price.getClassCode() != null && ticketClass.getDetails().equals(price.getClassCode())) {
+                price.setClassCode(ticketClass.getTicketClass());
+                break;
+            }
+        }
+
+        // Changes the full Ticket type name to its code
+        for(TicketType ticketType : types) {
+            if(price.getTicketCode() != null && ticketType.getName().equals(price.getTicketCode())) {
+                price.setTicketCode(ticketType.getTicketCode());
+                break;
+            }
+        }
+
+        // Ensures that the fields are filled and that the input is valid
+        if(price.getFlightNumber() == null || price.getAirlineCode() == null || price.getClassCode() == null
+           || price.getTicketCode() == null || price.getStartDate() == null || price.getEndDate() == null)
+            invalid = true;
+        else if(price.getFlightNumber() == "" || price.getAirlineCode() == "" || price.getClassCode() == ""
+                || price.getTicketCode() == "")
+            invalid = true;
+        else if(price.getStartDate() < 0 || price.getEndDate() < 0 || price.getPriceLeg1() < 0 || price.getPriceLeg2() < 0)
+            invalid = true;
+        else if(price.getEndDate() < price.getStartDate())
+            invalid = true;
+
+        if(invalid) {
+            return "Admin/PriceManagement";
+        }
+
+        // Trys to match the Pricing with a current price object
+        Price currentPrice = flightServices.getSpecificPriceTimeframe(price.getFlightNumber(), price.getStartDate(), price.getEndDate(), price.getClassCode(), price.getTicketCode());
+        if(currentPrice != null) {
+            price.setID(currentPrice.getID());
+        }
+
+        // Checks that the specified date doest overlap with existing
+        if(currentPrice == null && flightServices.existingPriceTimeframe(price))
+            return "Admin/PriceManagement";
+
+        // Fill missing field
+        double leg1 = price.getPriceLeg1() == null ? 0 : price.getPriceLeg1();
+        double leg2 = price.getPriceLeg2() == null ? 0 : price.getPriceLeg2();
+        price.setPrice(leg1 + leg2);
+
+        // Save to the database
+        if(flightServices.saveOrUpdatePrice(price) != null) {
+            model.addAttribute("Price", price);
+            return "Confirmations/NewPrice";
+        }
+        else
+            return "Admin/PriceManagement";
     }
 
     @RequestMapping("/location/add")

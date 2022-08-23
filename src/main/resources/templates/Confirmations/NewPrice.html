@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"></head>
+<head th:replace="Fragments/Header"></head>
+<div class="container">
+  <main id="main" style="margin-top: 100px" th:if="${Price != null}">
+    <!-- ======= Services Section ======= -->
+    <h2>New Pricing Created</h2>
+    <p th:text="'PriceID: ' + ${Price.getID()}"></p>
+    <p th:text="'Airline Code: ' +${Price.getAirlineCode()}"></p>
+    <p th:text="'Flight Number: ' + ${Price.getFlightNumber()}"></p>
+    <p th:text="'Class Code: ' + ${Price.getClassCode()}"></p>
+    <p th:text="'Ticket Code: ' + ${Price.getTicketCode()}"></p>
+    <p th:text="'Start Date: ' + ${Price.getStartString()}"></p>
+    <p th:text="'End Date: ' + ${Price.getEndString()}"></p>
+    <p th:text="'Price: ' + ${Price.getPrice()}"></p>
+    <p th:text="'Price - Leg 1: ' + ${Price.getPriceLeg1()}"></p>
+    <p th:text="'Price - Leg 2: ' + ${Price.getPriceLeg2()}"></p>
+  </main>
+</div>

@@ -448,6 +448,54 @@ public class IndexController {
         return "Admin/LocationManagement";
     }
 
+    @RequestMapping("/admin/price/management")
+    @PostMapping("/admin/price/management")
+    public String modifyPrice(@ModelAttribute Price price, Model model, HttpSession session) {
+        if (!getAdminSession(session).isLoggedIn()) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("admin", getAdminSession(session));
+        List<TicketClass> classes = ticketServices.getAllTicketClass();
+        List<TicketType> types = ticketServices.getAllTicketType();
+
+
+        // Populate with the specified Price object
+        if (price != null) {
+            if (price.getFlightNumber() != null && price.getStartDate() != null
+                && price.getTicketCode() != null && price.getClassCode() != null) {
+
+                // Changes the full Class name to its code
+                for(TicketClass ticketClass : classes) {
+                    if(ticketClass.getDetails().equals(price.getClassCode())) {
+                        price.setClassCode(ticketClass.getTicketClass());
+                        break;
+                    }
+                }
+
+                // Changes the full Ticket type name to its code
+                for(TicketType ticketType : types) {
+                    if(ticketType.getName().equals(price.getTicketCode())) {
+                        price.setTicketCode(ticketType.getTicketCode());
+                        break;
+                    }
+                }
+                price = flightServices.getSpecificPrice(price.getFlightNumber(), price.getStartDate(), price.getClassCode(), price.getTicketCode());
+            }
+        }
+
+        // Populate with a default value if the price doesnt exist or one has not been provided
+        if (price == null)
+            price = new Price();
+
+        model.addAttribute("Classes", classes);
+        model.addAttribute("Types", types);
+        model.addAttribute("Price", price);
+        model.addAttribute("usr", getSession(session));
+
+        return "Admin/PriceManagement";
+    }
+
     @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
     public String bookFlight(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session) {
 
