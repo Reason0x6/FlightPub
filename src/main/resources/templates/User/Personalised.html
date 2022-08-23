@@ -42,6 +42,71 @@
                     </div>
 
                     <div th:replace="Fragments/Recommendation"></div>
+
+                    <div th:if="${travelPackages.size &gt 0}">
+                        <div class="section-title" data-aos="zoom-out">
+                            <p>Recommended Travel Packages</p>
+                            <div style="overflow-y:scroll; max-height:550px;">
+                                <div class="card l-1" th:each="holidayPackage : ${travelPackages}">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Airline Code: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getAirlineCode()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Airline Name: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getAirlineName()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Destination Code: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getDestinationCode()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Destination Airport: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getAirport()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Discount Percentage: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getDiscountPercentage()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Hotel Name: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getHotelName()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Hotel Star Rating: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getHotelStarRating()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Hotel Description: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getHotelDescription()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Package Start Date: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getPackageStartDate()}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2"><span><b>Package End Date: </b></span></td>
+                                            <td><span th:text="${holidayPackage.getPackageEndDate()}"></span></td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                    <span><b>Departure Airport: </b></span>
+                                    <select class="form-control" id="travelPackageDeparture" name="travelPackageDeparture">
+                                        <option th:each="Location: ${locs}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"
+                                                th:value="${Location.getLocation()}"></option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-primary btn-search"
+                                            th:onclick="findFlight(travelPackageDeparture.value, [[${holidayPackage.getAirport()}]], [[${holidayPackage.getPackageStartDateFormatted()}]], [[${holidayPackage.getPackageEndDateFormatted()}]])" type="submit">Book Now!
+                                    </button>
+                                    <br/> <br/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </section>
 

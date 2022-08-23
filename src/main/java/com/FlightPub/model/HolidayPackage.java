@@ -45,11 +45,11 @@ public class HolidayPackage {
 
     @Getter
     @Setter
-    private Date packageStartDate;
+    private String packageStartDate;
 
     @Getter
     @Setter
-    private Date packageEndDate;
+    private String packageEndDate;
 
     @Getter
     @Setter
@@ -60,7 +60,7 @@ public class HolidayPackage {
     private String packageEndDateFormatted;
 
     public HolidayPackage(String airlineCode, String airlineName, String destinationCode, String airport, int discountPercentage, String hotelName,
-                          int hotelStarRating, String hotelDescription, Date packageStartDate, Date packageEndDate) {
+                          int hotelStarRating, String hotelDescription, String packageStartDate, String packageEndDate) {
         super();
         this.airlineCode = airlineCode;
         this.airlineName = airlineName;
