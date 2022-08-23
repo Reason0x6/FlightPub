@@ -7,6 +7,7 @@ import com.FlightPub.model.Price;
 import com.FlightPub.repository.AvailabilityRepo;
 import com.FlightPub.repository.FlightRepo;
 import com.FlightPub.repository.PriceRepo;
+import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,11 @@ public class FlightServices{
             availability.setFlightNumber(availability.getFlightNumber().toUpperCase());
             availability.setAirlineCode(availability.getAirlineCode().toUpperCase());
 
-             Availability a = availRepo.save(availability);
+            if(availability.getID() == null)
+                availability.setID(new ObjectId().toString());
+
+            Availability a = availRepo.save(availability);
+            invalidate();
             return a;
         } catch (Exception e) {
             System.out.println(e);
@@ -135,6 +140,7 @@ public class FlightServices{
                 flight.setFlightID(existing.getFlightID());
 
             flightRepo.save(flight);
+            invalidate();
             return flight;
         } catch (Exception e) {
             return null;
@@ -237,7 +243,7 @@ public class FlightServices{
                     String seatsAvailableString = Integer.toString(seatsAvailable);
                     String ticketCode = ticket.getTicketCode();
                     String ticketFlightNumber = ticket.getFlightNumber();
-                    Date ticketDepartureDate = ticket.getDepartureTime();
+                    Long ticketDepartureDate = ticket.getDepartureTime();
                     String[] seat = getSeatDetails(seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate);
 
                     if(seat != null){
@@ -250,7 +256,7 @@ public class FlightServices{
         return seatList;
     }
 
-    private String[] getSeatDetails(String seatsAvailableString, String classCode, String ticketCode, String ticketFlightNumber, Date ticketDepartureDate) {
+    private String[] getSeatDetails(String seatsAvailableString, String classCode, String ticketCode, String ticketFlightNumber, Long ticketDepartureDate) {
         String[] seatDetails = new String[4];
         seatDetails[0] = ticketCode;
         seatDetails[1] = seatsAvailableString;
@@ -321,7 +327,7 @@ public class FlightServices{
     }
 
 
-    public @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Date ticketDepartureDate) {
+    public @NotNull String getPrice(String ticketFlightNumber , String classCode, String ticketCode, Long ticketDepartureDate) {
         List<Price> price = getFlightCachePrice(ticketFlightNumber, classCode, ticketCode);
         for (int i = 0; i < price.size(); i++) {
             Date startDate = price.get(i).getStartDate();
@@ -537,6 +543,5 @@ public class FlightServices{
         flightCache = new HashMap<>();
         availCache = new HashMap<>();
         priceCache = new HashMap<>();
-
     }
 }

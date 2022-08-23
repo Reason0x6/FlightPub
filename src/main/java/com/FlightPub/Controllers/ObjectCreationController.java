@@ -164,7 +164,7 @@ public class ObjectCreationController {
             availabilityList.get(count).setAirlineCode(flight.getAirlineCode());
             availabilityList.get(count).setClassCode(id[0]);
             availabilityList.get(count).setTicketCode(id[1]);
-            availabilityList.get(count).setDepartureTime(Flight.longToDate(flight.getDepartureTime()));
+            availabilityList.get(count).setDepartureTime(flight.getDepartureTime());
             availabilityList.get(count).setFlightNumber(flight.getFlightNumber());
         }
 
