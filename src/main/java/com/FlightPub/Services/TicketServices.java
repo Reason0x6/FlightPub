@@ -1,5 +1,7 @@
 package com.FlightPub.Services;
 
+import com.FlightPub.model.TicketClass;
+import com.FlightPub.model.TicketType;
 import com.FlightPub.repository.TicketClassRepo;
 import com.FlightPub.repository.TicketTypeRepo;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -320,7 +320,7 @@ public class FlightServices {
     }
 
 
-    public @NotNull String getPrice(String ticketFlightNumber, String classCode, String ticketCode, Date ticketDepartureDate) {
+    public @NotNull String getPrice(String ticketFlightNumber, String classCode, String ticketCode, Long ticketDepartureDate) {
         List<Price> price = getFlightCachePrice(ticketFlightNumber, classCode, ticketCode);
         for (int i = 0; i < price.size(); i++) {
             Date startDate = price.get(i).getStartDate();
