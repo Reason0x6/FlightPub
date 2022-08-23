@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="Fragments/Head"> </head>
-<head th:replace="Fragments/Header"> </head>
+<head th:replace="Fragments/Head"></head>
+<head th:replace="Fragments/Header"></head>
 <style>
-    .fluid{
+    .fluid {
         margin: -30px -75vw 20px -75vw;
-        padding:  20px 75vw;
+        padding: 20px 75vw;
         overflow-x: hidden;
-        background-color: rgba(0,0,0,0.1);
+        background-color: rgba(0, 0, 0, 0.1);
     }
+
     .fluid h1 {
         color: #fd7e14;
     }
 </style>
 <div class="container">
-    <main id="main" style="margin-top: 100px" >
-        <div class="fluid" >
+    <main id="main" style="margin-top: 100px">
+        <div class="fluid">
             <h1>Admin Control Panel</h1>
-            <p>Take control of how Flightpub operates. Below you will find a series of tools that allow you to control who uses the site, what they see, and most importantly, how we can make their dream holiday a reality!</p>
+            <p>Take control of how Flightpub operates. Below you will find a series of tools that allow you to control
+                who uses the site, what they see, and most importantly, how we can make their dream holiday a
+                reality!</p>
         </div>
 
         <div th:if="${admin.getCompany()} == 'Flightpub'">
             <div class="row">
                 <h3>Flights & Locations</h3>
-                <hr />
+                <hr/>
                 <div class="col-md-6">
                     <div class="card l-1">
                         <h2>Edit A Flight</h2>
                         <p>Make changes to currently listed flights:</p>
-                        <a href="/admin/flight/management" class="btn btn-success">Edit Flights</a>
+                        <a class="btn btn-success" href="/admin/flight/management">Edit Flights</a>
                         <br>
                     </div>
                 </div>
@@ -37,42 +40,42 @@
                     <div class="card l-1">
                         <h2>Edit A Location</h2>
                         <p>Make changes to currently listed locations:</p>
-                        <a href="/admin/location/management" class="btn btn-success">Edit Locations</a>
+                        <a class="btn btn-success" href="/admin/location/management">Edit Locations</a>
                         <br>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <h3>COVID Controls</h3>
-                <hr />
+                <hr/>
                 <div class="col-md-6">
                     <div class="card l-1">
                         <h2>Restrict/Unrestrict Covid Location</h2>
-                        <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"> </form>
+                        <form th:replace="Fragments/Forms :: #covidRestrictedLocationForm"></form>
                         <br>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <h3>User Administration</h3>
-                <hr />
+                <hr/>
                 <div class="col-md-6">
                     <div class="card l-1">
                         <h2>User Modification</h2>
                         <h5>Update User Account</h5>
-                        <form th:replace="Fragments/Forms :: #userModificationForm"> </form>
+                        <form th:replace="Fragments/Forms :: #userModificationForm"></form>
                         <br>
                     </div>
                     <div class="card l-1">
                         <h5>Delete User Account</h5>
-                        <form th:replace="Fragments/Forms :: #userDeleteForm"> </form>
+                        <form th:replace="Fragments/Forms :: #userDeleteForm"></form>
                         <br>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card l-1">
                         <h5>Create User Account</h5>
-                        <form th:replace="Fragments/Forms :: #addUser"> </form>
+                        <form th:replace="Fragments/Forms :: #addUser"></form>
                         <br>
                     </div>
                 </div>
@@ -80,25 +83,24 @@
             </div>
 
 
-
-
         </div>
         <br>
-        <h2>Most Popular Wish List Destinations</h2>
-        <div style="overflow:scroll; height:300px;">
-            <div th:each="wli : ${wish}">
-                <p th:text=" ${wli.getDestinationID()}"></p>
-                <p th:text="${wli.getUserID()}"></p>
-                <p th:text="${wli.getWLID()}"></p>
+        <div class="card l-1">
+            <h2>Most Popular Wish List Destinations</h2>
+            <div style="overflow-y:scroll; max-height:300px;">
+                <div th:each="wli : ${wish}">
+                    <p th:text="'- ' + ${wli.getWLID()}"></p>
+                </div>
             </div>
         </div>
+
         <br>
-        <div>
+        <div class="card l-1">
             <h2>Holiday Packages</h2>
-            <form th:replace="Fragments/Forms :: #holidayPackageForm"> </form>
+            <form th:replace="Fragments/Forms :: #holidayPackageForm"></form>
         </div>
         <br>
     </main>
 </div>
 
-<lower th:replace="Fragments/Footer"> </lower>
+<lower th:replace="Fragments/Footer"></lower>

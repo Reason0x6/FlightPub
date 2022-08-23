@@ -41,15 +41,16 @@ public class TicketType {
     @Field("FrequentFlyerPoints")
     private boolean FrequentFlyerPoints;
 
-    public TicketType() {}
+    public TicketType() {
+    }
 
-    public TicketType(String ticketCode, String name, boolean refundable, boolean transferable, boolean exchangable, boolean FrequentFlyerPoints){
+    public TicketType(String ticketCode, String name, boolean refundable, boolean transferable, boolean exchangable, boolean FrequentFlyerPoints) {
 
-       this.ticketCode = ticketCode;
-       this.name = name;
-       this.refundable = refundable;
-       this.transferable = transferable;
-       this.exchangable = exchangable;
-       this.FrequentFlyerPoints = FrequentFlyerPoints;
+        this.ticketCode = ticketCode;
+        this.name = name;
+        this.refundable = refundable;
+        this.transferable = transferable;
+        this.exchangable = exchangable;
+        this.FrequentFlyerPoints = FrequentFlyerPoints;
     }
 }

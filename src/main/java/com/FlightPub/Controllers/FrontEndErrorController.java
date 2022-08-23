@@ -13,7 +13,7 @@ public class FrontEndErrorController implements ErrorController {
 
     private static final String PATH = "/error";
 
-    @RequestMapping(value = PATH )
+    @RequestMapping(value = PATH)
     public String myerror(Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("Error", "General Error");
@@ -25,16 +25,17 @@ public class FrontEndErrorController implements ErrorController {
         model.addAttribute("Error", "General Error");
         return "404";
     }
-    private UserSession getSession(HttpSession session){
+
+    private UserSession getSession(HttpSession session) {
         UserSession sessionUser = null;
-        try{
+        try {
             sessionUser = (UserSession) session.getAttribute("User");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(sessionUser == null){
-            sessionUser =  new UserSession(null);
+        if (sessionUser == null) {
+            sessionUser = new UserSession(null);
             session.setAttribute("User", sessionUser);
         }
 

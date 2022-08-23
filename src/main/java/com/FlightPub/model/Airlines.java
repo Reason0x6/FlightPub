@@ -29,5 +29,6 @@ public class Airlines {
     @Field("Sponsored")
     private boolean sponsored;
 
-    public Airlines() {}
+    public Airlines() {
+    }
 }

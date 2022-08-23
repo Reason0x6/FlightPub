@@ -4,29 +4,30 @@
 <!-- ======= Head ======= -->
 <head th:replace="Fragments/Head"></head>
 <!-- ======= Header ======= -->
-<header th:replace="Fragments/Header"> </header>
+<header th:replace="Fragments/Header"></header>
 <body>
-    <!-- ======= Hero Section ======= -->
-    <main id="main">
-            <!-- ======= Services Section ======= -->
-            <section id = "booking" class = "services">
-                <div class="container" style="margin-top: 100px;">
-                        <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
-                            <h2>You're on your way!</h2>
-                            <h3>Booking Confirmation</h3>
-                        </div>
-                        <div class="row">
-                            <h2>Your flight booking has been confirmed. Your booking number is: <b><span th:text="${Booking.generateConfirmationID()}"></span></b></h2>
-                            <br>
-                            <br>
-                            <br>
-                            <!-- Display Booking Details -->
-                        </div>
-                    </div>
-                <!-- ======= Footer ======= -->
-                <lower th:replace="Fragments/Footer"> </lower>
-            </section>
-    </main>
+<!-- ======= Hero Section ======= -->
+<main id="main">
+    <!-- ======= Services Section ======= -->
+    <section class="services" id="booking">
+        <div class="container" style="margin-top: 100px;">
+            <div class="section-title" data-aos="zoom-out" style="margin-top: 25px">
+                <h2>You're on your way!</h2>
+                <h3>Booking Confirmation</h3>
+            </div>
+            <div class="row">
+                <h2>Your flight booking has been confirmed. Your booking number is: <b><span
+                        th:text="${booking.getId()}"></span></b></h2>
+                <br>
+                <br>
+                <br>
+                <!-- Display Booking Details -->
+            </div>
+        </div>
+        <!-- ======= Footer ======= -->
+        <lower th:replace="Fragments/Footer"></lower>
+    </section>
+</main>
 </body>
 <script th:inline="javascript"></script>
 </html>

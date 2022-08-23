@@ -6,30 +6,32 @@
 </head>
 <body>
 
-<div class="col-md-6" style="padding-left: 20px;" id="added_users_section" th:fragment="added_users_section">
-    <div class="section-title" data-aos="zoom-out" >
+<div class="col-md-6" id="added_users_section" style="padding-left: 20px;" th:fragment="added_users_section">
+    <div class="section-title" data-aos="zoom-out">
         <h2>Members admin: </h2>
         <p>The Who's Who</p>
     </div>
-    <div th:fragment="added_users_fragment" id="added_users" class="card l-1" data-aos="zoom-in-left">
+    <div class="card l-1" data-aos="zoom-in-left" id="added_users" th:fragment="added_users_fragment">
         <table class="table">
             <thead>
             <tr>
                 <th scope="col">First Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Booked Status</th>
-                <th scope="col" th:if="${isAdmin}" >Remove User?</th>
+                <th scope="col" th:if="${isAdmin}">Remove User?</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${groupUsers}">
                 <th scope="row" th:text="${user.firstname}"></th>
                 <td th:text="${user.email}"></td>
-                <td> TODO </td>
+                <td> TODO</td>
                 <td th:if="${isAdmin}">
                     <span th:if="${user.email == admin.email}"> Group Admin </span>
 
-                    <button th:if="${user.email != admin.email}" type="button" class="btn btn-primary" th:onclick="removeUser([[${user.email}]])">Remove User</button>
+                    <button class="btn btn-primary" th:if="${user.email != admin.email}" th:onclick="removeUser([[${user.email}]])"
+                            type="button">Remove User
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -49,8 +51,8 @@
          * @param removeUser user to remove
          */
         function removeUser(removeUser) {
-            var result = confirm("Do you want to remove the user?");
-            if (result) {
+            if (confirm('Do you want to remove user ' + removeUser + '?')) {
+                // Post entered email to be added to invite list
                 $.post("/remove_group_user", {
                     userId: removeUser,
                     groupId: $("#groupId").val()
@@ -58,10 +60,6 @@
                     $("#added_users").replaceWith(fragment);
                 })
             }
-                // if (confirm('Removing user ' + removeUser)) {
-                    // Post entered email to be added to invite list
-
-                // }
         }
 
         /**

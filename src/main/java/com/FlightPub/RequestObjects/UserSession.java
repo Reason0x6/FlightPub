@@ -2,6 +2,7 @@ package com.FlightPub.RequestObjects;
 
 import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.UserAccountServices;
+import com.FlightPub.model.Booking;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.model.WishListItem;
@@ -63,6 +64,14 @@ public class UserSession {
     @Setter
     private List<String> availabilityID;
 
+    @Getter
+    @Setter
+    private List<BookingRequest> checkedOutCart;
+
+    @Getter
+    @Setter
+    private Booking booking;
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {
@@ -81,61 +90,64 @@ public class UserSession {
         this.sessionCart = new HashMap<>();
     }
 
-    public boolean isLoggedIn(){
-        return usr != null ? true : false;
+    public boolean isLoggedIn() {
+        return usr != null;
     }
 
-    public String getFirstname(){
+    public String getFirstname() {
         return usr.getFirstname();
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return usr.getEmail();
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return usr.getPassword();
     }
 
-    public void addToCart(BookingRequest bookingRequest){
-        if(cart == null){
+    public void addToCart(BookingRequest bookingRequest) {
+        if (cart == null) {
             cart = new ArrayList<>();
         }
         cart.add(bookingRequest);
     }
 
 
-    public void removeFromCart(String id){
-        for(BookingRequest br : cart){
-            if(br.getId().equals(id)){
+    public void removeFromCart(String id) {
+        for (BookingRequest br : cart) {
+            if (br.getId().equals(id)) {
+                cart.get(cart.indexOf(br)).setAllSeatsList(null);
                 cart.remove(br);
                 break;
             }
         }
     }
 
-    public int getSeatsFor(String id){
+    public int getSeatsFor(String id) {
         return sessionCart.get(id);
     }
 
-    public boolean addToWishList(String id){
+    public boolean addToWishList(String id) {
 
-            Flight tempF = flightServices.getById(id);
-            return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
+        Flight tempF = flightServices.getById(id);
+        return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
 
     }
 
-    public void removeFromWishList(String id){
+    public void removeFromWishList(String id) {
         usrService.removeWIL(id, usr.getEmail());
     }
 
-    public List<Map.Entry<String, String>> getWishList(){
+    public List<Map.Entry<String, String>> getWishList() {
 
         return usrService.getWishList(usr);
     }
 
-    public Flight getFlight(String id){
+    public Flight getFlight(String id) {
         return flightServices.getById(id);
-   }
+    }
+
     /*
     for (String key: map.keySet()) {
         System.out.println("key : " + key);

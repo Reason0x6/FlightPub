@@ -1,9 +1,7 @@
 package com.FlightPub.Services;
 
-import com.FlightPub.model.Availability;
 import com.FlightPub.model.HaversineCalculator;
 import com.FlightPub.model.Location;
-import com.FlightPub.model.Price;
 import com.FlightPub.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +14,8 @@ import java.util.*;
 @Service("LocationServices")
 public class LocationServices {
     private final LocationRepo locationRepo;
-    private HashMap<String, Map.Entry<Date, Location>> locCache;
+    private final HashMap<String, Map.Entry<Date, Location>> locCache;
+
     @Autowired
     public LocationServices(LocationRepo locationRepository) {
         this.locationRepo = locationRepository;
@@ -37,14 +36,15 @@ public class LocationServices {
 
     /**
      * Get a location by id
+     *
      * @param id location id to retrieve
      * @return Location
      */
     public Location getById(String id) {
 
-        if(locCache.containsKey(id) && locCache.get(id).getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
+        if (locCache.containsKey(id) && locCache.get(id).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
             return locCache.get(id).getValue();
-        }else {
+        } else {
             Location loc = locationRepo.findById(id).orElse(null);
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
@@ -61,11 +61,12 @@ public class LocationServices {
 
     /**
      * Save or update a location
+     *
      * @param location location to update
      * @return updated location
      */
     public Location saveOrUpdate(Location location) {
-        try{
+        try {
             // Prepares the Data for the database
             String locationName = location.getLocation();
             String country = location.getCountry();
@@ -78,14 +79,15 @@ public class LocationServices {
             updateAdjacency();
 
             return location;
-        } catch(Exception e) {
-            System.out.println("Error: "+e);
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
             return null;
         }
     }
 
     /**
      * Delete a location
+     *
      * @param id location id to delete
      */
     public void delete(String id) {
@@ -94,6 +96,7 @@ public class LocationServices {
 
     /**
      * Returns list of flights sorted in ascending popularity order excluding locations in exclude list
+     *
      * @param excludeList list locations to exclude from sorted list
      * @return sorted list of locations
      */
@@ -118,20 +121,21 @@ public class LocationServices {
         System.out.println(out);
         if (!out.isEmpty()) {
             return out.subList(0, 10);
-        }else{
-           out = locationRepo.findAll().subList(0, 10);
+        } else {
+            out = locationRepo.findAll().subList(0, 10);
         }
         return null;
     }
 
     /**
      * Finds a location
+     *
      * @param locationName name of location to find
      * @return Location matching locationName
      */
     public Location findByLocation(String locationName) {
         // Ensures that the string contains a value
-        if(locationName == null || locationName.equals(""))
+        if (locationName == null || locationName.equals(""))
             return null;
 
         List<Location> out = locationRepo.findByLocation(locationName);
@@ -142,6 +146,7 @@ public class LocationServices {
 
     /**
      * Increase popularity of specified location
+     *
      * @param location location to increase popularity for
      */
     public void incrementPopularity(String location) {
@@ -154,11 +159,11 @@ public class LocationServices {
 
             // If current popularity is not already number 1
             if (currentPopularity != 1) {
-                Location higherPopularityLocation = locationRepo.findFirstByPopularity(currentPopularity-1);
+                Location higherPopularityLocation = locationRepo.findFirstByPopularity(currentPopularity - 1);
                 Location currentPopularityLocation = locationRepo.findFirstByPopularity(currentPopularity);
 
                 higherPopularityLocation.setPopularity(currentPopularity);
-                currentPopularityLocation.setPopularity(currentPopularity-1);
+                currentPopularityLocation.setPopularity(currentPopularity - 1);
 
                 saveOrUpdate(higherPopularityLocation);
                 saveOrUpdate(currentPopularityLocation);
@@ -173,14 +178,14 @@ public class LocationServices {
      */
     public void updateAdjacency() {
         // For all locations
-        for (Location allLocation: listAll()) {
+        for (Location allLocation : listAll()) {
             List<Double> distance = new ArrayList<>();
             Map<Double, String> locations = new HashMap<>();
 
             // For all locations excluding the current location
-            for (Location excludeLocation: findAllSortedAscendingExcluding(Collections.singletonList(allLocation.getLocationID()))) {
+            for (Location excludeLocation : findAllSortedAscendingExcluding(Collections.singletonList(allLocation.getLocationID()))) {
                 // Find the distance from the current location and another location
-                double currentDistance = HaversineCalculator.distance (allLocation.getLatitude(), allLocation.getLongitude(), excludeLocation.getLatitude(), excludeLocation.getLongitude());
+                double currentDistance = HaversineCalculator.distance(allLocation.getLatitude(), allLocation.getLongitude(), excludeLocation.getLatitude(), excludeLocation.getLongitude());
                 distance.add(currentDistance);
                 locations.put(currentDistance, excludeLocation.getLocationID());
             }
@@ -190,7 +195,7 @@ public class LocationServices {
 
             // For top 3 distances record location id
             ArrayList<String> adjacentLocations = new ArrayList<>();
-            for (Object sortedDistance: distance.stream().limit(3).toArray()) {
+            for (Object sortedDistance : distance.stream().limit(3).toArray()) {
                 adjacentLocations.add(locations.get((Double) sortedDistance));
             }
 

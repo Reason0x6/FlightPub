@@ -8,31 +8,31 @@ public class AdminSession {
     @Getter
     AdminAccount admin;
 
-    public AdminSession(AdminAccount admin){
+    public AdminSession(AdminAccount admin) {
         this.admin = admin;
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return admin != null;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return admin.getEmail();
     }
 
-    public String getFirstName(){
+    public String getFirstName() {
         return admin.getFirstName();
     }
 
-    public String getLastName(){
+    public String getLastName() {
         return admin.getLastName();
     }
 
-    public String getCompany(){
+    public String getCompany() {
         return admin.getCompany();
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return admin.getPassword();
     }
 }

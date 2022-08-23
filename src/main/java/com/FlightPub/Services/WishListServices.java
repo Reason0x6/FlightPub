@@ -1,9 +1,6 @@
 package com.FlightPub.Services;
 
-import com.FlightPub.model.Booking;
-import com.FlightPub.model.HolidayPackage;
 import com.FlightPub.model.WishListItem;
-import com.FlightPub.repository.BookingRepo;
 import com.FlightPub.repository.WishListItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +14,7 @@ import java.util.List;
 @Service("WishListServices")
 public class WishListServices {
 
-    private WishListItemRepo wishlistRepo;
+    private final WishListItemRepo wishlistRepo;
 
     @Autowired
     public WishListServices(WishListItemRepo wishlistRepository) {
@@ -25,19 +22,20 @@ public class WishListServices {
     }
 
 
-    public List<WishListItem> findAllByUserIDs(String userID){
+    public List<WishListItem> findAllByUserIDs(String userID) {
         return wishlistRepo.findAllByUserIDs(userID);
     }
 
-    public WishListItem getById(String id){
+    public WishListItem getById(String id) {
         return wishlistRepo.findById(id).orElse(null);
     }
 
-    public void saveOrUpdate(WishListItem toUpdate){
+    public void saveOrUpdate(WishListItem toUpdate) {
         wishlistRepo.save(toUpdate);
     }
 
-    public void delete(String id){}
+    public void delete(String id) {
+    }
 
     public List<WishListItem> listAll() {
         List<WishListItem> wishListItems = new ArrayList<>();
@@ -45,7 +43,7 @@ public class WishListServices {
         return wishListItems;
     }
 
-    public List<WishListItem> findAllByPopularitySortDesc(){
+    public List<WishListItem> findAllByPopularitySortDesc() {
         return wishlistRepo.findAllByPopularitySortDesc();
     }
 }

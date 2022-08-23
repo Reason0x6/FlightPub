@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="Remove_Group" th:fragment="Remove_Group">
+    <!-- This will show a popup to the user to ensure they want to remove group-->
+    <div class="modal" data-bs-backdrop="static" id="removeModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Remove this group?</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to remove this group?
+                        This can not be undone.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" onclick="removeGroup()" type="button">Delete Group</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-danger" data-bs-target="#removeModal" data-bs-toggle="modal" type="button">Delete
+            Group?
+        </button>
+    </div>
+
+    <script>
+        /**
+         * Remove group from database
+         */
+        function removeGroup() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const groupId = urlParams.get('groupId')
+
+            // Post to remove group
+            postRemoveGroup("/remove_group", {groupId: groupId});
+        }
+
+        /**
+         * Creates a temp form then posts it
+         * This ensures browser correctly redirects to posted location
+         * @param path Path to post and redirect to
+         * @param params Parameters of post
+         */
+        function postRemoveGroup(path, params) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = path;
+
+            // For each parameter create a temp form element
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    const hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = key;
+                    hiddenField.value = params[key];
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</div>
+
+</body>
+</html>

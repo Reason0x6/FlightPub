@@ -112,25 +112,97 @@ public class Flight {
     @Field("CheapestPrice")
     private String cheapestPrice;
 
-    public Flight(){}
+    public Flight() {
+    }
 
-    public void loadNames(String dep, String dest, String stop){
+    // Conversions between various time formats
+    public static String longToString(Long in) {
+        try {
+            Date date = new Date(in.longValue());
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return format.format(date);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
-      this.DepartureName = dep;
+    public static Long stringToLong(String in) {
+        try {
+            SimpleDateFormat format;
+            if (in.length() == 10)
+                format = new SimpleDateFormat("yyyy-MM-dd");
+            else
+                format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date date = format.parse(in);
+            return date.getTime();
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
-      this.DestinationName = dest;
+    public static String dateToString(Date in) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return format.format(in);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
-      this.StopoverName = stop;
+    public static Date stringToDate(String in) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date date = format.parse(in);
+            return date;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public static Date longToDate(Long in) {
+        try {
+            return new Date(in);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public static Long dateToLong(Date in) {
+        try {
+            return in.getTime();
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public void loadNames(String dep, String dest, String stop) {
+
+        this.DepartureName = dep;
+
+        this.DestinationName = dest;
+
+        this.StopoverName = stop;
 
     }
 
-    public void setFlightID(ObjectId id){
+    public void setFlightID(ObjectId id) {
         flightID = id.toString();
     }
 
-    public void setFlightID(String id){
+    public void setFlightID(String id) {
         flightID = id;
     }
+
     // Setters for the time related class variables
     public void setDepartureTime(String time) {
         departureTime = stringToLong(time);
@@ -165,82 +237,12 @@ public class Flight {
         return longToString(arrivalTimeStopOver);
     }
 
-    // Conversions between various time formats
-    public static String longToString(Long in) {
-        try{
-            Date date = new Date(in.longValue());
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            format.setTimeZone(TimeZone.getTimeZone("GMT"));
-            return format.format(date);
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
+    public String getCheapestPrice() {
+        return cheapestPrice != null ? cheapestPrice : "TBA";
     }
-
-    public static Long stringToLong(String in) {
-        try{
-            SimpleDateFormat format;
-            if(in.length() == 10)
-                format = new SimpleDateFormat("yyyy-MM-dd");
-            else
-                format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            format.setTimeZone(TimeZone.getTimeZone("GMT"));
-            Date date = format.parse(in);
-            return date.getTime();
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
-    public static String dateToString(Date in) {
-        try{
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            format.setTimeZone(TimeZone.getTimeZone("GMT"));
-            return format.format(in);
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
-    public static Date stringToDate(String in) {
-        try{
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            format.setTimeZone(TimeZone.getTimeZone("GMT"));
-            Date date = format.parse(in);
-            return date;
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
-    public static Date longToDate(Long in) {
-        try{
-            return new Date(in);
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
-    public static Long dateToLong(Date in) {
-        try{
-            return in.getTime();
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
 
     public void setCheapestPrice(String cheapestFlights) {
         this.cheapestPrice = cheapestFlights;
-    }
-    public String getCheapestPrice(){
-        return cheapestPrice != null ? cheapestPrice : "TBA";
     }
 
 

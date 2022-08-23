@@ -36,5 +36,6 @@ public class Address {
     @Setter
     private int postcode;
 
-    public Address() {}
+    public Address() {
+    }
 }

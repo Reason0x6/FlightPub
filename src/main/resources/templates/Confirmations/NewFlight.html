@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="Fragments/Head"> </head>
-<head th:replace="Fragments/Header"> </head>
+<head th:replace="Fragments/Head"></head>
+<head th:replace="Fragments/Header"></head>
 <div class="container">
-  <main id="main" style="margin-top: 100px" th:if="${flight != null}">
-    <!-- ======= Services Section ======= -->
-    <h2>New Flight Created</h2>
+    <main id="main" style="margin-top: 100px" th:if="${flight != null}">
+        <!-- ======= Services Section ======= -->
+        <h2>New Flight Created</h2>
 
-    <p th:text="'Flight ID: ' + ${flight.getFlightID()}"></p>
-    <p th:text="'Airline Code: ' + ${flight.getAirlineCode()}"></p>
-    <p th:text="'Origin: ' + ${flight.getDepartureCode()}"></p>
-    <p th:text="'Departure: ' + ${flight.getDestinationCode()}"></p>
-    <p th:text="'Departure Time: ' + ${flight.getDepartureString()}"></p>
-    <p th:text="'Arrival Time: ' + ${flight.getArrivalString()}"></p>
-    <p th:text="'Duration: ' + ${flight.getDuration()}"></p>
-    <p th:text="'Stopover: ' + ${flight.getStopoverCode()}"></p>
-    <p th:text="'Stopover Departure Time: ' + ${flight.getDepartureStopOverString()}"></p>
-    <p th:text="'Stopover Arrival Time: ' + ${flight.getArrivalStopOverString()}"></p>
-    <p th:text="'Duration of Second Leg: ' + ${flight.getDurationSecondLeg()}"></p>
-    <p th:text="'Flight Number: ' + ${flight.getFlightNumber()}"></p>
-    <p th:text="'Ticket Price: ' + ${flight.getTicketPrice()}"></p>
-    <p th:text="'Max Seats: ' + ${flight.getMaxSeats()}"></p>
-    <p th:text="'Rating: ' + ${flight.getRating()}"></p>
-  </main>
+        <p th:text="'Flight ID: ' + ${flight.getFlightID()}"></p>
+        <p th:text="'Airline Code: ' + ${flight.getAirlineCode()}"></p>
+        <p th:text="'Origin: ' + ${flight.getDepartureCode()}"></p>
+        <p th:text="'Departure: ' + ${flight.getDestinationCode()}"></p>
+        <p th:text="'Departure Time: ' + ${flight.getDepartureString()}"></p>
+        <p th:text="'Arrival Time: ' + ${flight.getArrivalString()}"></p>
+        <p th:text="'Duration: ' + ${flight.getDuration()}"></p>
+        <p th:text="'Stopover: ' + ${flight.getStopoverCode()}"></p>
+        <p th:text="'Stopover Departure Time: ' + ${flight.getDepartureStopOverString()}"></p>
+        <p th:text="'Stopover Arrival Time: ' + ${flight.getArrivalStopOverString()}"></p>
+        <p th:text="'Duration of Second Leg: ' + ${flight.getDurationSecondLeg()}"></p>
+        <p th:text="'Flight Number: ' + ${flight.getFlightNumber()}"></p>
+        <p th:text="'Ticket Price: ' + ${flight.getTicketPrice()}"></p>
+        <p th:text="'Max Seats: ' + ${flight.getMaxSeats()}"></p>
+        <p th:text="'Rating: ' + ${flight.getRating()}"></p>
+    </main>
 </div>
 
 

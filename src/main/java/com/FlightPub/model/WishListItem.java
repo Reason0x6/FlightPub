@@ -1,4 +1,5 @@
 package com.FlightPub.model;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -25,7 +26,8 @@ public class WishListItem {
     @Field("destinationID")
     private String destinationID;
 
-    public WishListItem() {}
+    public WishListItem() {
+    }
 
     public WishListItem(String userID, String destinationID) {
 

@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> </html>
-<form id="login" th:action="@{/login}" th:object="${LoginRequest}" method="post">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"></html>
+<form id="login" method="post" th:action="@{/login}" th:object="${LoginRequest}">
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <label class="form-label" for="exampleInputEmail1">Email address</label>
+        <input aria-describedby="emailHelp" class="form-control" id="exampleInputEmail1" name="email" type="email">
+        <div class="form-text" id="emailHelp">We'll never share your email with anyone else.</div>
     </div>
     <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" name ="password" class="form-control" id="exampleInputPassword1">
+        <label class="form-label" for="exampleInputPassword1">Password</label>
+        <input class="form-control" id="exampleInputPassword1" name="password" type="password">
     </div>
-    <p style="color: red" th:if="${valid} != null">Username & Password did not match a valid account. Please try again.</p>
+    <p style="color: red" th:if="${valid} != null">Username & Password did not match a valid account. Please try
+        again.</p>
 
-    <input type="hidden" id="redirect" name="redirect" th:value="${redirect}">
+    <input id="redirect" name="redirect" th:value="${redirect}" type="hidden">
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
 </form>
 
-<form id="search" th:action="@{/search}" th:object="${BasicSearch}" method="post">
+<form id="search" method="post" th:action="@{/search}" th:object="${BasicSearch}">
     <datalist id="locationList">
         <option
                 th:each="location : ${searchLocation}"
@@ -27,88 +28,92 @@
     <div class="row g-2">
         <div class="form-floating col-md">
 
-            <input class="form-control" list="locationList" id="origin" name="originIn" placeholder="Departure Location....">
+            <input class="form-control" id="origin" list="locationList" name="originIn"
+                   placeholder="Departure Location....">
 
             <label for="origin">Fly From</label>
 
         </div>
         <div class="form-floating col-md">
-            <input class="form-control" list="locationList" id="destination" name="destinationIn" placeholder="Departure Location....">
+            <input class="form-control" id="destination" list="locationList" name="destinationIn"
+                   placeholder="Departure Location....">
 
             <label for="destination">Fly To</label>
         </div>
 
         <div class="form-floating col-md">
-            <input class="form-control" type="date" id="start" name="start"
-                   th:value="${today}"
-                   th:min="${today}" th:max="${max}">
+            <input class="form-control" id="start" name="start" th:max="${max}"
+                   th:min="${today}"
+                   th:value="${today}" type="date">
             <label for="start" id="startLabel">Earliest Flight Date</label>
         </div>
         <div class="form-floating col-md">
-            <input class="form-control" type="date" id="end" name="end"
-                   th:value="${today}"
-                   th:min="${today}" th:max="${max}">
+            <input class="form-control" id="end" name="end" th:max="${max}"
+                   th:min="${today}"
+                   th:value="${today}" type="date">
             <label for="end" id="endLabel">Latest Flight Date</label>
         </div>
 
         <div class="col-md d-grid">
-            <button type="submit" class="btn btn-primary start-loading btn-search" >Find Flights!</button>
+            <button class="btn btn-primary start-loading btn-search" type="submit">Find Flights!</button>
         </div>
     </div>
     <div>
         <div class="form-group form-check-inline">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="nodest" id="nodest" onclick="allDest()">
+                <input class="form-check-input" id="nodest" name="nodest" onclick="allDest()" type="checkbox">
                 <label class="form-check-label" for="nodest">Show all destinations</label>
             </div>
         </div>
         <div class="form-group form-check-inline">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="exactdate" id="exactdate" onclick="adjustDate()">
+                <input class="form-check-input" id="exactdate" name="exactdate" onclick="adjustDate()" type="checkbox">
                 <label class="form-check-label" for="exactdate">Use Exact Date</label>
             </div>
         </div>
         <div class="form-group form-check-inline">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="searchByArrival" id="searchByArrival" onclick="adjustDate()">
+                <input class="form-check-input" id="searchByArrival" name="searchByArrival" onclick="adjustDate()"
+                       type="checkbox">
                 <label class="form-check-label" for="searchByArrival">Search by Arrival Times</label>
             </div>
         </div>
     </div>
 
     <script>
-        function allDest(){
+        function allDest() {
 
             let val = document.getElementById("nodest");
 
-            if(val.checked == true){
+            if (val.checked == true) {
                 document.getElementById("destination").disabled = true;
                 document.getElementById("destination").value = "Show All";
-            }else{
+            } else {
                 document.getElementById("destination").disabled = false;
                 document.getElementById("destination").value = "";
             }
         }
-        function adjustDate(){
+
+        function adjustDate() {
             let exact = document.getElementById("exactdate").checked;
             let arrival = document.getElementById("searchByArrival").checked;
 
-            if((exact == true)&&(arrival == true)){
+            if ((exact == true) && (arrival == true)) {
                 document.getElementById("end").disabled = true;
                 document.getElementById("end").value = "--/--/----";
                 document.getElementById("startLabel").innerHTML = "Arrival Date";
                 document.getElementById("endLabel").innerHTML = "";
-            }else if((exact == true)&&(arrival == false)){
+            } else if ((exact == true) && (arrival == false)) {
                 document.getElementById("end").disabled = true;
                 document.getElementById("end").value = "--/--/----";
                 document.getElementById("startLabel").innerHTML = "Flight Date";
                 document.getElementById("endLabel").innerHTML = "";
-            }else if((exact == false)&&(arrival == true)){
+            } else if ((exact == false) && (arrival == true)) {
                 document.getElementById("end").disabled = false;
                 document.getElementById("end").value = "";
                 document.getElementById("startLabel").innerHTML = "Earliest Arrival Date";
                 document.getElementById("endLabel").innerHTML = "Latest Arrival Date";
-            }else{
+            } else {
                 document.getElementById("end").disabled = false;
                 document.getElementById("end").value = "";
                 document.getElementById("startLabel").innerHTML = "Earliest Flight Date";
@@ -118,98 +123,118 @@
     </script>
 </form>
 
-<form id="registerUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
-    <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
-    <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>
-    <input type="text" id="address" class="form-control" name="address" placeholder="Address"><br>
+<form id="registerUser" method="post" name="registerUser" onsubmit="return validateRegister()"
+      th:action="@{/RegisterUser}" th:object="${UserRegister}">
+    <input class="form-control" id="email" name="email" placeholder="Email" type="email"><br>
+    <input class="form-control" id="firstname" name="firstname" placeholder="Firstname" type="text"><br>
+    <input class="form-control" id="address" name="address" placeholder="Address" type="text"><br>
 
-    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
-    <select name="prefAirport" id="prefAirport" class="form-control">
-        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    <label class="form-label" id="airportlbl" name="airportlbl">Preferred Airport</label><br>
+    <select class="form-control" id="prefAirport" name="prefAirport">
+        <option th:each="Location: ${locs}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"
+                th:value="${Location.getLocationID()}"></option>
     </select><br>
 
-    <input type="password" id="password" class="form-control" name="password" placeholder="Password"><br>
-    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Confirm Password"><br>
-    <button type="submit" class="btn btn-primary btn-search">Create Account!</button>
+    <input class="form-control" id="password" name="password" placeholder="Password" type="password"><br>
+    <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password"
+           type="password"><br>
+    <button class="btn btn-primary btn-search" type="submit">Create Account!</button>
 
     <script>
-       function validateRegister() {
-            let f =  document.forms["registerUser"];
+        function validateRegister() {
+            let f = document.forms["registerUser"];
             let x = true;
 
-             if(f["email"].value == ""){ x = false; }
-             if(f["firstname"].value == ""){ x = false; }
-             if(f["address"].value == ""){ x = false; }
-             if(f["password"].value == ""){ x = false; }
-             if(f["confirmpassword"].value == ""){ x = false; }
+            if (f["email"].value == "") {
+                x = false;
+            }
+            if (f["firstname"].value == "") {
+                x = false;
+            }
+            if (f["address"].value == "") {
+                x = false;
+            }
+            if (f["password"].value == "") {
+                x = false;
+            }
+            if (f["confirmpassword"].value == "") {
+                x = false;
+            }
 
-              if (x == "") {
+            if (x == "") {
                 alert("Please fill in all fields");
                 return false;
-              }
-              else if(!(f["password"].value === f["confirmpassword"].value)){
+            } else if (!(f["password"].value === f["confirmpassword"].value)) {
                 alert("Passwords do not match");
                 return false;
-              }
-              else{
+            } else {
                 return true;
-              }
+            }
         }
     </script>
 </form>
 
 <!--REGISTER USER--------------------------------------------------------------------------------------------------------------------------------------->
-<form id="updateUser" name="registerUser" onsubmit="return validateRegister()" th:action="@{/RegisterUser}" th:object="${UserRegister}" method="post">
+<form id="updateUser" method="post" name="registerUser" onsubmit="return validateRegister()"
+      th:action="@{/UpdateUser}" th:object="${UserRegister}">
     <div class="row">
         <div class="col-md-4">
-            <label id="emaillbl" class="form-label" name="airportlbl" >Email</label><br>
-            <input type="email" id="email" class="form-control" name="email" th:value="${usr.getEmail()}"><br>
-            <label id="namelbl" class="form-label" name="airportlbl" >First Name</label><br>
-            <input type="text" id="firstname" class="form-control" name="firstname"  th:value="${usr.getFirstname()}"><br>
+            <label class="form-label" id="emaillbl" name="airportlbl">Email</label><br>
+            <input class="form-control" disabled id="email" name="email" th:value="${usr.getEmail()}" type="email"><br>
+            <label class="form-label" id="namelbl" name="airportlbl">First Name</label><br>
+            <input class="form-control" id="firstname" name="firstname" th:value="${usr.getFirstname()}"
+                   type="text"><br>
         </div>
         <div class="col-md-4">
-            <label id="passwordlbl" class="form-label" name="passlbl" >Password</label><br>
-            <input type="password" id="password" class="form-control" name="password" placeholder="Password"  ><br>
-            <label id="confirmpasswordlbl" class="form-label" name="conpasslbl" >Confirm Password</label><br>
-            <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" ><br>
+            <label class="form-label" id="passwordlbl" name="passlbl">Password</label><br>
+            <input class="form-control" id="password" name="password" placeholder="Password" type="password"><br>
+            <label class="form-label" id="confirmpasswordlbl" name="conpasslbl">Confirm Password</label><br>
+            <input class="form-control" id="confirmpassword" name="confirmpassword" type="password"><br>
         </div>
         <div class="col-md-4">
-            <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
-            <select name="prefAirport" id="prefAirport" class="form-control">
-                <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
-            </select><br><button type="submit" class="btn btn-primary btn-search">Update Account!</button>
+            <label class="form-label" id="airportlbl" name="airportlbl">Preferred Airport</label><br>
+            <select class="form-control" id="prefAirport" name="prefAirport">
+                <option th:each="Location: ${locs}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"
+                        th:value="${Location.getLocationID()}"></option>
+            </select><br>
+            <button class="btn btn-primary btn-search" type="submit">Update Account!</button>
         </div>
 
     </div>
 
 
-
     <script>
         function validateRegister() {
-            let f =  document.forms["registerUser"];
+            let f = document.forms["registerUser"];
             let x = true;
 
-            if(f["email"].value == ""){ x = false; }
-            if(f["firstname"].value == ""){ x = false; }
-            if(f["password"].value == ""){ x = false; }
-            if(f["confirmpassword"].value == ""){ x = false; }
+            if (f["email"].value == "") {
+                x = false;
+            }
+            if (f["firstname"].value == "") {
+                x = false;
+            }
+            if (f["password"].value == "") {
+                x = false;
+            }
+            if (f["confirmpassword"].value == "") {
+                x = false;
+            }
 
             if (x == "") {
                 alert("Please fill in all fields");
                 return false;
-            }
-            else if(!(f["password"].value === f["confirmpassword"].value)){
+            } else if (!(f["password"].value === f["confirmpassword"].value)) {
                 alert("Passwords do not match");
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
         }
     </script>
 </form>
 <!--Advanced Search--------------------------------------------------------------------------------------------------------------------------------------->
-<form id="advancedSearch" th:action="@{/advancedSearch}" th:object="${BasicSearch}" method="post">
+<form id="advancedSearch" method="post" th:action="@{/advancedSearch}" th:object="${BasicSearch}">
     <datalist id="locations">
         <option
                 th:each="location : ${searchLocation}"
@@ -217,100 +242,113 @@
         </option>
     </datalist>
     <div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <input type="text" id="flightOrigin" class="form-control" name="originIn" th:value="${search.getOriginIn()}" list="locations"><br>
+        <div class="row">
+            <div class="col-md-4">
+                <input class="form-control" id="flightOrigin" list="locations" name="originIn"
+                       th:value="${search.getOriginIn()}" type="text"><br>
 
-            <input type="text" id="flightDestination" class="form-control" name="destinationIn" th:value="${search.getDestinationIn()}" list="locations"><br>
-        </div>
-        <div class="col-md-4">
-            <label for="earliest" id="earliestLabel" class="form-label"  style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
-            <input type="date" id="earliest" class="form-control" name="start"
-                   th:value="${search.getStart()}"
-                   th:min="${today}" th:max="${max}"><br>
-            <label for="earliest" id="latestLabel" class="form-label"  style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
-            <input type="date" id="latest" class="form-control" name="end"
-                   th:value="${search.getEnd()}"
-                   th:min="${today}" th:max="${max}"><br>
-        </div>
-        <div class="col-md-4">
-        </div><hr>
+                <input class="form-control" id="flightDestination" list="locations" name="destinationIn"
+                       th:value="${search.getDestinationIn()}" type="text"><br>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="earliest" id="earliestLabel"
+                       style="font-size: 0.65em; margin-left: 10px; position: absolute;">Earliest Flight</label>
+                <input class="form-control" id="earliest" name="start" th:max="${max}"
+                       th:min="${today}"
+                       th:value="${search.getStart()}" type="date"><br>
+                <label class="form-label" for="earliest" id="latestLabel"
+                       style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latest Flight</label>
+                <input class="form-control" id="latest" name="end" th:max="${max}"
+                       th:min="${today}"
+                       th:value="${search.getEnd()}" type="date"><br>
+            </div>
+            <div class="col-md-4">
+            </div>
+            <hr>
 
-        <div class="col-md-4">
-            <label for="maxPrice" class="form-label">Max-Price</label>
+            <div class="col-md-4">
+                <label class="form-label" for="maxPrice">Max-Price</label>
+                <br>
+                <input class="form-control" id="maxPrice" max="12000" min="0" name="maxPrice" placeholder="Max"
+                       type="number" value="12000"><br>
+            </div>
+            <div class="col-md-4">
+
+                <label class="form-label" for="seats">Number of Seats</label>
+                <input class="form-control" id="seats" min="1" name="seats" type="number" value="1"><br><br>
+
+
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="rating">Minimum Ratings
+                </label>&nbsp;
+                <output>
+                    0
+                </output>
+                <br>
+                <input class="form-control" id="rating" max="5" min="0" name="rating" oninput="this.previousElementSibling.value = this.value" type="range"
+                       value="0"><br>
+            </div>
+            <hr>
+
+
+            <div class="col-md-8">
+                <input id="nodestAdvanced" name="nodest" onclick="allDest()" style="width: 50px;" type="checkbox">
+                <label class="form-label" for="nodestAdvanced">Show all destinations</label>
+                <input id="exactdateAdvanced" name="exactdate" onclick="adjustDate()" style="width: 50px;"
+                       type="checkbox">
+                <label class="form-label" for="exactdateAdvanced">Use Exact Date</label>
+
+                <input id="directFlight" name="directFlight" o="" style="width: 50px;" type="checkbox">
+                <label class="form-label" for="directFlight">Direct flight Only</label>
+
+                <input id="searchByArrivalAdvanced" name="searchByArrival" onclick="adjustDate()" style="width: 50px;"
+                       type="checkbox">
+                <label class="form-label" for="searchByArrivalAdvanced">Search by Arrival Times</label>
+
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary start-loading btn-search" style="margin-top: -5px" type="submit">Find
+                    Flights!
+                </button>
+            </div>
             <br>
-            <input type="number" id="maxPrice" class="form-control" name="maxPrice" placeholder="Max" value="12000" min="0" max="12000"><br>
         </div>
-        <div class="col-md-4">
-
-            <label for="seats" class="form-label">Number of Seats</label>
-            <input type="number" id="seats" class="form-control" name="seats" min="1" value="1"><br><br>
-
-
-
-        </div>
-        <div class="col-md-4">
-            <label for="rating" class="form-label">Minimum Ratings
-            </label>&nbsp;
-            <output>
-                0</output><br>
-            <input type="range" id="rating" class="form-control" name="rating" min="0" max="5" value="0" oninput="this.previousElementSibling.value = this.value"><br>
-        </div><hr>
-
-
-
-        <div class="col-md-8">
-            <input type="checkbox" name="nodest" id="nodestAdvanced" style="width: 50px;" onclick="allDest()">
-            <label for="nodestAdvanced" class="form-label">Show all destinations</label>
-            <input type="checkbox" name="exactdate" id="exactdateAdvanced" style="width: 50px;" onclick="adjustDate()">
-            <label for="exactdateAdvanced" class="form-label">Use Exact Date</label>
-
-            <input type="checkbox" name="directFlight" id="directFlight" style="width: 50px;" o="">
-            <label for="directFlight" class="form-label">Direct flight Only</label>
-
-            <input type="checkbox" name="searchByArrival" id="searchByArrivalAdvanced" style="width: 50px;" onclick="adjustDate()">
-            <label for="searchByArrivalAdvanced" class="form-label">Search by Arrival Times</label>
-
-        </div>
-        <div class="col-md-4">
-            <button style="margin-top: -5px" type="submit" class="btn btn-primary start-loading btn-search">Find Flights!</button>
-        </div>
-        <br>
-    </div>
     </div>
     <script>
-        function allDest(){
+        function allDest() {
 
             let val = document.getElementById("nodestAdvanced");
 
-            if(val.checked == true){
+            if (val.checked == true) {
                 document.getElementById("flightDestination").disabled = true;
                 document.getElementById("flightDestination").value = "Show All";
-            }else{
+            } else {
                 document.getElementById("flightDestination").disabled = false;
                 document.getElementById("flightDestination").value = "";
             }
         }
-        function adjustDate(){
+
+        function adjustDate() {
             let exact = document.getElementById("exactdateAdvanced").checked;
             let arrival = document.getElementById("searchByArrivalAdvanced").checked;
 
-            if((exact == true)&&(arrival == true)){
+            if ((exact == true) && (arrival == true)) {
                 document.getElementById("latest").disabled = true;
                 document.getElementById("latest").value = "--/--/----";
                 document.getElementById("earliestLabel").innerHTML = "Arrival Date";
                 document.getElementById("latestLabel").innerHTML = "";
-            }else if((exact == true)&&(arrival == false)){
+            } else if ((exact == true) && (arrival == false)) {
                 document.getElementById("latest").disabled = true;
                 document.getElementById("latest").value = "--/--/----";
                 document.getElementById("earliestLabel").innerHTML = "Flight Date";
                 document.getElementById("latestLabel").innerHTML = "";
-            }else if((exact == false)&&(arrival == true)){
+            } else if ((exact == false) && (arrival == true)) {
                 document.getElementById("latest").disabled = false;
                 document.getElementById("latest").value = "";
                 document.getElementById("earliestLabel").innerHTML = "Earliest Arrival Date";
                 document.getElementById("latestLabel").innerHTML = "Latest Arrival Date";
-            }else{
+            } else {
                 document.getElementById("latest").disabled = false;
                 document.getElementById("latest").value = "";
                 document.getElementById("earliestLabel").innerHTML = "Earliest Flight Date";
@@ -321,42 +359,94 @@
 </form>
 
 <!-- Flight management form for finding existing flights --------------------------------------------------------------------------------->
-<form id="findExistingFlight" th:action="@{/admin/flight/management}" th:object="${Flight}" method="post">
-    <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
-    <input type="text" id="flightNumber" name="flightNumber" th:value="${flight.getFlightNumber()}">
-    <label for="departureTime" id="departureTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure: </label>
-    <input type="datetime-local" id="departureTime" name="departureTime" th:value="${flight.getDepartureString()}">
-    <button type="submit" class="btn btn-primary btn-search" >Find Flight</button>
+<form id="findExistingFlight" method="post" th:action="@{/admin/flight/management}" th:object="${Flight}">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="flightNumber" id="flightNumberLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
+            <input class="form-control" id="flightNumber" name="flightNumber" th:value="${flight.getFlightNumber()}"
+                   type="text">
+        </div>
+        <div class="col-md-4">
+            <label for="departureTime" id="departureTimeLabel"
+                   style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure: </label>
+            <input class="form-control" id="departureTime" name="departureTime" th:value="${flight.getDepartureString()}"
+                   type="datetime-local">
+        </div>
+    </div>
+    <button class="btn btn-primary btn-search" type="submit">Find Flight</button>
 </form>
 
 <!-- Flight management form for creating/editing flights -------------------------------------------------------------------------------->
-<form id="EditFlight" th:action="@{/flight/add}" th:object="${container}" method="post">
-    <label for="departureCode" id="departureCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Origin: </label>
-    <input type="text" id="departureCode" th:name="flight.departureCode" th:value="${flight.getDepartureCode()}">
-    <label for="destinationCode" id="destinationCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
-    <input type="text" id="destinationCode" th:name="flight.destinationCode" th:value="${flight.getDestinationCode()}">
-
-    <label for="departureTime" id="departureTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure: </label>
-    <input type="datetime-local" id="departureTime" th:name="flight.departureTime" th:value="${flight.getDepartureString()}">
-    <label for="arrivalTime" id="arrivalTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival: </label>
-    <input type="datetime-local" id="arrivalTime" th:name="flight.arrivalTime" th:value="${flight.getArrivalString()}">
-    <label for="departureTimeStopOver" id="departureTimeStopOverLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Departure: </label>
-    <input type="datetime-local" id="departureTimeStopOver" th:name="flight.departureTimeStopOver" th:value="${flight.getDepartureStopOverString()}">
-    <label for="arrivalTimeStopOver" id="arrivalTimeStopOverLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Arrival: </label>
-    <input type="datetime-local" id="arrivalTimeStopOver" th:name="flight.arrivalTimeStopOver" th:value="${flight.getArrivalStopOverString()}">
-    <label for="stopoverCode" id="stopoverCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Code: </label>
-    <input type="text" id="stopoverCode" th:name="flight.stopoverCode" th:value="${flight.getStopoverCode()}">
-
-    <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
-    <input type="text" id="flightNumber" th:name="flight.flightNumber" th:value="${flight.getFlightNumber()}">
-    <label for="airlineCode" id="airlineCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline Code: </label>
-    <input type="text" id="airlineCode" th:name="flight.airlineCode" th:value="${flight.getAirlineCode()}">
-    <label for="duration" id="durationLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration: </label>
-    <input type="number" id="duration" th:name="flight.duration" th:value="${flight.getDuration()}">
-    <label for="durationSecondLeg" id="durationSecondLegLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration - Second Leg: </label>
-    <input type="number" id="durationSecondLeg" th:name="flight.durationSecondLeg" th:value="${flight.getDurationSecondLeg()}">
-    <label for="rating" id="ratingLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
-    <input type="number" id="rating" th:name="flight.rating" th:value="${flight.getRating()}">
+<form id="EditFlight" method="post" th:action="@{/flight/add}" th:object="${container}" >
+    <style>
+        input {
+            margin-bottom: 20px;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="departureCode" id="departureCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Origin: </label>
+            <input type="text" id="departureCode" th:name="flight.departureCode" th:value="${flight.getDepartureCode()}">
+        </div>
+        <div class="col-md-4">
+            <label for="destinationCode" id="destinationCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
+            <input type="text" id="destinationCode" th:name="flight.destinationCode" th:value="${flight.getDestinationCode()}">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="departureTime" id="departureTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure: </label>
+            <input type="datetime-local" id="departureTime" th:name="flight.departureTime" th:value="${flight.getDepartureString()}">
+        </div>
+        <div class="col-md-4">
+            <label for="arrivalTime" id="arrivalTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival: </label>
+            <input type="datetime-local" id="arrivalTime" th:name="flight.arrivalTime" th:value="${flight.getArrivalString()}">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="stopoverCode" id="stopoverCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Code: </label>
+            <input type="text" id="stopoverCode" th:name="flight.stopoverCode" th:value="${flight.getStopoverCode()}">
+        </div>
+        <div class="col-md-4">
+            <label for="departureTimeStopOver" id="departureTimeStopOverLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Departure: </label>
+            <input type="datetime-local" id="departureTimeStopOver" th:name="flight.departureTimeStopOver" th:value="${flight.getDepartureStopOverString()}">
+        </div>
+        <div class="col-md-4">
+            <label for="arrivalTimeStopOver" id="arrivalTimeStopOverLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Arrival: </label>
+            <input type="datetime-local" id="arrivalTimeStopOver" th:name="flight.arrivalTimeStopOver" th:value="${flight.getArrivalStopOverString()}">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
+            <input type="text" id="flightNumber" th:name="flight.flightNumber" th:value="${flight.getFlightNumber()}">
+        </div>
+        <div class="col-md-4">
+            <label for="airlineCode" id="airlineCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline Code: </label>
+            <input type="text" id="airlineCode" th:name="flight.airlineCode" th:value="${flight.getAirlineCode()}">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="duration" id="durationLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration: </label>
+            <input type="number" id="duration" th:name="flight.duration" th:value="${flight.getDuration()}">
+        </div>
+        <div class="col-md-4">
+            <label for="durationSecondLeg" id="durationSecondLegLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration - Second Leg: </label>
+            <input type="number" id="durationSecondLeg" th:name="flight.durationSecondLeg" th:value="${flight.getDurationSecondLeg()}">
+        </div>
+        <div class="col-md-4">
+            <label for="rating" id="ratingLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
+            <input type="number" id="rating" th:name="flight.rating" th:value="${flight.getRating()}">
+        </div>
+    </div>
+    <hr>
 
     <div th:each="availiability, itemStat : *{availabilities}">
         <p><span th:text="${classes.get(__${itemStat.index}__)}"></span> : <span th:text="${types.get(__${itemStat.index}__)}"></span></p>
@@ -371,77 +461,67 @@
 </form>
 
 <!-- Location management form for finding existing Locations --------------------------------------------------------------------------------->
-<form id="findExistingLocation" th:action="@{/admin/location/management}" th:object="${Location}" method="post">
+<form id="findExistingLocation" method="post" th:action="@{/admin/location/management}" th:object="${Location}">
     <label for="locationID" id="locationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location: </label>
-    <input type="text" id="locationID" name="locationID">
-    <button type="submit" class="btn btn-primary btn-search" >Find Flight</button>
+    <input class="form-control" id="locationID" name="locationID" type="text">
+    <button class="btn btn-primary btn-search" type="submit">Find Flight</button>
 </form>
 
 <!-- Locations management form for creating/editing Locations -------------------------------------------------------------------------------->
-<form id="EditLocation" th:action="@{/location/add}" th:object="${Location}" method="post">
-    <label for="locationID" id="locationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location ID: </label>
-    <input type="text" id="locationID" name="locationID" th:value="${location.getLocationID()}">
-    <label for="location" id="locationLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location Name: </label>
-    <input type="text" id="location" name="location" th:value="${location.getLocation()}">
-    <label for="country" id="countryLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Country: </label>
-    <input type="text" id="country" name="country" th:value="${location.getCountry()}">
+<form id="EditLocation" method="post" th:action="@{/location/add}" th:object="${Location}">
+    <label for="locationID" id="locationIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location
+        ID: </label>
+    <input id="locationID" name="locationID" th:value="${location.getLocationID()}" type="text">
+    <label for="location" id="locationLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Location
+        Name: </label>
+    <input id="location" name="location" th:value="${location.getLocation()}" type="text">
+    <label for="country" id="countryLabel"
+           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Country: </label>
+    <input id="country" name="country" th:value="${location.getCountry()}" type="text">
 
-    <label for="latitude" id="latitudeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latitude: </label>
-    <input type="number" id="latitude" name="latitude" th:value="${location.getLatitude()}">
+    <label for="latitude" id="latitudeLabel"
+           style="font-size: 0.65em; margin-left: 10px; position: absolute;">Latitude: </label>
+    <input id="latitude" name="latitude" th:value="${location.getLatitude()}" type="number">
     <label for="longitude" id="longitudeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Longitude: </label>
-    <input type="number" id="longitude" name="longitude" th:value="${location.getLongitude()}">
+    <input id="longitude" name="longitude" th:value="${location.getLongitude()}" type="number">
 
-    <label for="description" id="descriptionLabel" >Description: </label>
-    <textarea id="description" name="description" rows="4" cols="50" th:text="${location.getDescription()}"></textarea>
+    <label for="description" id="descriptionLabel">Description: </label>
+    <textarea cols="50" id="description" name="description" rows="4" th:text="${location.getDescription()}"></textarea>
     <label for="covid_restricted" id="covid_restrictedLabel">Covid Restricted: </label>
-    <input  type="checkbox" id="covid_restricted" name="covid_restricted">
-    <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>
+    <input id="covid_restricted" name="covid_restricted" type="checkbox">
+    <button class="btn btn-primary btn-search" type="submit">Save Flight</button>
 </form>
 
 <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
-<form id="recommendationLocationForm" th:action="@{/#recommendation}" th:object="${Recommendation}" method="post">
-    <span>Departure Location: </span><select class="form-select" name="recommendationLocation" id="recommendationLocation" onchange="this.form.submit()">
+<form id="recommendationLocationForm" method="post" th:action="@{/#recommendation}" th:object="${Recommendation}">
+    <span>Departure Location: </span><select class="form-select" id="recommendationLocation"
+                                             name="recommendationLocation" onchange="this.form.submit()">
     <option
             th:each="location : ${recommendationLocation}"
-            th:value="${location.locationID}"
-            th:text="${location.locationID} + ' - ' + ${location.location}" th:selected="(${location.locationID} == ${currentLocation})">
+            th:selected="(${location.locationID} == ${currentLocation})"
+            th:text="${location.locationID} + ' - ' + ${location.location}"
+            th:value="${location.locationID}">
     </option>
 </select>
 </form>
 
-<!-- Credit Card Form -->
-<!-- <form id="payment" th:action="@{/bookingConfirmation}" method="post"> -->
-<form id="payment" th:action="@{/checkout}">
-    <div>
-    <!-- Card Number [Input] -->
-    <label for="card-number">Card Number</label>
-    <input type="text" id="card-number" class="form-control" name="card-number" pattern="[0-9\s] {13,19}" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"><br>
-    <label for="card-name">Name on card</label>
-    <input type="text" class="form-control" id="card-name" placeholder="John J Smith" required><br>
-    </div>
-
-    <div>
-    <!-- Card Expiry [Input] -->
-    <label for="card-expiry">Card Expiry</label>
-    <input type="number" id="card-expiry" class="form-control" name="card-number" placeholder="02/22" maxlength="4"><br>
-    <!-- Card Security Code [Input] -->
-    <label for="card-security">3-digit Security Code</label>
-    <input type="number" id="card-security" class="form-control" name="card-security" placeholder="XXX" maxlength="3"><br>
-    </div>
-    <!-- Submit Payment Request -->
-    <a href="/bookingConfirmation" class="btn btn-success" onclick="validateCreditCard()" style="max-width: 200px">Pay Now</a>
-</form>
-
 <!-- Create group form -->
-<form id="createGroupForm" th:action="@{/group/add}" th:object="${NewGroup}" method="post">
+<form id="createGroupForm" method="post" th:action="@{/group/add}" th:object="${NewGroup}">
     <div>
         <div class="row g-2">
             <div class="form-floating col-md-8">
-                <input style="max-width: 100%" type="text" id="groupName" class="form-control" name="groupName" placeholder="">
-                <label for="groupName" id="nameLabel" class="col-form-label" >Enter Group Name</label>
+                <input class="form-control" id="groupName" name="groupName" placeholder="" style="max-width: 100%"
+                       type="text">
+                <label class="col-form-label" for="groupName" id="nameLabel">Enter Group Name</label>
+
+                <div th:if="${Flight != null}">
+                    <input name="flightId" th:value="${Flight.getFlightID()}" type="hidden">
+                </div>
+
+
             </div>
             <div class="col-md d-grid">
-                <button type="submit" class="btn btn-primary btn-search">Create Group!</button>
+                <button class="btn btn-primary btn-search" type="submit">Create Group!</button>
             </div>
         </div>
     </div>
@@ -449,49 +529,61 @@
 </form>
 
 <!--Register Admin--------------------------------------------------------------------------------------------------------------------------------------->
-<form id="registerAdmin" name="registerAdmin" onsubmit="return validateAdminRegister()" th:action="@{/RegisterAdmin}" th:object="${AdminRegister}" method="post">
-    <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
-    <input type="text" id="firstName" class="form-control" name="firstName" placeholder="First Name"><br>
-    <input type="text" id="lastName" class="form-control" name="lastName" placeholder="Last Name"><br>
-    <input type="text" id="company" class="form-control" name="company" placeholder="Company"><br>
-    <label id="passwordlbl" class="form-label" name="passwordlbl" >Password</label><br>
+<form id="registerAdmin" method="post" name="registerAdmin" onsubmit="return validateAdminRegister()"
+      th:action="@{/RegisterAdmin}" th:object="${AdminRegister}">
+    <input class="form-control" id="email" name="email" placeholder="Email" type="email"><br>
+    <input class="form-control" id="firstName" name="firstName" placeholder="First Name" type="text"><br>
+    <input class="form-control" id="lastName" name="lastName" placeholder="Last Name" type="text"><br>
+    <input class="form-control" id="company" name="company" placeholder="Company" type="text"><br>
+    <label class="form-label" id="passwordlbl" name="passwordlbl">Password</label><br>
 
-    <input type="password" id="password" class="form-control" name="password" placeholder="Password"  ><br>
-    <label id="confirmpasswordlbl" class="form-label" name="confirmpasswordlbl" >Confirm Password</label><br>
-    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Password"><br>
-    <label id="registrationcodelbl" class="form-label" name="registrationcodelbl" >Registration Code</label><br>
-    <input type="text" id="registrationcode" class="form-control" name="registrationcode"><br>
-    <button type="submit" class="btn btn-primary btn-search">Register Account!</button>
+    <input class="form-control" id="password" name="password" placeholder="Password" type="password"><br>
+    <label class="form-label" id="confirmpasswordlbl" name="confirmpasswordlbl">Confirm Password</label><br>
+    <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Password" type="password"><br>
+    <label class="form-label" id="registrationcodelbl" name="registrationcodelbl">Registration Code</label><br>
+    <input class="form-control" id="registrationcode" name="registrationcode" type="text"><br>
+    <button class="btn btn-primary btn-search" type="submit">Register Account!</button>
 
 
     <script>
         function validateAdminRegister() {
-            let f =  document.forms["registerAdmin"];
+            let f = document.forms["registerAdmin"];
             let x = true;
 
-            if(f["email"].value == ""){ x = false; }
-            if(f["firstName"].value == ""){ x = false; }
-            if(f["lastName"].value == ""){ x = false; }
-            if(f["company"].value == ""){ x = false; }
-            if(f["password"].value == ""){ x = false; }
-            if(f["confirmpassword"].value == ""){ x = false; }
-            if(f["registrationcode"].value == ""){ x = false; }
+            if (f["email"].value == "") {
+                x = false;
+            }
+            if (f["firstName"].value == "") {
+                x = false;
+            }
+            if (f["lastName"].value == "") {
+                x = false;
+            }
+            if (f["company"].value == "") {
+                x = false;
+            }
+            if (f["password"].value == "") {
+                x = false;
+            }
+            if (f["confirmpassword"].value == "") {
+                x = false;
+            }
+            if (f["registrationcode"].value == "") {
+                x = false;
+            }
 
             console.log(x);
 
             if (x == "") {
                 alert("Please fill in all fields");
                 return false;
-            }
-            else if(!(f["password"].value === f["confirmpassword"].value)){
+            } else if (!(f["password"].value === f["confirmpassword"].value)) {
                 alert("Passwords do not match");
                 return false;
-            }
-            else if(!(f["registrationcode"].value === "h38DxU9QneP1gB")){
+            } else if (!(f["registrationcode"].value === "h38DxU9QneP1gB")) {
                 alert("The registration code is invalid. \n Please contact FlightPub PTY LTD");
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
         }
@@ -499,56 +591,77 @@
 </form>
 
 <!-- Covid restricted location ------------------------------------------------------------------------------------------->
-<form id="covidRestrictedLocationForm" th:action="@{/covidRestrict}" th:object="${Covid}" method="post">
+<form id="covidRestrictedLocationForm" method="post" th:action="@{/covidRestrict}" th:object="${Covid}">
     <span>Covid Location: </span>
-    <select name="covidRestrictedLocation" id="covidRestrictedLocation" class="form-select">
-        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    <select class="form-select" id="covidRestrictedLocation" name="covidRestrictedLocation">
+        <option th:each="Location: ${locs}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"
+                th:value="${Location.getLocationID()}"></option>
     </select><br>
-    <select name="covidRestriction" id="covidRestriction" class="form-control">
+    <select class="form-control" id="covidRestriction" name="covidRestriction">
         <option value="restrict">Restricted</option>
         <option value="unrestrict">Unrestricted</option>
     </select><br>
-    <button type="submit" class="btn btn-primary btn-search">Submit</button>
+    <button class="btn btn-primary btn-search" type="submit">Submit</button>
 </form>
 
 <!--Holiday Package Form--------------------------------------------------------------------------------------------------------------------------------------->
-<form id="holidayPackageForm" name="holidayPackage" onsubmit="return validateHolidayPackage()" th:action="@{/HolidayPackage}" th:object="${HolidayPackage}" method="post">
-    <input type="text" id="airlineCode" class="form-control" name="airlineCode" placeholder="Airline Code"><br>
-    <input type="text" id="airlineName" class="form-control" name="airlineName" placeholder="Airline Name"><br>
-    <input type="text" id="destinationCode" class="form-control" name="destinationCode" placeholder="Destination Code"><br>
-    <input type="text" id="airport" class="form-control" name="airport" placeholder="Airport"><br>
-    <label for="discountPercentage" class="form-label">Discount Percentage</label>
-    <input type="number" id="discountPercentage" class="form-control" name="discountPercentage" min="10" max="100" value="10"><br>
-    <input type="text" id="hotelName" class="form-control" name="hotelName" placeholder="Hotel Name"><br>
-    <label for="hotelStarRating" class="form-label">Hotel Star Rating</label>
-    <input type="number" id="hotelStarRating" class="form-control" name="hotelStarRating" min="0" max="5"><br>
-    <input type="text" id="hotelDescription" class="form-control" name="hotelDescription" placeholder="Hotel Description"><br>
-    <input type="text" id="packageStartDate" class="form-control" name="packageStartDate" placeholder="YYYY-MM-DD HH:mm:ss"><br>
-    <input type="text" id="packageEndDate" class="form-control" name="packageEndDate" placeholder="YYYY-MM-DD HH:mm:ss"><br>
-    <button type="submit" class="btn btn-primary btn-search">Create Holiday Package</button>
+<form id="holidayPackageForm" method="post" name="holidayPackage"
+      onsubmit="return validateHolidayPackage()" th:action="@{/HolidayPackage}" th:object="${HolidayPackage}">
+    <input class="form-control" id="airlineCode" name="airlineCode" placeholder="Airline Code" type="text"><br>
+    <input class="form-control" id="airlineName" name="airlineName" placeholder="Airline Name" type="text"><br>
+    <input class="form-control" id="destinationCode" name="destinationCode" placeholder="Destination Code"
+           type="text"><br>
+    <input class="form-control" id="airport" name="airport" placeholder="Airport" type="text"><br>
+    <label class="form-label" for="discountPercentage">Discount Percentage</label>
+    <input class="form-control" id="discountPercentage" max="100" min="10" name="discountPercentage" type="number"
+           value="10"><br>
+    <input class="form-control" id="hotelName" name="hotelName" placeholder="Hotel Name" type="text"><br>
+    <label class="form-label" for="hotelStarRating">Hotel Star Rating</label>
+    <input class="form-control" id="hotelStarRating" max="5" min="0" name="hotelStarRating" type="number"><br>
+    <input class="form-control" id="hotelDescription" name="hotelDescription" placeholder="Hotel Description"
+           type="text"><br>
+    <input class="form-control" id="packageStartDate" name="packageStartDate" placeholder="YYYY-MM-DD HH:mm:ss"
+           type="text"><br>
+    <input class="form-control" id="packageEndDate" name="packageEndDate" placeholder="YYYY-MM-DD HH:mm:ss" type="text"><br>
+    <button class="btn btn-primary btn-search" type="submit">Create Holiday Package</button>
 
 
     <script>
         function validateHolidayPackage() {
-            let f =  document.forms["holidayPackage"];
+            let f = document.forms["holidayPackage"];
             let x = true;
 
-            if(f["airlineCode"].value == ""){ x = false; }
-            if(f["airlineName"].value == ""){ x = false; }
-            if(f["destinationCode"].value == ""){ x = false; }
-            if(f["airport"].value == ""){ x = false; }
-            if(f["hotelName"].value == ""){ x = false; }
-            if(f["hotelDescription"].value == ""){ x = false; }
-            if(f["packageStartDate"].value == ""){ x = false; }
-            if(f["packageEndDate"].value == ""){ x = false; }
+            if (f["airlineCode"].value == "") {
+                x = false;
+            }
+            if (f["airlineName"].value == "") {
+                x = false;
+            }
+            if (f["destinationCode"].value == "") {
+                x = false;
+            }
+            if (f["airport"].value == "") {
+                x = false;
+            }
+            if (f["hotelName"].value == "") {
+                x = false;
+            }
+            if (f["hotelDescription"].value == "") {
+                x = false;
+            }
+            if (f["packageStartDate"].value == "") {
+                x = false;
+            }
+            if (f["packageEndDate"].value == "") {
+                x = false;
+            }
 
             console.log(x);
 
             if (x == "") {
                 alert("Please fill in all fields");
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
         }
@@ -556,8 +669,8 @@
 </form>
 
 <form id="seatSelection" name="seatSelection">
-    <select id="seatSelect" name="seatSelect" >
-        <option value="" selected="true">-- Select --</option>
+    <select id="seatSelect" name="seatSelect">
+        <option selected="true" value="">-- Select --</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -567,33 +680,36 @@
 </form>
 
 <!-- User Modificaion Form ------------------------------------------------------------------------------------------->
-<form id="userModificationForm" onsubmit="return validateUserModification()" th:action="@{/userModification}" method="post">
+<form id="userModificationForm" method="post" onsubmit="return validateUserModification()"
+      th:action="@{/userModification}">
     <span>User: </span>
-    <input type="text" id="user" class="form-control" name="user" placeholder="User Email For Modification"><br>
+    <input class="form-control" id="user" name="user" placeholder="User Email For Modification" type="text"><br>
     <span>User Field: </span>
-    <select name="userField" id="userField" class="form-select">
-        <option value="email" selected="true">Email</option>
+    <select class="form-select" id="userField" name="userField">
+        <option selected="true" value="email">Email</option>
         <option value="firstName">First Name</option>
         <option value="password">Password</option>
         <option value="preferredAirport">Preferred Airport</option>
     </select><br>
-    <input type="text" id="modification" class="form-control" name="modification" placeholder="New User Field Value"><br>
-    <button type="submit" class="btn btn-primary btn-search">Update User</button>
+    <input class="form-control" id="modification" name="modification" placeholder="New User Field Value"
+           type="text"><br>
+    <button class="btn btn-primary btn-search" type="submit">Update User</button>
 
     <script>
         function validateUserModification() {
-            let f =  document.forms["userModificationForm"];
+            let f = document.forms["userModificationForm"];
             let x = true;
 
-            if(f["modification"].value == ""){ x = false; }
+            if (f["modification"].value == "") {
+                x = false;
+            }
 
             console.log(x);
 
             if (x == "") {
                 alert("Please fill in the user modification field");
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
         }
@@ -601,25 +717,26 @@
 </form>
 
 <!-- User Modificaion Form ------------------------------------------------------------------------------------------->
-<form id="userDeleteForm" onsubmit="return validateUserDeletion()" th:action="@{/userDelete}" method="post">
+<form id="userDeleteForm" method="post" onsubmit="return validateUserDeletion()" th:action="@{/userDelete}">
     <span>User: </span>
-    <input type="text" id="userDelete" class="form-control" name="userDelete" placeholder="User Email For Deletion"><br>
-    <button type="submit" class="btn btn-primary btn-search">Delete User</button>
+    <input class="form-control" id="userDelete" name="userDelete" placeholder="User Email For Deletion" type="text"><br>
+    <button class="btn btn-primary btn-search" type="submit">Delete User</button>
 
     <script>
         function validateUserDeletion() {
-            let f =  document.forms["userDeleteForm"];
+            let f = document.forms["userDeleteForm"];
             let x = true;
 
-            if(f["userDelete"].value == ""){ x = false; }
+            if (f["userDelete"].value == "") {
+                x = false;
+            }
 
             console.log(x);
 
             if (x == "") {
                 alert("Please fill in the user deletion field");
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
         }
@@ -627,38 +744,47 @@
 </form>
 
 <!-- Admin Add User Form ------------------------------------------------------------------------------------------->
-<form id="addUser" name="addUser" onsubmit="return validateAddUser()" th:action="@{/addUser}" th:object="${UserAccount}" method="post">
-    <input type="email" id="email" class="form-control" name="email" placeholder="Email"><br>
-    <input type="text" id="firstname" class="form-control" name="firstname" placeholder="Firstname"><br>
+<form id="addUser" method="post" name="addUser" onsubmit="return validateAddUser()" th:action="@{/addUser}"
+      th:object="${UserAccount}">
+    <input class="form-control" id="email" name="email" placeholder="Email" type="email"><br>
+    <input class="form-control" id="firstname" name="firstname" placeholder="Firstname" type="text"><br>
 
-    <label id="airportlbl" class="form-label" name="airportlbl" >Preferred Airport</label><br>
-    <select name="prefAirport" id="prefAirport" class="form-control">
-        <option th:each="Location: ${locs}" th:value="${Location.getLocationID()}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"></option>
+    <label class="form-label" id="airportlbl" name="airportlbl">Preferred Airport</label><br>
+    <select class="form-control" id="prefAirport" name="prefAirport">
+        <option th:each="Location: ${locs}" th:text="${Location.getLocationID()} + ' - ' + ${Location.getLocation()}"
+                th:value="${Location.getLocationID()}"></option>
     </select><br>
 
-    <input type="password" id="password" class="form-control" name="password" placeholder="Password"><br>
-    <input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="Confirm Password"><br>
-    <button type="submit" class="btn btn-primary btn-search">Create User Account</button>
+    <input class="form-control" id="password" name="password" placeholder="Password" type="password"><br>
+    <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password"
+           type="password"><br>
+    <button class="btn btn-primary btn-search" type="submit">Create User Account</button>
 
     <script>
         function validateAddUser() {
-            let f =  document.forms["addUser"];
+            let f = document.forms["addUser"];
             let x = true;
 
-            if(f["email"].value == ""){ x = false; }
-            if(f["firstname"].value == ""){ x = false; }
-            if(f["password"].value == ""){ x = false; }
-            if(f["confirmpassword"].value == ""){ x = false; }
+            if (f["email"].value == "") {
+                x = false;
+            }
+            if (f["firstname"].value == "") {
+                x = false;
+            }
+            if (f["password"].value == "") {
+                x = false;
+            }
+            if (f["confirmpassword"].value == "") {
+                x = false;
+            }
 
             if (x == "") {
                 alert("Please fill in all fields");
                 return false;
-            }
-            else if(!(f["password"].value === f["confirmpassword"].value)){
+            } else if (!(f["password"].value === f["confirmpassword"].value)) {
                 alert("Passwords do not match");
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
         }

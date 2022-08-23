@@ -2,20 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="Fragments/Head"></div>
-<header th:replace="Fragments/Header"> </header>
+<header th:replace="Fragments/Header"></header>
 <body>
 <div class="container">
     <main id="main" style="margin: 100px">
         <!-- ======= Services Section ======= -->
         <h1>Oh?..</h1>
-        <p th:if="${Error.equals('User already exists')}">A user with this email already exists.. Would you like to <a href="/login">login?</a></p>
+        <p th:if="${Error.equals('User already exists')}">A user with this email already exists.. Would you like to <a
+                href="/login">login?</a></p>
         <p th:if="${Error.equals('General Error')}">Nothing here... Wanna head back <a href="/">home?</a></p>
-        <p th:if="${Error.equals('Not in group')}">Sorry, but you have not been invited to this group... Wanna head back <a href="/">home?</a></p>
+        <p th:if="${Error.equals('Not in group')}">Sorry, but you have not been invited to this group... Wanna head back
+            <a href="/">home?</a></p>
         <!-- <p>Somethings gone horribly wrong... or you're lost... Wanna head back <a href="/">home?</a></p> -->
     </main>
 </div>
 </body>
 
-<lower th:replace="Fragments/Footer"> </lower>
+<lower th:replace="Fragments/Footer"></lower>
 
 

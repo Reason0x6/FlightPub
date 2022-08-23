@@ -14,166 +14,222 @@ import java.util.List;
  */
 @Service("UserGroupServices")
 public class UserGroupServices {
-        private final UserGroupRepo userGroupRepo;
+    private final UserGroupRepo userGroupRepo;
+    private UserAccountServices accData;
+    private UserGroup usrGroup;
 
-        @Autowired
-        private UserAccountServices accData;
+    @Autowired
+    public UserGroupServices(UserGroupRepo userGroupRepository) {
+        this.userGroupRepo = userGroupRepository;
+    }
 
-        private UserGroup usrGroup;
-        @Autowired
-        public UserGroupServices(UserGroupRepo userGroupRepository) {
-                this.userGroupRepo = userGroupRepository;
+    @Autowired
+    private void UserAccountServices(UserAccountServices userAccountServices) {
+        this.accData = userAccountServices;
+    }
+
+    /**
+     * @return List of all users in group
+     */
+    public LinkedList<UserAccount> listAllUsers() {
+        LinkedList<UserAccount> accounts = new LinkedList<>();
+        LinkedList<String> userIDs = usrGroup.getUserIDs();
+        for (String usr : userIDs) {
+            accounts.add(accData.getById(usr));
         }
+        return accounts;
+    }
 
-        /**
-         * @return List of all users in group
-         */
-        public LinkedList<UserAccount> listAllUsers() {
-                LinkedList<UserAccount> accounts = new LinkedList<>();
-                LinkedList<String> usrs = usrGroup.getUserIDs();
-                for(String usr : usrs){
-                        accounts.add(accData.getById(usr));
-                }
-                return accounts;
+    /**
+     * @return List of all invited users in group
+     */
+    public LinkedList<UserAccount> listAllInvitedUsers() {
+        LinkedList<UserAccount> accounts = new LinkedList<>();
+        LinkedList<String> userIDs = usrGroup.getInvitedIds();
+        for (String usr : userIDs) {
+            accounts.add(accData.getById(usr));
         }
+        return accounts;
+    }
 
-        /**
-         * @return List of all invited users in group
-         */
-        public LinkedList<UserAccount> listAllInvitedUsers() {
-                LinkedList<UserAccount> accounts = new LinkedList<>();
-                LinkedList<String> usrs = usrGroup.getInvitedIds();
-                for(String usr : usrs){
-                        accounts.add(accData.getById(usr));
-                }
-                return accounts;
+    /**
+     * @return List of all users who declined the invite to group
+     */
+    public LinkedList<UserAccount> listAllDeclinedUsers() {
+        LinkedList<UserAccount> accounts = new LinkedList<>();
+        LinkedList<String> userIDs = usrGroup.getDeclinedIds();
+        for (String usr : userIDs) {
+            accounts.add(accData.getById(usr));
         }
+        return accounts;
+    }
 
-        /**
-         * @return List of all users who declined the invite to group
-         */
-        public LinkedList<UserAccount> listAllDeclinedUsers() {
-                LinkedList<UserAccount> accounts = new LinkedList<>();
-                LinkedList<String> usrs = usrGroup.getDeclinedIds();
-                for(String usr : usrs){
-                        accounts.add(accData.getById(usr));
-                }
-                return accounts;
-        }
+    /**
+     * @return UserAccount of admin
+     */
+    public UserAccount getAdmin() {
+        String adminID = usrGroup.getAdminID();
+        return accData.getById(adminID);
+    }
 
-        /**
-         * @return UserAccount of admin
-         */
-        public UserAccount getAdmin() {
-               String adminID = usrGroup.getAdminID();
-               return accData.getById(adminID);
-        }
+    /**
+     * @return Current flight ID in group
+     */
+    public String getFlight() {
+        return usrGroup.getFlight();
+    }
 
-        /**
-         * Save user group to database
-         * @param usrGroupObj user group to save
-         */
-        public void saveUsers(UserGroup usrGroupObj) {
-                userGroupRepo.save(usrGroupObj);
-        }
+    /**
+     * @return Group name
+     */
+    public String getGroupName() {
+        return usrGroup.getGroupName();
+    }
 
-        /**
-         * Add a user to group
-         * @param id user id to add
-         */
-        public void addUser(String id) {
-                usrGroup.addUser(id);
-                saveUsers(usrGroup);
-        }
+    /**
+     * Save user group to database
+     *
+     * @param usrGroupObj user group to newBooking
+     */
+    public void saveUsers(UserGroup usrGroupObj) {
+        userGroupRepo.save(usrGroupObj);
+    }
 
-        /**
-         * Remove a user from group
-         * @param id user id to remove
-         */
-        public void removeUser(String id) {
-                usrGroup.removeUser(id);
-                saveUsers(usrGroup);
-        }
+    /**
+     * Delete user group from database
+     */
+    public void deleteGroup() {
+        userGroupRepo.delete(usrGroup);
+    }
 
-        /**
-         * Add a users invite to group
-         * @param id user id to invite
-         */
-        public void addInvite(String id) {
-                usrGroup.addInvite(id);
-                saveUsers(usrGroup);
-        }
+    /**
+     * Add a user to group
+     *
+     * @param id user id to add
+     */
+    public void addUser(String id) {
+        usrGroup.addUser(id);
+        saveUsers(usrGroup);
+    }
 
-        /**
-         * Add a user id for declined group invite
-         * @param id user id for declined group invite
-         */
-        public void addDecline(String id) {
-                usrGroup.addDecline(id);
-                saveUsers(usrGroup);
-        }
+    /**
+     * Remove a user from group
+     *
+     * @param id user id to remove
+     */
+    public void removeUser(String id) {
+        usrGroup.removeUser(id);
+        saveUsers(usrGroup);
+    }
 
-        /**
-         * Remove user invite from group
-         * @param id user id to remove invite for
-         */
-        public void removeInvite(String id) {
-                usrGroup.removeInvite(id);
-                saveUsers(usrGroup);
-        }
+    /**
+     * Add a users invite to group
+     *
+     * @param id user id to invite
+     */
+    public void addInvite(String id) {
+        usrGroup.addInvite(id);
+        saveUsers(usrGroup);
+    }
 
-        /**
-         * Load user group
-         * @param id group id to load
-         */
-        public void loadUserGroup(String id){
+    /**
+     * Add a user id for declined group invite
+     *
+     * @param id user id for declined group invite
+     */
+    public void addDecline(String id) {
+        usrGroup.addDecline(id);
+        saveUsers(usrGroup);
+    }
 
-             usrGroup =  userGroupRepo.findById(id).orElse(null);
+    /**
+     * Remove user invite from group
+     *
+     * @param id user id to remove invite for
+     */
+    public void removeInvite(String id) {
+        usrGroup.removeInvite(id);
+        saveUsers(usrGroup);
+    }
 
-        }
+    /**
+     * Adds a flight to group
+     *
+     * @param flightId flight id to add to group
+     */
+    public void addFlight(String flightId) {
+        usrGroup.addFlight(flightId);
+        saveUsers(usrGroup);
+    }
 
-        /**
-         * Find list of groups containing id
-         * @param userId find group containing this id
-         * @return List of groups
-         */
-        public List<UserGroup> findGroupsContaining(String userId) {
-                return userGroupRepo.findAllByUserIDs(userId);
-        }
+    /**
+     * Load user group
+     *
+     * @param id group id to load
+     */
+    public void loadUserGroup(String id) {
 
-        /**
-         * Find list of groups containing invited id
-         * @param userId find group containing this invited id
-         * @return List of groups
-         */
-        public List<UserGroup> findInvitedGroupsContaining(String userId) {
-                return userGroupRepo.findAllByInvitedIds(userId);
-        }
+        usrGroup = userGroupRepo.findById(id).orElse(null);
 
-        /**
-         * Check if user is in group
-         * @param userId id to check for
-         * @return true if in group, false if not
-         */
-        public boolean isUserInGroup(String userId) {
-                return usrGroup.getUserIDs().contains(userId);
-        }
+    }
 
-        /**
-         * Check if user has been invited to group
-         * @param userId id to check for
-         * @return true if invited, false if not
-         */
-        public boolean isUserInvited(String userId) {
-                return usrGroup.getInvitedIds().contains(userId);
-        }
+    /**
+     * Find list of groups containing id
+     *
+     * @param userId find group containing this id
+     * @return List of groups
+     */
+    public List<UserGroup> findGroupsContaining(String userId) {
+        return userGroupRepo.findAllByUserIDs(userId);
+    }
 
-        /**
-         * Check if user is group admin
-         * @param userId id to check for
-         * @return true if user is group admin, false if not
-         */
-        public boolean isAdmin(String userId) {
-                return usrGroup.getAdminID().equals(userId);
-        }
+    /**
+     * Find list of groups containing invited id
+     *
+     * @param userId find group containing this invited id
+     * @return List of groups
+     */
+    public List<UserGroup> findInvitedGroupsContaining(String userId) {
+        return userGroupRepo.findAllByInvitedIds(userId);
+    }
+
+    /**
+     * Find list of groups containing admin id
+     *
+     * @param adminId find group containing this invited id
+     * @return List of groups
+     */
+    public List<UserGroup> findGroupsByAdmin(String adminId) {
+        return userGroupRepo.findAllByAdminID(adminId);
+    }
+
+    /**
+     * Check if user is in group
+     *
+     * @param userId id to check for
+     * @return true if in group, false if not
+     */
+    public boolean isUserInGroup(String userId) {
+        return usrGroup.getUserIDs().contains(userId);
+    }
+
+    /**
+     * Check if user has been invited to group
+     *
+     * @param userId id to check for
+     * @return true if invited, false if not
+     */
+    public boolean isUserInvited(String userId) {
+        return usrGroup.getInvitedIds().contains(userId);
+    }
+
+    /**
+     * Check if user is group admin
+     *
+     * @param userId id to check for
+     * @return true if user is group admin, false if not
+     */
+    public boolean isAdmin(String userId) {
+        return usrGroup.getAdminID().equals(userId);
+    }
 }

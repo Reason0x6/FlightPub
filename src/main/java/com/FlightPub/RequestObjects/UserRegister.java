@@ -1,7 +1,6 @@
 package com.FlightPub.RequestObjects;
 
 import com.FlightPub.Services.SecurityService;
-import com.FlightPub.model.UserAccount;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,33 +29,27 @@ public class UserRegister {
     @Getter
     private String confirmpassword;
 
-    private SecurityService secService;
+    private final SecurityService secService;
 
     UserRegister() throws NoSuchAlgorithmException {
         secService = new SecurityService();
     }
 
-    public void setPassword(String in){
+    public void setPassword(String in) {
         this.password = secService.hash(in);
     }
 
 
-    public void setConfirmpassword(String in){
+    public void setConfirmpassword(String in) {
         this.confirmpassword = secService.hash(in);
     }
 
-    public boolean allFilled(){
-        if(email != null && firstname != null && address != null && prefAirport != null){
-            return true;
-        }
-        return false;
+    public boolean allFilled() {
+        return email != null && firstname != null && address != null && prefAirport != null;
     }
 
-    public boolean isValid(){
-        if(confirmpassword.equals(password) && allFilled()){
-            return true;
-        }
-        return false;
+    public boolean isValid() {
+        return confirmpassword.equals(password) && allFilled();
     }
 
 

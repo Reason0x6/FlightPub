@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * Java Object Representation of Database Object
@@ -59,7 +58,8 @@ public class Location {
     @Field("covid_restricted")
     private boolean covid_restricted;
 
-    public Location() {}
+    public Location() {
+    }
 
     public Location(String id, String country, String location, double lat, double lng, int pop, boolean covid_restricted) {
         this.locationID = id.toUpperCase();

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Java Object Representation of Database Object
  */
@@ -18,5 +19,6 @@ public class Membership {
     @Setter
     private String airlineID;
 
-    public Membership() {}
+    public Membership() {
+    }
 }

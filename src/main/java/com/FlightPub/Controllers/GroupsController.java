@@ -1,9 +1,11 @@
 package com.FlightPub.Controllers;
 
 import com.FlightPub.RequestObjects.UserSession;
+import com.FlightPub.Services.FlightServices;
 import com.FlightPub.Services.LocationServices;
 import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.Services.UserGroupServices;
+import com.FlightPub.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -21,31 +23,40 @@ import javax.servlet.http.HttpSession;
 public class GroupsController {
     // Database services
     private UserGroupServices groupServices;
+    private UserAccountServices usrServices;
+    private LocationServices locationServices;
+    private FlightServices flightServices;
+
     @Autowired
     @Qualifier(value = "UserGroupServices")
     public void setUserGroupServices(UserGroupServices userGroupServices) {
         this.groupServices = userGroupServices;
     }
 
-    private UserAccountServices usrServices;
     @Autowired
     @Qualifier(value = "UserAccountServices")
     public void setUserService(UserAccountServices usrService) {
         this.usrServices = usrService;
     }
 
-    private LocationServices locationServices;
     @Autowired
     @Qualifier(value = "LocationServices")
     public void setLocationsServices(LocationServices locService) {
         this.locationServices = locService;
     }
+
+    @Autowired
+    @Qualifier(value = "FlightServices")
+    public void setLocationsServices(FlightServices flightServices) {
+        this.flightServices = flightServices;
+    }
     // End of Database services
 
     /**
      * Load a group without invite accepting/declining
+     *
      * @param groupId id to load
-     * @param model interface that defines a holder for model attributes
+     * @param model   interface that defines a holder for model attributes
      * @param session current session
      * @return group page for groupId
      */
@@ -57,17 +68,18 @@ public class GroupsController {
 
     /**
      * Loads a group with invite accepting/declining plus invite bypassing
-     * @param groupId id to load
+     *
+     * @param groupId  id to load
      * @param accepted string to determine if user is added to group
      *                 Can be 'accepted', 'declined' or 'bypassed'
      *                 'bypassed' will ignore invite checking
-     * @param model interface that defines a holder for model attributes
-     * @param session current session
+     * @param model    interface that defines a holder for model attributes
+     * @param session  current session
      * @return group page for groupId
      */
     @RequestMapping("/groupsInvite")
-    public String groupInvite(@RequestParam String groupId, @RequestParam String accepted, Model model, HttpSession session){
-        if(!getSession(session).isLoggedIn()){
+    public String groupInvite(@RequestParam String groupId, @RequestParam String accepted, Model model, HttpSession session) {
+        if (!getSession(session).isLoggedIn()) {
             return "redirect:login";
         }
 
@@ -77,9 +89,9 @@ public class GroupsController {
         String userId = getSession(session).getEmail();
 
         // Check if current user is actually in group
-        if(!groupServices.isUserInGroup(userId)) {
+        if (!groupServices.isUserInGroup(userId)) {
             // Check if user has been invited to group
-            if(groupServices.isUserInvited(userId)) {
+            if (groupServices.isUserInvited(userId)) {
                 // Move user from invite list to user list
                 groupServices.removeInvite(userId);
 
@@ -91,28 +103,79 @@ public class GroupsController {
                     return "redirect:account";
                 }
 
-            }
-            else {
+            } else {
                 model.addAttribute("usr", getSession(session));
                 model.addAttribute("Error", "Not in group");
                 return "Error/404";
             }
         }
 
+        // Retrieve flight attached to group
+        Flight flight = flightServices.getById(groupServices.getFlight());
+        if (flight != null) {
+            model.addAttribute("Flight", flight);
+
+            model.addAttribute("Dest", locationServices.getById(flight.getDestinationCode()));
+            model.addAttribute("Dep", locationServices.getById(flight.getDepartureCode()));
+
+        }
+
+        // Used for invite and remove user buttons
         model.addAttribute("groupId", groupId);
+
+        if (groupServices.isAdmin(userId)) {
+            model.addAttribute("isAdmin", true);
+        }
+
+        model.addAttribute("groupName", groupServices.getGroupName());
 
         model.addAttribute("locs", locationServices.listAll());
         model.addAttribute("usr", getSession(session));
         return "User/Group";
     }
-    /*To Do: Making separate branch for the time being. */
+
+    /**
+     * Add a flight to a group
+     *
+     * @param flightId id of flight to add
+     * @param groupId  id of group to add flight to
+     * @param model    interface that defines a holder for model attributes
+     * @param session  current session
+     * @return group page or redirect to log in
+     */
+    @RequestMapping("Group/AddFlight")
+    public String addFlight(@RequestParam String flightId, @RequestParam String groupId, Model model, HttpSession session) {
+        // Load group from database
+        groupServices.loadUserGroup(groupId);
+        UserSession userSession = getSession(session);
+
+        // Check if user is logged in
+        if (userSession.isLoggedIn()) {
+            // Check if user is admin
+            if (groupServices.isAdmin(userSession.getEmail())) {
+                System.out.println("Adding flight: " + flightId);
+
+                // TODO Add flight lock once booking started
+
+                // Add flight to group in db
+                groupServices.addFlight(flightId);
+
+                // Return group page
+                // Bypass invite accepted/decline string
+                return groupInvite(groupId, "bypass", model, session);
+            }
+        }
+
+        return "redirect:login";
+    }
 
     /**
      * Checks if a user can be added to a group. Then returns a html fragment of all invited users
+     *
      * @param inviteUser User to be invited to group
-     * @param groupId id to load
-     * @param model interface that defines a holder for model attributes
-     * @param session current session
+     * @param groupId    id to load
+     * @param model      interface that defines a holder for model attributes
+     * @param session    current session
      * @return html fragment of all invited users
      */
     @PostMapping("/invite_list")
@@ -130,7 +193,7 @@ public class GroupsController {
         if (groupServices.isUserInGroup(inviteUser)) {
             // TODO send to this front end
             model.addAttribute("Error", "User is already in group");
-           // System.out.println("User is already in group");
+            // System.out.println("User is already in group");
 
             // Fetch the th:fragment="invite_user_form_error_fragment" and return it
             return "Fragments/Groups/InviteList :: invite_user_form_error_fragment";
@@ -140,7 +203,7 @@ public class GroupsController {
             groupServices.addInvite(inviteUser);
         }
         // If incoming user email is loading just update users
-        else if (inviteUser.equals("loading")){
+        else if (inviteUser.equals("loading")) {
             System.out.println("Loading invite list for group: " + groupId);
         }
         // If these checks fail not a valid user
@@ -162,8 +225,9 @@ public class GroupsController {
 
     /**
      * Load a list of users currently in group
+     *
      * @param groupId id to load
-     * @param model interface that defines a holder for model attributes
+     * @param model   interface that defines a holder for model attributes
      * @param session current session
      * @return list of user currently in group
      */
@@ -183,9 +247,10 @@ public class GroupsController {
 
     /**
      * Remove a user from a group
-     * @param userId user id to remove
+     *
+     * @param userId  user id to remove
      * @param groupId id to load
-     * @param model interface that defines a holder for model attributes
+     * @param model   interface that defines a holder for model attributes
      * @param session current session
      * @return updated list of current group users
      */
@@ -208,18 +273,75 @@ public class GroupsController {
         return loadAddedUsers(groupId, model, session);
     }
 
+    /**
+     * Remove a group
+     *
+     * @param groupId id to remove
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return updated list of current group users
+     */
+    @PostMapping("/remove_group")
+    public String removeGroup(@RequestParam("groupId") String groupId, Model model, HttpSession session) {
+        System.out.printf("Attempting to remove group: %s %n", groupId);
+
+        // Ensure that correct group is selected when loading page
+        groupServices.loadUserGroup(groupId);
+
+        // Ensure that the user sending post request is actually a member of the group
+        if (!groupServices.isAdmin(getSession(session).getEmail())) {
+            return "redirect:login";
+        }
+
+        // Remove user from group
+        groupServices.deleteGroup();
+
+        return "redirect:account";
+    }
+
+    /**
+     * Loads a list of groups with current session user as a member
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return html fragment containing list of groups with current user as a member
+     */
+    @PostMapping("/group_list")
+    public String loadGroupList(Model model, HttpSession session) {
+
+        model.addAttribute("groups", groupServices.findGroupsContaining(getSession(session).getEmail()));
+
+        return "Fragments/Groups/GroupList :: group_list_fragment";
+    }
+
+    /**
+     * Loads a list of groups with current session user at admin
+     *
+     * @param flightId flight id for add flight to group button
+     * @param model    interface that defines a holder for model attributes
+     * @param session  current session
+     * @return html fragment containing list of groups with current user as admin
+     */
+    @PostMapping("/admin_group_list")
+    public String loadAdminGroupList(@RequestParam String flightId, Model model, HttpSession session) {
+        model.addAttribute("Flight", flightServices.getById(flightId));
+        model.addAttribute("groups", groupServices.findGroupsByAdmin(getSession(session).getEmail()));
+
+        return "Fragments/Groups/GroupList :: group_list_fragment";
+    }
 
     /**
      * returns a html fragment list of current group users
+     *
      * @param groupId id to load
-     * @param model interface that defines a holder for model attributes
+     * @param model   interface that defines a holder for model attributes
      * @param session current session
      * @return html fragment list of current group users
      */
     private String loadAddedUsers(String groupId, Model model, HttpSession session) {
         String userId = getSession(session).getEmail();
         // Check if user is admin
-        if(groupServices.isAdmin(userId)) {
+        if (groupServices.isAdmin(userId)) {
             model.addAttribute("isAdmin", true);
             model.addAttribute("admin", groupServices.getAdmin());
             model.addAttribute("groupId", groupId);

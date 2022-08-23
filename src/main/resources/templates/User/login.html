@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" >
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <meta charset="utf-8">
 
-<head th:replace="Fragments/Head"> </head>
-<header th:replace="Fragments/Header"> </header>
+<head th:replace="Fragments/Head"></head>
+<header th:replace="Fragments/Header"></header>
 <div class="container" style="margin-top: 100px;" th:if="${method != 'post'}">
     <div class="row">
         <div class="col-md-6">
 
             <div class="card l-2">
                 <h1>Login</h1>
-                <form th:replace="Fragments/Forms :: #login"> </form>
+                <form th:replace="Fragments/Forms :: #login"></form>
             </div>
         </div>
         <div class="col-md-6">
             <div class="card l-2">
                 <h2>Don't have an account?</h2>
                 <p><b>Register Today!</b><Br>
-                    It's more than just a flight finder! Create group with your friends, and plan the dream group getaway... or if flying solo is more your thing, get real time recommendations on the hottest flights and world events!
+                    It's more than just a flight finder! Create group with your friends, and plan the dream group
+                    getaway... or if flying solo is more your thing, get real time recommendations on the hottest
+                    flights and world events!
                 </p>
-                <a href="/Register" class="btn btn-primary">Start the journey!</a>
+                <a class="btn btn-primary" href="/Register">Start the journey!</a>
             </div>
         </div>
 
@@ -28,9 +30,11 @@
         <div class="col-md-6">
             <div class="card l-2">
                 <h2>Admin Registration</h2>
-                <p>Are you an administration superstar, dynamic and a customer-centric person with a passion to go above and beyond.<br>
-                    Contact FlightPub PTY LTD through info@example.com or call +61 2 123 456 78 and discover how to become an admin today!</p>
-                <a href="/AdminRegister" class="btn btn-primary">Join the team!</a>
+                <p>Are you an administration superstar, dynamic and a customer-centric person with a passion to go above
+                    and beyond.<br>
+                    Contact FlightPub PTY LTD through info@example.com or call +61 2 123 456 78 and discover how to
+                    become an admin today!</p>
+                <a class="btn btn-primary" href="/AdminRegister">Join the team!</a>
             </div>
         </div>
     </div>
@@ -44,7 +48,7 @@
 </div>
 <!--- something needs to go here -->
 
-<lower th:replace="Fragments/Footer"> </lower>
+<lower th:replace="Fragments/Footer"></lower>
 
 
 
