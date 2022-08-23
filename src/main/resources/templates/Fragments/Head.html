@@ -95,6 +95,25 @@
                 stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
             }
         }
+        div {
+            scrollbar-width: thick;
+            scrollbar-color: orange white;
+        }
+
+        /* Works on Chrome, Edge, and Safari */
+        div::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        div::-webkit-scrollbar-track {
+            background: white;
+        }
+
+        div::-webkit-scrollbar-thumb {
+            background-color: orange;
+            border-radius: 20px;
+            border: 3px solid orange;
+        }
 
     </style>
 </head>
