@@ -59,6 +59,21 @@ public class FlightServices{
         }
     }
 
+    public Availability saveOrUpdateAvailability(Availability availability) {
+        try {
+            availability.setTicketCode(availability.getTicketCode().toUpperCase());
+            availability.setClassCode(availability.getClassCode().toUpperCase());
+            availability.setFlightNumber(availability.getFlightNumber().toUpperCase());
+            availability.setAirlineCode(availability.getAirlineCode().toUpperCase());
+
+             Availability a = availRepo.save(availability);
+            return a;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
     public List<Flight> listAll(){
 
         if(flightCache.containsKey("ALL") && flightCache.get("ALL").getKey().compareTo(new Date(System.currentTimeMillis())) > 0){
@@ -109,7 +124,6 @@ public class FlightServices{
         try {
             flight.setDepartureCode(flight.getDepartureCode().toUpperCase());
             flight.setDestinationCode(flight.getDestinationCode().toUpperCase());
-            flight.setPlaneCode(flight.getPlaneCode().toUpperCase());
             flight.setFlightNumber(flight.getFlightNumber().toUpperCase());
             flight.setAirlineCode(flight.getAirlineCode().toUpperCase());
             if(flight.getStopoverCode() != null)

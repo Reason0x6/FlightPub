@@ -66,5 +66,10 @@ public class Price {
 
 
     public Price() {}
+    
+    public Price(String classCode, String ticketCode) {
+        this.classCode = classCode;
+        this.ticketCode = ticketCode;
+    }
 
 }

@@ -330,57 +330,41 @@
 </form>
 
 <!-- Flight management form for creating/editing flights -------------------------------------------------------------------------------->
-<form id="EditFlight" th:action="@{/flight/add}" th:object="${Flight}" method="post">
+<form id="EditFlight" th:action="@{/flight/add}" th:object="${container}" method="post">
     <label for="departureCode" id="departureCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Origin: </label>
-    <input type="text" id="departureCode" name="departureCode" th:value="${flight.getDepartureCode()}">
+    <input type="text" id="departureCode" th:name="flight.departureCode" th:value="${flight.getDepartureCode()}">
     <label for="destinationCode" id="destinationCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Destination: </label>
-    <input type="text" id="destinationCode" name="destinationCode" th:value="${flight.getDestinationCode()}">
-    <label for="planeCode" id="planeCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Plane Code: </label>
-    <input type="text" id="planeCode" name="planeCode" th:value="${flight.getPlaneCode()}">
+    <input type="text" id="destinationCode" th:name="flight.destinationCode" th:value="${flight.getDestinationCode()}">
 
     <label for="departureTime" id="departureTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Departure: </label>
-    <input type="datetime-local" id="departureTime" name="departureTime" th:value="${flight.getDepartureString()}">
+    <input type="datetime-local" id="departureTime" th:name="flight.departureTime" th:value="${flight.getDepartureString()}">
     <label for="arrivalTime" id="arrivalTimeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Arrival: </label>
-    <input type="datetime-local" id="arrivalTime" name="arrivalTime" th:value="${flight.getArrivalString()}">
+    <input type="datetime-local" id="arrivalTime" th:name="flight.arrivalTime" th:value="${flight.getArrivalString()}">
     <label for="departureTimeStopOver" id="departureTimeStopOverLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Departure: </label>
-    <input type="datetime-local" id="departureTimeStopOver" name="departureTimeStopOver" th:value="${flight.getDepartureStopOverString()}">
+    <input type="datetime-local" id="departureTimeStopOver" th:name="flight.departureTimeStopOver" th:value="${flight.getDepartureStopOverString()}">
     <label for="arrivalTimeStopOver" id="arrivalTimeStopOverLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Arrival: </label>
-    <input type="datetime-local" id="arrivalTimeStopOver" name="arrivalTimeStopOver" th:value="${flight.getArrivalStopOverString()}">
+    <input type="datetime-local" id="arrivalTimeStopOver" th:name="flight.arrivalTimeStopOver" th:value="${flight.getArrivalStopOverString()}">
     <label for="stopoverCode" id="stopoverCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Stopover Code: </label>
-    <input type="text" id="stopoverCode" name="stopoverCode" th:value="${flight.getStopoverCode()}">
+    <input type="text" id="stopoverCode" th:name="flight.stopoverCode" th:value="${flight.getStopoverCode()}">
 
     <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
-    <input type="text" id="flightNumber" name="flightNumber" th:value="${flight.getFlightNumber()}">
+    <input type="text" id="flightNumber" th:name="flight.flightNumber" th:value="${flight.getFlightNumber()}">
     <label for="airlineCode" id="airlineCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline Code: </label>
-    <input type="text" id="airlineCode" name="airlineCode" th:value="${flight.getAirlineCode()}">
+    <input type="text" id="airlineCode" th:name="flight.airlineCode" th:value="${flight.getAirlineCode()}">
     <label for="duration" id="durationLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration: </label>
-    <input type="number" id="duration" name="duration" th:value="${flight.getDuration()}">
+    <input type="number" id="duration" th:name="flight.duration" th:value="${flight.getDuration()}">
     <label for="durationSecondLeg" id="durationSecondLegLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Duration - Second Leg: </label>
-    <input type="number" id="durationSecondLeg" name="durationSecondLeg" th:value="${flight.getDurationSecondLeg()}">
-
-    <label for="ticketPrice" id="ticketPriceLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Ticket Price: </label>
-    <input type="number" id="ticketPrice" name="ticketPrice" th:value="${flight.getTicketPrice()}">
-    <label for="maxSeats" id="maxSeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Max Seats: </label>
-    <input type="number" id="maxSeats" name="maxSeats" th:value="${flight.getMaxSeats()}">
+    <input type="number" id="durationSecondLeg" th:name="flight.durationSecondLeg" th:value="${flight.getDurationSecondLeg()}">
     <label for="rating" id="ratingLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Rating: </label>
-    <input type="number" id="rating" name="rating" th:value="${flight.getRating()}">
+    <input type="number" id="rating" th:name="flight.rating" th:value="${flight.getRating()}">
 
-    <div th:each="class : ${Class}">
-        <hr>
-        <h4><span th:text="${class.getDetails()}"></h4>
-        <div th:each="type : ${Type}">
-            <p><span th:text="${type.getName()}"></span></p>
-            <label for="leg1Seats" id="leg1SeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 1 Seats: </label>
-            <input type="number" id="leg1Seats" name="leg1Seats">
-            <label for="leg1Cost" id="leg1CostLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 1 Cost: </label>
-            <input type="number" id="leg1Cost" name="priceLeg1" th:value="${class.getTicketClass()}+'_'+${type.getTicketCode()}+'.getpriceLeg1'">
-            <p><span th:text="${class.getTicketClass().getPriceLeg1()}"></span></p>
+    <div th:each="availiability, itemStat : *{availabilities}">
+        <p><span th:text="${classes.get(__${itemStat.index}__)}"></span> : <span th:text="${types.get(__${itemStat.index}__)}"></span></p>
+        <label for="leg1Seats" id="leg1SeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 1 Seats: </label>
+        <input type="number" id="leg1Seats" name="leg1Seats" th:value="${availiability.getNumberAvailableSeatsLeg1()}" th:field="*{availabilities[__${itemStat.index}__].numberAvailableSeatsLeg1}">
 
-            <label for="leg2Seats" id="leg2SeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 2 Seats: </label>
-            <input type="number" id="leg2Seats" name="leg2Seats">
-            <label for="leg2Cost" id="leg2CostLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 2 Cost: </label>
-            <input type="number" id="leg2Cost" name="priceLeg2" th:value="${class.getTicketClass()}+'_'+${type.getTicketCode()}+'.priceLeg2'">
-        </div>
+        <label for="leg2Seats" id="leg2SeatsLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Leg 2 Seats: </label>
+        <input type="number" id="leg2Seats" name="leg2Seats" th:value="${availiability.getNumberAvailableSeatsLeg2()}" th:field="*{availabilities[__${itemStat.index}__].numberAvailableSeatsLeg2}">
     </div>
 
     <button type="submit" class="btn btn-primary btn-search" >Save Flight</button>

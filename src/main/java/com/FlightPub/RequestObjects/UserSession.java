@@ -59,6 +59,10 @@ public class UserSession {
     @Setter
     private List<BookingRequest> cart;
 
+    @Getter
+    @Setter
+    private List<String> availabilityID;
+
     @Autowired
     @Qualifier(value = "FlightServices")
     public void setFlightServices(FlightServices flightService) {

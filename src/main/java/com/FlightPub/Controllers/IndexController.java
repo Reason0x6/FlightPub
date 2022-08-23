@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -347,27 +346,39 @@ public class IndexController {
         // Generates all of the ID values for availability and price
         List<TicketClass> ticketClasses = ticketServices.getAllTicketClass();
         List<TicketType> ticketTypes = ticketServices.getAllTicketType();
-        List<String> modelIDs = new ArrayList<>();
+        List<Availability> availabilities = new ArrayList<>();
+        List<String> types = new ArrayList<>();
+        List<String> classes = new ArrayList<>();
+        List<String> id = new ArrayList<>();
 
+        // Generates a List of PriceContainers as the default display
         for(TicketClass ticketClass : ticketClasses) {
             for(TicketType ticketType : ticketTypes) {
-
+                availabilities.add(new Availability(ticketClass.getTicketClass(), ticketType.getTicketCode()));
+                types.add(ticketType.getName());
+                classes.add(ticketClass.getDetails());
+                id.add(ticketClass.getTicketClass()+"-"+ticketType.getTicketCode());
             }
         }
 
-        if(flight == null) {
+        if(flight == null)
             flight = new Flight();
-        }
         else {
-            List<Price> prices = flightServices.getFlightPrices(flight);
-            for(Price price : prices) {
-                String modelName = price.getClassCode()+"_"+price.getTicketCode();
-                model.addAttribute(price.getClassCode(), price);
+            List<Availability> flightAvailabilities = flightServices.getAvailability(flight.getFlightNumber(), flight.getDepartureTime());
+            for(Availability availability : flightAvailabilities) {
+                for (int count = 0; count < availabilities.size(); count++) {
+                    if (availability.getClassCode().equals(availabilities.get(count).getClassCode()) && availability.getTicketCode().equals(availabilities.get(count).getTicketCode())) {
+                        availabilities.set(count, availability);
+                        break;
+                    }
+                }
             }
         }
 
-        model.addAttribute("Class", ticketClasses);
-        model.addAttribute("Type", ticketTypes);
+        getSession(session).setAvailabilityID(id);
+        model.addAttribute("container", new EditedFlightContainer(flight, availabilities));
+        model.addAttribute("types", types);
+        model.addAttribute("classes", classes);
         model.addAttribute("flight", flight);
         model.addAttribute("usr", getSession(session));
 

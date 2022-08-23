@@ -56,5 +56,8 @@ public class Availability {
 
     public Availability() {}
 
-
+    public Availability(String classCode, String ticketCode) {
+        this.classCode = classCode;
+        this.ticketCode = ticketCode;
+    }
 }
