@@ -1,15 +1,19 @@
 package com.FlightPub.model;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Email {
 
-    private String recipient;
-    private String emailBody;
-    private String emailSubject;
-    private String attachment;
+    @Getter
+    @Setter
+    private String emailRecipient = "bella_andrews@me.com";
+
+    @Getter
+    private String emailSubject = "FlightPub Booking Confirmation";
+
+    @Getter
+    @Setter
+    private String emailBody = "Thank you for booking with FlightPub. Your booking is confirmed.";
 }

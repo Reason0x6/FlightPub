@@ -6,7 +6,10 @@ import com.FlightPub.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.SimpleMailMessage;
+import com.FlightPub.model.Email;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +33,7 @@ public class IndexController {
     private AirlineServices airlineServices;
     private TicketServices ticketServices;
 
-    private EmailService emailService;
+    private EmailServices emailServices;
 
     @Autowired
     @Qualifier(value = "AirlineServices")
@@ -89,6 +92,12 @@ public class IndexController {
     @Autowired
     @Qualifier(value = "TicketServices")
     public void setTicketServices(TicketServices ticketServices){ this.ticketServices = ticketServices; }
+
+    @Autowired
+    @Qualifier(value = "EmailServices")
+    public void setEmailServices(EmailServices emailServices) {
+        this.emailServices = emailServices;
+    }
 
     @RequestMapping("/invalidatecache")
     public String cache() {
@@ -650,6 +659,7 @@ public class IndexController {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
+
         List<BookingRequest> check = getSession(session).getCart();
         int totalSeats = 0;
         for(BookingRequest b: check){
@@ -673,10 +683,8 @@ public class IndexController {
             return "redirect:/login";
         }
 
-
         model.addAttribute("usr", getSession(session));
 
-        Traveller traveller;
         Traveller[] travellers = travellerContainer.getTravellers();
 
         for (BookingRequest br : getSession(session).getCheckedOutCart()) {
@@ -703,31 +711,36 @@ public class IndexController {
     }
 
     @RequestMapping("/bookingConfirmation")
-    public String bookingConfirmation(Booking booking, TravellerContainer travellerContainer, Model model, HttpSession session) {
+    public String bookingConfirmation(Booking booking, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
 
         model.addAttribute("usr", getSession(session));
+        String accountEmail = getSession(session).getEmail();
 
-        model.addAttribute("travellerContainer", travellerContainer.getTravellers());
-        model.addAttribute("booking", booking);
+        List<Booking> bookingDetails = bookingServices.getBookingDetails(accountEmail, booking.getFlightID());
+        //List<Traveller> travellers = bookingServices.getTravellers(bookingDetails.get(0).getId());
+        List<Traveller> travellers = new ArrayList<>();
 
-        return "Confirmations/BookingConfirmation";
-    }
-
-    @PostMapping("/bookingConfirmation")
-    public String bookingConfirmationEmail(@RequestBody Email email, Model model, HttpSession session) {
-        if (!getSession(session).isLoggedIn()) {
-            return "redirect:/login";
+        for (Booking traveller : bookingDetails) {
+            travellers.add(bookingServices.getTravellers(traveller.getTravellerID()));
         }
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("bella_andrews@me.com");
-        message.setSubject("Booking Confirmation");
-        message.setText("Thank you for booking with us. We will be in contact with you shortly.");
-        emailService.sendEmail(message);
+        model.addAttribute("bookingDetails", bookingDetails);
+        model.addAttribute("travellers", travellers);
 
+        Email email = new Email();
+
+        email.setEmailRecipient(accountEmail);
+        email.setEmailSubject("Booking Confirmation");
+        email.setEmailBody("Thank you for booking with us. Your booking reference is " + bookingDetails.get(0).getId());
+
+        try {
+            emailServices.sendSimpleMail(email);
+        } catch (HttpMessageNotReadableException e) {
+            e.printStackTrace();
+        }
 
         return "Confirmations/BookingConfirmation";
     }

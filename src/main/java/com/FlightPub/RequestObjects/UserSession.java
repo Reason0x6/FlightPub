@@ -70,6 +70,10 @@ public class UserSession {
 
     @Getter
     @Setter
+    private List<BookingRequest> bookedCart;
+
+    @Getter
+    @Setter
     private Booking booking;
 
     @Autowired
