@@ -1,9 +1,6 @@
 package com.FlightPub.Services;
 
-import com.FlightPub.model.Availability;
-import com.FlightPub.model.Flight;
-import com.FlightPub.model.Location;
-import com.FlightPub.model.Price;
+import com.FlightPub.model.*;
 import com.FlightPub.repository.AvailabilityRepo;
 import com.FlightPub.repository.FlightRepo;
 import com.FlightPub.repository.PriceRepo;

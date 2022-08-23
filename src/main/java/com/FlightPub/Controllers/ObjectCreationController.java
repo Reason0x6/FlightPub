@@ -136,6 +136,22 @@ public class ObjectCreationController {
         return "/Register";
     }
 
+    @PostMapping("/UpdateUser")
+    public String updateSR(@ModelAttribute UserRegister newUser, Model model, HttpSession session) {
+        model.addAttribute("usr", getSession(session));
+        if (newUser.getPassword().equals(newUser.getConfirmpassword())) {
+            UserAccount nUser = getSession(session).getUsr();
+            nUser.setPassword(newUser.getPassword());
+            nUser.setFirstname(newUser.getFirstname());
+            nUser.setPreferredAirport(newUser.getPrefAirport());
+            usrServices.saveOrUpdate(nUser);
+
+            return "Confirmations/UpdatedUser";
+        }
+
+        return "redirect:/account";
+    }
+
     @PostMapping("/RegisterAdmin")
     public String registerAdminUSR(@ModelAttribute AdminRegister newAdmin, Model model, HttpSession session) {
         model.addAttribute("Admin", getAdminSession(session));

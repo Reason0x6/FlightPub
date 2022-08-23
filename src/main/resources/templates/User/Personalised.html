@@ -50,7 +50,7 @@
                 <hr>
                 <div class="row icon-box" data-aos="zoom-in-left">
                     <h2>Your Bookings!</h2>
-                    <table class="table">
+                    <table class="table" >
                         <thead>
                         <tr>
                             <th scope="col">Departure Date</th>
@@ -61,18 +61,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr , th:each="Booking : ${bookings}"
-                            th:with="flight = ${flights.getById(Booking.getFlightID())}">
-                            <th scope="row" th:text="${flight.getDepartureTime()}">18/05/2022</th>
-                            <td th:text="${flight.getDepartureCode()}"></td>
-                            <td th:text="${flight.getDestinationCode()}"></td>
-                            <td th:text="${flight.getAirlineCode()}"></td>
-                            <td><a class="btn btn-link" th:href="'/flight?id=' + ${Booking.getFlightID()}">View
-                                Flight</a></td>
+                        <tr th:each="Booking: ${bookings}">
+                            <th scope="row" th:text="${Booking.getFlight().getDepartureString()}"></th>
+                            <td th:text="${Booking.getFlight().getDepartureName()}"></td>
+                            <td th:text="${Booking.getFlight().getDestinationName()}"></td>
+                            <td th:text="${Booking.getFlight().getAirlineCode()}"></td>
+                            <td><a class="btn btn-link" th:href="'/flight?id=' + ${Booking.getFlight().getFlightID()}">Flight Info</a></td>
                         </tr>
                         </tbody>
+
                     </table>
+
                 </div>
+                <p><em>If you have an issue with an upcoming flight &/or booking, contact our support via email or phone today!</em></p>
             </div>
             <hr/>
             <Br><Br>
@@ -80,44 +81,35 @@
                 <div class="col-md-6" style="padding-left: 20px; ">
                     <div class="section-title" data-aos="zoom-out">
                         <h2>Reconnect</h2>
-                        <p>Your Previous Flights</p>
+                        <p>Your Dreams & History</p>
                     </div>
-                    <div class="card l-1" data-aos="zoom-in-left">
+                    <div class="card l-1" data-aos="zoom-in-left" th:if="${history} != null">
 
-                        <table class="table">
+                        <table class="table" >
                             <thead>
                             <tr>
                                 <th scope="col">Date</th>
                                 <th scope="col">Dep. City</th>
                                 <th scope="col">Dest. City</th>
-                                <th scope="col">Airline</th>
                                 <th scope="col">Rebook</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">14/05/2022</th>
-                                <td>Melbourne</td>
-                                <td>Sydney</td>
-                                <td>QANTAS</td>
+                            <tbody >
+                            <tr th:each="Booking: ${history}">
+                                <th scope="row" th:text="${Booking.getFlight().getDepartureString()}"></th>
+                                <td th:text="${Booking.getFlight().getDepartureName()}"></td>
+                                <td th:text="${Booking.getFlight().getDestinationName()}"></td>
                                 <td><a class="btn btn-link" href="/static#search">Find Similar</a></td>
                             </tr>
-                            <tr>
-                                <th scope="row">09/04/2022</th>
-                                <td>Sydney</td>
-                                <td>Melbourne</td>
-                                <td>QANTAS</td>
-                                <td><a class="btn btn-link" href="/static#search">Find Similar</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">23/02/2022</th>
-                                <td>Hobart</td>
-                                <td>Newcastle</td>
-                                <td>QANTAS</td>
-                                <td><a class="btn btn-link" href="/static#search">Find Similar</a></td>
-                            </tr>
+
                             </tbody>
+
                         </table>
+
+                    </div>
+                    <div class="card l-1" data-aos="zoom-out">
+                        <h2>Wish Away!</h2>
+                        <p>View your wishlisted locations all in one place!<br><br><a href="/wishlist" class="btn btn-primary btn-search">Wishlist</a></p>
                     </div>
                 </div>
                 <div class="col-md-6" id="groups" style="padding-left: 20px;">

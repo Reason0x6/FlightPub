@@ -85,16 +85,17 @@
 
         </div>
         <br>
-        <h2>Most Popular Wish List Destinations</h2>
-        <div style="overflow:scroll; height:300px;">
-            <div th:each="wli : ${wish}">
-                <p th:text=" ${wli.getDestinationID()}"></p>
-                <p th:text="${wli.getUserID()}"></p>
-                <p th:text="${wli.getWLID()}"></p>
+        <div class="card l-1">
+            <h2>Most Popular Wish List Destinations</h2>
+            <div style="overflow-y:scroll; max-height:300px;">
+                <div th:each="wli : ${wish}">
+                    <p th:text="'- ' + ${wli.getWLID()}"></p>
+                </div>
             </div>
         </div>
+
         <br>
-        <div>
+        <div class="card l-1">
             <h2>Holiday Packages</h2>
             <form th:replace="Fragments/Forms :: #holidayPackageForm"></form>
         </div>
