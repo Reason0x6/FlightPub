@@ -23,4 +23,12 @@ public class AirlineServices {
         else
             return null;
     }
+
+    public boolean airlineExists(String airlineID) {
+        List<Airlines> airlines = airlineRepo.findAirline(airlineID);
+        if(airlines != null && !airlines.isEmpty())
+            return true;
+        else
+            return false;
+    }
 }

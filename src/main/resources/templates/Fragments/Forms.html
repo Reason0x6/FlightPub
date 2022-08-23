@@ -542,7 +542,97 @@
     </div>
     <button class="btn btn-primary btn-search" type="submit">Save Flight</button>
 </form>
+<!-- Price management form for finding existing Prices --------------------------------------------------------------------------------->
+<form id="findExistingPrice" method="post" th:action="@{/admin/price/management}" th:object="${Price}">
+    <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
+    <input class="form-control" id="flightNumber" name="flightNumber" type="text">
 
+    <label for="startDate" id="startDateLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Date: </label>
+    <input class="form-control" id="startDate" name="startDate" type="datetime-local">
+
+    <label for="classCode" id="classCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Class: </label>
+    <select id="classCode" name="classCode">
+        <option selected value="">-- Select --</option>
+        <div th:each="class : ${Classes}">
+            <option th:value="${class.getDetails()}" th:text="${class.getDetails()}"></option>
+        </div>
+    </select>
+
+    <label for="ticketCode" id="ticketCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Type: </label>
+    <select id="ticketCode" name="ticketCode">
+        <option selected value="">-- Select --</option>
+        <div th:each="type : ${Types}">
+            <option th:value="${type.getName()}" th:text="${type.getName()}"></option>
+        </div>
+    </select>
+
+
+    <button class="btn btn-primary btn-search" type="submit">Find Price</button>
+</form>
+
+<!-- Price management form for creating/editing Price -------------------------------------------------------------------------------->
+<form id="EditPrice" method="post" th:action="@{/price/add}" th:object="${Price}">
+    <style>
+        input {
+            margin-bottom: 20px;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
+            <input type="text" id="flightNumber" name="flightNumber" th:value="${Price.getFlightNumber()}">
+        </div>
+        <div class="col-md-4">
+            <label for="airlineCode" id="airlineCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline Code: </label>
+            <input type="text" id="airlineCode" name="airlineCode" th:value="${Price.getAirlineCode()}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="classCode" id="classCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Class: </label>
+            <select id="classCode" name="classCode">
+                <option selected value="">-- Select --</option>
+                <div th:each="class : ${Classes}">
+                    <option th:if="${#strings.equals(Price.getClassCode(), class.getTicketClass())}" th:value="${class.getDetails()}" th:text="${class.getDetails()}" selected></option>
+                    <option th:unless="${#strings.equals(Price.getClassCode(), class.getTicketClass())}" th:value="${class.getDetails()}" th:text="${class.getDetails()}"></option>
+                </div>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="ticketCode" id="ticketCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Type: </label>
+            <select id="ticketCode" name="ticketCode">
+                <option selected value="">-- Select --</option>
+                <div th:each="type : ${Types}">
+                    <option th:if="${#strings.equals(Price.getTicketCode(), type.getTicketCode())}" th:value="${type.getName()}" th:text="${type.getName()}" selected></option>
+                    <option th:unless="${#strings.equals(Price.getTicketCode(), type.getTicketCode())}" th:value="${type.getName()}" th:text="${type.getName()}"></option>
+                </div>
+            </select>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="StartDate" id="StartDateLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Start Date: </label>
+            <input type="datetime-local" id="StartDate" name="startDate" th:value="${Price.getStartString()}">
+        </div>
+        <div class="col-md-4">
+            <label for="endDate" id="endDateLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">End Date: </label>
+            <input type="datetime-local" id="endDate" name="endDate" th:value="${Price.getEndString()}">
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="priceLeg1" id="priceLeg1Label" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Price - leg 1: </label>
+            <input type="number" id="priceLeg1" name="priceLeg1" th:value="${Price.getPriceLeg1()}">
+        </div>
+        <div class="col-md-4">
+            <label for="priceLeg2" id="priceLeg2Label" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Price - leg 2: </label>
+            <input type="number" id="priceLeg2" name="priceLeg2" th:value="${Price.getPriceLeg2()}">
+        </div>
+    </div>
+    <button class="btn btn-primary btn-search" type="submit">Save Price</button>
+</form>
 <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
 <form id="recommendationLocationForm" method="post" th:action="@{/#recommendation}" th:object="${Recommendation}">
     <span>Departure Location: </span><select class="form-select" id="recommendationLocation"
