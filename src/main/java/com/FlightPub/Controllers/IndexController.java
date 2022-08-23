@@ -627,6 +627,7 @@ public class IndexController {
         getSession(session).setCheckedOutCart(getSession(session).getCart());
         model.addAttribute("checkout", getSession(session).getCheckedOutCart());
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("travellerContainer", new TravellerContainer());
 
         return "Booking/Checkout";
     }
