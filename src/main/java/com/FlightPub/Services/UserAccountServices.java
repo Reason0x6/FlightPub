@@ -1,8 +1,10 @@
 package com.FlightPub.Services;
 
+import com.FlightPub.model.Booking;
 import com.FlightPub.model.Location;
 import com.FlightPub.model.UserAccount;
 import com.FlightPub.model.WishListItem;
+import com.FlightPub.repository.BookingRepo;
 import com.FlightPub.repository.LocationRepo;
 import com.FlightPub.repository.UserAccountRepo;
 import com.FlightPub.repository.WishListItemRepo;
@@ -22,12 +24,14 @@ public class UserAccountServices {
     private final UserAccountRepo userRepo;
     private final WishListItemRepo wishlistRepo;
     private final LocationRepo locationRepo;
+    private final BookingRepo bookingRepo;
 
     @Autowired
-    public UserAccountServices(UserAccountRepo userAccountRepository, WishListItemRepo wishlistRepo, LocationRepo locationRepo) {
+    public UserAccountServices(UserAccountRepo userAccountRepository, WishListItemRepo wishlistRepo, LocationRepo locationRepo, BookingRepo bookingRepo) {
         this.userRepo = userAccountRepository;
         this.wishlistRepo = wishlistRepo;
         this.locationRepo = locationRepo;
+        this.bookingRepo = bookingRepo;
     }
 
     public boolean addToWishList(String Location, String UserID) {
@@ -38,6 +42,13 @@ public class UserAccountServices {
             return true;
         }
         return false;
+    }
+
+    String isBooked(String userID, String flightID){
+        List<Booking> bookings = bookingRepo.seatsBooked(userID, flightID);
+
+        System.out.println(bookings.size() + " " + userID + " " + flightID);
+        return bookings.size() > 0 ? "Booked" : "Yet To Book";
     }
 
     public List<Map.Entry<String, String>> getWishList(UserAccount u) {
