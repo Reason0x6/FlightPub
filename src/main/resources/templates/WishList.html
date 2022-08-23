@@ -40,7 +40,7 @@
                                         <td><b><span>Destination: </span></b><span
                                                 th:text="${wlItem.getValue()}"></span></td>
                                         <td>
-                                            <button class="btn btn-link" type="submit">Find Flights</button>
+                                            <a href="/#search" class="btn btn-link" >Find Flights</a>
                                         </td>
                                         <td><a class="btn btn-warning" th:href="@{'/wishlist?remove=' + ${wlItem.getKey()}}"
                                                type="submit">Remove</a></td>
