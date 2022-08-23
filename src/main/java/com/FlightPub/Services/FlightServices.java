@@ -402,6 +402,14 @@ public class FlightServices {
         return minPrice + "";
     }
 
+    public boolean priceExists(String flight) {
+        List<Price> prices= priceRepo.findFLight(flight);
+        if(prices != null & !prices.isEmpty())
+            return true;
+        else
+            return false;
+    }
+
 
     public List<Flight> getByOrigin(String dep) {
 

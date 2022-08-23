@@ -24,6 +24,7 @@ public class ObjectCreationController {
     private BookingServices bookingServices;
     private UserGroupServices groupServices;
     private TicketServices ticketServices;
+    private AirlineServices airlineServices;
     private UserAccount SessionUser;
 
     private AdminAccountServices adminAccountServices;
@@ -55,6 +56,10 @@ public class ObjectCreationController {
     public void setBookingServices(BookingServices bookingService) {
         this.bookingServices = bookingService;
     }
+
+    @Autowired
+    @Qualifier(value = "AirlineServices")
+    public  void setAirlineServices(AirlineServices airlineServices) { this.airlineServices = airlineServices; }
 
     @Autowired
     @Qualifier(value = "UserGroupServices")
@@ -103,6 +108,10 @@ public class ObjectCreationController {
         else if(price.getStartDate() < 0 || price.getEndDate() < 0 || price.getPriceLeg1() < 0 || price.getPriceLeg2() < 0)
             invalid = true;
         else if(price.getEndDate() < price.getStartDate())
+            invalid = true;
+
+        // Ensures that the airline exists
+        if(!invalid && !airlineServices.airlineExists(price.getAirlineCode()))
             invalid = true;
 
         if(invalid) {
@@ -320,7 +329,13 @@ public class ObjectCreationController {
             }
         }
 
-        // TODO: Test that a price exists
+        // Tests that there does exist pricing for a flightCode
+        if(!invalid && !flightServices.priceExists(flight.getFlightNumber()))
+            invalid = true;
+
+        // Ensures that the airline exists
+        if(!invalid && !airlineServices.airlineExists(flight.getAirlineCode()))
+            invalid = true;
 
         // Returns a invalid flight to the edit and creation page
         if (invalid) {
