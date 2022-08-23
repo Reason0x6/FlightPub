@@ -55,8 +55,9 @@
                                             <!-- Add new Traveller Details -->
                                             <!-- Traveller Info [Input]-->
                                             <td>
-                                                <label>Title</label>
-                                                <select class="form-select" th:id="'title' + ${i}" th:name="'travellers['+${i}+'].title'">
+                                                <label th:for="'travellers['+${i}+'].title'">Title</label>
+                                                <select class="form-select"
+                                                        th:id="'title' + ${i}" th:name="'travellers['+${i}+'].title'">
                                                     <option value="default">Title</option>
                                                     <option value="Master">Master</option>
                                                     <option value="Miss">Miss</option>
@@ -66,25 +67,25 @@
                                                     <option value="Doctor">Dr</option>
                                                 </select>
                                             </td>
-                                            <td><label>First Name</label>
+                                            <td><label th:for="'travellers['+${i}+'].firstName'">First Name</label>
                                                 <input class="form-control"
                                                        placeholder="John" th:id="'firstName' + ${i}" th:name="'travellers['+${i}+'].firstName'"  type="text"></td>
-                                            <td><label>Surname</label>
+                                            <td><label th:for="'travellers['+${i}+'].lastName'">Surname</label>
                                                 <input class="form-control"
                                                        placeholder="Smith" th:id="'lastName' + ${i}" th:name="'travellers['+${i}+'].lastName'" type="text"></td>
                                         </tr>
                                         <tr>
-                                            <td><label>Date of Birth</label>
+                                            <td><label th:for="'travellers['+${i}+'].dob'">Date of Birth</label>
                                                 <input class="form-control" th:id="'dob' + ${i}" th:name="'travellers['+${i}+'].dob'"
                                                        type="date"></td>
                                         </tr>
                                         <tr>
                                             <!-- Save Traveller to Account [Checkbox]-->
-                                            <th><label>Save new Traveller to Account?</label></th>
+                                            <th><label th:for="'travellers['+${i}+'].saveTraveller'">Save new Traveller to Account?</label></th>
                                             <td><input style="width: 50px;"
                                                        th:id="'saveTraveller' + ${i}" th:name="'travellers['+${i}+'].saveTraveller'"  type="checkbox"></td>
                                             <td><input class="form-control"
-                                                       th:id="'seat' + ${i}" th:name="'travellers['+${i}+'].eseat'"  th:value="${flight.getAllSeatsList()[i]}"
+                                                       th:id="'seat' + ${i}" th:name="'travellers['+${i}+'].seat'"  th:value="${flight.getAllSeatsList()[i]}"
                                                        type="hidden">
                                             </td>
                                         </tr>

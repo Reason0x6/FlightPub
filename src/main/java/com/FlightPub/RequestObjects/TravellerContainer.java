@@ -8,11 +8,9 @@ import java.util.List;
 
 public class TravellerContainer {
 
-    public TravellerContainer(){
-
-    }
-
     @Getter
     @Setter
     private Traveller[] travellers = new Traveller[100];
+
+    public TravellerContainer(){}
 }
