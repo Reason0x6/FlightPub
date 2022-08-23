@@ -117,6 +117,7 @@ public class GroupsController {
 
             model.addAttribute("Dest", locationServices.getById(flight.getDestinationCode()));
             model.addAttribute("Dep", locationServices.getById(flight.getDepartureCode()));
+
         }
 
         // Used for invite and remove user buttons
