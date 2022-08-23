@@ -51,27 +51,15 @@
                                         <tr>
                                             <th>Select Traveller from Account:</th>
                                         </tr>
-                                        <!-- Select Traveller from Account [Dropdown]-->
-                                        <tr>
-                                            <td>
-                                                <label for="account-users">Family Member</label>
-                                                <select class="form-select" id="account-users" name="account-users">
-                                                    <option value="default"></option>
-                                                    <option value="user">Miss Isabella Andrews</option>
-                                                    <option value="user">Mr Mathew Ayre</option>
-                                                    <option value="user">Master Dexter Ayre</option>
-                                                </select><br>
-                                            </td>
-                                        </tr>
                                         <!-- OR -->
                                         <th>OR add new Traveller details:</th>
                                         <tr>
                                             <!-- Add new Traveller Details -->
                                             <!-- Traveller Info [Input]-->
                                             <td>
-                                                <label for="title">Title</label>
-                                                <select class="form-select" id="title" name="title"
-                                                        th:id="'title' + ${i}">
+                                                <label th:for="'travellers.get('+${i}+').title'">Title</label>
+                                                <select class="form-select"
+                                                        th:id="'title' + ${i}" th:name="'travellers.get('+${i}+').title'">
                                                     <option value="default">Title</option>
                                                     <option value="Master">Master</option>
                                                     <option value="Miss">Miss</option>
@@ -81,25 +69,25 @@
                                                     <option value="Doctor">Dr</option>
                                                 </select>
                                             </td>
-                                            <td><label for="firstName">First Name</label>
-                                                <input class="form-control" id="firstName" name="firstName"
-                                                       placeholder="John" th:id="'firstName' + ${i}" type="text"></td>
-                                            <td><label for="lastName">Surname</label>
-                                                <input class="form-control" id="lastName" name="lastName"
-                                                       placeholder="Smith" th:id="'lastName' + ${i}" type="text"></td>
+                                            <td><label th:for="'travellers.get('+${i}+').firstName'">First Name</label>
+                                                <input class="form-control"
+                                                       placeholder="John" th:id="'firstName' + ${i}" th:name="'travellers.get('+${i}+').firstName'" type="text"></td>
+                                            <td><label th:for="'travellers.get('+${i}+').lastName'">Surname</label>
+                                                <input class="form-control"
+                                                       placeholder="Smith" th:id="'lastName' + ${i}" th:name="'travellers.get('+${i}+').lastName'" type="text"></td>
                                         </tr>
                                         <tr>
-                                            <td><label for="dob">Date of Birth</label>
-                                                <input class="form-control" id="dob" name="dob" th:id="'dob' + ${i}"
+                                            <td><label th:for="'travellers.get('+${i}+').dob'">Date of Birth</label>
+                                                <input class="form-control" th:id="'dob' + ${i}" th:name="'travellers.get('+${i}+').dob'"
                                                        type="date"></td>
                                         </tr>
                                         <tr>
                                             <!-- Save Traveller to Account [Checkbox]-->
-                                            <th><label for="saveTraveller">Save new Traveller to Account?</label></th>
-                                            <td><input id="saveTraveller" name="saveTraveller" style="width: 50px;"
-                                                       th:id="'saveTraveller' + ${i}" type="checkbox"></td>
-                                            <td><input class="form-control" id="seat" name="seat"
-                                                       th:id="'seat' + ${i}" th:value="${flight.getAllSeatsList()[i]}"
+                                            <th><label th:for="'travellers.get('+${i}+').saveTraveller'">Save new Traveller to Account?</label></th>
+                                            <td><input style="width: 50px;"
+                                                       th:id="'saveTraveller' + ${i}" th:name="'travellers.get('+${i}+').saveTraveller'" type="checkbox"></td>
+                                            <td><input class="form-control"
+                                                       th:id="'seat' + ${i}" th:name="'travellers.get('+${i}+').seat'" th:value="${flight.getAllSeatsList()[i]}"
                                                        type="hidden">
                                             </td>
                                         </tr>
@@ -159,8 +147,8 @@
                                     <h2>Frequent Flyer Membership Details</h2>
                                     <!-- FF Details [Input]-->
                                     <td>
-                                        <label for="membership">Frequent Flyer Number</label>
-                                        <input class="form-control" id="membership" name="membership" placeholder="XXX XXX XXXX"
+                                        <label th:for="membership">Frequent Flyer Number</label>
+                                        <input class="form-control" th:id="membership" th:name="membership" placeholder="XXX XXX XXXX"
                                                type="text">
                                     </td>
                                 </tr>
