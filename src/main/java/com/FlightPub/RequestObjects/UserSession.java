@@ -5,6 +5,7 @@ import com.FlightPub.Services.UserAccountServices;
 import com.FlightPub.model.Booking;
 import com.FlightPub.model.Flight;
 import com.FlightPub.model.UserAccount;
+import com.FlightPub.model.WishListItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,24 +13,25 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @SessionScope
 public class UserSession {
     @Getter
     UserAccount usr;
-    @Getter
-    Map<String, Integer> sessionCart;
+
+
     @Getter
     @Setter
     private FlightServices flightServices;
+
     @Getter
     @Setter
     private UserAccountServices usrService;
+    @Getter
+    Map<String, Integer> sessionCart;
+
     @Getter
     @Setter
     private String lastSearchedDestination;
@@ -60,16 +62,15 @@ public class UserSession {
 
     @Getter
     @Setter
+    private List<String> availabilityID;
+
+    @Getter
+    @Setter
     private List<BookingRequest> checkedOutCart;
 
     @Getter
     @Setter
     private Booking booking;
-
-    public UserSession(UserAccount usr) {
-        this.usr = usr;
-        this.sessionCart = new HashMap<>();
-    }
 
     @Autowired
     @Qualifier(value = "FlightServices")
@@ -81,6 +82,12 @@ public class UserSession {
     @Qualifier(value = "UserAccountServices")
     public void setUserServices(UserAccountServices usrService) {
         this.usrService = usrService;
+    }
+
+
+    public UserSession(UserAccount usr){
+        this.usr = usr;
+        this.sessionCart = new HashMap<>();
     }
 
     public boolean isLoggedIn() {

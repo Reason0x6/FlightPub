@@ -45,6 +45,11 @@ public class Traveller {
     @Field("accountEmail")
     private String accountEmail;
 
+    @Getter
+    @Setter
+    @Field("seat")
+    private String seat;
+
     public Traveller() {
         this.title = "";
         this.firstName = "";
@@ -52,6 +57,7 @@ public class Traveller {
         this.dob = "";
         this.saveTraveller = false;
         this.accountEmail = "";
+        this.seat = "";
     }
 
     public Traveller(String title, String firstName, String lastName, String dob, boolean saveTraveller, String accountEmail) {
