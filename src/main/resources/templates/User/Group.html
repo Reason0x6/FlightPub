@@ -62,6 +62,7 @@
                             <p><b>Arrives: </b><span th:text="${Flight.getDestinationName()}"></span> @ <span
                                     th:text="${Flight.longToDate(Flight.getArrivalTime())}"></span></p>
                             <p><b>Airline: </b> <span th:text="${Flight.getAirlineCode()}"></span></p>
+                            <a th:href="'/flight?id=' + ${Flight.getFlightID()}" class="btn btn-success loading-screen">Select Seats & Book!</a>
                         </div>
                         <div class="col-sm-8">
                             <style>#chartdiv {

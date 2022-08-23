@@ -25,7 +25,7 @@
             <tr th:each="user : ${groupUsers}">
                 <th scope="row" th:text="${user.firstname}"></th>
                 <td th:text="${user.email}"></td>
-                <td> TODO</td>
+                <td th:text="${user.getBookingStatusCheck()}"></td>
                 <td th:if="${isAdmin}">
                     <span th:if="${user.email == admin.email}"> Group Admin </span>
 

@@ -121,6 +121,25 @@ public class FlightServices {
 
     }
 
+    public Price saveOrUpdatePrice(Price price) {
+        try {
+            price.setFlightNumber(price.getFlightNumber().toUpperCase());
+            price.setAirlineCode(price.getAirlineCode().toUpperCase());
+            price.setClassCode(price.getClassCode().toUpperCase());
+            price.setTicketCode(price.getTicketCode().toUpperCase());
+
+            if(price.getID() == null)
+                price.setID(new ObjectId().toString());
+
+            Price p = priceRepo.save(price);
+            invalidate();
+            return p;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
     public Flight saveOrUpdate(Flight flight) {
         // Attempts to align the string values with the database standard
         try {
@@ -323,9 +342,10 @@ public class FlightServices {
     public @NotNull String getPrice(String ticketFlightNumber, String classCode, String ticketCode, Long ticketDepartureDate) {
         List<Price> price = getFlightCachePrice(ticketFlightNumber, classCode, ticketCode);
         for (int i = 0; i < price.size(); i++) {
-            Date startDate = price.get(i).getStartDate();
-            Date endDate = price.get(i).getEndDate();
-            boolean dateInRange = startDate.compareTo(new Date()) <= 0 && endDate.compareTo(new Date()) >= 0;
+            long startDate = price.get(i).getStartDate();
+            long endDate = price.get(i).getEndDate();
+            Date currentDate = new Date();
+            boolean dateInRange = startDate <= (currentDate.getTime()) && endDate >= (currentDate.getTime());
             Double pricePerTicket = price.get(i).getPrice();
 
             if (dateInRange) {
@@ -335,18 +355,59 @@ public class FlightServices {
         return "0";
     }
 
+    public Price getSpecificPrice(String flightNumber, long date, String ticketClass, String ticketCode) {
+        List<Price> prices = priceRepo.findSpecificPrice(flightNumber, date, ticketClass, ticketCode);
+        if(prices != null && !prices.isEmpty())
+            return prices.get(0);
+        else
+            return null;
+    }
+
+    public boolean existingPriceTimeframe(Price price) {
+        List<Price> prices = priceRepo.findPriceByClassTicketCode(price.getFlightNumber(), price.getClassCode(), price.getTicketCode());
+
+        // Iterate through the list and test whether the dates are within a existing time period
+        for(Price p : prices) {
+            if(p.getStartDate() <= price.getStartDate() && p.getEndDate() >= price.getStartDate())
+                return true;
+            if(p.getStartDate() <= price.getEndDate() && p.getEndDate() >= price.getEndDate())
+                return true;
+            if(p.getStartDate() >= price.getStartDate() && p.getEndDate() <= price.getEndDate())
+                return true;
+        }
+
+        return false;
+    }
+
+    public Price getSpecificPriceTimeframe(String flightNumber, long startDate, long endDate, String ticketClass, String ticketCode) {
+        List<Price> price = priceRepo.findSpecificPriceTimeframe(flightNumber, startDate, endDate, ticketClass, ticketCode);
+        if(price != null && !price.isEmpty())
+            return price.get(0);
+        else
+            return null;
+    }
+
     public String findCheapestPrice(String flightID, String flightNumber, long departureDate) {
         List<Availability> availableSeats = getAvailability(flightNumber, departureDate);
         double minPrice = Integer.MAX_VALUE + 0.0;
+        Date currentDate = new Date();
         for (int i = 0; i < availableSeats.size(); i++) {
             List<Price> prices = getFlightCachePrice(flightNumber, availableSeats.get(i).getClassCode(), availableSeats.get(i).getTicketCode());
             for (Price x : prices) {
-                if (x.getPrice() < minPrice && (x.getStartDate().compareTo(new Date()) <= 0) && x.getEndDate().compareTo(new Date()) >= 0) {
+                if (x.getPrice() < minPrice && (x.getStartDate() <= currentDate.getTime()) && x.getEndDate() >= currentDate.getTime()) {
                     minPrice = x.getPrice();
                 }
             }
         }
         return minPrice + "";
+    }
+
+    public boolean priceExists(String flight) {
+        List<Price> prices= priceRepo.findFLight(flight);
+        if(prices != null & !prices.isEmpty())
+            return true;
+        else
+            return false;
     }
 
 

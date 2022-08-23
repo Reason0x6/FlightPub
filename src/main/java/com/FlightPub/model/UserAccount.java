@@ -34,6 +34,10 @@ public class UserAccount {
     @Setter
     private String preferredAirport;
 
+    @Getter
+    @Setter
+    private String bookingStatusCheck;
+
     public UserAccount(String firstname, String email, String password, String prefairport, int api) {
 
         try {
