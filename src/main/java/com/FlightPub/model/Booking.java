@@ -18,11 +18,6 @@ public class Booking {
     private String id;
 
     @Getter
-    @Setter
-    @Field("confirmationID")
-    private String confirmationID;
-
-    @Getter
     @Field("accountEmail")
     private String accountEmail;
 
@@ -40,6 +35,11 @@ public class Booking {
     @Setter
     @Field("seat")
     private String seat;
+
+    @Getter
+    @Setter
+    @Field("confirmationID")
+    private String confirmationID;
 
     @Getter
     @Setter

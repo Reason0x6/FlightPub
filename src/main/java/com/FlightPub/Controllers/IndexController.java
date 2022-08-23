@@ -696,10 +696,14 @@ public class IndexController {
                 if(travellers[i] == null){
                     continue;
                 }
+                if (travellers[i].getAccountEmail() == null) {
+                    travellers[i].setAccountEmail(getSession(session).getEmail());
+                }
 
                 if (travellers[i].getId() == null) {
                     travellers[i].setTravellerID(new ObjectId());
                 }
+
                 booking = new Booking(travellers[i].getAccountEmail(), br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat(), confirmationID);
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
@@ -733,16 +737,6 @@ public class IndexController {
 
         List<Booking> bookingDetails = bookingServices.getBookings();
         List<Traveller> travellers = bookingServices.getTravellers();
-
-
-        for (int i = 0; i < bookingDetails.size(); i++) {
-            System.out.println(bookingDetails.get(i).getId());
-            System.out.println(bookingDetails.get(i).getConfirmationID());
-            System.out.println(bookingDetails.get(i).getTravellerID());
-            System.out.println(bookingDetails.get(i).getFlightID());
-            System.out.println(bookingDetails.get(i).getSeat());
-            System.out.println(bookingDetails.get(i).getAccountEmail() + "\n\n");
-        }
 
         model.addAttribute("bookingDetails", bookingDetails);
         model.addAttribute("travellers", travellers);
