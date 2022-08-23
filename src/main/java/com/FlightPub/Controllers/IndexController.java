@@ -622,7 +622,14 @@ public class IndexController {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
-
+        List<BookingRequest> check = getSession(session).getCart();
+        int totalSeats = 0;
+        for(BookingRequest b: check){
+            totalSeats += b.getTotalSeats();
+        }
+        if(totalSeats > 100){
+            return "redirect:/cart?error=maxseats";
+        }
 
         getSession(session).setCheckedOutCart(getSession(session).getCart());
         model.addAttribute("checkout", getSession(session).getCheckedOutCart());
@@ -638,23 +645,28 @@ public class IndexController {
             return "redirect:/login";
         }
 
+
         model.addAttribute("usr", getSession(session));
 
         Traveller traveller;
-        List<Traveller> travellers = travellerContainer.getTravellers();
+        Traveller[] travellers = travellerContainer.getTravellers();
 
         for (BookingRequest br : getSession(session).getCheckedOutCart()) {
             Booking booking;
-            for (Traveller tc : travellers) {
-                traveller = new Traveller(tc.getTitle(), tc.getFirstName(), tc.getLastName(), tc.getDob(), tc.isSaveTraveller(), tc.getAccountEmail());
-                if (tc.getId() == null) {
-                    tc.setTravellerID(new ObjectId());
+            for (int i = 0; i < travellers.length; i++) {
+                if(travellers[i] == null){
+                    continue;
                 }
-                booking = new Booking(tc.getAccountEmail(), br.getFlight().getFlightID(), tc.getId(), tc.getSeat());
+
+                if (travellers[i].getId() == null) {
+                    travellers[i].setTravellerID(new ObjectId());
+                }
+                booking = new Booking(travellers[i].getAccountEmail(), br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat());
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
                 }
-                bookingServices.addTraveller(traveller);
+
+                bookingServices.addTraveller(travellers[i]);
                 bookingServices.addBooking(booking);
             }
         }

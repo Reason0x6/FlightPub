@@ -25,8 +25,7 @@
             </div>
 
             <div>
-                <form id="seatBooking" method="post" name="seatBooking" th:action="@{/checkout}"
-                      th:object="${TravellerContainer}">
+                <form id="seatBooking" method="post" name="seatBooking" th:action="@{/checkout}"  th:object="${TravellerContainer}">
                     <!-- List each flight in session to be booked -->
                     <div class="card l-1" style="padding: 10px 0 0 20px;">
                         <div th:each="flight : ${checkout}">
@@ -36,8 +35,7 @@
                                 + ' departing ' + ${flight.getDepartureDate()}"></span></h2>
                                 <Br>
                                 <div th:each="i : ${#numbers.sequence(0, flight.getAllSeatsList().size()-1)}">
-                                    <table class="table"
-                                           th:id="${flight.getFlight().getFlightID()} + 'traveller' + ${i}">
+                                    <table class="table" th:id="${flight.getFlight().getFlightID()} + 'traveller' + ${i}">
                                         <thead>
                                         <tr>
                                             <h3 style="font-size: 1.2em"><span
@@ -57,9 +55,8 @@
                                             <!-- Add new Traveller Details -->
                                             <!-- Traveller Info [Input]-->
                                             <td>
-                                                <label th:for="'travellerContainer.get('+${i}+').title'">Title</label>
-                                                <select class="form-select"
-                                                        th:id="'title' + ${i}" th:name="'travellerContainer.get('+${i}+').title'" th:field="*{'travellerContainer.get('+${i}+').title'}">
+                                                <label>Title</label>
+                                                <select class="form-select" th:id="'title' + ${i}" th:name="'travellers['+${i}+'].title'">
                                                     <option value="default">Title</option>
                                                     <option value="Master">Master</option>
                                                     <option value="Miss">Miss</option>
@@ -69,25 +66,25 @@
                                                     <option value="Doctor">Dr</option>
                                                 </select>
                                             </td>
-                                            <td><label th:for="'travellers.get('+${i}+').firstName'">First Name</label>
+                                            <td><label>First Name</label>
                                                 <input class="form-control"
-                                                       placeholder="John" th:id="'firstName' + ${i}" th:name="'travellers.get('+${i}+').firstName'" th:field="*{'travellers.get('+${i}+').firstName'}" type="text"></td>
-                                            <td><label th:for="'travellers.get('+${i}+').lastName'">Surname</label>
+                                                       placeholder="John" th:id="'firstName' + ${i}" th:name="'travellers['+${i}+'].firstName'"  type="text"></td>
+                                            <td><label>Surname</label>
                                                 <input class="form-control"
-                                                       placeholder="Smith" th:id="'lastName' + ${i}" th:name="'travellers.get('+${i}+').lastName'" th:field="*{'travellers.get('+${i}+').lastName'}" type="text"></td>
+                                                       placeholder="Smith" th:id="'lastName' + ${i}" th:name="'travellers['+${i}+'].lastName'" type="text"></td>
                                         </tr>
                                         <tr>
-                                            <td><label th:for="'travellers.get('+${i}+').dob'">Date of Birth</label>
-                                                <input class="form-control" th:id="'dob' + ${i}" th:name="'travellers.get('+${i}+').dob'" th:field="*{'travellers.get('+${i}+').dob'}"
+                                            <td><label>Date of Birth</label>
+                                                <input class="form-control" th:id="'dob' + ${i}" th:name="'travellers['+${i}+'].dob'"
                                                        type="date"></td>
                                         </tr>
                                         <tr>
                                             <!-- Save Traveller to Account [Checkbox]-->
-                                            <th><label th:for="'travellers.get('+${i}+').saveTraveller'">Save new Traveller to Account?</label></th>
+                                            <th><label>Save new Traveller to Account?</label></th>
                                             <td><input style="width: 50px;"
-                                                       th:id="'saveTraveller' + ${i}" th:name="'travellers.get('+${i}+').saveTraveller'" th:field="*{'travellers.get('+${i}+').saveTraveller'}" type="checkbox"></td>
+                                                       th:id="'saveTraveller' + ${i}" th:name="'travellers['+${i}+'].saveTraveller'"  type="checkbox"></td>
                                             <td><input class="form-control"
-                                                       th:id="'seat' + ${i}" th:name="'travellers.get('+${i}+').seat'" th:field="*{'travellers.get('+${i}+').seat'}" th:value="${flight.getAllSeatsList()[i]}"
+                                                       th:id="'seat' + ${i}" th:name="'travellers['+${i}+'].eseat'"  th:value="${flight.getAllSeatsList()[i]}"
                                                        type="hidden">
                                             </td>
                                         </tr>
@@ -147,7 +144,7 @@
                                     <h2>Frequent Flyer Membership Details</h2>
                                     <!-- FF Details [Input]-->
                                     <td>
-                                        <label th:for="membership">Frequent Flyer Number</label>
+                                        <label>Frequent Flyer Number</label>
                                         <input class="form-control" th:id="membership" th:name="membership" placeholder="XXX XXX XXXX"
                                                type="text">
                                     </td>

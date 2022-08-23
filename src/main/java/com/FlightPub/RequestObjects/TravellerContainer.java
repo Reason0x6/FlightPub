@@ -9,12 +9,10 @@ import java.util.List;
 public class TravellerContainer {
 
     public TravellerContainer(){
-        for (int count = 0; count < 9; count++) {
-            travellers.add(new Traveller());
-        }
+
     }
 
     @Getter
     @Setter
-    private List<Traveller> travellers = new ArrayList<>();
+    private Traveller[] travellers = new Traveller[100];
 }
