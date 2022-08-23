@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class ObjectCreationController {
@@ -169,8 +170,22 @@ public class ObjectCreationController {
     }
 
     @RequestMapping("/flight/add")
-    public String addFlight(@ModelAttribute Flight flight, Model model, HttpSession session) {
+    public String addFlight(@ModelAttribute EditedFlightContainer container, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
+        List<String> availabilityID = getSession(session).getAvailabilityID();
+
+        // Interpret the data from the form, generating availability objects
+        Flight flight = container.getFlight();
+        List<Availability> availabilityList = container.getAvailabilities();
+        for(int count = 0; count < availabilityList.size(); count++) {
+            String[] id = availabilityID.get(count).split("-");
+            availabilityList.get(count).setAirlineCode(flight.getAirlineCode());
+            availabilityList.get(count).setClassCode(id[0]);
+            availabilityList.get(count).setTicketCode(id[1]);
+            availabilityList.get(count).setDepartureTime(flight.getDepartureTime());
+            availabilityList.get(count).setFlightNumber(flight.getFlightNumber());
+        }
+
 
         if (flight.getFlightID() == null) {
             flight.setFlightID(new ObjectId());
@@ -180,19 +195,19 @@ public class ObjectCreationController {
 
         // Validates the input
         boolean invalid = false;
-        if (flight.getFlightNumber() == null || flight.getAirlineCode() == null || flight.getDestinationCode() == null
-                || flight.getDepartureCode() == null || flight.getPlaneCode() == null || flight.getDepartureTime() == null
+        if(flight.getFlightNumber()==null || flight.getAirlineCode()==null || flight.getDestinationCode()==null
+                || flight.getDepartureCode()==null
+                || flight.getDepartureTime() == null
                 || flight.getArrivalTime() == null)
             invalid = true;
-        else if (flight.getFlightNumber() == "" || flight.getAirlineCode() == "" || flight.getDestinationCode() == ""
-                || flight.getDepartureCode() == "" || flight.getPlaneCode() == "")
+        else if(flight.getFlightNumber()=="" || flight.getAirlineCode()=="" || flight.getDestinationCode()==""
+                || flight.getDepartureCode()=="")
             invalid = true;
         else if (!((flight.getDepartureTimeStopOver() == null) == (flight.getArrivalTimeStopOver() == null)) ||
                 !((flight.getDepartureTimeStopOver() == null) == (flight.getStopoverCode() == null)))
             invalid = true;
-        else if (flight.getMaxSeats() < 0 || flight.getRating() < 0 || flight.getTicketPrice() < 0
-                || flight.getDurationSecondLeg() < 0 || flight.getDuration() < 0 || flight.getDepartureTime() < 0
-                || flight.getArrivalTime() < 0)
+        else if (flight.getRating() < 0 || flight.getDurationSecondLeg()<0 || flight.getDuration()<0
+                || flight.getDepartureTime()<0 || flight.getArrivalTime()<0)
             invalid = true;
             // Checks whether the supplied origin and destination are ID or the location name and that they exist
         else {
@@ -237,13 +252,40 @@ public class ObjectCreationController {
             }
         }
 
+        // TODO: Test that a price exists
+
         // Returns a invalid flight to the edit and creation page
         if (invalid) {
             return "Admin/FlightManagement";
         }
 
-        // Update the database with a update or new entry, then pass flight to the conformation page
+        // Adds the ID to existing availabilities to ensure they are overridden
+        List<Availability> flightAvailabilities = flightServices.getAvailability(flight.getFlightNumber(), flight.getDepartureTime());
+        for(Availability currentAvailability: flightAvailabilities) {
+            for(int count = 0; count < availabilityList.size(); count++) {
+                if(currentAvailability.getTicketCode().equals(availabilityList.get(count).getTicketCode())&&currentAvailability.getClassCode().equals(availabilityList.get(count).getClassCode())) {
+                    availabilityList.get(count).setID(currentAvailability.getID());
+                    break;
+                }
+            }
+        }
+
+        // Ensures that unavailable availabilities are not added to the database
+        for(int count = 0; count < availabilityList.size();) {
+            if(availabilityList.get(count).getID() == null && availabilityList.get(count).getNumberAvailableSeatsLeg1() <= 0 && availabilityList.get(count).getNumberAvailableSeatsLeg2() <= 0)
+                availabilityList.remove(count);
+            else
+                count++;
+        }
+
+        // Update the database with a update or new entry
         flight = flightServices.saveOrUpdate(flight);
+
+        // Saves all availabilities to the database
+        for(Availability availability : availabilityList) {
+            flightServices.saveOrUpdateAvailability(availability);
+        }
+
         if (flight == null)
             return "Admin/FlightManagement";
         else {

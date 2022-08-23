@@ -16,6 +16,7 @@ public class Availability {
     @Id
     @Getter
     @Setter
+    @Field("_id")
     private String ID;
 
     @Getter
@@ -31,7 +32,7 @@ public class Availability {
     @Getter
     @Setter
     @Field("DepartureTime")
-    private Date departureTime;
+    private Long departureTime;
 
     @Getter
     @Setter
@@ -57,5 +58,8 @@ public class Availability {
     public Availability() {
     }
 
-
+    public Availability(String classCode, String ticketCode) {
+        this.classCode = classCode;
+        this.ticketCode = ticketCode;
+    }
 }
