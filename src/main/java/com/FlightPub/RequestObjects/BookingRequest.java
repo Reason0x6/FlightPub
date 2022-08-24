@@ -1,6 +1,7 @@
 package com.FlightPub.RequestObjects;
 
 import com.FlightPub.model.Flight;
+import com.FlightPub.model.Traveller;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -152,6 +153,14 @@ public class BookingRequest {
 
     @Getter
     private final String id;
+
+
+    @Getter
+    private List<Traveller> traveller = new ArrayList<>();
+
+    public void addTraveller(Traveller t){
+        traveller.add(t);
+    }
 
     BookingRequest() {
         id = String.valueOf(getTotalSeats() + System.currentTimeMillis());

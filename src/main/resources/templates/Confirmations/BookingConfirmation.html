@@ -43,21 +43,21 @@
                                 <td th:text="${bd.getTotalSeats()}"></td>
                                 <td th:text="'$' + ${bd.getPrice()}"></td>
                             </tr>
-                            <div th:each="i : ${#numbers.sequence(0, travellers.size()-1)}">
-                                <div th:if="${i == 0}">
+                            <div th:each="t, i : ${bd.getTraveller()}">
+                                <div th:if="${i.index == 0}">
                                     <tr>
                                         <th scope="row" th:text="'Passengers :'"></th>
-                                        <td th:text="${travellers.get(i).getSeat()}"></td>
-                                        <td th:text="${travellers.get(i).getFirstName() + ' ' + travellers.get(i).getLastName()}"></td>
+                                        <td th:text="${t.getSeat()}"></td>
+                                        <td th:text="${t.getFirstName() + ' ' + t.getLastName()}"></td>
                                         <td></td>
                                         <td></td>
                                     </tr>
                                 </div>
-                                <div th:if="${i != 0}">
+                                <div th:if="${i.index != 0}">
                                     <tr>
                                         <th scope="row"></th>
-                                        <td th:text="${travellers.get(i).getSeat()}"></td>
-                                        <td th:text="${travellers.get(i).getFirstName() + ' ' + travellers.get(i).getLastName()}"></td>
+                                        <td th:text="${t.getSeat()}"></td>
+                                        <td th:text="${t.getFirstName() + ' ' + t.getLastName()}"></td>
                                         <td></td>
                                         <td></td>
                                     </tr>

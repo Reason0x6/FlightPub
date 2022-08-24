@@ -797,9 +797,12 @@ public class IndexController {
         String accountEmail = getSession(session).getEmail();
 
         Traveller[] travellers = travellerContainer.getTravellers();
-
+        int offset = 0;
         for (BookingRequest br : getSession(session).getCart()) {
             Booking booking;
+            System.out.println(br.getTotalSeats());
+            System.out.println(offset);
+
             for (int i = 0; i < travellers.length; i++) {
                 if(travellers[i] == null){
                     continue;
@@ -818,11 +821,15 @@ public class IndexController {
                 }
 
                 bookingServices.addTraveller(travellers[i]);
-                bookingServices.getTravellers().add(travellers[i]);
                 bookingServices.addBooking(booking);
+                br.addTraveller(travellers[i]);
                 bookingServices.getBookings().add(booking);
             }
+
+            offset += br.getTotalSeats();
         }
+
+
 
         getSession(session).setConfirmationID(confirmationID);
 
@@ -844,16 +851,8 @@ public class IndexController {
         String confirmationID = getSession(session).getConfirmationID();
 
         List<Booking> bookingDetails = bookingServices.getBookings();
-        List<Traveller> travellerDetails = new ArrayList<>();
-
-        for (int i = 0; i < bookingDetails.size(); i++) {
-            for (int j = 0; j < bookingServices.getTravellers().size(); j++) {
-                travellerDetails.add(bookingServices.getTravellers().get(j));
-            }
-        }
 
         model.addAttribute("bookingDetails", bookingDetails);
-        model.addAttribute("travellers", travellerDetails);
         model.addAttribute("confirmationID", confirmationID);
 
         Email email = new Email();
