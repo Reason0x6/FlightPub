@@ -619,8 +619,8 @@ public class IndexController {
         model.addAttribute("count", flights[0].size() + flights[1].size() + stopOver[0].size() + stopOver[1].size() + stopOver[2].size());
 
         // Stops unnecessary objects from being added to the response
-        if (flights[0] != null || flights[1] != null) model.addAttribute("flights", flights);
-        if (stopOver[0] != null || stopOver[1] != null || stopOver[2] != null) model.addAttribute("stopOver", stopOver);
+        model.addAttribute("flights", flights);
+        model.addAttribute("stopOver", stopOver);
 
         model.addAttribute("search", search);
         model.addAttribute("usr", getSession(session));
@@ -647,7 +647,6 @@ public class IndexController {
 
         // Gathers Flights and Stopovers
         flights[0] = search.runAdvancedSearch();
-        search.setCheapestPriceForSearchResults(flights[0]);
         flights[1] = search.getPromotedFlights(flights[0]);
         if (!search.isDirectFlight()) {
             stopOver[0] = search.advancedStopOverSearch(1);
@@ -655,22 +654,15 @@ public class IndexController {
             stopOver[2] = search.advancedStopOverSearch(3);
         }
 
-        // Stops unnecessary objects from being added to the response
-        if (flights[0] != null || flights[1] != null) {
-            if (flights[0] != null && !flights[0].isEmpty() && flights[0].get(0).getCheapestPrice() == null)
-                search.setCheapestPriceForSearchResults(flights[0]);
-
-            model.addAttribute("flights", flights);
-        }
 
         if (stopOver[0] != null || stopOver[1] != null || stopOver[2] != null) {
             search.setCheapestPriceForStopOverResults(stopOver[0]);
             search.setCheapestPriceForStopOverResults(stopOver[1]);
             search.setCheapestPriceForStopOverResults(stopOver[2]);
-            model.addAttribute("stopOver", stopOver);
-
         }
 
+        model.addAttribute("stopOver", stopOver);
+        model.addAttribute("flights", flights);
         model.addAttribute("search", search);
         model.addAttribute("usr", getSession(session));
         return "search";
