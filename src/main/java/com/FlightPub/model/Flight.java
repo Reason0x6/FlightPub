@@ -229,6 +229,14 @@ public class Flight {
         return longToString(arrivalTime);
     }
 
+    public Date getDepartureDate() {
+        return longToDate(departureTime);
+    }
+
+    public Date getArrivalDate() {
+        return longToDate(arrivalTime);
+    }
+
     public String getDepartureStopOverString() {
         return longToString(departureTimeStopOver);
     }

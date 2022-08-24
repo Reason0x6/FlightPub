@@ -31,7 +31,7 @@
                         <div th:each="flight : ${checkout}">
                             <div class="row icon-box" data-aos="zoom-in-left">
                                 <h2><span th:text="'Selected seats for ' + ${flight.getFlight().getFlightNumber()} + ' : '
-                                + ${flight.getFlight().getDepartureCode()} + ' to ' + ${flight.getFlight().getDestinationCode()}
+                                + ${flight.getFlight().getDepartureName()} + ' to ' + ${flight.getFlight().getDestinationName()}
                                 + ' departing ' + ${flight.getDepartureDate()}"></span></h2>
                                 <Br>
                                 <div th:each="i : ${#numbers.sequence(0, flight.getAllSeatsList().size()-1)}">
@@ -117,7 +117,7 @@
                                     <tr>
                                         <td scope="row" th:text="${br.getFlight().getFlightNumber()}"></td>
                                         <td th:text="${br.getDepartureDate()}"></td>
-                                        <td th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></td>
+                                        <td th:text="${br.getFlight().getDepartureName()} + ' to ' + ${br.getFlight().getDestinationName()}"></td>
                                         <td th:text="${br.getTotalSeats()}"></td>
                                         <td class="price" th:data="${br.getPrice()}"
                                             th:text="'$' + ${br.getPrice()}"></td>
