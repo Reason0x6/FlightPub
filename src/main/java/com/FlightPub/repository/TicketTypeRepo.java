@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
+/**
+ * Implements database queries for ticket types
+ */
 public interface TicketTypeRepo extends MongoRepository<TicketType, String> {
 
     List<TicketType> findAll();

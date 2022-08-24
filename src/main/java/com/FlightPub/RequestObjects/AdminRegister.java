@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Simple Java Object used to store admin registration information
+ */
 public class AdminRegister {
 
     @Getter

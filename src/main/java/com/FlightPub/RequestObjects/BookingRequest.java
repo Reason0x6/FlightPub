@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Simple Java Object used to store booking request information
+ */
 public class BookingRequest {
 
     @Getter

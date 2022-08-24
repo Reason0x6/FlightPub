@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Simple Java Object used to store login requests
+ */
 public class LoginRequest {
 
 

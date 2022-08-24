@@ -6,6 +6,9 @@ import com.FlightPub.model.Price;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Simple Java Object used to store flight availability information
+ */
 public class AvailabilityContainer {
     @Getter
     @Setter

@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Simple Java Object used to store edited flights
+ */
 public class EditedFlightContainer {
     @Getter
     @Setter

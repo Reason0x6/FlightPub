@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Simple Java Object used to store travellers
+ */
 public class TravellerContainer {
 
     @Setter

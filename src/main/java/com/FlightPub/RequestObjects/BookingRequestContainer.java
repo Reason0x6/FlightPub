@@ -3,6 +3,9 @@ package com.FlightPub.RequestObjects;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Simple Java Object used to store booking requests
+ */
 public class BookingRequestContainer {
     @Getter
     @Setter

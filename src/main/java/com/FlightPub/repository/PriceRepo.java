@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
+/**
+ * Implements database queries for flight prices
+ */
 public interface PriceRepo extends MongoRepository<Price, String> {
 
     @Query(value = "{ 'FlightNumber' : { '$regex' : ?0 , $options: 'i'},  'StartDate' : ?1 }", fields = "{ 'destination' : 1 }")

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Simple Java Object used to store multi stop flights
+ */
 public class StopOver {
     @Getter
     @Setter

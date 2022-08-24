@@ -7,6 +7,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 
+/**
+ * Implements database interaction for email conformations
+ */
 @Service("EmailServices")
 public class EmailServices {
 

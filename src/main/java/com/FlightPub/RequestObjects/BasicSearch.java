@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Simple Java Object used to store flight search parameters
+ */
 public class BasicSearch {
     // Services
     private static FlightServices flightServices;

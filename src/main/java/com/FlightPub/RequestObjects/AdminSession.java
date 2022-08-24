@@ -3,6 +3,9 @@ package com.FlightPub.RequestObjects;
 import com.FlightPub.model.AdminAccount;
 import lombok.Getter;
 
+/**
+ * Simple Java Object used to store admin session information
+ */
 public class AdminSession {
 
     @Getter

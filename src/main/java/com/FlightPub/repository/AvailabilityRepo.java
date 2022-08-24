@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
+/**
+ * Implements database queries for flight availability
+ */
 public interface AvailabilityRepo extends MongoRepository<Availability, String> {
 
     @Query(value = "{ 'FlightNumber' : { '$regex' : ?0 , $options: 'i'}, 'DepartureTime': ?1 }")

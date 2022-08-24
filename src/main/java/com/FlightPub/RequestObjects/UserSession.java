@@ -15,6 +15,9 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.*;
 
+/**
+ * Simple Java Object used to store user session information
+ */
 @Component
 @SessionScope
 public class UserSession {

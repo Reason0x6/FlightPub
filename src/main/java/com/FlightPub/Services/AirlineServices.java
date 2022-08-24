@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implements database interaction for airlines
+ */
 @Service("AirlineServices")
 public class AirlineServices {
     private final AirlineRepo airlineRepo;

@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
+/**
+ * Implements database queries for bookings
+ */
 public interface BookingRepo extends MongoRepository<Booking, String> {
 
     @Query(value = "{ 'accountEmail' :?0 }")

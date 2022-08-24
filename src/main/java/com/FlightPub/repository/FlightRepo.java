@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
+/**
+ * Implements database queries for flights
+ */
 public interface FlightRepo extends MongoRepository<Flight, String> {
 
     @Query(value = "{ 'DestinationCode' : { '$regex' : ?0 , $options: 'i'} }", fields = "{ 'destination' : 1 }")
