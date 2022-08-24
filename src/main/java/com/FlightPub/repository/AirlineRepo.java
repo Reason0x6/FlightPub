@@ -12,4 +12,7 @@ public interface AirlineRepo extends MongoRepository<Airlines, String> {
 
     @Query(value = "{'_id' : ?0}")
     List<Airlines> findAirline(String id);
+
+    @Query(value = "{'AirlineName' : ?0}")
+    List<Airlines> findAirlineByName(String name);
 }
