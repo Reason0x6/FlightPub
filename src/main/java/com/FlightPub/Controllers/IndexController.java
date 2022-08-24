@@ -859,7 +859,7 @@ public class IndexController {
         email.setEmailSubject("FlightPub Booking Confirmation : " + confirmationID);
         email.setEmailBody("Thank you for booking with FlightPub. Your booking reference is "
                 + confirmationID + ".\n\n" + "This email has been sent to " + accountEmail + ".\n\n"
-                + "You can access all of your past and future booking details on your FlightPub account page - " + accountPageLink + ".\n\n"
+                + "You can access all of your past and future booking details on your FlightPub account page at " + accountPageLink + ".\n\n"
                 + "Please keep this email for your records.\n\n" + "We hope you enjoy your flight.\n\n"
                 + "Kind regards,\n" + "The FlightPub Team\n\n" + mailToLink);
 
