@@ -29,9 +29,11 @@ public class BookingRequest {
     @Getter
     @Setter
     private Flight flight;
+
     @Getter
     @Setter
     private int userId;
+
     @Getter
     @Setter
     private String firStandard = "0";

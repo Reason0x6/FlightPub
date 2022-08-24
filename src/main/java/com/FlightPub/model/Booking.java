@@ -38,17 +38,22 @@ public class Booking {
 
     @Getter
     @Setter
+    @Field("confirmationID")
+    private String confirmationID;
+
+    @Getter
+    @Setter
     private Flight flight;
 
-    public Booking() {
-    }
+    public Booking() {}
 
-    public Booking(String accountEmail, String flightID, String travellerID, String bookedSeat) {
+    public Booking(String accountEmail, String flightID, String travellerID, String bookedSeat, String confirmationID) {
 
         this.accountEmail = accountEmail;
         this.flightID = flightID;
         this.travellerID = travellerID;
         this.seat = bookedSeat;
+        this.confirmationID = confirmationID;
     }
 
 

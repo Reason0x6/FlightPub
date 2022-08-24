@@ -11,7 +11,7 @@ public interface BookingRepo extends MongoRepository<Booking, String> {
     @Query(value = "{ 'accountEmail' :?0 }")
     List<Booking> findByUser(String in);
 
-    @Query(value = "{ 'accountEmail' :?0, 'flightID': ?1 }")
+    @Query(value = "{ 'accountEmail' :?0, 'flightID': ?1 }", fields = "{ 'id' : 1, 'confirmationID' : 1, 'travellerID' : 1, 'seat' : 1 }")
     List<Booking> seatsBooked(String user, String flight);
 
 }
