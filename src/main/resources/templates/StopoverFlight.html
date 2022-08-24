@@ -515,8 +515,8 @@
                     <a class="btn btn-success" href="/admin/flight/management"
                        type="submit" th:if="${admin.isLoggedIn()} != false">  Edit this flight</a>
 
-                    <a class="btn btn-success" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}"
-                       type="submit" th:if="${admin.isLoggedIn()} == false">Login to Create a Group</a><Br><Br>
+                    <a class="btn btn-success" id="login" th:href="@{'/login?redirect=stopoverFlight?id='}"
+                       type="submit" th:if="${admin.isLoggedIn()} == false">Login to Book</a><Br><Br>
                 </div>
 
                 <br><br>
@@ -525,7 +525,7 @@
             <hr/>
             <Br><Br>
             <div class="row">
-                <div class="col-md-6" style="padding-left: 20px; ">
+                <div class="col-md-12" style="padding-left: 20px; ">
                     <div class="section-title" data-aos="zoom-out">
                         <h2>Premium Experience</h2>
                         <p>What To Expect With QANTAS</p>
@@ -604,7 +604,14 @@
     });
 
 
-    $(document).ready(updatePrice());
+    $(document).ready(function (){
+
+        updatePrice();
+        let srt = $('#login').attr("href");
+        $('#login').attr("href",  srt + window.location.search.split('=')[1]);
+
+        window.location.search.split('=')[1];
+    });
 
 </script>
 
