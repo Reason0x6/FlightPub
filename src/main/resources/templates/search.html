@@ -31,7 +31,7 @@
                     <div class="col-sm-4" style="padding-top: 10px;"><br>
                         <a class="btn btn-primary" th:href="'/flight?id=' + ${flights[1].get(i).getFlightID()}">View
                             Flight</a>&nbsp;&nbsp;
-                        <button class="btn btn-link" type="submit">Bookmark</button>
+                        
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1 th:text="${search.getOriginIn()} + ' -> ' + ${search.getDestinationIn()}"></h1>
-
+            <em>Select the heading you wish to sort by.</em>
             <div th:if="${flights[0].size()} != 0">
                 <hr/>
                 <div class="accordion" id="accordionExample">
@@ -53,7 +53,7 @@
                                 <h4>Direct Flights</h4>
                             </button>
                         </h2>
-                        <div aria-labelledby="headingFC" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                        <div aria-labelledby="headingFC" class="accordion-collapse collapse  show" data-bs-parent="#accordionExample"
                              id="collapseFC">
                             <div class="accordion-body">
                                 <div class="row">
@@ -79,7 +79,7 @@
                                             <td th:data="${flight.getCheapestPrice()}"><span th:text="' $' + ${flight.getCheapestPrice()}"></span></td>
                                             <td><a class="btn btn-primary"
                                                    th:href="'/flight?id=' + ${flight.getFlightID()}">View Flight</a>&nbsp;&nbsp;
-                                                <button class="btn btn-link" type="submit">Bookmark</button>
+                                                
                                             </td>
                                         </tr>
                                         </tbody>
@@ -100,7 +100,7 @@
                                 <h4>Single Stopover Flights</h4>
                             </button>
                         </h2>
-                        <div aria-labelledby="headingFC2" class="accordion-collapse collapse show" data-bs-parent="#accordionExample2"
+                        <div aria-labelledby="headingFC2" class="accordion-collapse collapse" data-bs-parent="#accordionExample2"
                              id="collapseFC2">
                             <div class="accordion-body">
                                 <div class="row">
@@ -138,7 +138,7 @@
                                             <td>
                                                 <a class="btn btn-primary"
                                                    th:href="'/stopoverFlight?id=' + ${flight.getConcatFlightID()}">View Flight</a>&nbsp;&nbsp;
-                                                <button class="btn btn-link" type="submit">Bookmark</button>
+                                                
                                             </td>
                                         </tr>
                                         </tbody>
@@ -197,7 +197,7 @@
                                             <td >
                                                 <a class="btn btn-primary"
                                                    th:href="'/stopoverFlight?id=' + ${flight.getConcatFlightID()}">View Flight</a>&nbsp;&nbsp;
-                                                <button class="btn btn-link" type="submit">Bookmark</button>
+                                                
                                             </td>
                                         </tr>
                                         </tbody>
@@ -256,7 +256,7 @@
                                             <td>
                                                 <a class="btn btn-primary"
                                                    th:href="'/stopoverFlight?id=' + ${flight.getConcatFlightID()}">View Flight</a>&nbsp;&nbsp;
-                                                <button class="btn btn-link" type="submit">Bookmark</button>
+                                                
                                             </td>
                                         </tr>
                                         </tbody>
