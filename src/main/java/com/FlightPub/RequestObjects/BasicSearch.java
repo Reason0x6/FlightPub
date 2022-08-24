@@ -33,10 +33,10 @@ public class BasicSearch {
     private String end;
     @Getter
     @Setter
-    private double minPrice = 0;
+    private Double minPrice;
     @Getter
     @Setter
-    private double maxPrice;
+    private Double maxPrice;
     @Getter
     @Setter
     private boolean directFlight;
@@ -45,7 +45,7 @@ public class BasicSearch {
     private int rating;
     @Getter
     @Setter
-    private int seats;
+    private Integer seats;
     @Getter
     @Setter
     private boolean membershipFlights;
@@ -262,25 +262,20 @@ public class BasicSearch {
                 if (destinationObj != null && !flight.getDestinationCode().equals(destinationObj.getLocationID()))
                     continue;
             }
-            // TODO: Revise to work with the pricing
-            // Filters by price
-            if (minPrice != 0 || maxPrice != 100000) {
-                double price = flight.getTicketPrice();
-                if (minPrice != 0 && minPrice > price)
-                    continue;
-                if (maxPrice != 100000 && maxPrice < price)
-                    continue;
-            }
             // Filter by rating
             if (rating != 0 && flight.getRating() < rating)
                 continue;
             // Filter to the number of seats
             if (seats > flightServices.getAvailableSeats(flight.getFlightNumber(), flight.getDepartureTime(), flight.getStopoverCode()))
                 continue;
-            // Filters flights that are not part of the membership program
-            if (this.isMembershipFlights()) {
-                // TODO: filter searches with the associated membership
+            // Sets the cheapest flight
+            flight.setCheapestPrice(flightServices.findCheapestPrice(flight.getFlightID(), flight.getFlightNumber(), flight.getDepartureTime()));
+            // Filters by price
+            if (maxPrice != null) {
+                if(maxPrice < Double.parseDouble(flight.getCheapestPrice()))
+                    continue;
             }
+
             filteredFlights.add(flight);    // adds the flight if all criteria is satisfied
         }
 
@@ -296,15 +291,10 @@ public class BasicSearch {
         Location destinationObj = locService.findByLocation(destinationIn);
 
         for (StopOver flight : flights) {
-            // Filters by price
-            if (minPrice != 0 || maxPrice != 100000) {
-                double price = flight.getTotalCost();
-                if ((minPrice != 0 && minPrice > price) || (maxPrice != 100000 && maxPrice < price))
-                    continue;
-            }
             // Filter by rating
-            if (rating != 0 && flight.getMinRating() < rating)
+            if (rating != 0 && flight.getMinRating() < rating) {
                 continue;
+            }
 
             boolean availableSeats = true;
             // Filter to the number of seats
@@ -313,12 +303,23 @@ public class BasicSearch {
                     availableSeats = false;
                 }
             }
-            if (!availableSeats)
+            if (!availableSeats) {
                 continue;
-            // Filters flights that are not part of the membership program
-            if (this.isMembershipFlights()) {
-                // TODO: filter searches with the associated membership
             }
+            // Sets the price for all flights
+            setCheapestPriceForSearchResults(flight.getFlights());
+
+            // Calculate the total min price of the stopover
+            double totalMinPrice = 0;
+            for(Flight f : flight.getFlights())
+                totalMinPrice += Double.parseDouble(f.getCheapestPrice());
+
+            // Filters by price
+            if (maxPrice != null) {
+                if(maxPrice < totalMinPrice)
+                    continue;
+            }
+
             filteredFlights.add(flight);    // adds the flight if all criteria is satisfied
         }
 

@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${stopOver[0].size()} != 0">
+            <div th:if="${stopOver[0]} != null and ${stopOver[0].size()} != 0">
                 <hr/>
                 <div class="accordion" id="accordionExample2">
                     <div class="accordion-item">
@@ -151,7 +151,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${stopOver[1].size()} != 0">
+            <div th:if="${stopOver[1] != null} and ${stopOver[1].size()} != 0">
                 <hr/>
                 <div class="accordion" id="accordionExample3">
                     <div class="accordion-item">
@@ -211,7 +211,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${stopOver[2].size()} != 0">
+            <div th:if="${stopOver[2] != null} and ${stopOver[2].size()} != 0">
                 <hr/>
                 <div class="accordion" id="accordionExample4">
                     <div class="accordion-item">
