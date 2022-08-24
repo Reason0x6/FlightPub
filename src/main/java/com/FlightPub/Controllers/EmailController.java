@@ -12,6 +12,7 @@ public class EmailController {
 
     @Autowired private EmailServices emailServices;
 
+    // TODO: Comment
     @PostMapping("/sendEmail")
     public String sendConfirmationEmail(@RequestBody Email email) {
         return emailServices.sendSimpleMail(email);

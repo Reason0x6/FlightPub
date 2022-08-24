@@ -13,6 +13,12 @@ public class FrontEndErrorController implements ErrorController {
 
     private static final String PATH = "/error";
 
+    /**
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return Dispatch to a 404 error page
+     */
     @RequestMapping(value = PATH)
     public String myerror(Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -20,12 +26,12 @@ public class FrontEndErrorController implements ErrorController {
         return "Error/404";
     }
 
-    public String getErrorPath(Model model, HttpSession session) {
-        model.addAttribute("usr", getSession(session));
-        model.addAttribute("Error", "General Error");
-        return "404";
-    }
-
+    /**
+     *
+     * @param session
+     * @return
+     */
+    // TODO: comment
     private UserSession getSession(HttpSession session) {
         UserSession sessionUser = null;
         try {

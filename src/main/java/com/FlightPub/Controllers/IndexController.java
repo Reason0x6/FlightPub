@@ -100,6 +100,13 @@ public class IndexController {
         this.emailServices = emailServices;
     }
 
+    /**
+     * invalids the cache to ensure that new objects are discovered
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the search results
+     */
     @RequestMapping("/invalidatecache")
     public String cache(Model model,HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
@@ -111,6 +118,13 @@ public class IndexController {
         return "index";
     }
 
+    /**
+     * dispatches to the index page
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the index page
+     */
     @RequestMapping("/")
     public String loadIndex(Model model, HttpSession session) {
 
@@ -127,6 +141,13 @@ public class IndexController {
         return "index";
     }
 
+    /**
+     * dispatch to the login page
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the login page
+     */
     @RequestMapping("/login")
     public String loadLogin(Model model, HttpSession session) {
 
@@ -135,8 +156,15 @@ public class IndexController {
         return "User/login";
     }
 
-    // This can be used to redirect the login back to a page after logging in
-    // Usage is /login?redirect=a_page_url?params=can_be_included
+    /**
+     *     This can be used to redirect the login back to a page after logging in
+     *     Usage is /login?redirect=a_page_url?params=can_be_included
+     *
+     * @param redirect - provides the navigation string for after logining in
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the login page
+     */
     @GetMapping(value = "/login", params = "redirect")
     public String loadLoginRedirect(@RequestParam String redirect, Model model, HttpSession session) {
         model.addAttribute("redirect", redirect);
@@ -145,11 +173,13 @@ public class IndexController {
         return "User/login";
     }
 
-    @RequestMapping("/newuser")
-    public String user(Model model) {
-        return "Notifications/newuser";
-    }
-
+    /**
+     *  Dispatch to the user registration page
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the registration page
+     */
     @RequestMapping("/Register")
     public String loadRegister(Model model, HttpSession session) {
 
@@ -158,6 +188,13 @@ public class IndexController {
         return "User/Register";
     }
 
+    /**
+     * Dispatch to the admin registration page
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the registration page
+     */
     @RequestMapping("/AdminRegister")
     public String loadAdminRegister(Model model, @RequestParam(required = false) String error, HttpSession session) {
         if(error != null && error.equalsIgnoreCase("form")){
@@ -170,6 +207,13 @@ public class IndexController {
         return "User/AdminRegister";
     }
 
+    /**
+     * redirects to the login and deletes the session
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the login page
+     */
     @RequestMapping("/logout")
     public String loadLogout(Model model, HttpSession session) {
         session.setAttribute("Admin", new AdminSession(null));
@@ -178,6 +222,14 @@ public class IndexController {
         return "redirect:/login";
     }
 
+    /**
+     * Creates a new user session
+     *
+     * @param req - container for the login details
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the account or previous page (if redirected)
+     */
     @PostMapping("/login")
     public String runLogin(@ModelAttribute LoginRequest req, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -232,6 +284,13 @@ public class IndexController {
         return "User/login";
     }
 
+    /**
+     * dispatch to the account page and attach all of the required information
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the account information
+     */
     @RequestMapping("/account")
     public String account(Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
@@ -284,6 +343,13 @@ public class IndexController {
     }
 
 
+    /**
+     * Dispatch to the admin control page
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the admin controls
+     */
     @RequestMapping("/adminAccount")
     public String adminAccount(Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
@@ -296,6 +362,14 @@ public class IndexController {
         return "User/AdminControl";
     }
 
+    /**
+     * Dispatches to the page to allow the user to view the stopover flights
+     *
+     * @param id id/ids of the flights to be displayed
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the stopover flight information
+     */
     @RequestMapping("/stopoverFlight")
     public String viewStopoverFlight(@RequestParam String id, Model model, HttpSession session) {
         model.addAttribute("admin", getAdminSession(session));
@@ -345,6 +419,14 @@ public class IndexController {
         return "StopoverFlight";
     }
 
+    /**
+     * Dispatches to the page to allow the user to view the individual flights
+     *
+     * @param id id of the flight to be displayed
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the stopover flight information
+     */
     @RequestMapping("/flight")
     public String viewFlight(@RequestParam String id, Model model, HttpSession session) {
         model.addAttribute("admin", getAdminSession(session));
@@ -372,6 +454,15 @@ public class IndexController {
         return "Flight";
     }
 
+    /**
+     * dispatch to the flight editor page, gathering a flight info if required
+     *
+     * @param flight current flight to be edited
+     * @param error stores the error if a issue has occurred
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the flight editor
+     */
     @RequestMapping("/admin/flight/management")
     @PostMapping("/admin/flight/management")
     public String modifyFlights(@ModelAttribute Flight flight, @RequestParam(required = false) String error, Model model, HttpSession session) {
@@ -430,6 +521,15 @@ public class IndexController {
         return "Admin/FlightManagement";
     }
 
+    /**
+     * dispatch to the location editor with location if provided
+     *
+     * @param location existing location if required
+     * @param error stores a error if a issue has occurred
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the location editor
+     */
     @RequestMapping("/admin/location/management")
     @PostMapping("/admin/location/management")
     public String modifyLocation(@ModelAttribute Location location, @RequestParam(required = false) String error, Model model, HttpSession session) {
@@ -463,6 +563,15 @@ public class IndexController {
         return "Admin/LocationManagement";
     }
 
+    /**
+     * dispatch to the price editor with a price if provided
+     *
+     * @param price existing price if supplied
+     * @param error stores a error if a issue has occurred
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the price editor
+     */
     @RequestMapping("/admin/price/management")
     @PostMapping("/admin/price/management")
     public String modifyPrice(@ModelAttribute Price price, @RequestParam(required = false) String error, Model model, HttpSession session) {
@@ -516,6 +625,14 @@ public class IndexController {
         return "Admin/PriceManagement";
     }
 
+    /**
+     * Dispatches to the airline editor page with a airline if provided
+     * @param airline existing airline if provided
+     * @param error Stores a error is a error has occurred
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the airline editor
+     */
     @RequestMapping("/admin/airline/management")
     @PostMapping("/admin/airline/management")
     public String modifyPrice(@ModelAttribute Airlines airline,  @RequestParam(required = false) String error, Model model, HttpSession session) {
@@ -548,8 +665,16 @@ public class IndexController {
         return "Admin/AirlineManagement";
     }
 
+    /**
+     * Dispatches to the wishlist page, attaching the required information and manipulating the wishlist data
+     * @param id
+     * @param remove
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the wishlist
+     */
     @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
-    public String bookFlight(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session) {
+    public String wishlist(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session) {
 
 
         getSession(session).setFlightServices(flightServices);
@@ -586,6 +711,15 @@ public class IndexController {
         return "WishList";
     }
 
+    /**
+     * Performs the backend search and dispatch to a search display page
+     *
+     * @param search search critera object
+     * @param error stores a error if a issue occurs
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the search results
+     */
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search,  @RequestParam(required = false) String error, Model model, HttpSession session) {
         model.addAttribute("admin", getAdminSession(session));
@@ -634,6 +768,15 @@ public class IndexController {
         return "search";
     }
 
+    /**
+     * Performs the backend search with addition critera checking and dispatch to a search display page
+     *
+     * @param search detailed search critera object
+     * @param error stores a error if a issue occurs
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the search results
+     */
     @PostMapping("/advancedSearch")
     public String runAdvancedSearch(@ModelAttribute BasicSearch search,  @RequestParam(required = false) String error, Model model, HttpSession session) {
         model.addAttribute("admin", getAdminSession(session));
@@ -675,6 +818,12 @@ public class IndexController {
         return "search";
     }
 
+    /**
+     * Dispatch to the cart with all booking requests
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the cart contents
+     */
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
@@ -703,6 +852,15 @@ public class IndexController {
         return "Booking/Cart";
     }
 
+    /**
+     * adds the booking request to the cart
+     *
+     * @param bookingRequest container for all the booking information
+     * @param error stores a error if a issue occurred
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return redirection to the cart handler
+     */
     @PostMapping("/cart/direct")
     public String updateCart(@ModelAttribute BookingRequest bookingRequest,  @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
@@ -726,6 +884,15 @@ public class IndexController {
         return "redirect:/cart";
     }
 
+    /**
+     * adds stopover flights to the cart
+     *
+     * @param bookingRequest container for a number of request objects (for stopover flights where there are multiple flights)
+     * @param error stores a error if a issue occurs
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return redirect to display the cart content
+     */
     @PostMapping("/cart/indirect")
     public String updateCartWithIndirect(@ModelAttribute BookingRequestContainer bookingRequest, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
@@ -752,8 +919,15 @@ public class IndexController {
         return "redirect:/cart";
     }
 
+    /**
+     * removes a booking request from the cart
+     *
+     * @param id id of the request to be removed
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return redirects to the login or cart page
+     */
     @RequestMapping("/cart/remove")
-    //e.g localhost:8080/location/add?id=Hob&country=Australia&location=Hobart&lat=-42.3&lng=147.3&pop=1
     public String removeFlightFromCart(@RequestParam String id, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
@@ -762,8 +936,15 @@ public class IndexController {
         return "redirect:/cart";
     }
 
+    /**
+     * dispatch to the checkout page
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return redirect cart or dispatch to the checkout
+     */
     @RequestMapping("/checkout")
-    public String checkout(Model model, @RequestParam(required = false) String error,HttpSession session) {
+    public String checkout(Model model, @RequestParam(required = false) String error, HttpSession session) {
 
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
@@ -785,7 +966,7 @@ public class IndexController {
             return "redirect:/cart?error=form";
         }
 
-        //getSession(session).setCheckedOutCart(getSession(session).getCart());
+
         model.addAttribute("checkout", getSession(session).getCart());
         model.addAttribute("usr", getSession(session));
         model.addAttribute("traveller", new Traveller());
@@ -794,6 +975,15 @@ public class IndexController {
         return "Booking/Checkout";
     }
 
+    /**
+     * handles the submission of a checkout form
+     *
+     * @param travellerContainer container that holds the traveler information associated with the booking
+     * @param error stores a error if a issue occurs
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return redirects to the checkout or confirmation page
+     */
     @PostMapping("/checkout")
     public String updateCheckout(@ModelAttribute TravellerContainer travellerContainer, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
@@ -858,6 +1048,13 @@ public class IndexController {
         return "redirect:/bookingConfirmation";
     }
 
+    /**
+     * Handles the final confirmation including the email confirmation
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains booking confirmation
+     */
     @RequestMapping("/bookingConfirmation")
     public String bookingConfirmation(Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
@@ -899,40 +1096,38 @@ public class IndexController {
         return "Confirmations/BookingConfirmation";
     }
 
-
+    /**
+     * generates a random string for a ID
+     * @return random string
+     */
     protected String generateConfirmationID() {
         return RandomStringUtils.randomAlphanumeric(8).toUpperCase();
     }
 
-    @RequestMapping("/bookingalert")
-    public String booking(Model model, HttpSession session) {
-        if (!getSession(session).isLoggedIn()) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("usr", getSession(session));
-        return "Notifications/booking";
-    }
-
-    @RequestMapping("/registeredalert")
-    public String user(Model model, HttpSession session) {
-        if (!getSession(session).isLoggedIn()) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("usr", getSession(session));
-        return "Notifications/newuser";
-    }
-
+    /**
+     * dispatch to the admin control page
+     *
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the admin controls
+     */
     @RequestMapping("/AdminControl")
     public String adminControl(Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
-
         return "User/AdminControl";
     }
 
+    /**
+     * handles modifications to the locations covid Restricted status
+     *
+     * @param covidRestrictedLocation location id of the target
+     * @param covidRestriction string for the restriction status
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the admin control page
+     */
     @RequestMapping("/covidRestrict")
     public String covidRestrict(@RequestParam String covidRestrictedLocation, @RequestParam String covidRestriction, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
@@ -949,6 +1144,14 @@ public class IndexController {
         return "User/AdminControl";
     }
 
+    /**
+     * saves a holiday package and dispatch to the control page
+     *
+     * @param hp target holiday package
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the admin controls
+     */
     @RequestMapping("HolidayPackage")
     public String holidayPackage(@ModelAttribute HolidayPackage hp, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
@@ -961,6 +1164,16 @@ public class IndexController {
         return "User/AdminControl";
     }
 
+    /**
+     * Handles changes to the user information/data
+     *
+     * @param user user id
+     * @param userField target field to be edited
+     * @param modification new value
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the admin controls
+     */
     @RequestMapping("/userModification")
     public String userModification(@RequestParam String user, @RequestParam String userField, @RequestParam String modification, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
@@ -986,6 +1199,14 @@ public class IndexController {
         return "User/AdminControl";
     }
 
+    /**
+     * Processes the deletion of a user
+     *
+     * @param userDelete id of the user to be deleted
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the admin controls
+     */
     @RequestMapping("/userDelete")
     public String userModification(@RequestParam String userDelete, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
@@ -1002,6 +1223,13 @@ public class IndexController {
         return "User/AdminControl";
     }
 
+    /**
+     * handles the addition of new users
+     * @param ua container for the account information
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return String of the html page that contains the admin controls
+     */
     @RequestMapping("/addUser")
     public String addUser(@ModelAttribute UserAccount ua, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
@@ -1015,6 +1243,11 @@ public class IndexController {
     }
 
 
+    /**
+     * carrys over a current user session to ensure that the data is persistent within the session
+     * @param session   current session
+     * @return the users session with session data
+     */
     private UserSession getSession(HttpSession session) {
         UserSession sessionUser = null;
         try {
@@ -1030,6 +1263,11 @@ public class IndexController {
         return sessionUser;
     }
 
+    /**
+     * adds the current date and time to the model
+     * @param model   interface that defines a holder for model attributes
+     * @return model that has been updated with the current date and time
+     */
     private Model addDateAndTimeToModel(Model model) {
         // Get server time for flight date pickers
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -1046,6 +1284,11 @@ public class IndexController {
         return model;
     }
 
+    /**
+     * carrys over a current admin session to ensure that the data is persistent within the session
+     * @param session   current session
+     * @return the admin session with session data
+     */
     private AdminSession getAdminSession(HttpSession session) {
         AdminSession sessionAdmin = null;
         try {
@@ -1062,6 +1305,11 @@ public class IndexController {
         return sessionAdmin;
     }
 
+    /**
+     * returns a price based on the class and ticket type
+     * @param br booking request input
+     * @return price
+     */
     private double getBookingPrice(BookingRequest br) {
         double price = 0;
         for (String[] seat : br.getFirSeats()) {
@@ -1279,6 +1527,11 @@ public class IndexController {
         return price;
     }
 
+    /**
+     * gets travel packages associated with sponsored airlines
+     *
+     * @return list of travel packages
+     */
     public List<HolidayPackage> getTravelPackages(){
         List<Airlines> sponsoredAirlines = airlineServices.getSponsoredAirlines();
         List<HolidayPackage> holidayPackages = holidayPackageServices.listAll();
@@ -1293,6 +1546,11 @@ public class IndexController {
         return travelPackages;
     }
 
+    /**
+     * gets packages associated with wishlists
+     * @param session current session
+     * @return list of holiday packages
+     */
     public List<HolidayPackage> getUserHolidayPackages(HttpSession session){
         List<WishListItem> wishListItems = wishListServices.findAllByUserIDs(getSession(session).getUsr().getEmail());
         List<HolidayPackage> holidayPackages = holidayPackageServices.listAll();
