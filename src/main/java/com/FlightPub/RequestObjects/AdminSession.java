@@ -3,6 +3,9 @@ package com.FlightPub.RequestObjects;
 import com.FlightPub.model.AdminAccount;
 import lombok.Getter;
 
+/**
+ * Admin Session request object
+ */
 public class AdminSession {
 
     @Getter

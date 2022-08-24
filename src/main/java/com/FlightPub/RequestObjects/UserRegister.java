@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Register User request object
+ */
 public class UserRegister {
     @Getter
     @Setter

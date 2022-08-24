@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Flight Stop Over request object
+ */
+
 public class StopOver {
     @Getter
     @Setter
@@ -98,6 +102,11 @@ public class StopOver {
             return null;
     }
 
+    /**
+     * Returns all stop-overs between a flight origin and destination
+     *
+     * @return all stop-overs locations
+     */
     public String getAllStops() {
         String output = "";
         for (int count = 0; count < flights.size(); count++) {

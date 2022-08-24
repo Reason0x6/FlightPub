@@ -6,6 +6,9 @@ import com.FlightPub.model.Price;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Availability Container request object
+ */
 public class AvailabilityContainer {
     @Getter
     @Setter

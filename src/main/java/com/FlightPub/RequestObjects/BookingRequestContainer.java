@@ -3,6 +3,9 @@ package com.FlightPub.RequestObjects;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Booking Request Container request object
+ */
 public class BookingRequestContainer {
     @Getter
     @Setter
