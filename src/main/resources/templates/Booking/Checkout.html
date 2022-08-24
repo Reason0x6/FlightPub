@@ -45,12 +45,12 @@
                                         </thead>
                                         <!-- For Each Seat Requested -->
                                         <tbody>
-                                        <!-- Traveller -->
+                                        <!-- Select Traveller
                                         <tr>
                                             <th>Select Traveller from Account:</th>
                                         </tr>
-                                        <!-- OR -->
-                                        <th>OR add new Traveller details:</th>
+                                        -->
+                                        <th>Traveller details:</th>
                                         <tr>
                                             <!-- Add new Traveller Details -->
                                             <!-- Traveller Info [Input]-->
@@ -80,10 +80,11 @@
                                                        type="date"></td>
                                         </tr>
                                         <tr>
-                                            <!-- Save Traveller to Account [Checkbox]-->
+                                            <!-- Save Traveller to Account [Checkbox]
                                             <th><label th:for="'travellers['+${i}+'].saveTraveller'">Save new Traveller to Account?</label></th>
                                             <td><input style="width: 50px;"
                                                        th:id="'saveTraveller' + ${i}" th:name="'travellers['+${i}+'].saveTraveller'"  type="checkbox"></td>
+                                            -->
                                             <td><input class="form-control"
                                                        th:id="'seat' + ${i}" th:name="'travellers['+${i}+'].seat'"  th:value="${flight.getAllSeatsList()[i]}"
                                                        type="hidden">
