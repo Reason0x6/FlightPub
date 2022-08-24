@@ -159,7 +159,10 @@ public class IndexController {
     }
 
     @RequestMapping("/AdminRegister")
-    public String loadAdminRegister(Model model, HttpSession session) {
+    public String loadAdminRegister(Model model, @RequestParam(required = false) String error, HttpSession session) {
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
 
         model.addAttribute("usr", getSession(session));
         model.addAttribute("locs", locationServices.listAll());
