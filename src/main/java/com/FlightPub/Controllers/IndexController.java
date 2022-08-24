@@ -800,8 +800,6 @@ public class IndexController {
         int offset = 0;
         for (BookingRequest br : getSession(session).getCart()) {
             Booking booking;
-            System.out.println(br.getTotalSeats());
-            System.out.println(offset);
 
             for (int i = 0; i < travellers.length; i++) {
                 if(travellers[i] == null){
@@ -870,25 +868,10 @@ public class IndexController {
             e.printStackTrace();
         }
 
-
+        getSession(session).voidCart();
         return "Confirmations/BookingConfirmation";
     }
 
-    @PostMapping("/bookingConfirmation")
-    public String bookingConfirmation(@ModelAttribute Booking booking, @RequestParam(required = false) String error, Model model, HttpSession session) {
-        if (!getSession(session).isLoggedIn()) {
-            return "redirect:/login";
-        }
-        if(error != null && error.equalsIgnoreCase("form")){
-            model.addAttribute("FormError", true);
-        }
-        getSession(session).setCart(null);
-        getSession(session).setCheckedOutCart(null);
-        getSession(session).setBookedCart(null);
-        getSession(session).setConfirmationID(null);
-
-        return "redirect:/bookingConfirmation";
-    }
 
     protected String generateConfirmationID() {
         return RandomStringUtils.randomAlphanumeric(8).toUpperCase();

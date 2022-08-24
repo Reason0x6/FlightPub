@@ -29,8 +29,6 @@ public class UserSession {
     @Getter
     @Setter
     private UserAccountServices usrService;
-    @Getter
-    Map<String, Integer> sessionCart;
 
     @Getter
     @Setter
@@ -64,13 +62,6 @@ public class UserSession {
     @Setter
     private List<String> availabilityID;
 
-    @Getter
-    @Setter
-    private List<BookingRequest> checkedOutCart;
-
-    @Getter
-    @Setter
-    private List<BookingRequest> bookedCart;
 
     @Getter
     @Setter
@@ -91,7 +82,6 @@ public class UserSession {
 
     public UserSession(UserAccount usr){
         this.usr = usr;
-        this.sessionCart = new HashMap<>();
     }
 
     public boolean isLoggedIn() {
@@ -108,6 +98,10 @@ public class UserSession {
 
     public String getPassword() {
         return usr.getPassword();
+    }
+
+    public void voidCart(){
+        this.cart = new ArrayList<>();
     }
 
     public void addToCart(BookingRequest bookingRequest) {
@@ -128,12 +122,8 @@ public class UserSession {
         }
     }
 
-    public int getSeatsFor(String id) {
-        return sessionCart.get(id);
-    }
 
     public boolean addToWishList(String id) {
-
         Flight tempF = flightServices.getById(id);
         return usrService.addToWishList(tempF.getDestinationCode(), usr.getEmail());
 
