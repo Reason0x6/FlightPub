@@ -345,7 +345,9 @@ public class IndexController {
 
         System.out.println(id);
         List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
-
+        for(Availability a: availableSeats){
+            System.out.println(a.getClassCode());
+        }
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
@@ -556,6 +558,7 @@ public class IndexController {
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
         search.setCheapestPriceForSearchResults(flights[0]);
+
         flights[1] = search.getPromotedFlights(flights[0]);
         stopOver[0] = search.basicStopOverSearch(1);
         stopOver[1] = search.basicStopOverSearch(2);
@@ -592,6 +595,7 @@ public class IndexController {
 
         // Gathers Flights and Stopovers
         flights[0] = search.runAdvancedSearch();
+        search.setCheapestPriceForSearchResults(flights[0]);
         flights[1] = search.getPromotedFlights(flights[0]);
         if (!search.isDirectFlight()) {
             stopOver[0] = search.advancedStopOverSearch(1);
