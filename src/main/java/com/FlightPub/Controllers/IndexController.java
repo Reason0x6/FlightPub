@@ -483,6 +483,35 @@ public class IndexController {
         return "Admin/PriceManagement";
     }
 
+    @RequestMapping("/admin/airline/management")
+    @PostMapping("/admin/airline/management")
+    public String modifyPrice(@ModelAttribute Airlines airline, Model model, HttpSession session) {
+        if (!getAdminSession(session).isLoggedIn()) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("admin", getAdminSession(session));
+
+        if(airline != null) {
+            if(airline.getAirlineID() != null) {
+                Airlines currentAirline;
+                currentAirline = airlineServices.getAirlineByID(airline.getAirlineID());
+                if(currentAirline == null)
+                    currentAirline = airlineServices.getAirlineByAirlineName(airline.getAirlineID());
+                airline = currentAirline;
+            }
+        }
+
+        // Populate with a default value if the price doesnt exist or one has not been provided
+        if (airline == null)
+            airline = new Airlines();
+
+        model.addAttribute("Airlines", airline);
+        model.addAttribute("usr", getSession(session));
+
+        return "Admin/AirlineManagement";
+    }
+
     @RequestMapping("/wishlist") //e.g localhost:8080/flight/book?id=1001&seats=2
     public String bookFlight(@RequestParam(required = false) String id, @RequestParam(required = false) String remove, Model model, HttpSession session) {
 

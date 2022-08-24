@@ -27,7 +27,7 @@ public class Airlines {
     @Getter
     @Setter
     @Field("Sponsored")
-    private boolean sponsored;
+    private boolean sponsored = false;
 
     public Airlines() {
     }

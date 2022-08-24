@@ -73,9 +73,37 @@ public class ObjectCreationController {
         this.adminAccountServices = adminAccountServices;
     }
 
+    @RequestMapping("/airline/add")
+    public String addAirline(@ModelAttribute Airlines airline, Model model, HttpSession session) {
+        model.addAttribute("usr", getSession(session));
+        model.addAttribute("admin", getAdminSession(session));
+        model.addAttribute("Airlines", airline);
+
+        boolean invalid = false;
+
+        // Ensures that the fields are filled and that the input is valid
+        if(airline.getAirlineID() == null || airline.getAirlineName() == null || airline.getCountryCode() == null)
+            invalid = true;
+        else if(airline.getAirlineID() == "" || airline.getAirlineName() == "" || airline.getCountryCode() == "")
+            invalid = true;
+
+        if(invalid)
+            return "Admin/AirlineManagement";
+
+
+        // Save to the database
+        if(airlineServices.saveOrUpdate(airline) != null) {
+            model.addAttribute("Airline", airline);
+            return "Confirmations/NewAirline";
+        }
+        else
+            return "Admin/AirlineManagement";
+    }
+
     @RequestMapping("/price/add")
     public String addPrice(@ModelAttribute Price price, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("admin", getAdminSession(session));
         model.addAttribute("Price", price);
         List<TicketClass> classes = ticketServices.getAllTicketClass();
         List<TicketType> types = ticketServices.getAllTicketType();
@@ -145,6 +173,7 @@ public class ObjectCreationController {
     @RequestMapping("/location/add")
     public String addLoc(@ModelAttribute Location location, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("admin", getAdminSession(session));
         boolean invalid = false;
 
         // Ensures that all fields are filled in and valid
@@ -249,6 +278,7 @@ public class ObjectCreationController {
     @RequestMapping("/flight/add")
     public String addFlight(@ModelAttribute EditedFlightContainer container, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
+        model.addAttribute("admin", getAdminSession(session));
         List<String> availabilityID = getSession(session).getAvailabilityID();
 
         // Interpret the data from the form, generating availability objects
