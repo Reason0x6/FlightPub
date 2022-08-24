@@ -350,6 +350,8 @@ public class GroupsController {
         // Add all group users
         model.addAttribute("groupUsers", groupServices.listAllUsers());
 
+
+
         return "Fragments/Groups/GroupsAddedUsers :: added_users_fragment";
     }
 

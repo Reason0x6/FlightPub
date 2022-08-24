@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div class="col-md-6" id="added_users_section" style="padding-left: 20px;" th:fragment="added_users_section">
+<div class="col-md-6" id="added_users_section" th:fragment="added_users_section">
     <div class="section-title" data-aos="zoom-out">
         <h2>Members admin: </h2>
         <p>The Who's Who</p>
@@ -29,13 +29,35 @@
                 <td th:if="${isAdmin}">
                     <span th:if="${user.email == admin.email}"> Group Admin </span>
 
-                    <button class="btn btn-primary" th:if="${user.email != admin.email}" th:onclick="removeUser([[${user.email}]])"
-                            type="button">Remove User
+                    <button th:if="${user.email != admin.email}" th:onclick="setRemoveUser([[${user.email}]])"
+                            type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeUserModal">
+                        Remove User
                     </button>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="modal" id="removeUserModal" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Remove this user?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to remove this user? <br>
+                        This can not be undone. </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="removeUser()">
+                        Remove User
+                    </button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -47,19 +69,25 @@
         })
 
         /**
-         * Removes a user from group
-         * @param removeUser user to remove
+         * User email to be removed from group
          */
-        function removeUser(removeUser) {
-            if (confirm('Do you want to remove user ' + removeUser + '?')) {
-                // Post entered email to be added to invite list
-                $.post("/remove_group_user", {
-                    userId: removeUser,
-                    groupId: $("#groupId").val()
-                }).done(function (fragment) {
-                    $("#added_users").replaceWith(fragment);
-                })
-            }
+        let removeUserEmail;
+        function setRemoveUser(removeUserIn) {
+            removeUserEmail = removeUserIn
+        }
+
+
+        /**
+         * Removes a user from group
+         */
+        function removeUser() {
+            // Post entered email to be added to invite list
+            $.post("/remove_group_user", {
+                userId: removeUserEmail,
+                groupId: $("#groupId").val()
+            }).done(function (fragment) {
+                $("#added_users").replaceWith(fragment);
+            })
         }
 
         /**
