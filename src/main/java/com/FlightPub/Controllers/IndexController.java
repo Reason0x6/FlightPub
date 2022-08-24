@@ -291,6 +291,7 @@ public class IndexController {
 
     @RequestMapping("/stopoverFlight")
     public String viewStopoverFlight(@RequestParam String id, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
         String[] flightID = id.split("-");  // Breaks up the flight ID's if there are multiple
 
         // Collection variables for the flight details of each leg
@@ -339,6 +340,7 @@ public class IndexController {
 
     @RequestMapping("/flight")
     public String viewFlight(@RequestParam String id, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
         Flight f = flightServices.getById(id);
 
         List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
@@ -579,9 +581,11 @@ public class IndexController {
 
     @PostMapping("/search")
     public String runSearch(@ModelAttribute BasicSearch search,  @RequestParam(required = false) String error, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
         if(error != null && error.equalsIgnoreCase("form")){
             model.addAttribute("FormError", true);
         }
+
 
         model = addDateAndTimeToModel(model);
         List<Flight>[] flights = new ArrayList[2];
@@ -625,6 +629,7 @@ public class IndexController {
 
     @PostMapping("/advancedSearch")
     public String runAdvancedSearch(@ModelAttribute BasicSearch search,  @RequestParam(required = false) String error, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
         if(error != null && error.equalsIgnoreCase("form")){
             model.addAttribute("FormError", true);
         }

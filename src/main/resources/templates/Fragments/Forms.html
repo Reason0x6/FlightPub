@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-md d-grid">
-            <button class="btn btn-primary start-loading btn-search" type="submit">Find Flights!</button>
+            <button class="btn btn-primary start-loading btn-search" id="searchSubmit" type="submit">Find Flights!</button>
         </div>
     </div>
     <div>
@@ -81,6 +81,33 @@
     </div>
 
     <script>
+
+        $('#searchSubmit').on('click', function () {
+            $('#search input').css("border", "1px solid #ced4da");
+            let flags = 0;
+            if ($('#origin').val().trim().length < 3){
+                $('#origin').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#destination').val().trim().length < 3){
+                $('#destination').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#origin').val() === $('#destination').val()){
+                $('#destination').css("border", "1px solid red");
+                $('#origin').css("border", "1px solid red");
+                flags++;
+            }
+            if(flags === 0){
+                $("#loader").css("display", "block");
+                return true;
+            }else{
+
+                return false;
+            }
+        });
+
+
         function allDest() {
 
             let val = document.getElementById("nodest");
@@ -282,11 +309,11 @@
             <div class="col-md-4">
                 <label class="form-label" for="rating">Minimum Ratings
                 </label>&nbsp;
-                <output>
+                <output id="ratings">
                     0
                 </output>
                 <br>
-                <input class="form-control" id="rating" max="5" min="0" name="rating" oninput="this.previousElementSibling.value = this.value" type="range"
+                <input class="form-control" id="rating" max="5" min="0" name="rating" oninput="$('#ratings').html(this.value);" type="range"
                        value="0"><br>
             </div>
             <hr>
@@ -308,7 +335,7 @@
 
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary start-loading btn-search" style="margin-top: -5px" type="submit">Find
+                <button class="btn btn-primary start-loading btn-search" id="searchAdvSubmit" style="margin-top: -5px" type="submit">Find
                     Flights!
                 </button>
             </div>
@@ -316,6 +343,39 @@
         </div>
     </div>
     <script>
+
+        $('#searchAdvSubmit').on('click', function () {
+            $('#advancedSearch input').css("border", "1px solid #ced4da");
+            let flags = 0;
+            if ($('#flightOrigin').val().trim().length < 3){
+                $('#flightOrigin').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#flightDestination').val().trim().length < 3){
+                $('#flightDestination').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#flightOrigin').val() === $('#flightDestination').val()){
+                $('#flightDestination').css("border", "1px solid red");
+                $('#flightOrigin').css("border", "1px solid red");
+                flags++;
+            }
+            if($('#maxPrice').val() < 0){
+                $('#maxPrice').css("border", "1px solid red");
+                flags++;
+            }
+            if($('#seats').val() < 0){
+                $('#seats').css("border", "1px solid red");
+                flags++;
+            }
+            if(flags === 0){
+                $("#loader").css("display", "block");
+                return true;
+            }else{
+                return false;
+            }
+        });
+
         function allDest() {
 
             let val = document.getElementById("nodestAdvanced");
