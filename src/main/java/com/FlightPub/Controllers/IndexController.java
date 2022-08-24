@@ -735,6 +735,7 @@ public class IndexController {
         model.addAttribute("usr", getSession(session));
 
         String confirmationID = generateConfirmationID();
+        String accountEmail = getSession(session).getEmail();
 
         Traveller[] travellers = travellerContainer.getTravellers();
 
@@ -744,15 +745,15 @@ public class IndexController {
                 if(travellers[i] == null){
                     continue;
                 }
-                if (travellers[i].getAccountEmail() == null) {
-                    travellers[i].setAccountEmail(getSession(session).getEmail());
+                if (travellers[i].getAccountEmail() == null || travellers[i].getAccountEmail().equals("")) {
+                    travellers[i].setAccountEmail(accountEmail);
                 }
 
                 if (travellers[i].getId() == null) {
                     travellers[i].setTravellerID(new ObjectId());
                 }
 
-                booking = new Booking(travellers[i].getAccountEmail(), br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat(), confirmationID);
+                booking = new Booking(accountEmail, br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat(), confirmationID);
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
                 }
@@ -784,17 +785,26 @@ public class IndexController {
         String confirmationID = getSession(session).getConfirmationID();
 
         List<Booking> bookingDetails = bookingServices.getBookings();
-        List<Traveller> travellers = bookingServices.getTravellers();
+        List<Traveller> travellerDetails = new ArrayList<>();
+
+        for (int i = 0; i < bookingDetails.size(); i++) {
+            for (int j = 0; j < bookingServices.getTravellers().size(); j++) {
+                travellerDetails.add(bookingServices.getTravellers().get(j));
+            }
+        }
 
         model.addAttribute("bookingDetails", bookingDetails);
-        model.addAttribute("travellers", travellers);
+        model.addAttribute("travellers", travellerDetails);
         model.addAttribute("confirmationID", confirmationID);
 
         Email email = new Email();
 
         email.setEmailRecipient(accountEmail);
         email.setEmailSubject("FlightPub Booking Confirmation : " + confirmationID);
-        email.setEmailBody("Thank you for booking with FlightPub. Your booking reference is " + confirmationID);
+        email.setEmailBody("Thank you for booking with FlightPub. Your booking reference is "
+                + confirmationID + ".\n\n" + "This email has been sent to " + accountEmail + ".\n\n"
+                + "Please keep this email for your records.\n\n" + "We hope you enjoy your flight.\n\n"
+                + "Kind regards,\n" + "FlightPub");
 
         try {
             emailServices.sendSimpleMail(email);
@@ -802,7 +812,22 @@ public class IndexController {
             e.printStackTrace();
         }
 
+
         return "Confirmations/BookingConfirmation";
+    }
+
+    @PostMapping("/bookingConfirmation")
+    public String bookingConfirmation(@ModelAttribute Booking booking, Model model, HttpSession session) {
+        if (!getSession(session).isLoggedIn()) {
+            return "redirect:/login";
+        }
+
+        getSession(session).setCart(null);
+        getSession(session).setCheckedOutCart(null);
+        getSession(session).setBookedCart(null);
+        getSession(session).setConfirmationID(null);
+
+        return "redirect:/bookingConfirmation";
     }
 
     protected String generateConfirmationID() {

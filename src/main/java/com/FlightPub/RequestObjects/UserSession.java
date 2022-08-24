@@ -186,4 +186,9 @@ public class UserSession {
         lastViewedFlight.add(in);
     }
 
+    public void clearCart() {
+        for (BookingRequest br : cart) {
+            br.setAllSeatsList(null);
+            }
+    }
 }

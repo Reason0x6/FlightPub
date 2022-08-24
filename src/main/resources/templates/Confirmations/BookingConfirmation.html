@@ -23,7 +23,7 @@
                 <!-- Display Booking Details -->
                 <div>
                     <h3>Booking Details</h3>
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                         <tr>
                             <th scope="col">Flight Number</th>
@@ -48,6 +48,8 @@
                                         <th scope="row" th:text="'Passengers :'"></th>
                                         <td th:text="${travellers.get(i).getSeat()}"></td>
                                         <td th:text="${travellers.get(i).getFirstName() + ' ' + travellers.get(i).getLastName()}"></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 </div>
                                 <div th:if="${i != 0}">
@@ -55,9 +57,18 @@
                                         <th scope="row"></th>
                                         <td th:text="${travellers.get(i).getSeat()}"></td>
                                         <td th:text="${travellers.get(i).getFirstName() + ' ' + travellers.get(i).getLastName()}"></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 </div>
                             </div>
+                            <tr>
+                                <th></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </div>
                         </tbody>
                     </table>
