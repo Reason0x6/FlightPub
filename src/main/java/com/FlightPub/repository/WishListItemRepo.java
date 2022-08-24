@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
+/**
+ * Implements database queries for wish lists
+ */
 public interface WishListItemRepo extends MongoRepository<WishListItem, String> {
 
     @Query(value = "{ 'userID' : ?0 }")

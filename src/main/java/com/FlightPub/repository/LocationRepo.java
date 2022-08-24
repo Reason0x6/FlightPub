@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
+/**
+ * Implements database queries for locations
+ */
 public interface LocationRepo extends MongoRepository<Location, String> {
     @Query(value = "{ 'locationID' : {$nin : ?0} }", sort = "{'popularity' : 1}")
     List<Location> findAllSortedAscendingExcluding(List<String> excludeList);

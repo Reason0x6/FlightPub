@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Flight Stop Over request object
  */
-
 public class StopOver {
     @Getter
     @Setter

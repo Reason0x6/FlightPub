@@ -16,6 +16,10 @@ public class LocationServices {
     private final LocationRepo locationRepo;
     private final HashMap<String, Map.Entry<Date, Location>> locCache;
 
+    /**
+     * Sets the classes' repository objects
+     * @param locationRepository
+     */
     @Autowired
     public LocationServices(LocationRepo locationRepository) {
         this.locationRepo = locationRepository;
@@ -116,6 +120,12 @@ public class LocationServices {
         return null;
     }
 
+    /**
+     * Returns list of the top ten most popular in ascending order
+     *
+     *
+     * @return sorted list of locations
+     */
     public List<Location> topTen() {
         List<Location> out = locationRepo.findAllByOrderByPopularityAsc();
         System.out.println(out);
@@ -207,6 +217,10 @@ public class LocationServices {
         }
     }
 
+    /**
+     * Returns the total number of locations in the database
+     * @return int
+     */
     public int getLocationCount() {
         return locationRepo.countLocations();
     }

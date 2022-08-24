@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
+/**
+ * Implements database queries for airlines
+ */
 public interface AirlineRepo extends MongoRepository<Airlines, String> {
 
     List<Airlines> findBySponsoredIsTrue();

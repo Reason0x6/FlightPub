@@ -7,6 +7,9 @@ import lombok.Setter;
  * Traveller Container request object
  */
 
+/**
+ * Simple Java Object used to store travellers
+ */
 public class TravellerContainer {
 
     @Setter

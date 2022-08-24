@@ -27,7 +27,10 @@ public class FlightServices {
 
     private List<Availability> savedAvails;
 
-
+    /**
+     * Sets the classes' repository objects
+     * @param flightRepository, availRepo, priceRepo
+     */
     @Autowired
     public FlightServices(FlightRepo flightRepository, AvailabilityRepo availRepo, PriceRepo priceRepo) {
         this.availRepo = availRepo;
@@ -38,6 +41,11 @@ public class FlightServices {
         priceCache = new HashMap<>();
     }
 
+    /**
+     * Get a list of available flights
+     * @param flightNumber, depatureTime
+     * @return List if a available flights
+     */
     public List<Availability> getAvailability(String flightNumber, Long departureTime) {
 
         if (availCache.containsKey(flightNumber + departureTime.toString()) && availCache.get(flightNumber + departureTime).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -57,6 +65,10 @@ public class FlightServices {
         }
     }
 
+    /**
+     * Add a new availability or update a availability field in the database
+     * @param availability to save or update in the database
+     */
     public Availability saveOrUpdateAvailability(Availability availability) {
         try {
             availability.setTicketCode(availability.getTicketCode().toUpperCase());
@@ -76,6 +88,9 @@ public class FlightServices {
         }
     }
 
+    /**
+     * @return list of all flights
+     */
     public List<Flight> listAll(){
 
         if (flightCache.containsKey("ALL") && flightCache.get("ALL").getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -106,6 +121,11 @@ public class FlightServices {
 
     }
 
+    /**
+     * Get a flight from id
+     * @param id to find in the flight repository
+     * @return flight if a flight is found or null if not found
+     */
     public Flight getById(String id) {
         if (id == null)
             return null;
@@ -121,6 +141,10 @@ public class FlightServices {
 
     }
 
+    /**
+     * Add a new price or update a price field in the database
+     * @param price to save or update in the database
+     */
     public Price saveOrUpdatePrice(Price price) {
         try {
             price.setFlightNumber(price.getFlightNumber().toUpperCase());
@@ -140,6 +164,10 @@ public class FlightServices {
         }
     }
 
+    /**
+     * Add a new flight or update a flight field in the database
+     * @param flight to save or update in the database
+     */
     public Flight saveOrUpdate(Flight flight) {
         // Attempts to align the string values with the database standard
         try {
@@ -163,6 +191,11 @@ public class FlightServices {
         }
     }
 
+    /**
+     * Gets a list of prices for a flight
+     * @param flight
+     * @return list of prices for a specific flight
+     */
     public List<Price> getPrices(Flight flight) {
 
         String key = flight.getFlightNumber() + flight.getDepartureTime().toString();
@@ -185,8 +218,17 @@ public class FlightServices {
         }
     }
 
+    /**
+     * Deletes a flight from the database
+     * @param id to find and delete the booking in the repository
+     */
     public void delete(String id){}
 
+    /**
+     * Gets a list of flights for a specific destination
+     * @param dest
+     * @return list of flights
+     */
     public List<Flight> getByDestination(String dest) {
 
         if (flightCache.containsKey("DEST" + dest) && flightCache.get("DEST" + dest).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -217,6 +259,11 @@ public class FlightServices {
 
     }
 
+    /**
+     * Gets the number of available seats for a specific destination
+     * @param id, departTime, stopoverCode
+     * @return total number of available seats on a flight
+     */
     public int getAvailableSeats(String id, Long departTime, String stopoverCode) {
         List<Availability> outArr;
         if (availCache.containsKey(id + departTime.toString()) && availCache.get(id + departTime).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -245,6 +292,11 @@ public class FlightServices {
         return out;
     }
 
+    /**
+     * Gets the list of seats for a class code
+     * @param classCode, availableSeats
+     * @return list of seats
+     */
     public ArrayList<String[]> getSeatList(String classCode, List<Availability> availableSeats) {
         ArrayList<String[]> seatList = new ArrayList<>();
 
@@ -268,6 +320,11 @@ public class FlightServices {
         return seatList;
     }
 
+    /**
+     * Gets the a specific seats for details for a flight
+     * @param seatsAvailableString, classCode, ticketCode, ticketFlightNumber, ticketDepartureDate
+     * @return String array of seat details
+     */
     private String[] getSeatDetails(String seatsAvailableString, String classCode, String ticketCode, String ticketFlightNumber, Long ticketDepartureDate) {
         String[] seatDetails = new String[4];
         seatDetails[0] = ticketCode;
@@ -303,6 +360,11 @@ public class FlightServices {
         return seatDetails;
     }
 
+    /**
+     * Gets a flights price from the stored cache
+     * @param ticketFlightNumber, classCode, ticketCode
+     * @return List of prices
+     */
     public List<Price> getFlightCachePrice(String ticketFlightNumber, String classCode, String ticketCode) {
 
         String key = ticketFlightNumber;
@@ -338,7 +400,11 @@ public class FlightServices {
 
     }
 
-
+    /**
+     * Gets a price from a specific flight and ticket class and code
+     * @param ticketFlightNumber, classCode, ticketCode, ticketDepartureDate
+     * @return price as string
+     */
     public @NotNull String getPrice(String ticketFlightNumber, String classCode, String ticketCode, Long ticketDepartureDate) {
         List<Price> price = getFlightCachePrice(ticketFlightNumber, classCode, ticketCode);
         for (int i = 0; i < price.size(); i++) {
@@ -355,6 +421,11 @@ public class FlightServices {
         return "0";
     }
 
+    /**
+     * Gets a price from a specific flight and ticket class and code
+     * @param flightNumber, date, ticketClass, ticketCode
+     * @return price
+     */
     public Price getSpecificPrice(String flightNumber, long date, String ticketClass, String ticketCode) {
         List<Price> prices = priceRepo.findSpecificPrice(flightNumber, date, ticketClass, ticketCode);
         if(prices != null && !prices.isEmpty())
@@ -363,6 +434,11 @@ public class FlightServices {
             return null;
     }
 
+    /**
+     * Returns a boolean whether a price per ticket exsists in a given time frame
+     * @param price
+     * @return boolean
+     */
     public boolean existingPriceTimeframe(Price price) {
         List<Price> prices = priceRepo.findPriceByClassTicketCode(price.getFlightNumber(), price.getClassCode(), price.getTicketCode());
 
@@ -379,6 +455,11 @@ public class FlightServices {
         return false;
     }
 
+    /**
+     * Returns a price for a ticket for specific time frame
+     * @param flightNumber, startDate, endDate, ticketClass, ticketCode
+     * @return price
+     */
     public Price getSpecificPriceTimeframe(String flightNumber, long startDate, long endDate, String ticketClass, String ticketCode) {
         List<Price> price = priceRepo.findSpecificPriceTimeframe(flightNumber, startDate, endDate, ticketClass, ticketCode);
         if(price != null && !price.isEmpty())
@@ -387,6 +468,11 @@ public class FlightServices {
             return null;
     }
 
+    /**
+     * Returns the cheapest price for a specific flight
+     * @param flightID, flightNumber, departureDate
+     * @return price as string
+     */
     public String findCheapestPrice(String flightID, String flightNumber, long departureDate) {
         List<Availability> availableSeats = getAvailability(flightNumber, departureDate);
         double minPrice = Integer.MAX_VALUE + 0.0;
@@ -402,6 +488,11 @@ public class FlightServices {
         return minPrice + "";
     }
 
+    /**
+     * Returns a boolean if a price exists for a specific flight
+     * @param flight
+     * @return boolean
+     */
     public boolean priceExists(String flight) {
         List<Price> prices= priceRepo.findFLight(flight);
         if(prices != null & !prices.isEmpty())
@@ -410,7 +501,11 @@ public class FlightServices {
             return false;
     }
 
-
+    /**
+     * Returns list of all flights from a specific departure location
+     * @param dep
+     * @return list of flights
+     */
     public List<Flight> getByOrigin(String dep) {
 
         if (flightCache.containsKey("DEP" + dep) && flightCache.get("DEP" + dep).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -449,6 +544,11 @@ public class FlightServices {
         }
     }
 
+    /**
+     * Returns list of all flights from a specific departure location and arrival location within a time frame
+     * @param origin, dest, dstart, dend
+     * @return list of flights
+     */
     public List<Flight> getByOriginAndDestination(String origin, String dest, Long dstart, Long dend) {
         String key = "DEP" + origin + "DEST" + dest + "DEP" + dstart.toString() + dend.toString();
         if (flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -481,6 +581,11 @@ public class FlightServices {
 
     }
 
+    /**
+     * Returns list of all flights from a specific departure location within a time frame
+     * @param origin, dstart, dend
+     * @return list of flights
+     */
     public List<Flight> getByOrigin(String origin, Long dstart, Long dend) {
         String key = "DEP" + origin + dstart.toString() + dend.toString();
         if (flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -512,6 +617,11 @@ public class FlightServices {
         }
     }
 
+    /**
+     * Returns list of all flights from a specific departure and destination location before a specific arrival time
+     * @param origin, dep, dstart, dend
+     * @return list of flights
+     */
     public List<Flight> getByOriginAndDestinationAndArrivalTimes(String origin, String dep, Long dstart, Long dend) {
         String key = "DEP" + origin + "DEST" + dep + "DEST" + dstart.toString() + dend.toString();
         if (flightCache.containsKey(key) && flightCache.get(key).getKey().compareTo(new Date(System.currentTimeMillis())) > 0) {
@@ -543,6 +653,11 @@ public class FlightServices {
 
     }
 
+    /**
+     * Returns list of all flights from a specific departure location before a specific arriavl time
+     * @param origin, dep, dstart, dend
+     * @return list of flights
+     */
     public List<Flight> getByOriginAndArrivalTimes(String origin, Long dstart, Long dend) {
 
         String key = "DEP" + origin + "DEST" + dstart.toString() + dend.toString();
@@ -575,6 +690,11 @@ public class FlightServices {
 
     }
 
+    /**
+     * Returns a flight from a specific departure location
+     * @param flightNumber, departure
+     * @return flight
+     */
     public Flight getByFlightNumberAndDeparture(String flightNumber, Long departure) {
         if (flightNumber == null || departure == null)
             return null;
@@ -591,6 +711,9 @@ public class FlightServices {
         }
     }
 
+    /**
+     * Clears the cache so new data is pulled
+     */
     public void invalidate() {
         flightCache = new HashMap<>();
         availCache = new HashMap<>();
