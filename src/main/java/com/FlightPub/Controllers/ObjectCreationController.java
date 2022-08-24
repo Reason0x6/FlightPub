@@ -207,8 +207,9 @@ public class ObjectCreationController {
 
             // TODO: Notification of new user account to be sent to newUser.getEmail()
 
-            model.addAttribute("addedUser", nUser);
-            return "Confirmations/RegisterUser";
+            model.addAttribute("Registered", true);
+
+            return "User/Login";
         }
 
         return "/Register";
