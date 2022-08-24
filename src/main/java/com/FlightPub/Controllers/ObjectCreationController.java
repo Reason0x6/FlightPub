@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Implements object creation functionality
+ */
 @Controller
 public class ObjectCreationController {
     private UserAccountServices usrServices;
@@ -26,7 +29,6 @@ public class ObjectCreationController {
     private TicketServices ticketServices;
     private AirlineServices airlineServices;
     private UserAccount SessionUser;
-
     private AdminAccountServices adminAccountServices;
 
     @Autowired
@@ -73,6 +75,14 @@ public class ObjectCreationController {
         this.adminAccountServices = adminAccountServices;
     }
 
+    /**
+     * Returns a confirmation page after creating a new flight
+     *
+     * @param airline airline to be created
+     * @param model   interface that defines a holder for model attributes
+     * @param session current session
+     * @return confirmation of creation of airline
+     */
     @PostMapping("/airline/add")
     public String addAirline(@ModelAttribute Airlines airline, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -102,6 +112,14 @@ public class ObjectCreationController {
         }
     }
 
+    /**
+     * Returns a confirmation page after creating a new price
+     *
+     * @param price    price to be created
+     * @param model    interface that defines a holder for model attributes
+     * @param session  current session
+     * @return confirmation of creation of price
+     */
     @PostMapping("/price/add")
     public String addPrice(@ModelAttribute Price price, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -174,6 +192,14 @@ public class ObjectCreationController {
         }
     }
 
+    /**
+     * Returns a confirmation page after creating a new location
+     *
+     * @param location location to be created
+     * @param model    interface that defines a holder for model attributes
+     * @param session  current session
+     * @return confirmation of creation of location
+     */
     @PostMapping("/location/add")
     public String addLoc(@ModelAttribute Location location, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -205,6 +231,14 @@ public class ObjectCreationController {
         return "Confirmations/NewLocation";
     }
 
+    /**
+     * Returns a confirmation page after creating a new user account
+     *
+     * @param newUser  newUser to be created
+     * @param model    interface that defines a holder for model attributes
+     * @param session  current session
+     * @return confirmation of creation of newUser
+     */
     @PostMapping("/RegisterUser")
     public String registerUSR(@ModelAttribute UserRegister newUser, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -223,6 +257,14 @@ public class ObjectCreationController {
         return "redirect:/RegisterUser?error=form";
     }
 
+    /**
+     * Returns a confirmation page after updating a user account
+     *
+     * @param newUser  newUser to be updated
+     * @param model    interface that defines a holder for model attributes
+     * @param session  current session
+     * @return confirmation of creation of newUser
+     */
     @PostMapping("/UpdateUser")
     public String updateSR(@ModelAttribute UserRegister newUser, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -239,6 +281,14 @@ public class ObjectCreationController {
         return "redirect:/account?error=form";
     }
 
+    /**
+     * Returns a confirmation page after registering a new admin account
+     *
+     * @param newAdmin  newAdmin to be updated
+     * @param model     interface that defines a holder for model attributes
+     * @param session   current session
+     * @return confirmation of creation of newAdmin
+     */
     @PostMapping("/RegisterAdmin")
     public String registerAdminUSR(@ModelAttribute AdminRegister newAdmin, Model model, HttpSession session) {
         model.addAttribute("Admin", getAdminSession(session));
@@ -258,6 +308,14 @@ public class ObjectCreationController {
         return "redirect:/AdminRegister?error=form";
     }
 
+    /**
+     * Returns a confirmation page after creating a new flight
+     *
+     * @param container  flight to be created
+     * @param model      interface that defines a holder for model attributes
+     * @param session    current session
+     * @return confirmation of creation of flight
+     */
     @PostMapping("/flight/add")
     public String addFlight(@ModelAttribute EditedFlightContainer container, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
@@ -411,6 +469,12 @@ public class ObjectCreationController {
         return "redirect:/Group?groupId=" + newGroup.getId();
     }
 
+    /**
+     * Return the current user's session
+     *
+     * @param session current session
+     * @return current sessionUser
+     */
     private UserSession getSession(HttpSession session) {
         UserSession sessionUser = null;
         try {
@@ -427,6 +491,12 @@ public class ObjectCreationController {
         return sessionUser;
     }
 
+    /**
+     * Return the current admin user's session
+     *
+     * @param session current session
+     * @return current sessionAdmin user
+     */
     private AdminSession getAdminSession(HttpSession session) {
         AdminSession sessionAdmin = null;
         try {
