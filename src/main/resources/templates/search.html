@@ -3,6 +3,16 @@
 
 <head th:replace="Fragments/Head"></head>
 <header th:replace="Fragments/Header"></header>
+<div th:replace="Fragments/FormError" ></div>  <div class="container">
+        <div class="row" style="padding-left: 30px; position: relative;" th:if="${FormError} != null">
+        <div class="col-md-12">
+            <div class="alert alert-error alert-dismissible fade show" role="alert">
+                <strong>Ooooops!</strong> There was an error when submitting your form. Please make sure everything is formatted correctly!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    </div>
 <div class="container">
     <div id="main" style="margin-top: 100px">
         <div class="card l-1" data-aos="zoom-in-left">

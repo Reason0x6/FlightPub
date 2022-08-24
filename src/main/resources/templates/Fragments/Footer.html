@@ -31,6 +31,14 @@
         $(".start-loading").on("click", function () {
             $("#loader").css("display", "block");
         });
+        $(document).ready(function() {
+            $('#formerror').modal('show');
+        });
+
+        function closeError(){
+
+            $('#formerror').modal('hide');
+        }
     </script>
 </lower>
 

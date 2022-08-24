@@ -1,0 +1,14 @@
+
+<div id="formerror" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" th:if="${FormError} != null">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content" style="padding: 10px;">
+      <div class="modal-body" >
+      <strong>Ooooopss!</strong><br>The form did not submit correctly! Please try again!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeError()">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

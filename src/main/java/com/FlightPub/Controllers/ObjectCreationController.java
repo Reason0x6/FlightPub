@@ -88,8 +88,7 @@ public class ObjectCreationController {
             invalid = true;
 
         if(invalid) {
-            model.addAttribute("FormError", true);
-            return "Admin/AirlineManagement";
+            return "redirect:/admin/airline/management?error=form";
         }
 
 
@@ -99,8 +98,7 @@ public class ObjectCreationController {
             return "Confirmations/NewAirline";
         }
         else {
-            model.addAttribute("FormError", true);
-            return "Admin/AirlineManagement";
+            return "redirect:/admin/airline/management?error=form";
         }
     }
 
@@ -147,7 +145,7 @@ public class ObjectCreationController {
             invalid = true;
 
         if(invalid) {
-            return "Admin/PriceManagement";
+            return "redirect:/admin/price/management?error=form";
         }
 
         // Trys to match the Pricing with a current price object
@@ -158,8 +156,7 @@ public class ObjectCreationController {
 
         // Checks that the specified date doest overlap with existing
         if(currentPrice == null && flightServices.existingPriceTimeframe(price)) {
-            model.addAttribute("FormError", true);
-            return "Admin/PriceManagement";
+            return "redirect:/admin/price/management?error=form";
         }
 
         // Fill missing field
@@ -173,8 +170,7 @@ public class ObjectCreationController {
             return "Confirmations/NewPrice";
         }
         else {
-            model.addAttribute("FormError", true);
-            return "Admin/PriceManagement";
+            return "redirect:/admin/price/management?error=form";
         }
     }
 
@@ -202,8 +198,7 @@ public class ObjectCreationController {
 
         // Checks whether the supplied input is valid then tries to performs database interaction
         if (invalid || locationServices.saveOrUpdate(location) == null) {
-            model.addAttribute("FormError", true);
-            return "Admin/LocationManagement";
+            return "redirect:/admin/location/management?error=form";
         }
 
         model.addAttribute("addedLoc", location);
@@ -215,7 +210,6 @@ public class ObjectCreationController {
         model.addAttribute("usr", getSession(session));
         if (usrServices.getById(newUser.getEmail()) != null) {
             model.addAttribute("Error", "User already exists");
-            model.addAttribute("FormError", true);
             return "Error/404";
         } else if (newUser.isValid()) {
             UserAccount nUser = new UserAccount(newUser.getFirstname(), newUser.getEmail(), newUser.getPassword());
@@ -228,8 +222,7 @@ public class ObjectCreationController {
             return "User/Login";
         }
 
-        model.addAttribute("FormError", true);
-        return "/Register";
+        return "redirect:/RegisterUser?error=form";
     }
 
     @PostMapping("/UpdateUser")
@@ -245,8 +238,7 @@ public class ObjectCreationController {
             return "Confirmations/UpdatedUser";
         }
 
-        model.addAttribute("FormError", true);
-        return "redirect:/account";
+        return "redirect:/account?error=form";
     }
 
     @PostMapping("/RegisterAdmin")
@@ -254,7 +246,6 @@ public class ObjectCreationController {
         model.addAttribute("Admin", getAdminSession(session));
         if (adminAccountServices.getById(newAdmin.getEmail()) != null) {
             model.addAttribute("Error", "Admin already exists");
-            model.addAttribute("FormError", true);
             return "Error/404";
         } else if (newAdmin.isValid()) {
             AdminAccount admin = new AdminAccount(newAdmin.getEmail(), newAdmin.getFirstName(), newAdmin.getLastName(), newAdmin.getCompany(), newAdmin.getPassword());
@@ -263,8 +254,7 @@ public class ObjectCreationController {
             return "Confirmations/RegisterAdmin";
         }
 
-        model.addAttribute("FormError", true);
-        return "User/AdminRegister";
+        return "redirect:/AdminRegister?error=form";
     }
 
     @PostMapping("/flight/add")
@@ -361,8 +351,7 @@ public class ObjectCreationController {
 
         // Returns a invalid flight to the edit and creation page
         if (invalid) {
-            model.addAttribute("FormError", true);
-            return "Admin/FlightManagement";
+            return "redirect:/admin/flight/management?error=form";
         }
 
         // Adds the ID to existing availabilities to ensure they are overridden
@@ -393,8 +382,7 @@ public class ObjectCreationController {
         }
 
         if (flight == null) {
-            model.addAttribute("FormError", true);
-            return "Admin/FlightManagement";
+            return "redirect:/admin/flight/management?error=form";
         }
         else {
             model.addAttribute("flight", flight);
