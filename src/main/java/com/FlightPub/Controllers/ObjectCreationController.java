@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Implements object creation functionality
+ */
 @Controller
 public class ObjectCreationController {
     private UserAccountServices usrServices;
