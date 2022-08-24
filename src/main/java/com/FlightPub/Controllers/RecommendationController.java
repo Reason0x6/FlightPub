@@ -17,7 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Implements recommendation functionality
+ */
 @Controller
 public class RecommendationController {
     private Location userLocation;                  // Stores user location
