@@ -76,7 +76,7 @@
                                                     th:text="${flight.getArrivalString()}"></span></td>
                                             <td th:data="${flight.getAirlineCode()}"><span
                                                     th:text="${flight.getAirlineCode()}"></span></td>
-                                            <td><span th:text="' $' + ${flight.getCheapestPrice()}"></span></td>
+                                            <td th:data="${flight.getCheapestPrice()}"><span th:text="' $' + ${flight.getCheapestPrice()}"></span></td>
                                             <td><a class="btn btn-primary"
                                                    th:href="'/flight?id=' + ${flight.getFlightID()}">View Flight</a>&nbsp;&nbsp;
                                                 <button class="btn btn-link" type="submit">Bookmark</button>
@@ -133,7 +133,7 @@
                                             <td th:data="${flight.getAirlines()}"><b>Airline: </b><span
                                                     th:text="${flight.getAirlines}"></span></td>
 
-                                            <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
+                                            <td th:data="${flight.getTotalPrice()}"><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
 
                                             <td>
                                                 <a class="btn btn-primary"
@@ -192,9 +192,9 @@
                                             <td th:data="${flight.getAirlines()}"><b>Airline: </b><span
                                                     th:text="${flight.getAirlines}"></span></td>
 
-                                            <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
+                                            <td th:data="${flight.getTotalPrice()}"><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
 
-                                            <td>
+                                            <td >
                                                 <a class="btn btn-primary"
                                                    th:href="'/stopoverFlight?id=' + ${flight.getConcatFlightID()}">View Flight</a>&nbsp;&nbsp;
                                                 <button class="btn btn-link" type="submit">Bookmark</button>
@@ -251,7 +251,7 @@
                                             <td th:data="${flight.getAirlines()}"><b>Airline: </b><span
                                                     th:text="${flight.getAirlines}"></span></td>
 
-                                            <td><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
+                                            <td th:data="${flight.getTotalPrice()}"><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
 
                                             <td>
                                                 <a class="btn btn-primary"
@@ -279,9 +279,11 @@
 
 <script>
     $('#dtBasicExample th').on('click', function () {
-        var table = $(this).parents('table').eq(0)
-        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-        this.asc = !this.asc
+        var table = $(this).parents('table').eq(0);
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+        this.asc = !this.asc;
+        $('#dtBasicExample th').css("background-color", "#fff");
+        $(this).css("background-color", "rgba(0,0,0,0.1)");
         if (!this.asc) {
             rows = rows.reverse()
         }
@@ -302,9 +304,40 @@
     }
 
     $('#dtStopoverExample th').on('click', function () {
-        var table = $(this).parents('table').eq(0)
-        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-        this.asc = !this.asc
+        var table = $(this).parents('table').eq(0);
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+        this.asc = !this.asc;
+        $('#dtStopoverExample th').css("background-color", "#fff");
+        $(this).css("background-color", "rgba(0,0,0,0.1)");
+        if (!this.asc) {
+            rows = rows.reverse()
+        }
+        for (var i = 0; i < rows.length; i++) {
+            table.append(rows[i])
+        }
+    })
+
+    $('#dtStopoverExample1 th').on('click', function () {
+        var table = $(this).parents('table').eq(0);
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+        this.asc = !this.asc;
+        $('#dtStopoverExample1 th').css("background-color", "#fff");
+        $(this).css("background-color", "rgba(0,0,0,0.1)");
+        if (!this.asc) {
+            rows = rows.reverse()
+        }
+        for (var i = 0; i < rows.length; i++) {
+            table.append(rows[i])
+        }
+    })
+
+
+    $('#dtStopoverExample2 th').on('click', function () {
+        var table = $(this).parents('table').eq(0);
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+        this.asc = !this.asc;
+        $('#dtStopoverExample2 th').css("background-color", "#fff");
+        $(this).css("background-color", "rgba(0,0,0,0.1)");
         if (!this.asc) {
             rows = rows.reverse()
         }
