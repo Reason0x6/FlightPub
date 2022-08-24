@@ -826,9 +826,6 @@ public class IndexController {
 
             offset += br.getTotalSeats();
         }
-
-
-
         getSession(session).setConfirmationID(confirmationID);
 
         return "redirect:/bookingConfirmation";
@@ -842,7 +839,6 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
 
-        //getSession(session).setBookedCart(getSession(session).getCheckedOutCart());
         model.addAttribute("booking", getSession(session).getCart());
 
         String accountEmail = getSession(session).getEmail();
@@ -855,12 +851,16 @@ public class IndexController {
 
         Email email = new Email();
 
+        String mailToLink = "flightpub.team2@gmail.com";
+        String accountPageLink = "https://flightpub-team2.herokuapp.com/account";
+
         email.setEmailRecipient(accountEmail);
         email.setEmailSubject("FlightPub Booking Confirmation : " + confirmationID);
         email.setEmailBody("Thank you for booking with FlightPub. Your booking reference is "
                 + confirmationID + ".\n\n" + "This email has been sent to " + accountEmail + ".\n\n"
+                + "You can access all of your past and future booking details on your FlightPub account page - " + accountPageLink + ".\n\n"
                 + "Please keep this email for your records.\n\n" + "We hope you enjoy your flight.\n\n"
-                + "Kind regards,\n" + "FlightPub");
+                + "Kind regards,\n" + "The FlightPub Team\n\n" + mailToLink);
 
         try {
             emailServices.sendSimpleMail(email);
