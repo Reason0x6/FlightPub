@@ -508,9 +508,13 @@
                             collaborate and decide on what suits you, then, once you're all set, allocate seating
                             together but pay separately!</p>
                         <div th:if="${usr.isLoggedIn()} == false">
+                            <a class="btn btn-success" href="/admin/flight/management"
+                               type="submit" th:if="${admin.isLoggedIn()} != false">  Edit this flight</a>
+
                             <a class="btn btn-success" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}"
-                               type="submit">Login to Create a Group</a><Br><Br>
+                               type="submit" th:if="${admin.isLoggedIn()} == false">Login to Create a Group</a><Br><Br>
                         </div>
+
                         <div th:if="${usr.isLoggedIn()} == true">
                             <form th:replace="Fragments/Forms :: #createGroupForm"></form>
                         </div>

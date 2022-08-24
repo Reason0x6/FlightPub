@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-md d-grid">
-            <button class="btn btn-primary start-loading btn-search" type="submit">Find Flights!</button>
+            <button class="btn btn-primary start-loading btn-search" id="searchSubmit" type="submit">Find Flights!</button>
         </div>
     </div>
     <div>
@@ -81,6 +81,33 @@
     </div>
 
     <script>
+
+        $('#searchSubmit').on('click', function () {
+            $('#search input').css("border", "1px solid #ced4da");
+            let flags = 0;
+            if ($('#origin').val().trim().length < 3){
+                $('#origin').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#destination').val().trim().length < 3){
+                $('#destination').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#origin').val() === $('#destination').val()){
+                $('#destination').css("border", "1px solid red");
+                $('#origin').css("border", "1px solid red");
+                flags++;
+            }
+            if(flags === 0){
+                $("#loader").css("display", "block");
+                return true;
+            }else{
+
+                return false;
+            }
+        });
+
+
         function allDest() {
 
             let val = document.getElementById("nodest");
@@ -269,46 +296,81 @@
             <div class="col-md-4">
                 <label class="form-label" for="maxPrice">Max-Price</label>
                 <br>
-                <input class="form-control" id="maxPrice" max="12000" min="0" name="maxPrice" placeholder="Max"
-                       type="number" value="12000"><br>
+                <div th:if="${search.getMaxPrice() == null}" >
+                    <input class="form-control" id="maxPrice" max="50000" min="0" name="maxPrice" placeholder="Max"
+                           type="number"><br>
+                </div>
+                <div th:unless="${search.getMaxPrice() == null}" >
+                    <input class="form-control" id="maxPrice" max="50000" min="0" name="maxPrice" placeholder="Max"
+                           type="number" th:value="${search.getMaxPrice()}"><br>
+                </div>
             </div>
             <div class="col-md-4">
 
                 <label class="form-label" for="seats">Number of Seats</label>
-                <input class="form-control" id="seats" min="1" name="seats" type="number" value="1"><br><br>
+                <div th:if="${search.getSeats() == null}" >
+                    <input class="form-control" id="seats" min="1" name="seats" type="number" value="1"><br><br>
+                </div>
+                <div th:unless="${search.getSeats() == null}" >
+                    <input class="form-control" id="seats" min="1" name="seats" type="number" th:value="${search.getSeats()}"><br><br>
+                </div>
+
 
 
             </div>
             <div class="col-md-4">
                 <label class="form-label" for="rating">Minimum Ratings
                 </label>&nbsp;
-                <output>
+                <output id="ratings">
                     0
                 </output>
                 <br>
-                <input class="form-control" id="rating" max="5" min="0" name="rating" oninput="this.previousElementSibling.value = this.value" type="range"
+                <input class="form-control" id="rating" max="5" min="0" name="rating" oninput="$('#ratings').html(this.value);" type="range"
                        value="0"><br>
             </div>
             <hr>
 
 
             <div class="col-md-8">
-                <input id="nodestAdvanced" name="nodest" onclick="allDest()" style="width: 50px;" type="checkbox">
+                <div th:if="${search.isNodest()}" style="display: inline;" >
+                    <input id="nodestAdvanced" name="nodest" onclick="allDest()" style="width: 50px;" type="checkbox" checked>
+                </div>
+                <div th:unless="${search.isNodest()}" style="display: inline;" >
+                    <input id="nodestAdvanced" name="nodest" onclick="allDest()" style="width: 50px;" type="checkbox">
+                </div>
                 <label class="form-label" for="nodestAdvanced">Show all destinations</label>
-                <input id="exactdateAdvanced" name="exactdate" onclick="adjustDate()" style="width: 50px;"
-                       type="checkbox">
+
+                <div th:if="${search.isExactdate()}" style="display: inline;" >
+                    <input id="exactdateAdvanced" name="exactdate" onclick="adjustDate()" style="width: 50px;"
+                           type="checkbox" checked>
+                </div>
+                <div th:unless="${search.isExactdate()}" style="display: inline;" >
+                    <input id="exactdateAdvanced" name="exactdate" onclick="adjustDate()" style="width: 50px;"
+                           type="checkbox">
+                </div>
                 <label class="form-label" for="exactdateAdvanced">Use Exact Date</label>
 
-                <input id="directFlight" name="directFlight" o="" style="width: 50px;" type="checkbox">
+                <div th:if="${search.isDirectFlight()}" style="display: inline;" >
+                    <input id="directFlight" name="directFlight" o="" style="width: 50px;" type="checkbox" checked>
+                </div>
+                <div th:unless="${search.isDirectFlight()}" style="display: inline;" >
+                    <input id="directFlight" name="directFlight" o="" style="width: 50px;" type="checkbox">
+                </div>
                 <label class="form-label" for="directFlight">Direct flight Only</label>
 
-                <input id="searchByArrivalAdvanced" name="searchByArrival" onclick="adjustDate()" style="width: 50px;"
-                       type="checkbox">
+                <div th:if="${search.isSearchByArrival()}" style="display: inline;" >
+                    <input id="searchByArrivalAdvanced" name="searchByArrival" onclick="adjustDate()" style="width: 50px;"
+                           type="checkbox" checked>
+                </div>
+                <div th:unless="${search.isSearchByArrival()}" style="display: inline;" >
+                    <input id="searchByArrivalAdvanced" name="searchByArrival" onclick="adjustDate()" style="width: 50px;"
+                           type="checkbox">
+                </div>
                 <label class="form-label" for="searchByArrivalAdvanced">Search by Arrival Times</label>
 
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary start-loading btn-search" style="margin-top: -5px" type="submit">Find
+                <button class="btn btn-primary start-loading btn-search" id="searchAdvSubmit" style="margin-top: -5px" type="submit">Find
                     Flights!
                 </button>
             </div>
@@ -316,6 +378,39 @@
         </div>
     </div>
     <script>
+
+        $('#searchAdvSubmit').on('click', function () {
+            $('#advancedSearch input').css("border", "1px solid #ced4da");
+            let flags = 0;
+            if ($('#flightOrigin').val().trim().length < 3){
+                $('#flightOrigin').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#flightDestination').val().trim().length < 3){
+                $('#flightDestination').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#flightOrigin').val() === $('#flightDestination').val()){
+                $('#flightDestination').css("border", "1px solid red");
+                $('#flightOrigin').css("border", "1px solid red");
+                flags++;
+            }
+            if($('#maxPrice').val() < 0){
+                $('#maxPrice').css("border", "1px solid red");
+                flags++;
+            }
+            if($('#seats').val() < 0){
+                $('#seats').css("border", "1px solid red");
+                flags++;
+            }
+            if(flags === 0){
+                $("#loader").css("display", "block");
+                return true;
+            }else{
+                return false;
+            }
+        });
+
         function allDest() {
 
             let val = document.getElementById("nodestAdvanced");
