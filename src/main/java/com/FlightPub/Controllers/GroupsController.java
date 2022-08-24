@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 
 /**
- * Controller for handing user groups
+ * Controller for handling user groups
  */
 @Controller
 public class GroupsController {
@@ -327,7 +327,7 @@ public class GroupsController {
     }
 
     /**
-     * returns a html fragment list of current group users
+     * Returns a html fragment list of current group users
      *
      * @param groupId id to load
      * @param model   interface that defines a holder for model attributes

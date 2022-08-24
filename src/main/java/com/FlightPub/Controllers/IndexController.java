@@ -1001,8 +1001,11 @@ public class IndexController {
         String accountEmail = getSession(session).getEmail();
 
         Traveller[] travellers = travellerContainer.getTravellers();
-
+        System.out.println(travellers.length);
         for(int i = 0; i < travellers.length; i++){
+            if(travellers[i] == null){
+                break;
+            }
             if(travellers[i].getFirstName().equals("")){
                 return "redirect:/checkout?error=form";
             }
