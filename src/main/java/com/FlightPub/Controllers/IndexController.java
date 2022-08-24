@@ -751,8 +751,8 @@ public class IndexController {
             return "redirect:/cart?error=maxseats";
         }
 
-        getSession(session).setCheckedOutCart(getSession(session).getCart());
-        model.addAttribute("checkout", getSession(session).getCheckedOutCart());
+        //getSession(session).setCheckedOutCart(getSession(session).getCart());
+        model.addAttribute("checkout", getSession(session).getCart());
         model.addAttribute("usr", getSession(session));
         model.addAttribute("traveller", new Traveller());
 
@@ -772,7 +772,7 @@ public class IndexController {
 
         Traveller[] travellers = travellerContainer.getTravellers();
 
-        for (BookingRequest br : getSession(session).getCheckedOutCart()) {
+        for (BookingRequest br : getSession(session).getCart()) {
             Booking booking;
             for (int i = 0; i < travellers.length; i++) {
                 if(travellers[i] == null){
@@ -811,8 +811,8 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
 
-        getSession(session).setBookedCart(getSession(session).getCheckedOutCart());
-        model.addAttribute("booking", getSession(session).getBookedCart());
+        //getSession(session).setBookedCart(getSession(session).getCheckedOutCart());
+        model.addAttribute("booking", getSession(session).getCart());
 
         String accountEmail = getSession(session).getEmail();
         String confirmationID = getSession(session).getConfirmationID();
