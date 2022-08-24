@@ -155,8 +155,6 @@ public class GroupsController {
             if (groupServices.isAdmin(userSession.getEmail())) {
                 System.out.println("Adding flight: " + flightId);
 
-                // TODO Add flight lock once booking started
-
                 // Add flight to group in db
                 groupServices.addFlight(flightId);
 
@@ -191,7 +189,6 @@ public class GroupsController {
 
         // If invited user is already in group
         if (groupServices.isUserInGroup(inviteUser)) {
-            // TODO send to this front end
             model.addAttribute("Error", "User is already in group");
             // System.out.println("User is already in group");
 
@@ -208,7 +205,6 @@ public class GroupsController {
         }
         // If these checks fail not a valid user
         else {
-            // TODO send this to the front end instead
             model.addAttribute("Error", "Not a valid user");
 
             // Fetch the th:fragment="invite_user_form_error_fragment" and return it

@@ -215,8 +215,6 @@ public class ObjectCreationController {
             UserAccount nUser = new UserAccount(newUser.getFirstname(), newUser.getEmail(), newUser.getPassword());
             usrServices.saveOrUpdate(nUser);
 
-            // TODO: Notification of new user account to be sent to newUser.getEmail()
-
             model.addAttribute("Registered", true);
 
             return "User/Login";
