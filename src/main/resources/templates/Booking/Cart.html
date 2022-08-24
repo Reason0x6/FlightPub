@@ -57,7 +57,7 @@
                                 <tr>
                                     <th scope="row" th:text="${br.getFlight().getFlightNumber()}"></th>
                                     <td th:text="${br.getDepartureDate()}"></td>
-                                    <td th:text="${br.getFlight().getDepartureCode()} + ' >>> ' + ${br.getFlight().getDestinationCode()}"></td>
+                                    <td th:text="${br.getFlight().getDepartureName()} + ' to ' + ${br.getFlight().getDestinationName()}"></td>
                                     <td th:text="${br.getTotalSeats()}"></td>
                                     <td th:text="'$' + ${br.getPrice()}"></td>
                                     <td><a class="btn btn-danger" th:href="@{'/cart/remove?id=' + ${br.getId()}}">Remove

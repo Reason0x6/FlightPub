@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class StopOver {
@@ -113,12 +114,12 @@ public class StopOver {
             return "";
     }
 
-    public String getDeparture() {
-        return flights.get(0).getDepartureString();
+    public Date getDeparture() {
+        return Flight.stringToDate(flights.get(0).getDepartureString());
     }
 
-    public String getArrival() {
-        return flights.get(0).getArrivalString();
+    public Date getArrival() {
+        return Flight.stringToDate(flights.get(0).getArrivalString());
     }
 
     public String getAirlines() {
