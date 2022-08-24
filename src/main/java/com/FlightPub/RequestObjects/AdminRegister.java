@@ -6,6 +6,10 @@ import lombok.Setter;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Admin Register Request Object
+ */
+
 public class AdminRegister {
 
     @Getter
