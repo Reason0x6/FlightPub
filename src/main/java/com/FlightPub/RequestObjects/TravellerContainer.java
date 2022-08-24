@@ -8,9 +8,17 @@ import java.util.List;
 
 public class TravellerContainer {
 
+    @Setter
+    private int counter = -1;
+
     @Getter
     @Setter
     private Traveller[] travellers = new Traveller[100];
 
     public TravellerContainer(){}
+
+    public int getCounter() {
+        counter ++;
+        return counter;
+    }
 }
