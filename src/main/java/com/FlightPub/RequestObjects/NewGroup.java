@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Simple Java Object used to store group information
+ * New Group request object
  */
 public class NewGroup {
     @Getter
