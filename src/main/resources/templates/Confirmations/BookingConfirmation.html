@@ -39,7 +39,7 @@
                             <tr>
                                 <th scope="row" th:text="${bd.getFlight().getFlightNumber()}"></th>
                                 <td th:text="${bd.getDepartureDate()}"></td>
-                                <td th:text="${bd.getFlight().getDepartureCode()} + ' >>> ' + ${bd.getFlight().getDestinationCode()}"></td>
+                                <td th:utext="'<b>' + ${bd.getFlight().getDepartureName()} + ' to ' + ${bd.getFlight().getDestinationName()} + '</b>'"></td>
                                 <td th:text="${bd.getTotalSeats()}"></td>
                                 <td th:text="'$' + ${bd.getPrice()}"></td>
                             </tr>
