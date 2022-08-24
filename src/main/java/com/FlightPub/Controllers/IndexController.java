@@ -239,7 +239,6 @@ public class IndexController {
             List<Booking> previous = new ArrayList<>();
             List<Booking> upcoming = new ArrayList<>();
             for(Booking b: bookings){
-                System.out.println( b.getFlight().getDepartureTime() + " | " + (new Date().getTime () / 1000L));
                if(b.getFlight().getDepartureTime() > (new Date().getTime () / 1000L)){
                    upcoming.add(b);
                }else{
@@ -292,6 +291,7 @@ public class IndexController {
 
     @RequestMapping("/stopoverFlight")
     public String viewStopoverFlight(@RequestParam String id, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
         String[] flightID = id.split("-");  // Breaks up the flight ID's if there are multiple
 
         // Collection variables for the flight details of each leg
@@ -306,7 +306,6 @@ public class IndexController {
         // Collects all stopover flight details
         for (int count = 0; count < flightID.length; count++) {
             Flight f = flightServices.getById(flightID[count]);
-            System.out.println(flightID[count]);
             List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
 
             dest.add(locationServices.getById(f.getDestinationCode()));
@@ -341,13 +340,11 @@ public class IndexController {
 
     @RequestMapping("/flight")
     public String viewFlight(@RequestParam String id, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
         Flight f = flightServices.getById(id);
 
-        System.out.println(id);
         List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
-        for(Availability a: availableSeats){
-            System.out.println(a.getClassCode());
-        }
+
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
@@ -370,9 +367,13 @@ public class IndexController {
 
     @RequestMapping("/admin/flight/management")
     @PostMapping("/admin/flight/management")
-    public String modifyFlights(@ModelAttribute Flight flight, Model model, HttpSession session) {
+    public String modifyFlights(@ModelAttribute Flight flight, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
             return "redirect:/login";
+        }
+
+       if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
         }
 
         model.addAttribute("admin", getAdminSession(session));
@@ -418,15 +419,20 @@ public class IndexController {
         model.addAttribute("flight", flight);
         model.addAttribute("usr", getSession(session));
 
+
         return "Admin/FlightManagement";
     }
 
     @RequestMapping("/admin/location/management")
     @PostMapping("/admin/location/management")
-    public String modifyLocation(@ModelAttribute Location location, Model model, HttpSession session) {
+    public String modifyLocation(@ModelAttribute Location location, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
+
 
         model.addAttribute("admin", getAdminSession(session));
 
@@ -452,10 +458,15 @@ public class IndexController {
 
     @RequestMapping("/admin/price/management")
     @PostMapping("/admin/price/management")
-    public String modifyPrice(@ModelAttribute Price price, Model model, HttpSession session) {
+    public String modifyPrice(@ModelAttribute Price price, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
+    System.out.println(error);
+    if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
+
 
         model.addAttribute("admin", getAdminSession(session));
         List<TicketClass> classes = ticketServices.getAllTicketClass();
@@ -500,9 +511,12 @@ public class IndexController {
 
     @RequestMapping("/admin/airline/management")
     @PostMapping("/admin/airline/management")
-    public String modifyPrice(@ModelAttribute Airlines airline, Model model, HttpSession session) {
+    public String modifyPrice(@ModelAttribute Airlines airline,  @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getAdminSession(session).isLoggedIn()) {
             return "redirect:/login";
+        }
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
         }
 
         model.addAttribute("admin", getAdminSession(session));
@@ -537,7 +551,6 @@ public class IndexController {
             try {
                 getSession(session).removeFromWishList(remove);
             } catch (Exception e) {
-                System.out.println(e.getStackTrace());
                 model.addAttribute("WishL", getSession(session).getWishList());
                 model.addAttribute("usr", getSession(session));
                 return "WishList";
@@ -567,7 +580,13 @@ public class IndexController {
     }
 
     @PostMapping("/search")
-    public String runSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session) {
+    public String runSearch(@ModelAttribute BasicSearch search,  @RequestParam(required = false) String error, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
+
+
         model = addDateAndTimeToModel(model);
         List<Flight>[] flights = new ArrayList[2];
         List<StopOver>[] stopOver = new ArrayList[3];
@@ -609,7 +628,11 @@ public class IndexController {
     }
 
     @PostMapping("/advancedSearch")
-    public String runAdvancedSearch(@ModelAttribute BasicSearch search, Model model, HttpSession session) {
+    public String runAdvancedSearch(@ModelAttribute BasicSearch search,  @RequestParam(required = false) String error, Model model, HttpSession session) {
+        model.addAttribute("admin", getAdminSession(session));
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
         model = addDateAndTimeToModel(model);
         List<Flight>[] flights = new ArrayList[2];
         List<StopOver>[] stopOver = new ArrayList[3];
@@ -674,9 +697,12 @@ public class IndexController {
     }
 
     @PostMapping("/cart/direct")
-    public String updateCart(@ModelAttribute BookingRequest bookingRequest, Model model, HttpSession session) {
+    public String updateCart(@ModelAttribute BookingRequest bookingRequest,  @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
+        }
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
         }
 
         model.addAttribute("Flight", getSession(session).getLastViewedFlight());
@@ -694,11 +720,13 @@ public class IndexController {
     }
 
     @PostMapping("/cart/indirect")
-    public String updateCartWithIndirect(@ModelAttribute BookingRequestContainer bookingRequest, Model model, HttpSession session) {
+    public String updateCartWithIndirect(@ModelAttribute BookingRequestContainer bookingRequest, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
-
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
         List<Flight> flights = getSession(session).getLastViewedFlight();
         BookingRequest[] requests = bookingRequest.getBookingRequest();
         model.addAttribute("Flight", flights);
@@ -733,18 +761,21 @@ public class IndexController {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
-
-        List<BookingRequest> check = getSession(session).getCart();
-        int totalSeats = 0;
-        for(BookingRequest b: check){
-            totalSeats += b.getTotalSeats();
+        try {
+            List<BookingRequest> check = getSession(session).getCart();
+            int totalSeats = 0;
+            for (BookingRequest b : check) {
+                totalSeats += b.getTotalSeats();
+            }
+            if (totalSeats > 100) {
+                return "redirect:/cart?error=maxseats";
+            }
+        } catch (Exception e){
+            return "redirect:/cart?error=form";
         }
-        if(totalSeats > 100){
-            return "redirect:/cart?error=maxseats";
-        }
 
-        getSession(session).setCheckedOutCart(getSession(session).getCart());
-        model.addAttribute("checkout", getSession(session).getCheckedOutCart());
+        //getSession(session).setCheckedOutCart(getSession(session).getCart());
+        model.addAttribute("checkout", getSession(session).getCart());
         model.addAttribute("usr", getSession(session));
         model.addAttribute("traveller", new Traveller());
 
@@ -752,9 +783,12 @@ public class IndexController {
     }
 
     @PostMapping("/checkout")
-    public String updateCheckout(@ModelAttribute TravellerContainer travellerContainer, Model model, HttpSession session) {
+    public String updateCheckout(@ModelAttribute TravellerContainer travellerContainer, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
+        }
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
         }
 
         model.addAttribute("usr", getSession(session));
@@ -764,7 +798,7 @@ public class IndexController {
 
         Traveller[] travellers = travellerContainer.getTravellers();
 
-        for (BookingRequest br : getSession(session).getCheckedOutCart()) {
+        for (BookingRequest br : getSession(session).getCart()) {
             Booking booking;
             for (int i = 0; i < travellers.length; i++) {
                 if(travellers[i] == null){
@@ -803,8 +837,8 @@ public class IndexController {
 
         model.addAttribute("usr", getSession(session));
 
-        getSession(session).setBookedCart(getSession(session).getCheckedOutCart());
-        model.addAttribute("booking", getSession(session).getBookedCart());
+        //getSession(session).setBookedCart(getSession(session).getCheckedOutCart());
+        model.addAttribute("booking", getSession(session).getCart());
 
         String accountEmail = getSession(session).getEmail();
         String confirmationID = getSession(session).getConfirmationID();
@@ -842,11 +876,13 @@ public class IndexController {
     }
 
     @PostMapping("/bookingConfirmation")
-    public String bookingConfirmation(@ModelAttribute Booking booking, Model model, HttpSession session) {
+    public String bookingConfirmation(@ModelAttribute Booking booking, @RequestParam(required = false) String error, Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
-
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
         getSession(session).setCart(null);
         getSession(session).setCheckedOutCart(null);
         getSession(session).setBookedCart(null);
@@ -1071,7 +1107,6 @@ public class IndexController {
                     }
                     break;
             }
-            //System.out.println("First Class Tickets Price " + price);
         }
         for (String[] seat : br.getBusSeats()) {
             switch (seat[0]) {
@@ -1125,7 +1160,6 @@ public class IndexController {
                     }
                     break;
             }
-            //System.out.println("Business Class Tickets Price " + price);
         }
         for (String[] seat : br.getPmeSeats()) {
             switch (seat[0]) {
@@ -1179,7 +1213,6 @@ public class IndexController {
                     }
                     break;
             }
-            //System.out.println("Premium Economy Class Tickets Price " + price);
         }
         for (String[] seat : br.getEcoSeats()) {
             switch (seat[0]) {
@@ -1233,7 +1266,6 @@ public class IndexController {
                     }
                     break;
             }
-            //System.out.println("Eco Class Tickets Price " + price);
         }
         return price;
     }

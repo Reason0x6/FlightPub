@@ -5,6 +5,7 @@
 <head th:replace="Fragments/Head"></head>
 <!-- ======= Header ======= -->
 <header th:replace="Fragments/Header"></header>
+<div th:replace="Fragments/FormError" ></div>
 <body>
 <!-- ======= Hero Section ======= -->
 <main id="main">
@@ -45,12 +46,12 @@
                                         </thead>
                                         <!-- For Each Seat Requested -->
                                         <tbody>
-                                        <!-- Traveller -->
+                                        <!-- Select Traveller
                                         <tr>
                                             <th>Select Traveller from Account:</th>
                                         </tr>
-                                        <!-- OR -->
-                                        <th>OR add new Traveller details:</th>
+                                        -->
+                                        <th>Traveller details:</th>
                                         <tr>
                                             <!-- Add new Traveller Details -->
                                             <!-- Traveller Info [Input]-->
@@ -80,10 +81,11 @@
                                                        type="date"></td>
                                         </tr>
                                         <tr>
-                                            <!-- Save Traveller to Account [Checkbox]-->
+                                            <!-- Save Traveller to Account [Checkbox]
                                             <th><label th:for="'travellers['+${i}+'].saveTraveller'">Save new Traveller to Account?</label></th>
                                             <td><input style="width: 50px;"
                                                        th:id="'saveTraveller' + ${i}" th:name="'travellers['+${i}+'].saveTraveller'"  type="checkbox"></td>
+                                            -->
                                             <td><input class="form-control"
                                                        th:id="'seat' + ${i}" th:name="'travellers['+${i}+'].seat'"  th:value="${flight.getAllSeatsList()[i]}"
                                                        type="hidden">
@@ -99,7 +101,7 @@
                     <Br>
                     <hr/>
                     <Br>
-                    <div>
+                    <div class="card l-1" style="padding: 10px 0 0 20px;">
                         <div class="row icon-box" data-aos="zoom-in-left">
                             <table class="table">
                                 <thead>
@@ -137,7 +139,7 @@
                     <Br>
                     <hr/>
                     <Br>
-                    <div>
+                    <div class="card l-1" style="padding: 10px 0 0 20px;">
                         <div class="row icon-box" data-aos="zoom-in-left">
                             <table class="table">
                                 <tbody>
@@ -157,7 +159,7 @@
                     <Br>
                     <hr/>
                     <Br>
-                    <div>
+                    <div class="card l-1" style="padding: 10px 0 0 20px;">
                         <div class="row icon-box" data-aos="zoom-in-left">
                             <table class="table" id="payment">
                                 <tbody>

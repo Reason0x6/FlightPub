@@ -2,6 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="Fragments/Head"></head>
 <header th:replace="Fragments/Header"></header>
+<div th:replace="Fragments/FormError" ></div>  <div class="container">
+        <div class="row" style="padding-left: 30px; position: relative;" th:if="${FormError} != null">
+        <div class="col-md-12">
+            <div class="alert alert-error alert-dismissible fade show" role="alert">
+                <strong>Ooooops!</strong> There was an error when submitting your form. Please make sure everything is formatted correctly!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    </div>
 <body>
 <!-- ======= Hero Section ======= -->
 <main id="main">
@@ -498,9 +508,13 @@
                             collaborate and decide on what suits you, then, once you're all set, allocate seating
                             together but pay separately!</p>
                         <div th:if="${usr.isLoggedIn()} == false">
+                            <a class="btn btn-success" href="/admin/flight/management"
+                               type="submit" th:if="${admin.isLoggedIn()} != false">  Edit this flight</a>
+
                             <a class="btn btn-success" th:href="@{'/login?redirect=flight?id=' + ${Flight.getFlightID()}}"
-                               type="submit">Login to Create a Group</a><Br><Br>
+                               type="submit" th:if="${admin.isLoggedIn()} == false">Login to Create a Group</a><Br><Br>
                         </div>
+
                         <div th:if="${usr.isLoggedIn()} == true">
                             <form th:replace="Fragments/Forms :: #createGroupForm"></form>
                         </div>

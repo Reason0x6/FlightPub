@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-md d-grid">
-            <button class="btn btn-primary start-loading btn-search" type="submit">Find Flights!</button>
+            <button class="btn btn-primary start-loading btn-search" id="searchSubmit" type="submit">Find Flights!</button>
         </div>
     </div>
     <div>
@@ -81,6 +81,33 @@
     </div>
 
     <script>
+
+        $('#searchSubmit').on('click', function () {
+            $('#search input').css("border", "1px solid #ced4da");
+            let flags = 0;
+            if ($('#origin').val().trim().length < 3){
+                $('#origin').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#destination').val().trim().length < 3){
+                $('#destination').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#origin').val() === $('#destination').val()){
+                $('#destination').css("border", "1px solid red");
+                $('#origin').css("border", "1px solid red");
+                flags++;
+            }
+            if(flags === 0){
+                $("#loader").css("display", "block");
+                return true;
+            }else{
+
+                return false;
+            }
+        });
+
+
         function allDest() {
 
             let val = document.getElementById("nodest");
@@ -294,11 +321,11 @@
             <div class="col-md-4">
                 <label class="form-label" for="rating">Minimum Ratings
                 </label>&nbsp;
-                <output>
+                <output id="ratings">
                     0
                 </output>
                 <br>
-                <input class="form-control" id="rating" max="5" min="0" name="rating" oninput="this.previousElementSibling.value = this.value" type="range"
+                <input class="form-control" id="rating" max="5" min="0" name="rating" oninput="$('#ratings').html(this.value);" type="range"
                        value="0"><br>
             </div>
             <hr>
@@ -343,7 +370,7 @@
 
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary start-loading btn-search" style="margin-top: -5px" type="submit">Find
+                <button class="btn btn-primary start-loading btn-search" id="searchAdvSubmit" style="margin-top: -5px" type="submit">Find
                     Flights!
                 </button>
             </div>
@@ -351,6 +378,39 @@
         </div>
     </div>
     <script>
+
+        $('#searchAdvSubmit').on('click', function () {
+            $('#advancedSearch input').css("border", "1px solid #ced4da");
+            let flags = 0;
+            if ($('#flightOrigin').val().trim().length < 3){
+                $('#flightOrigin').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#flightDestination').val().trim().length < 3){
+                $('#flightDestination').css("border", "1px solid red");
+                flags++;
+            }
+            if ($('#flightOrigin').val() === $('#flightDestination').val()){
+                $('#flightDestination').css("border", "1px solid red");
+                $('#flightOrigin').css("border", "1px solid red");
+                flags++;
+            }
+            if($('#maxPrice').val() < 0){
+                $('#maxPrice').css("border", "1px solid red");
+                flags++;
+            }
+            if($('#seats').val() < 0){
+                $('#seats').css("border", "1px solid red");
+                flags++;
+            }
+            if(flags === 0){
+                $("#loader").css("display", "block");
+                return true;
+            }else{
+                return false;
+            }
+        });
+
         function allDest() {
 
             let val = document.getElementById("nodestAdvanced");
@@ -584,30 +644,38 @@
 </form>
 <!-- Price management form for finding existing Prices --------------------------------------------------------------------------------->
 <form id="findExistingPrice" method="post" th:action="@{/admin/price/management}" th:object="${Price}">
-    <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
-    <input class="form-control" id="flightNumber" name="flightNumber" type="text">
-
-    <label for="startDate" id="startDateLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Date: </label>
-    <input class="form-control" id="startDate" name="startDate" type="datetime-local">
-
-    <label for="classCode" id="classCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Class: </label>
-    <select id="classCode" name="classCode">
-        <option selected value="">-- Select --</option>
-        <div th:each="class : ${Classes}">
-            <option th:value="${class.getDetails()}" th:text="${class.getDetails()}"></option>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
+            <input class="form-control" id="flightNumber" name="flightNumber" type="text">
         </div>
-    </select>
-
-    <label for="ticketCode" id="ticketCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Type: </label>
-    <select id="ticketCode" name="ticketCode">
-        <option selected value="">-- Select --</option>
-        <div th:each="type : ${Types}">
-            <option th:value="${type.getName()}" th:text="${type.getName()}"></option>
+        <div class="col-md-6">
+            <label for="startDate" id="startDateLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Date: </label>
+            <input class="form-control" id="startDate" name="startDate" type="datetime-local">
         </div>
-    </select>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="classCode" id="classCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Class: </label>
+            <select class="form-control" id="classCode" name="classCode">
+                <option selected value="">-- Select --</option>
+                <div th:each="class : ${Classes}">
+                    <option th:value="${class.getDetails()}" th:text="${class.getDetails()}"></option>
+                </div>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="ticketCode" id="ticketCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Type: </label>
+            <select class="form-control" id="ticketCode" name="ticketCode">
+                <option selected value="">-- Select --</option>
+                <div th:each="type : ${Types}">
+                    <option th:value="${type.getName()}" th:text="${type.getName()}"></option>
+                </div>
+            </select>
+        </div>
+    </div>
 
-
-    <button class="btn btn-primary btn-search" type="submit">Find Price</button>
+    <button class="btn btn-primary btn-search" type="submit" style="margin-top: 10px">Find Price</button>
 </form>
 
 <!-- Price management form for creating/editing Price -------------------------------------------------------------------------------->
@@ -620,17 +688,17 @@
     <div class="row">
         <div class="col-md-4">
             <label for="flightNumber" id="flightNumberLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Flight Number: </label>
-            <input type="text" id="flightNumber" name="flightNumber" th:value="${Price.getFlightNumber()}">
+            <input class="form-control" type="text" id="flightNumber" name="flightNumber" th:value="${Price.getFlightNumber()}">
         </div>
         <div class="col-md-4">
             <label for="airlineCode" id="airlineCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline Code: </label>
-            <input type="text" id="airlineCode" name="airlineCode" th:value="${Price.getAirlineCode()}">
+            <input class="form-control" type="text" id="airlineCode" name="airlineCode" th:value="${Price.getAirlineCode()}">
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <label for="classCode" id="classCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Class: </label>
-            <select id="classCode" name="classCode">
+            <select class="form-control" id="classCode" name="classCode">
                 <option selected value="">-- Select --</option>
                 <div th:each="class : ${Classes}">
                     <option th:if="${#strings.equals(Price.getClassCode(), class.getTicketClass())}" th:value="${class.getDetails()}" th:text="${class.getDetails()}" selected></option>
@@ -640,7 +708,7 @@
         </div>
         <div class="col-md-4">
             <label for="ticketCode" id="ticketCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Type: </label>
-            <select id="ticketCode" name="ticketCode">
+            <select class="form-control" id="ticketCode" name="ticketCode">
                 <option selected value="">-- Select --</option>
                 <div th:each="type : ${Types}">
                     <option th:if="${#strings.equals(Price.getTicketCode(), type.getTicketCode())}" th:value="${type.getName()}" th:text="${type.getName()}" selected></option>
@@ -653,22 +721,22 @@
     <div class="row">
         <div class="col-md-4">
             <label for="StartDate" id="StartDateLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Start Date: </label>
-            <input type="datetime-local" id="StartDate" name="startDate" th:value="${Price.getStartString()}">
+            <input class="form-control" type="datetime-local" id="StartDate" name="startDate" th:value="${Price.getStartString()}">
         </div>
         <div class="col-md-4">
             <label for="endDate" id="endDateLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">End Date: </label>
-            <input type="datetime-local" id="endDate" name="endDate" th:value="${Price.getEndString()}">
+            <input class="form-control" type="datetime-local" id="endDate" name="endDate" th:value="${Price.getEndString()}">
         </div>
     </div>
     <hr>
     <div class="row">
         <div class="col-md-4">
             <label for="priceLeg1" id="priceLeg1Label" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Price - leg 1: </label>
-            <input type="number" id="priceLeg1" name="priceLeg1" th:value="${Price.getPriceLeg1()}">
+            <input class="form-control" type="number" id="priceLeg1" name="priceLeg1" th:value="${Price.getPriceLeg1()}">
         </div>
         <div class="col-md-4">
             <label for="priceLeg2" id="priceLeg2Label" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Price - leg 2: </label>
-            <input type="number" id="priceLeg2" name="priceLeg2" th:value="${Price.getPriceLeg2()}">
+            <input class="form-control" type="number" id="priceLeg2" name="priceLeg2" th:value="${Price.getPriceLeg2()}">
         </div>
     </div>
     <button class="btn btn-primary btn-search" type="submit">Save Price</button>
