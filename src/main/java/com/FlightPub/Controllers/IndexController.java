@@ -802,7 +802,7 @@ public class IndexController {
         for (BookingRequest br : getSession(session).getCart()) {
             Booking booking;
 
-            for (int i = 0; i < travellers.length; i++) {
+            for (int i = offset; i < offset + br.getTotalSeats(); i++) {
                 if(travellers[i] == null){
                     continue;
                 }
