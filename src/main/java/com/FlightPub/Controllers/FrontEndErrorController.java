@@ -59,5 +59,4 @@ public class FrontEndErrorController implements ErrorController {
 
         return sessionUser;
     }
-
 }
