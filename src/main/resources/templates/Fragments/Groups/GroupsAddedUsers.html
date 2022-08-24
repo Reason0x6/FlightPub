@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div class="col-md-6" id="added_users_section" style="padding-left: 20px;" th:fragment="added_users_section">
+<div class="col-md-6" id="added_users_section" th:fragment="added_users_section">
     <div class="section-title" data-aos="zoom-out">
         <h2>Members admin: </h2>
         <p>The Who's Who</p>
@@ -29,7 +29,10 @@
                 <td th:if="${isAdmin}">
                     <span th:if="${user.email == admin.email}"> Group Admin </span>
 
-                    <button th:if="${user.email != admin.email}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeUserModal" th:onclick="setRemoveUser([[${user.email}]])">Remove User</button>
+                    <button th:if="${user.email != admin.email}" th:onclick="setRemoveUser([[${user.email}]])"
+                            type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeUserModal">
+                        Remove User
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -44,12 +47,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to remove this user?
-                        This can not be undone.
-                    </p>
+                    <p>Are you sure you want to remove this user? <br>
+                        This can not be undone. </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="removeUser()">Remove User</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="removeUser()">
+                        Remove User
+                    </button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -63,12 +67,6 @@
         $(document).ready(function () {
             loadAddedUsers()
         })
-
-        let removeUserEmail;
-        function setRemoveUser(removeUserIn) {
-            removeUserEmail = removeUserIn
-        }
-
 
         /**
          * User email to be removed from group
