@@ -228,7 +228,7 @@
             <hr/>
             <div class="section-title" data-aos="zoom-out" id="discover" style="margin-top: 25px">
                 <h2>Discover</h2>
-                <p>Just For You</p>
+                <p>Holiday Packages Just For You</p>
             </div>
 
             <div class="row icon-box" data-aos="zoom-in-left">
@@ -253,7 +253,6 @@
                     </div>
                 </div>
                 <div th:if="${userHolidayPackages.size &gt 0}">
-                    <h1>Holiday Packages</h1>
                     <div class="border-bottom" th:each="holidayPackage : ${userHolidayPackages}">
                         <table>
                             <tr>
@@ -309,6 +308,9 @@
                         </button>
                         <br/> <br/>
                     </div>
+                </div>
+                <div th:if="${userHolidayPackages.size &lt 1}">
+                    <p><em>Add locations to your wishlist for tailored holiday packages</em></p>
                 </div>
                 <div th:if="${reco} == 0">
                     <p>There are currently no recommendations</p>
