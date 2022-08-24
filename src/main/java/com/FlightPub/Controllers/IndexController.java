@@ -6,9 +6,15 @@ import com.FlightPub.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import com.FlightPub.model.Email;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Strings;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
@@ -28,6 +34,7 @@ public class IndexController {
     private HolidayPackageServices holidayPackageServices;
     private AirlineServices airlineServices;
     private TicketServices ticketServices;
+    private EmailServices emailServices;
 
     @Autowired
     @Qualifier(value = "AirlineServices")
@@ -86,6 +93,12 @@ public class IndexController {
     @Autowired
     @Qualifier(value = "TicketServices")
     public void setTicketServices(TicketServices ticketServices){ this.ticketServices = ticketServices; }
+
+    @Autowired
+    @Qualifier(value = "EmailServices")
+    public void setEmailServices(EmailServices emailServices) {
+        this.emailServices = emailServices;
+    }
 
     @RequestMapping("/invalidatecache")
     public String cache() {
@@ -332,7 +345,9 @@ public class IndexController {
 
         System.out.println(id);
         List<Availability> availableSeats = flightServices.getAvailability(f.getFlightNumber(), f.getDepartureTime());
-
+        for(Availability a: availableSeats){
+            System.out.println(a.getClassCode());
+        }
         model.addAttribute("Dest", locationServices.getById(f.getDestinationCode()));
         model.addAttribute("Dep", locationServices.getById(f.getDepartureCode()));
 
@@ -572,6 +587,7 @@ public class IndexController {
         // Gathers Flights and Stopovers
         flights[0] = search.runBasicSearch(search.getStart(), search.getEnd(), false);
         search.setCheapestPriceForSearchResults(flights[0]);
+
         flights[1] = search.getPromotedFlights(flights[0]);
         stopOver[0] = search.basicStopOverSearch(1);
         stopOver[1] = search.basicStopOverSearch(2);
@@ -608,6 +624,7 @@ public class IndexController {
 
         // Gathers Flights and Stopovers
         flights[0] = search.runAdvancedSearch();
+        search.setCheapestPriceForSearchResults(flights[0]);
         flights[1] = search.getPromotedFlights(flights[0]);
         if (!search.isDirectFlight()) {
             stopOver[0] = search.advancedStopOverSearch(1);
@@ -724,6 +741,7 @@ public class IndexController {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
+
         List<BookingRequest> check = getSession(session).getCart();
         int totalSeats = 0;
         for(BookingRequest b: check){
@@ -747,10 +765,11 @@ public class IndexController {
             return "redirect:/login";
         }
 
-
         model.addAttribute("usr", getSession(session));
 
-        Traveller traveller;
+        String confirmationID = generateConfirmationID();
+        String accountEmail = getSession(session).getEmail();
+
         Traveller[] travellers = travellerContainer.getTravellers();
 
         for (BookingRequest br : getSession(session).getCheckedOutCart()) {
@@ -759,39 +778,93 @@ public class IndexController {
                 if(travellers[i] == null){
                     continue;
                 }
+                if (travellers[i].getAccountEmail() == null || travellers[i].getAccountEmail().equals("")) {
+                    travellers[i].setAccountEmail(accountEmail);
+                }
 
                 if (travellers[i].getId() == null) {
                     travellers[i].setTravellerID(new ObjectId());
                 }
-                booking = new Booking(travellers[i].getAccountEmail(), br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat());
+
+                booking = new Booking(accountEmail, br.getFlight().getFlightID(), travellers[i].getId(), travellers[i].getSeat(), confirmationID);
                 if (booking.getId() == null) {
                     booking.setBookingID(new ObjectId());
                 }
 
                 bookingServices.addTraveller(travellers[i]);
+                bookingServices.getTravellers().add(travellers[i]);
                 bookingServices.addBooking(booking);
+                bookingServices.getBookings().add(booking);
             }
         }
+
+        getSession(session).setConfirmationID(confirmationID);
 
         return "redirect:/bookingConfirmation";
     }
 
     @RequestMapping("/bookingConfirmation")
-    public String bookingConfirmation(Booking booking, TravellerContainer travellerContainer, Model model, HttpSession session) {
+    public String bookingConfirmation(Model model, HttpSession session) {
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
 
         model.addAttribute("usr", getSession(session));
 
-        model.addAttribute("travellerContainer", travellerContainer.getTravellers());
-        model.addAttribute("booking", booking);
+        getSession(session).setBookedCart(getSession(session).getCheckedOutCart());
+        model.addAttribute("booking", getSession(session).getBookedCart());
+
+        String accountEmail = getSession(session).getEmail();
+        String confirmationID = getSession(session).getConfirmationID();
+
+        List<Booking> bookingDetails = bookingServices.getBookings();
+        List<Traveller> travellerDetails = new ArrayList<>();
+
+        for (int i = 0; i < bookingDetails.size(); i++) {
+            for (int j = 0; j < bookingServices.getTravellers().size(); j++) {
+                travellerDetails.add(bookingServices.getTravellers().get(j));
+            }
+        }
+
+        model.addAttribute("bookingDetails", bookingDetails);
+        model.addAttribute("travellers", travellerDetails);
+        model.addAttribute("confirmationID", confirmationID);
+
+        Email email = new Email();
+
+        email.setEmailRecipient(accountEmail);
+        email.setEmailSubject("FlightPub Booking Confirmation : " + confirmationID);
+        email.setEmailBody("Thank you for booking with FlightPub. Your booking reference is "
+                + confirmationID + ".\n\n" + "This email has been sent to " + accountEmail + ".\n\n"
+                + "Please keep this email for your records.\n\n" + "We hope you enjoy your flight.\n\n"
+                + "Kind regards,\n" + "FlightPub");
+
+        try {
+            emailServices.sendSimpleMail(email);
+        } catch (HttpMessageNotReadableException e) {
+            e.printStackTrace();
+        }
+
 
         return "Confirmations/BookingConfirmation";
     }
 
+    @PostMapping("/bookingConfirmation")
+    public String bookingConfirmation(@ModelAttribute Booking booking, Model model, HttpSession session) {
+        if (!getSession(session).isLoggedIn()) {
+            return "redirect:/login";
+        }
+
+        getSession(session).setCart(null);
+        getSession(session).setCheckedOutCart(null);
+        getSession(session).setBookedCart(null);
+        getSession(session).setConfirmationID(null);
+
+        return "redirect:/bookingConfirmation";
+    }
+
     protected String generateConfirmationID() {
-        return UUID.randomUUID().toString();
+        return RandomStringUtils.randomAlphanumeric(8).toUpperCase();
     }
 
     @RequestMapping("/bookingalert")

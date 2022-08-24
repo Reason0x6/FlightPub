@@ -143,6 +143,9 @@
                                                 </select>
                                             </span>
                                         </div>
+                                        <div th:if="${firstClass.size()}  == 0 ">
+                                            <em>All Seats in this type are sold out</em>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -238,6 +241,9 @@
                                                     <option value="5">5</option>
                                                 </select>
                                             </span>
+                                            </div>
+                                            <div th:if="${businessClass.size()}  == 0 ">
+                                                <em>All Seats in this type are sold out</em>
                                             </div>
                                         </div>
                                     </div>
@@ -336,6 +342,9 @@
                                                 </select>
                                             </span>
                                             </div>
+                                            <div th:if="${premiumEconomy.size()}  == 0 ">
+                                                <em>All Seats in this type are sold out</em>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -432,6 +441,9 @@
                                                     <option value="5">5</option>
                                                 </select>
                                             </span>
+                                            </div>
+                                            <div th:if="${economyClass.size()}  == 0 ">
+                                                <em>All Seats in this type are sold out</em>
                                             </div>
                                         </div>
                                     </div>

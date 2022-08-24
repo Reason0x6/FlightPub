@@ -35,7 +35,9 @@ public class UserGroupServices {
         LinkedList<UserAccount> accounts = new LinkedList<>();
         LinkedList<String> userIDs = usrGroup.getUserIDs();
         for (String usr : userIDs) {
-            accounts.add(accData.getById(usr));
+            UserAccount user = accData.getById(usr);
+            user.setBookingStatusCheck(accData.isBooked(user.getEmail(), usrGroup.getFlight()));
+            accounts.add(user);
         }
         return accounts;
     }
