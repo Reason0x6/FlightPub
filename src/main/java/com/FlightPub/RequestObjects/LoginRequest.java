@@ -6,8 +6,10 @@ import lombok.Setter;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Login Request request object
+ */
 public class LoginRequest {
-
 
     private final SecurityService secService;
     @Getter

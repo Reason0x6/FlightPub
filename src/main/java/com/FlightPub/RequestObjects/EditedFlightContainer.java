@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Edited Flight Container request object
+ */
 public class EditedFlightContainer {
     @Getter
     @Setter

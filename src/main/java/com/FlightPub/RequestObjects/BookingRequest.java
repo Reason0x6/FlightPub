@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Booking Request request object
+ */
 public class BookingRequest {
 
     @Getter
