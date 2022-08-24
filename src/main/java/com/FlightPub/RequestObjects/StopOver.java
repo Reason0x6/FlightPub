@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Simple Java Object used to store multi stop flights
+ * Flight Stop Over request object
  */
 public class StopOver {
     @Getter
@@ -101,6 +101,11 @@ public class StopOver {
             return null;
     }
 
+    /**
+     * Returns all stop-overs between a flight origin and destination
+     *
+     * @return all stop-overs locations
+     */
     public String getAllStops() {
         String output = "";
         for (int count = 0; count < flights.size(); count++) {

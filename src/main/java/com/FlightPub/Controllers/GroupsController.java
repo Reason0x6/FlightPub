@@ -327,7 +327,7 @@ public class GroupsController {
     }
 
     /**
-     * returns a html fragment list of current group users
+     * Returns a html fragment list of current group users
      *
      * @param groupId id to load
      * @param model   interface that defines a holder for model attributes

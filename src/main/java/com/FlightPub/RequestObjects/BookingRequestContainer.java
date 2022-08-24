@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Simple Java Object used to store booking requests
+ * Booking Request Container request object
  */
 public class BookingRequestContainer {
     @Getter

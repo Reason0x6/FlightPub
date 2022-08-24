@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Simple Java Object used to store flight search parameters
+ * Basic Search request object
  */
 public class BasicSearch {
     // Services

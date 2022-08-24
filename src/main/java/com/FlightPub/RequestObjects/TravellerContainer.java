@@ -3,8 +3,9 @@ import com.FlightPub.model.Traveller;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * Traveller Container request object
+ */
 
 /**
  * Simple Java Object used to store travellers

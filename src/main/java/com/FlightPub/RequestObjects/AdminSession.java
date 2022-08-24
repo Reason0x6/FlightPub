@@ -4,7 +4,7 @@ import com.FlightPub.model.AdminAccount;
 import lombok.Getter;
 
 /**
- * Simple Java Object used to store admin session information
+ * Admin Session request object
  */
 public class AdminSession {
 

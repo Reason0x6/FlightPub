@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Simple Java Object used to store flight availability information
+ * Availability Container request object
  */
 public class AvailabilityContainer {
     @Getter

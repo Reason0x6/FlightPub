@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Simple Java Object used to store booking request information
+ * Booking Request request object
  */
 public class BookingRequest {
 
