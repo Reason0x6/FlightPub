@@ -14,11 +14,20 @@ import java.util.List;
 public class AirlineServices {
     private final AirlineRepo airlineRepo;
 
+    /**
+     * Sets the classes' repository object
+     * @param airlineRepo
+     */
     @Autowired
     public AirlineServices(AirlineRepo airlineRepo) {
         this.airlineRepo = airlineRepo;
     }
 
+    /**
+     * Add a new airline or update an airline field in the database
+     * @param airlines to save or update in the database
+     * @return airline
+     */
     public Airlines saveOrUpdate(Airlines airlines) {
         try {
             airlines.setAirlineID(airlines.getAirlineID().toUpperCase());
@@ -32,6 +41,10 @@ public class AirlineServices {
         }
     }
 
+    /**
+     * Get a list of sponsored airlines from the database
+     * @return List of airlines or null
+     */
     public List<Airlines> getSponsoredAirlines() {
         List<Airlines> airlines = airlineRepo.findBySponsoredIsTrue();
         if (!airlines.isEmpty())
@@ -40,6 +53,11 @@ public class AirlineServices {
             return null;
     }
 
+    /**
+     * Checks if an airline exists
+     * @param airlineID to search for in the database
+     * @return boolean
+     */
     public boolean airlineExists(String airlineID) {
         List<Airlines> airlines = airlineRepo.findAirline(airlineID);
         if(airlines != null && !airlines.isEmpty())
@@ -48,6 +66,11 @@ public class AirlineServices {
             return false;
     }
 
+    /**
+     * Get an airline from id
+     * @param id to find in the airline repository
+     * @return airline if id is found or null if not found
+     */
     public Airlines getAirlineByID(String id) {
         List<Airlines> airline = airlineRepo.findAirline(id);
         if(airline != null && !airline.isEmpty())
@@ -56,6 +79,11 @@ public class AirlineServices {
             return null;
     }
 
+    /**
+     * Get an airline from airline name
+     * @param name to find in the airline repository
+     * @return airline if id is found or null if not found
+     */
     public Airlines getAirlineByAirlineName(String name) {
         List<Airlines> airline = airlineRepo.findAirlineByName(name);
         if(airline != null && !airline.isEmpty())

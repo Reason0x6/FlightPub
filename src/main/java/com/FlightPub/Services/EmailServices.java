@@ -17,6 +17,11 @@ public class EmailServices {
 
     @Value("${spring.mail.username}") private String sender;
 
+    /**
+     * Sends a booking confirmation email to the user
+     * @param email to send confirmation to
+     * @return string response of email success or error
+     */
     public String sendSimpleMail(Email email) {
         try {
 
