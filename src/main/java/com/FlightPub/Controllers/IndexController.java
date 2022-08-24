@@ -101,7 +101,11 @@ public class IndexController {
     }
 
     @RequestMapping("/invalidatecache")
-    public String cache() {
+    public String cache(Model model,HttpSession session) {
+        if (!getAdminSession(session).isLoggedIn()) {
+            return "redirect:/login";
+        }
+
         System.out.println("Cache Cleared");
         flightServices.invalidate();
         return "index";
@@ -155,7 +159,10 @@ public class IndexController {
     }
 
     @RequestMapping("/AdminRegister")
-    public String loadAdminRegister(Model model, HttpSession session) {
+    public String loadAdminRegister(Model model, @RequestParam(required = false) String error, HttpSession session) {
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
 
         model.addAttribute("usr", getSession(session));
         model.addAttribute("locs", locationServices.listAll());
@@ -756,11 +763,15 @@ public class IndexController {
     }
 
     @RequestMapping("/checkout")
-    public String checkout(Model model, HttpSession session) {
+    public String checkout(Model model, @RequestParam(required = false) String error,HttpSession session) {
 
         if (!getSession(session).isLoggedIn()) {
             return "redirect:/login";
         }
+        if(error != null && error.equalsIgnoreCase("form")){
+            model.addAttribute("FormError", true);
+        }
+
         try {
             List<BookingRequest> check = getSession(session).getCart();
             int totalSeats = 0;
@@ -792,12 +803,27 @@ public class IndexController {
             model.addAttribute("FormError", true);
         }
 
+
+
         model.addAttribute("usr", getSession(session));
 
         String confirmationID = generateConfirmationID();
         String accountEmail = getSession(session).getEmail();
 
         Traveller[] travellers = travellerContainer.getTravellers();
+
+        for(int i = 0; i < travellers.length; i++){
+            if(travellers[i].getFirstName().equals("")){
+                return "redirect:/checkout?error=form";
+            }
+            if(travellers[i].getLastName().equals("")){
+                return "redirect:/checkout?error=form";
+            }
+            if(travellers[i].getDob().equals("")){
+                return "redirect:/checkout?error=form";
+            }
+        }
+
         int offset = 0;
         for (BookingRequest br : getSession(session).getCart()) {
             Booking booking;

@@ -181,7 +181,7 @@
                                 <tr>
                                     <!-- Submit Payment Request -->
                                     <td>
-                                        <button class="btn btn-success" href="/bookingConfirmation" style="max-width: 200px"
+                                        <button class="btn btn-success" id="submitCheckout" href="/bookingConfirmation" style="max-width: 200px"
                                                 type="submit">Pay Now
                                         </button>
                                     </td>
@@ -190,6 +190,37 @@
                             </table>
                         </div>
                     </div>
+                    <script>
+                        $('#submitCheckout').on('click', function(){
+
+                            $('#seatBooking input').css("border", "1px solid #ced4da");
+                            $('#seatBooking select').css("border", "1px solid #ced4da");
+                            let flag = 0;
+                            $('input').each(function() {
+                                if ($(this).val() === '') {
+                                    $(this).css("border", "1px solid red");
+                                    flag++;
+                                }
+                            });
+
+                            $('select').each(function() {
+                                if ($(this).val() === 'default') {
+                                    $(this).css("border", "1px solid red");
+                                    flag++;
+                                }
+                            });
+
+                            if(!validateCreditCard()){
+                                flag++;
+                            }
+                            if(flag > 0){
+                                event.preventDefault();
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        });
+                    </script>
                 </form>
             </div>
         </div>

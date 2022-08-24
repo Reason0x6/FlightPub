@@ -30,6 +30,10 @@ public class AdminRegister {
     @Getter
     private String confirmPassword;
 
+    @Getter
+    @Setter
+    private String registrationcode;
+
     private final SecurityService secService;
 
     AdminRegister() throws NoSuchAlgorithmException {

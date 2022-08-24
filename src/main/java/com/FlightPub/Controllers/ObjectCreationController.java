@@ -245,16 +245,19 @@ public class ObjectCreationController {
     @PostMapping("/RegisterAdmin")
     public String registerAdminUSR(@ModelAttribute AdminRegister newAdmin, Model model, HttpSession session) {
         model.addAttribute("Admin", getAdminSession(session));
+        if(!newAdmin.getRegistrationcode().equals("h38DxU9QneP1gB")){
+            return "redirect:/AdminRegister?error=form";
+        }
         if (adminAccountServices.getById(newAdmin.getEmail()) != null) {
-            model.addAttribute("Error", "Admin already exists");
-            return "Error/404";
+            return "redirect:/AdminRegister?error=form";
         } else if (newAdmin.isValid()) {
             AdminAccount admin = new AdminAccount(newAdmin.getEmail(), newAdmin.getFirstName(), newAdmin.getLastName(), newAdmin.getCompany(), newAdmin.getPassword());
             adminAccountServices.saveOrUpdate(admin);
-            model.addAttribute("addedAdmin", admin);
-            return "Confirmations/RegisterAdmin";
-        }
 
+            model.addAttribute("Registered", true);
+            model.addAttribute("usr", getSession(session));
+            return "User/Login";
+        }
         return "redirect:/AdminRegister?error=form";
     }
 
@@ -281,7 +284,6 @@ public class ObjectCreationController {
             flight.setFlightID(new ObjectId());
         }
         model.addAttribute("flight", flight);
-
 
         // Validates the input
         boolean invalid = false;
