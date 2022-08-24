@@ -537,7 +537,12 @@
         </div>
         <div class="col-md-6">
             <label for="covid_restricted" id="covid_restrictedLabel">Covid Restricted: </label>
-            <input  id="covid_restricted" name="covid_restricted" type="checkbox">
+            <div th:if="${location.isCovid_restricted()}">
+                <input  id="covid_restricted" name="covid_restricted" type="checkbox" checked>
+            </div>
+            <div th:unless="${location.isCovid_restricted()}">
+                <input  id="covid_restricted" name="covid_restricted" type="checkbox">
+            </div>
         </div>
     </div>
     <button class="btn btn-primary btn-search" type="submit">Save Flight</button>

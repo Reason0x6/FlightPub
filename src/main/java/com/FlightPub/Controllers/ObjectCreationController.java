@@ -73,7 +73,7 @@ public class ObjectCreationController {
         this.adminAccountServices = adminAccountServices;
     }
 
-    @RequestMapping("/airline/add")
+    @PostMapping("/airline/add")
     public String addAirline(@ModelAttribute Airlines airline, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
@@ -87,8 +87,10 @@ public class ObjectCreationController {
         else if(airline.getAirlineID() == "" || airline.getAirlineName() == "" || airline.getCountryCode() == "")
             invalid = true;
 
-        if(invalid)
+        if(invalid) {
+            model.addAttribute("FormError", true);
             return "Admin/AirlineManagement";
+        }
 
 
         // Save to the database
@@ -96,11 +98,13 @@ public class ObjectCreationController {
             model.addAttribute("Airline", airline);
             return "Confirmations/NewAirline";
         }
-        else
+        else {
+            model.addAttribute("FormError", true);
             return "Admin/AirlineManagement";
+        }
     }
 
-    @RequestMapping("/price/add")
+    @PostMapping("/price/add")
     public String addPrice(@ModelAttribute Price price, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
@@ -153,8 +157,10 @@ public class ObjectCreationController {
         }
 
         // Checks that the specified date doest overlap with existing
-        if(currentPrice == null && flightServices.existingPriceTimeframe(price))
+        if(currentPrice == null && flightServices.existingPriceTimeframe(price)) {
+            model.addAttribute("FormError", true);
             return "Admin/PriceManagement";
+        }
 
         // Fill missing field
         double leg1 = price.getPriceLeg1() == null ? 0 : price.getPriceLeg1();
@@ -166,11 +172,13 @@ public class ObjectCreationController {
             model.addAttribute("Price", price);
             return "Confirmations/NewPrice";
         }
-        else
+        else {
+            model.addAttribute("FormError", true);
             return "Admin/PriceManagement";
+        }
     }
 
-    @RequestMapping("/location/add")
+    @PostMapping("/location/add")
     public String addLoc(@ModelAttribute Location location, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
@@ -193,35 +201,13 @@ public class ObjectCreationController {
 
 
         // Checks whether the supplied input is valid then tries to performs database interaction
-        if (invalid || locationServices.saveOrUpdate(location) == null)
+        if (invalid || locationServices.saveOrUpdate(location) == null) {
+            model.addAttribute("FormError", true);
             return "Admin/LocationManagement";
+        }
 
         model.addAttribute("addedLoc", location);
         return "Confirmations/NewLocation";
-    }
-
-    @RequestMapping("/usr/add")
-    //e.g localhost:8080/usr/add?id=1&username=Toby&email=tchruches@bigpond.com&prefairport=Syd&password=123
-    public String addUSR(@RequestParam String username, @RequestParam String email, @RequestParam String prefairport, @RequestParam String password, Model model, HttpSession session) {
-        UserAccount newUser = new UserAccount(username, email, prefairport, password, 1);
-        usrServices.saveOrUpdate(newUser);
-
-        model.addAttribute("addedUser", newUser);
-        model.addAttribute("usr", getSession(session));
-
-        return "Confirmations/NewUser";
-    }
-
-    @RequestMapping("/admin/add")
-    //e.g localhost:8080/admin/add?id=1&firstname=alice&lastname=bob&email=bobalice@email.com&company=meta&password=123
-    public String addAdminUSR(@RequestParam String email, @RequestParam String firstname, @RequestParam String lastname, @RequestParam String company, @RequestParam String password, Model model, HttpSession session) {
-        AdminAccount newAdmin = new AdminAccount(email, firstname, lastname, company, password, 1);
-        adminAccountServices.saveOrUpdate(newAdmin);
-
-        model.addAttribute("addedAdmin", newAdmin);
-        model.addAttribute("Admin", getAdminSession(session));
-
-        return "Confirmations/RegisterAdmin";
     }
 
     @PostMapping("/RegisterUser")
@@ -229,6 +215,7 @@ public class ObjectCreationController {
         model.addAttribute("usr", getSession(session));
         if (usrServices.getById(newUser.getEmail()) != null) {
             model.addAttribute("Error", "User already exists");
+            model.addAttribute("FormError", true);
             return "Error/404";
         } else if (newUser.isValid()) {
             UserAccount nUser = new UserAccount(newUser.getFirstname(), newUser.getEmail(), newUser.getPassword());
@@ -241,6 +228,7 @@ public class ObjectCreationController {
             return "User/Login";
         }
 
+        model.addAttribute("FormError", true);
         return "/Register";
     }
 
@@ -257,6 +245,7 @@ public class ObjectCreationController {
             return "Confirmations/UpdatedUser";
         }
 
+        model.addAttribute("FormError", true);
         return "redirect:/account";
     }
 
@@ -265,6 +254,7 @@ public class ObjectCreationController {
         model.addAttribute("Admin", getAdminSession(session));
         if (adminAccountServices.getById(newAdmin.getEmail()) != null) {
             model.addAttribute("Error", "Admin already exists");
+            model.addAttribute("FormError", true);
             return "Error/404";
         } else if (newAdmin.isValid()) {
             AdminAccount admin = new AdminAccount(newAdmin.getEmail(), newAdmin.getFirstName(), newAdmin.getLastName(), newAdmin.getCompany(), newAdmin.getPassword());
@@ -273,10 +263,11 @@ public class ObjectCreationController {
             return "Confirmations/RegisterAdmin";
         }
 
+        model.addAttribute("FormError", true);
         return "User/AdminRegister";
     }
 
-    @RequestMapping("/flight/add")
+    @PostMapping("/flight/add")
     public String addFlight(@ModelAttribute EditedFlightContainer container, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
@@ -370,6 +361,7 @@ public class ObjectCreationController {
 
         // Returns a invalid flight to the edit and creation page
         if (invalid) {
+            model.addAttribute("FormError", true);
             return "Admin/FlightManagement";
         }
 
@@ -400,8 +392,10 @@ public class ObjectCreationController {
             flightServices.saveOrUpdateAvailability(availability);
         }
 
-        if (flight == null)
+        if (flight == null) {
+            model.addAttribute("FormError", true);
             return "Admin/FlightManagement";
+        }
         else {
             model.addAttribute("flight", flight);
             return "Confirmations/NewFlight";
