@@ -66,17 +66,33 @@
                                 <div th:each="i : ${#numbers.sequence(0, br.getAllSeatsList().size()-1)}">
                                     <div th:if="${i == 0}">
                                         <tr>
-                                            <th scope="row" th:text="'Seats Select :'"></th>
+                                            <th scope="row" th:text="'Seats Selected :'"></th>
                                             <td th:text="${br.getAllSeatsList().get(i)}"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     </div>
                                     <div th:if="${i != 0}">
                                         <tr>
                                             <th scope="row"></th>
                                             <td th:text="${br.getAllSeatsList().get(i)}"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     </div>
                                 </div>
+                                <tr>
+                                    <th></th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </div>
                             </tbody>
                         </table>

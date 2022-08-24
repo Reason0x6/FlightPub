@@ -70,7 +70,11 @@ public class UserSession {
 
     @Getter
     @Setter
-    private Booking booking;
+    private List<BookingRequest> bookedCart;
+
+    @Getter
+    @Setter
+    private String confirmationID;
 
     @Autowired
     @Qualifier(value = "FlightServices")
@@ -180,5 +184,11 @@ public class UserSession {
     public void setLastViewedFlightDirect(Flight in) {
         lastViewedFlight = new ArrayList<>();
         lastViewedFlight.add(in);
+    }
+
+    public void clearCart() {
+        for (BookingRequest br : cart) {
+            br.setAllSeatsList(null);
+            }
     }
 }

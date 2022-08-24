@@ -21,12 +21,18 @@ public class BookingServices {
 
     private final TravellerRepo travellerRepo;
 
+    @Getter
+    private List<Booking> bookings;
+
+    @Getter
     private List<Traveller> travellers;
 
     @Autowired
     public BookingServices(BookingRepo bookingRepository, TravellerRepo travellerRepository) {
         this.bookingRepo = bookingRepository;
         this.travellerRepo = travellerRepository;
+        this.bookings = new ArrayList<>();
+        this.travellers = new ArrayList<>();
     }
 
     public List<Booking> listAll() {
@@ -68,5 +74,13 @@ public class BookingServices {
     public void addToTravellerList(Traveller traveller) {
         travellers = new ArrayList<>();
         travellers.add(traveller);
+    }
+
+    public List<Booking> getBookingDetails(String userID, String flightID) {
+        return bookingRepo.seatsBooked(userID, flightID);
+    }
+
+    public Traveller getTravellers(String userID) {
+        return travellerRepo.findByTraveller(userID);
     }
 }
