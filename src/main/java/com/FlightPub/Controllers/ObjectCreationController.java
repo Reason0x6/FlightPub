@@ -73,7 +73,7 @@ public class ObjectCreationController {
         this.adminAccountServices = adminAccountServices;
     }
 
-    @RequestMapping("/airline/add")
+    @PostMapping("/airline/add")
     public String addAirline(@ModelAttribute Airlines airline, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
@@ -104,7 +104,7 @@ public class ObjectCreationController {
         }
     }
 
-    @RequestMapping("/price/add")
+    @PostMapping("/price/add")
     public String addPrice(@ModelAttribute Price price, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
@@ -178,7 +178,7 @@ public class ObjectCreationController {
         }
     }
 
-    @RequestMapping("/location/add")
+    @PostMapping("/location/add")
     public String addLoc(@ModelAttribute Location location, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
@@ -267,7 +267,7 @@ public class ObjectCreationController {
         return "User/AdminRegister";
     }
 
-    @RequestMapping("/flight/add")
+    @PostMapping("/flight/add")
     public String addFlight(@ModelAttribute EditedFlightContainer container, Model model, HttpSession session) {
         model.addAttribute("usr", getSession(session));
         model.addAttribute("admin", getAdminSession(session));
