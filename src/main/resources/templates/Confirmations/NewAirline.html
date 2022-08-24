@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"></head>
+<head th:replace="Fragments/Header"></head>
+<div class="container">
+  <main id="main" style="margin-top: 100px" th:if="${Airline != null}">
+    <!-- ======= Services Section ======= -->
+    <h2>New Airline Created</h2>
+
+    <p th:text="'Airline ID: ' + ${Airline.getAirlineID()}"></p>
+    <p th:text="'Airline Name: ' + ${Airline.getAirlineName()}"></p>
+    <p th:text="'Country Code: ' + ${Airline.getCountryCode()}"></p>
+    <p th:text="'Sponsored Status: ' + ${Airline.isSponsored()}"></p>
+  </main>
+</div>
+<lower th:replace="Fragments/Footer"></lower>

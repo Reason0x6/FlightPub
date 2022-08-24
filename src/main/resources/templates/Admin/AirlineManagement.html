@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="Fragments/Head"></head>
+<header th:replace="Fragments/Header"></header>
+<div class="container">
+  <div id="main" style="margin-top: 100px">
+    <div class="card l-1" data-aos="zoom-in-left">
+      <h1>Edit Existing Airlines</h1>
+      <form th:replace="Fragments/Forms :: #findExistingAirline"></form>
+    </div>
+    <hr>
+    <div class="card l-1" data-aos="zoom-in-left">
+      <h1>Airline Details</h1>
+      <form th:replace="Fragments/Forms :: #EditAirline"></form>
+    </div>
+  </div>
+</div>
+<lower th:replace="Fragments/Footer"></lower>
+
+

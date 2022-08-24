@@ -638,6 +638,54 @@
     </div>
     <button class="btn btn-primary btn-search" type="submit">Save Price</button>
 </form>
+<!-- Airline management form for finding existing Airlines --------------------------------------------------------------------------------->
+<form id="findExistingAirline" method="post" th:action="@{/admin/airline/management}" th:object="${Airlines}">
+    <style>
+        input {
+            margin-bottom: 20px;
+        }
+        #findExistingAirline input, #EditAirline input {
+            padding-top: 20px;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="airlineID" id="airlineIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline: </label>
+            <input class="form-control" id="airlineID" name="airlineID" type="text">
+        </div>
+    </div>
+    <button class="btn btn-primary btn-search" type="submit">Find Airline</button>
+</form>
+
+<!-- Airline management form for creating/editing Airlines -------------------------------------------------------------------------------->
+<form id="EditAirline" method="post" th:action="@{/airline/add}" th:object="${Airlines}">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="airlineID" id="airlineIDLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline ID: </label>
+            <input class="form-control" id="airlineID" name="airlineID" type="text" th:value="${Airlines.getAirlineID()}">
+        </div>
+        <div class="col-md-6">
+            <label for="airlineName" id="airlineNameLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Airline Name: </label>
+            <input class="form-control" id="airlineName" name="airlineName" type="text" th:value="${Airlines.getAirlineName()}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="countryCode" id="countryCodeLabel" style="font-size: 0.65em; margin-left: 10px; position: absolute;">Country Code: </label>
+            <input class="form-control" id="countryCode" name="countryCode" type="text" th:value="${Airlines.getCountryCode()}">
+        </div>
+        <div class="col-md-6">
+            <label for="sponsored" id="sponsoredLabel">Sponsored: </label>
+            <div th:if="${Airlines.isSponsored()}">
+                <input  id="sponsored" name="sponsored" type="checkbox" checked>
+            </div>
+            <div th:unless="${Airlines.isSponsored()}">
+                <input  id="sponsored" name="sponsored" type="checkbox">
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-search" type="submit">Save Flight</button>
+</form>
 <!-- Recommendation location select dropdown ------------------------------------------------------------------------------------------->
 <form id="recommendationLocationForm" method="post" th:action="@{/#recommendation}" th:object="${Recommendation}">
     <span>Departure Location: </span><select class="form-select" id="recommendationLocation"
