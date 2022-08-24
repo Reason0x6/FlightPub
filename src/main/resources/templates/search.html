@@ -17,11 +17,11 @@
                 <div class="row" style="padding-top: 10px;">
                     <div class="col-sm-4">
                         <p><b><span
-                                th:text="'Departs ' + ${flights[1].get(i).getDepartureName()} + ': '"></span></b><span
-                                th:text="${flights[1].get(i).getDepartureString()}"></span></p>
+                                th:utext="${flights[1].get(i).getDepartureName()} + '<br />'"></span></b><span
+                                th:text="${flights[1].get(i).getDepartureDate()}"></span></p>
                         <p><b><span
-                                th:text="'Arrives in ' + ${flights[1].get(i).getDestinationName()} + ': '"></span></b><span
-                                th:text="${flights[1].get(i).getArrivalString()}"></span></p>
+                                th:utext="${flights[1].get(i).getDestinationName()} + '<br />'"></span></b><span
+                                th:text="${flights[1].get(i).getArrivalDate()}"></span></p>
                     </div>
                     <div class="col-sm-4">
                         <p><b>Airline: </b><span th:text="${flights[1].get(i).getAirlineCode()}"></span></p>
@@ -62,18 +62,19 @@
                                         <thead>
                                         <th id="departs">Departs</th>
                                         <th id="arrives">Arrives</th>
-                                        <th id="airlines">Airline</th>
+                                        <th id="airlines">Airlines</th>
                                         <th id="info">Prices From</th>
+                                        <th>View</th>
                                         </thead>
                                         <tbody>
 
                                         <tr class="" style="padding: 10px 0 0 20px;" th:each="flight : ${flights[0]}">
                                             <td th:data="${flight.getDepartureString()}"><b><span
-                                                    th:text="'Departs ' + ${flight.getDepartureName()} + ': '"></span></b><span
-                                                    th:text="${flight.getDepartureString()}"></span></td>
+                                                    th:utext="${flight.getDepartureName()} + '<br />'"></span></b><span
+                                                    th:text="${flight.getDepartureDate()}"></span></td>
                                             <td th:data="${flight.getArrivalString()}"><b><span
-                                                    th:text="'Arrives in ' + ${flight.getDestinationName()} + ': '"></span></b><span
-                                                    th:text="${flight.getArrivalString()}"></span></td>
+                                                    th:utext="${flight.getDestinationName()} + '<br />'"></span></b><span
+                                                    th:text="${flight.getArrivalDate()}"></span></td>
                                             <td th:data="${flight.getAirlineCode()}"><span
                                                     th:text="${flight.getAirlineCode()}"></span></td>
                                             <td th:data="${flight.getCheapestPrice()}"><span th:text="' $' + ${flight.getCheapestPrice()}"></span></td>
@@ -113,24 +114,25 @@
                                         <th id="arrivesstop">Arrival</th>
                                         <th id="airlinesstop">Airlines</th>
                                         <th id="infostop">Prices From</th>
+                                        <th id="viewstop">View</th>
                                         </thead>
                                         <tbody>
 
                                         <tr style="padding: 10px 0 0 20px;" th:each="flight : ${stopOver[0]}">
                                             <td th:data="${flight.getOrigin()}"><span
-                                                    th:text="${flight.getOrigin()} + ' -> ' + ${flight.getDestination()} + ' VIA ' + ${flight.getAllStops()}"></span>
+                                                    th:utext="'<b>' + ${flight.getOrigin()} + ' to ' + ${flight.getDestination()} + '</b><br />VIA ' + ${flight.getAllStops()}"></span>
                                             </td>
                                             <td th:data="${flight.getDeparture()}">
-                                                <span th:text="'Departs ' + ${flight.getOrigin()} + ': '"></span><span
+                                                <b><span th:utext="${flight.getOrigin()} + '<br />'"></span></b><span
                                                     th:text="${flight.getDeparture()}"></span>
                                             </td>
 
                                             <td th:data="${flight.getArrival()}">
-                                                <span th:text="'Arrives in ' + ${flight.getDestination} + ': '"></span><span
+                                                <b><span th:utext="${flight.getDestination} + '<br />'"></span></b><span
                                                     th:text="${flight.getArrival()}"></span><br>
                                             </td>
 
-                                            <td th:data="${flight.getAirlines()}"><b>Airline: </b><span
+                                            <td th:data="${flight.getAirlines()}"><span
                                                     th:text="${flight.getAirlines}"></span></td>
 
                                             <td th:data="${flight.getTotalPrice()}"><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
@@ -172,24 +174,25 @@
                                         <th id="arrivesstop1">Arrival</th>
                                         <th id="airlinesstop1">Airlines</th>
                                         <th id="infostop1">Prices From</th>
+                                        <th>View</th>
                                         </thead>
                                         <tbody>
 
                                         <tr style="padding: 10px 0 0 20px;" th:each="flight : ${stopOver[1]}">
                                             <td th:data="${flight.getOrigin()}"><span
-                                                    th:text="${flight.getOrigin()} + ' -> ' + ${flight.getDestination()} + ' VIA ' + ${flight.getAllStops()}"></span>
+                                                    th:utext="'<b>' + ${flight.getOrigin()} + ' to ' + ${flight.getDestination()} + '</b><br />VIA ' + ${flight.getAllStops()}"></span>
                                             </td>
                                             <td th:data="${flight.getDeparture()}">
-                                                <span th:text="'Departs ' + ${flight.getOrigin()} + ': '"></span><span
+                                                <b><span th:utext="${flight.getOrigin()} + '<br />'"></span></b><span
                                                     th:text="${flight.getDeparture()}"></span>
                                             </td>
 
                                             <td th:data="${flight.getArrival()}">
-                                                <span th:text="'Arrives in ' + ${flight.getDestination} + ': '"></span><span
+                                                <b><span th:utext="${flight.getDestination} + '<br />'"></span></b><span
                                                     th:text="${flight.getArrival()}"></span><br>
                                             </td>
 
-                                            <td th:data="${flight.getAirlines()}"><b>Airline: </b><span
+                                            <td th:data="${flight.getAirlines()}"><span
                                                     th:text="${flight.getAirlines}"></span></td>
 
                                             <td th:data="${flight.getTotalPrice()}"><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
@@ -231,24 +234,25 @@
                                         <th id="arrivesstop2">Arrival</th>
                                         <th id="airlinesstop2">Airlines</th>
                                         <th id="infostop2">Prices From</th>
+                                        <th>View</th>
                                         </thead>
                                         <tbody>
 
                                         <tr style="padding: 10px 0 0 20px;" th:each="flight : ${stopOver[2]}">
                                             <td th:data="${flight.getOrigin()}"><span
-                                                    th:text="${flight.getOrigin()} + ' -> ' + ${flight.getDestination()} + ' VIA ' + ${flight.getAllStops()}"></span>
+                                                    th:utext="'<b>' + ${flight.getOrigin()} + ' to ' + ${flight.getDestination()} + '</b><br />VIA ' + ${flight.getAllStops()}"></span>
                                             </td>
                                             <td th:data="${flight.getDeparture()}">
-                                                <span th:text="'Departs ' + ${flight.getOrigin()} + ': '"></span><span
+                                                <b><span th:utext="${flight.getOrigin()} + '<br />'"></span></b><span
                                                     th:text="${flight.getDeparture()}"></span>
                                             </td>
 
                                             <td th:data="${flight.getArrival()}">
-                                                <span th:text="'Arrives in ' + ${flight.getDestination} + ': '"></span><span
+                                                <b><span th:utext="${flight.getDestination} + '<br />'"></span></b><span
                                                     th:text="${flight.getArrival()}"></span><br>
                                             </td>
 
-                                            <td th:data="${flight.getAirlines()}"><b>Airline: </b><span
+                                            <td th:data="${flight.getAirlines()}"><span
                                                     th:text="${flight.getAirlines}"></span></td>
 
                                             <td th:data="${flight.getTotalPrice()}"><span th:text="' $' + ${flight.getTotalPrice()}"></span></td>
