@@ -29,7 +29,6 @@ public class ObjectCreationController {
     private TicketServices ticketServices;
     private AirlineServices airlineServices;
     private UserAccount SessionUser;
-
     private AdminAccountServices adminAccountServices;
 
     @Autowired
