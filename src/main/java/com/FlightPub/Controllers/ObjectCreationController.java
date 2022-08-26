@@ -251,7 +251,7 @@ public class ObjectCreationController {
 
             model.addAttribute("Registered", true);
 
-            return "User/Login";
+            return "User/login";
         }
 
         return "redirect:/RegisterUser?error=form";
@@ -303,7 +303,7 @@ public class ObjectCreationController {
 
             model.addAttribute("Registered", true);
             model.addAttribute("usr", getSession(session));
-            return "User/Login";
+            return "User/login";
         }
         return "redirect:/AdminRegister?error=form";
     }
