@@ -54,7 +54,7 @@ public class FlightServices {
             List<Availability> avail = availRepo.findByFlightCodeAndDate(flightNumber, departureTime);
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
 
 
@@ -100,7 +100,7 @@ public class FlightServices {
             flightRepo.findAll().forEach(flights::add);
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
             for (Flight x : flights) {
                 if (x.getStopoverCode() != null) {
@@ -208,7 +208,7 @@ public class FlightServices {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
 
             Map.Entry<Date, List<Price>> input = new AbstractMap.SimpleEntry<>(time, out);
@@ -237,7 +237,7 @@ public class FlightServices {
             List<Flight> flights = flightRepo.findByDestination(dest);
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
             for (Flight x : flights) {
                 if (x.getStopoverCode() != null) {
@@ -272,7 +272,7 @@ public class FlightServices {
             outArr = availRepo.findByFlightCodeAndDate(id, departTime);
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
 
 
@@ -389,7 +389,7 @@ public class FlightServices {
             }
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
 
             Map.Entry<Date, List<Price>> input = new AbstractMap.SimpleEntry<>(time, out);
@@ -523,7 +523,7 @@ public class FlightServices {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
             for (Flight x : out) {
                 if (x.getStopoverCode() != null) {
@@ -559,7 +559,7 @@ public class FlightServices {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
             for (Flight x : out) {
                 if (x.getStopoverCode() != null) {
@@ -595,7 +595,7 @@ public class FlightServices {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
             for (Flight x : out) {
                 if (x.getStopoverCode() != null) {
@@ -631,7 +631,7 @@ public class FlightServices {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
             for (Flight x : out) {
                 if (x.getStopoverCode() != null) {
@@ -668,7 +668,7 @@ public class FlightServices {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(System.currentTimeMillis()));
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 500);
             Date time = cal.getTime();
             for (Flight x : out) {
                 if (x.getStopoverCode() != null) {
